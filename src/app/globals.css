@@ -1,0 +1,196 @@
+@import "tailwindcss";
+
+/* ==========================================================
+   KYRUMA DESIGN SYSTEM v1.0
+========================================================== */
+
+:root {
+  --background: #f7f7f5;
+  --foreground: #111111;
+
+  --primary: #ff5a00;
+
+  --surface: #ffffff;
+
+  --muted: #71717a;
+
+  --border: rgba(17, 17, 17, 0.08);
+
+  --radius: 24px;
+
+  --container: 1440px;
+}
+
+/* ==========================================================
+   RESET
+========================================================== */
+
+*,
+*::before,
+*::after {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  background: var(--background);
+  color: var(--foreground);
+
+  overflow-x: hidden;
+
+  font-family:
+    Inter,
+    -apple-system,
+    BlinkMacSystemFont,
+    "SF Pro Display",
+    "Segoe UI",
+    sans-serif;
+
+  text-rendering: optimizeLegibility;
+
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* ==========================================================
+   TYPOGRAPHY
+========================================================== */
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  font-weight: 900;
+
+  letter-spacing: -.06em;
+
+  line-height: .9;
+}
+
+p {
+  color: var(--muted);
+
+  line-height: 1.8;
+}
+
+a {
+  color: inherit;
+
+  text-decoration: none;
+}
+
+button {
+  border: none;
+
+  background: transparent;
+
+  font: inherit;
+
+  cursor: pointer;
+}
+
+img,
+picture,
+svg {
+  display: block;
+
+  max-width: 100%;
+
+  user-select: none;
+
+  -webkit-user-drag: none;
+}
+
+/* ==========================================================
+   GRID BACKGROUND
+========================================================== */
+
+body::before {
+  content: "";
+
+  position: fixed;
+
+  inset: 0;
+
+  pointer-events: none;
+
+  z-index: -2;
+
+  opacity: .22;
+
+  background-image:
+
+    linear-gradient(
+      rgba(17,17,17,.025) 1px,
+      transparent 1px
+    ),
+
+    linear-gradient(
+      90deg,
+      rgba(17,17,17,.025) 1px,
+      transparent 1px
+    );
+
+  background-size: 80px 80px;
+
+  mask-image:
+    radial-gradient(
+      circle at center,
+      black 45%,
+      transparent 100%
+    );
+}
+
+/* ==========================================================
+   SELECTION
+========================================================== */
+
+::selection {
+  background: var(--primary);
+
+  color: white;
+}
+
+/* ==========================================================
+   SCROLLBAR
+========================================================== */
+
+::-webkit-scrollbar {
+  width: 10px;
+}
+
+::-webkit-scrollbar-track {
+  background: #efefeb;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #c2c2bc;
+
+  border-radius: 999px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #a0a09a;
+}
+
+/* ==========================================================
+   TRANSITIONS
+========================================================== */
+
+a,
+button {
+  transition:
+    color .25s ease,
+    background-color .25s ease,
+    border-color .25s ease,
+    transform .25s ease,
+    opacity .25s ease,
+    box-shadow .25s ease;
+}
