@@ -3,8 +3,9 @@ import Footer from "@/components/layout/Footer";
 
 import Hero from "@/components/sections/Hero";
 import Statement from "@/components/sections/Statement";
-import Services from "@/components/sections/Services";
 import Process from "@/components/sections/Process";
+import Services from "@/components/sections/Services";
+import SelectedWork from "@/components/sections/SelectedWork";
 import Contact from "@/components/sections/Contact";
 
 export default function Home() {
@@ -15,8 +16,9 @@ export default function Home() {
       <main>
         <Hero />
         <Statement />
-        <Services />
         <Process />
+        <Services />
+        <SelectedWork />
         <Contact />
       </main>
 

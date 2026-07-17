@@ -5,25 +5,25 @@ const services = [
     number: "01",
     title: "Brand Strategy",
     description:
-      "Business positioning, brand architecture and strategic direction.",
+      "Positioning, messaging and strategic direction that give businesses clarity and purpose.",
   },
   {
     number: "02",
     title: "Visual Identity",
     description:
-      "Identity systems designed to communicate clarity, consistency and trust.",
+      "Identity systems designed to be recognised, remembered and trusted across every touchpoint.",
   },
   {
     number: "03",
     title: "Digital Experience",
     description:
-      "Premium websites and digital products built around user experience.",
+      "Websites and digital products where design, performance and usability work together.",
   },
   {
     number: "04",
-    title: "AI Systems",
+    title: "AI & Systems",
     description:
-      "Internal workflows and AI-powered systems that improve efficiency and scalability.",
+      "Automation and intelligent workflows that help ambitious companies operate more efficiently.",
   },
 ];
 
@@ -31,49 +31,49 @@ export default function Services() {
   return (
     <section
       id="services"
-      className="bg-[#F7F7F5] py-40"
+      className="bg-white py-44"
     >
       <Container>
-
-        <div className="max-w-3xl">
-
-          <p className="text-xs font-semibold uppercase tracking-[0.45em] text-[#FF5A00]">
-            Services
+        <div className="max-w-4xl">
+          <p className="text-[11px] font-semibold uppercase tracking-[0.35em] text-[#FF5A00]">
+            Capabilities
           </p>
 
-          <h2 className="mt-8 text-5xl font-black leading-[0.9] tracking-[-0.06em] text-[#111111] md:text-7xl">
-            Everything
+          <h2 className="mt-8 text-[clamp(3rem,7vw,5.5rem)] font-semibold leading-[0.92] tracking-[-0.05em] text-[#111111]">
+            Everything your
             <br />
-            your brand
+            business needs.
             <br />
-            needs.
+            Nothing it doesn't.
           </h2>
-
         </div>
 
-        <div className="mt-28">
-
+        <div className="mt-28 divide-y divide-black/10">
           {services.map((service) => (
             <div
               key={service.number}
-              className="grid border-b border-black/10 py-10 md:grid-cols-[120px_320px_1fr]"
+              className="grid gap-8 py-12 lg:grid-cols-12 lg:items-start"
             >
-              <span className="text-sm font-bold text-[#FF5A00]">
-                {service.number}
-              </span>
+              <div className="lg:col-span-2">
+                <span className="text-sm font-medium text-[#FF5A00]">
+                  {service.number}
+                </span>
+              </div>
 
-              <h3 className="mt-3 text-3xl font-bold text-[#111111] md:mt-0">
-                {service.title}
-              </h3>
+              <div className="lg:col-span-4">
+                <h3 className="text-3xl font-semibold tracking-[-0.04em] text-[#111111]">
+                  {service.title}
+                </h3>
+              </div>
 
-              <p className="mt-5 max-w-xl text-zinc-600 md:mt-0">
-                {service.description}
-              </p>
+              <div className="lg:col-span-6">
+                <p className="max-w-xl text-[17px] leading-8 text-zinc-500">
+                  {service.description}
+                </p>
+              </div>
             </div>
           ))}
-
         </div>
-
       </Container>
     </section>
   );

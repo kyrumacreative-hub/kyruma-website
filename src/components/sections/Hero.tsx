@@ -5,63 +5,56 @@ import HeroVisual from "@/components/ui/HeroVisual";
 
 export default function Hero() {
   return (
-    <section className="relative overflow-hidden bg-[#F7F7F5]">
+    <section className="relative min-h-screen overflow-hidden bg-[#F7F7F5]">
 
       <BackgroundGrid />
 
-      <Container className="relative">
+      <Container className="relative z-10 flex min-h-screen items-center">
 
-        <div className="grid min-h-screen items-center gap-20 pt-28 lg:grid-cols-2">
+        <div className="grid w-full items-center gap-24 lg:grid-cols-2">
 
           {/* LEFT */}
 
-          <div className="relative z-10 max-w-[620px]">
+          <div className="max-w-[640px]">
 
-            <span className="inline-flex items-center rounded-full border border-black/10 bg-white/70 px-4 py-2 text-[11px] font-semibold uppercase tracking-[0.35em] text-[#FF5A00] backdrop-blur-xl">
-              Boutique Strategy & Brand Studio
+            <span className="inline-flex items-center rounded-full border border-black/10 bg-white/70 px-4 py-2 text-[11px] font-medium uppercase tracking-[0.35em] text-[#FF5A00] backdrop-blur-xl">
+              Independent Creative Business Studio
             </span>
 
-            <h1 className="mt-10 text-[72px] font-black leading-[0.88] tracking-[-0.08em] text-[#111111] xl:text-[96px]">
+            <h1 className="mt-10 text-[clamp(4rem,7vw,6.5rem)] font-semibold leading-[0.92] tracking-[-0.06em] text-[#111111]">
 
               We build
-
               <br />
-
               businesses
-
               <br />
-
               people trust.
 
             </h1>
 
-            <p className="mt-10 max-w-[520px] text-[19px] leading-[1.9] text-zinc-500">
+            <p className="mt-10 max-w-[560px] text-[20px] leading-[1.8] text-zinc-500">
 
-              Strategy, identity and digital experiences for ambitious
-              companies that want to become unforgettable brands.
+              Strategy, identity and digital experiences
+              designed to help ambitious companies become
+              brands people believe in.
 
             </p>
 
-            <div className="mt-14 flex items-center gap-5">
+            <div className="mt-14 flex flex-wrap gap-4">
 
               <Button href="#contact">
-
-                Start Project
-
+                Start a Project
               </Button>
 
               <Button
-                href="#services"
+                href="#process"
                 variant="secondary"
               >
-
-                Our Method
-
+                Explore our Process
               </Button>
 
             </div>
 
-            <div className="mt-24 flex flex-wrap gap-8 text-sm text-zinc-400">
+            <div className="mt-20 flex gap-8 text-sm text-zinc-400">
 
               <span>Strategy</span>
 
@@ -70,8 +63,6 @@ export default function Hero() {
               <span>Experience</span>
 
               <span>Systems</span>
-
-              <span>AI</span>
 
             </div>
 

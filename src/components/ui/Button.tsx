@@ -1,4 +1,3 @@
-
 import Link from "next/link";
 import { ReactNode } from "react";
 
@@ -14,14 +13,14 @@ export default function Button({
   variant = "primary",
 }: ButtonProps) {
   const base =
-    "inline-flex h-14 items-center justify-center rounded-full px-8 text-sm font-semibold transition-all duration-300";
+    "group inline-flex h-14 items-center justify-center rounded-full px-7 text-[15px] font-medium transition-all duration-300";
 
   const variants = {
     primary:
-      "bg-[#111111] text-white hover:bg-[#FF5A00] hover:-translate-y-0.5",
+      "bg-[#111111] text-white hover:bg-[#1A1A1A] hover:-translate-y-[1px]",
 
     secondary:
-      "border border-black/10 bg-white text-[#111111] hover:border-black/20 hover:bg-black/[0.02]",
+      "border border-black/10 bg-white/70 text-[#111111] backdrop-blur-xl hover:border-black/20 hover:bg-white",
   };
 
   return (
@@ -29,7 +28,11 @@ export default function Button({
       href={href}
       className={`${base} ${variants[variant]}`}
     >
-      {children}
+      <span>{children}</span>
+
+      <span className="ml-2 transition-transform duration-300 group-hover:translate-x-1">
+        →
+      </span>
     </Link>
   );
 }
