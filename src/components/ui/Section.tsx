@@ -1,5 +1,4 @@
 import { ReactNode } from "react";
-import clsx from "clsx";
 
 interface SectionProps {
   children: ReactNode;
@@ -10,20 +9,27 @@ interface SectionProps {
 
 export default function Section({
   children,
-  className,
+  className = "",
   background = "surface",
   id,
 }: SectionProps) {
+  const backgroundClass =
+    background === "background"
+      ? "bg-black"
+      : "bg-[#09090b]";
+
   return (
     <section
       id={id}
-      className={clsx(
-        "py-32 md:py-44",
-        background === "background"
-          ? "bg-[#F7F7F5]"
-          : "bg-white",
-        className
-      )}
+      className={`
+        relative
+        overflow-hidden
+        py-32
+        md:py-48
+        lg:py-56
+        ${backgroundClass}
+        ${className}
+      `}
     >
       {children}
     </section>
