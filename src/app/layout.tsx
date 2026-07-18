@@ -83,6 +83,10 @@ export default function RootLayout({
                   description:
                     "Independent Creative Business & Strategy Studio. Strategy, identity, digital experiences and systems for ambitious businesses.",
                   email: "hello@kyruma.com",
+                  sameAs: [
+                    "https://www.linkedin.com/company/kyruma/",
+                    "https://www.instagram.com/kyrumacreative/",
+                  ],
                 },
                 {
                   "@type": "WebSite",
