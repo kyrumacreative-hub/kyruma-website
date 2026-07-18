@@ -1,105 +1,43 @@
-import type { Metadata, Viewport } from "next";
-import { Inter } from "next/font/google";
-import "./globals.css";
-
-const inter = Inter({
-  subsets: ["latin"],
-  display: "swap",
-  variable: "--font-inter",
-});
+import type { Metadata } from "next";
 
 export const metadata: Metadata = {
   metadataBase: new URL("https://kyruma.com"),
 
   title: {
-    default: "KYRUMA — Creative Business Studio",
-    template: "%s — KYRUMA",
+    default: "KYRUMA | Estudio de Estrategia y Negocio Creativo",
+    template: "%s | KYRUMA",
   },
 
   description:
-    "KYRUMA is an independent creative business studio combining strategy, identity, digital experiences and systems to build businesses people trust.",
-
-  keywords: [
-    "KYRUMA",
-    "Creative Business Studio",
-    "Brand Strategy",
-    "Brand Identity",
-    "Digital Experience",
-    "Business Strategy",
-    "Web Design",
-    "Creative Studio",
-  ],
-
-  authors: [
-    {
-      name: "KYRUMA",
-    },
-  ],
-
-  creator: "KYRUMA",
-
-  publisher: "KYRUMA",
-
-  formatDetection: {
-    email: false,
-    address: false,
-    telephone: false,
-  },
+    "Articulamos la estrategia, la identidad visual y los ecosistemas digitales de las compañías que definen su industria.",
 
   openGraph: {
-    title: "KYRUMA — Creative Business Studio",
-
+    title: "KYRUMA | Estudio de Estrategia y Negocio Creativo",
     description:
-      "Strategy, identity, digital experiences and systems for ambitious businesses.",
-
+      "Diseñamos empresas en las que la gente confía. No competimos por atención; construimos legado.",
+    url: "https://kyruma.com",
+    siteName: "KYRUMA",
+    locale: "es_ES",
     type: "website",
 
-    locale: "en_GB",
-
-    siteName: "KYRUMA",
-
-    url: "/",
+    images: [
+      {
+        url: "/og-image.jpg",
+        width: 1200,
+        height: 630,
+        alt: "KYRUMA — Creative Business & Strategy Studio",
+      },
+    ],
   },
 
   twitter: {
     card: "summary_large_image",
-
-    title: "KYRUMA — Creative Business Studio",
-
-    description:
-      "Strategy, identity, digital experiences and systems for ambitious businesses.",
+    title: "KYRUMA | Estudio de Estrategia y Negocio Creativo",
+    description: "Diseñamos empresas en las que la gente confía.",
+    images: ["/og-image.jpg"],
   },
 
-  robots: {
-    index: true,
-    follow: true,
-
-    googleBot: {
-      index: true,
-      follow: true,
-      "max-image-preview": "large",
-      "max-snippet": -1,
-      "max-video-preview": -1,
-    },
+  alternates: {
+    canonical: "https://kyruma.com",
   },
 };
-
-export const viewport: Viewport = {
-  width: "device-width",
-  initialScale: 1,
-  themeColor: "#FAFAF8",
-};
-
-export default function RootLayout({
-  children,
-}: Readonly<{
-  children: React.ReactNode;
-}>) {
-  return (
-    <html lang="en">
-      <body className={`${inter.variable} ${inter.className}`}>
-        {children}
-      </body>
-    </html>
-  );
-}
