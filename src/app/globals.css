@@ -1,22 +1,42 @@
+@import "tailwindcss";
+
 /* ==========================================================
-   KYRUMA — PREMIUM TYPOGRAPHY RENDERING
+   KYRUMA — GLOBAL VISUAL SYSTEM
+   Light / Luminous Identity
+========================================================== */
+
+:root {
+  --background: #f7f7f5;
+  --surface: #ffffff;
+  --foreground: #111111;
+  --muted: #737373;
+  --primary: #ff5a00;
+}
+
+/* ==========================================================
+   DOCUMENT
 ========================================================== */
 
 html {
   scroll-behavior: smooth;
-  background: #000000;
+  background: var(--background);
 
   -webkit-text-size-adjust: 100%;
   text-size-adjust: 100%;
 }
 
+/* ==========================================================
+   BODY
+========================================================== */
+
 body {
   min-height: 100vh;
-
   overflow-x: hidden;
 
-  background: #000000;
-  color: #ffffff;
+  margin: 0;
+
+  background: var(--background);
+  color: var(--foreground);
 
   font-family:
     var(--font-inter),
@@ -39,7 +59,9 @@ body {
   font-synthesis: none;
 }
 
-/* Improve rendering consistency */
+/* ==========================================================
+   PREMIUM TYPOGRAPHY RENDERING
+========================================================== */
 
 body,
 button,
@@ -51,14 +73,108 @@ select {
   -moz-osx-font-smoothing: grayscale;
 }
 
-/* Premium text selection */
+/* ==========================================================
+   BOX MODEL
+========================================================== */
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+/* ==========================================================
+   LINKS
+========================================================== */
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+/* ==========================================================
+   MEDIA
+========================================================== */
+
+img,
+picture,
+video,
+canvas,
+svg {
+  display: block;
+  max-width: 100%;
+}
+
+/* ==========================================================
+   FORM ELEMENTS
+========================================================== */
+
+button,
+input,
+textarea,
+select {
+  font: inherit;
+}
+
+/* ==========================================================
+   PREMIUM TEXT SELECTION
+========================================================== */
 
 ::selection {
-  background: #262626;
+  background: #ff5a00;
   color: #ffffff;
 }
 
 ::-moz-selection {
-  background: #262626;
+  background: #ff5a00;
   color: #ffffff;
+}
+
+/* ==========================================================
+   SCROLLBAR
+========================================================== */
+
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: #f7f7f5;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #d4d4d4;
+  border-radius: 999px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #b8b8b8;
+}
+
+/* ==========================================================
+   FOCUS
+========================================================== */
+
+:focus-visible {
+  outline: 2px solid rgba(255, 90, 0, 0.65);
+  outline-offset: 4px;
+}
+
+/* ==========================================================
+   REDUCED MOTION
+========================================================== */
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
 }
