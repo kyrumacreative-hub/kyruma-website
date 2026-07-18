@@ -64,6 +64,56 @@ export default function RootLayout({
   return (
     <html lang="es">
       <body className={`${inter.variable} antialiased`}>
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify({
+              "@context": "https://schema.org",
+              "@graph": [
+                {
+                  "@type": "Organization",
+                  "@id": "https://www.kyruma.com/#organization",
+                  name: "KYRUMA",
+                  url: "https://www.kyruma.com/",
+                  logo: {
+                    "@type": "ImageObject",
+                    url: "https://www.kyruma.com/og-image.jpg",
+                  },
+                  description:
+                    "Independent Creative Business & Strategy Studio. Strategy, identity, digital experiences and systems for ambitious businesses.",
+                  email: "hello@kyruma.com",
+                },
+                {
+                  "@type": "WebSite",
+                  "@id": "https://www.kyruma.com/#website",
+                  url: "https://www.kyruma.com/",
+                  name: "KYRUMA",
+                  publisher: {
+                    "@id": "https://www.kyruma.com/#organization",
+                  },
+                  inLanguage: ["es", "en"],
+                },
+                {
+                  "@type": "ProfessionalService",
+                  "@id": "https://www.kyruma.com/#service",
+                  name: "KYRUMA",
+                  url: "https://www.kyruma.com/",
+                  provider: {
+                    "@id": "https://www.kyruma.com/#organization",
+                  },
+                  serviceType: [
+                    "Business Strategy",
+                    "Brand Strategy",
+                    "Brand Identity",
+                    "Digital Experiences",
+                    "Business Systems",
+                    "Artificial Intelligence Systems",
+                  ],
+                },
+              ],
+            }),
+          }}
+        />
         {children}
       </body>
     </html>
