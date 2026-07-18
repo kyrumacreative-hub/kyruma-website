@@ -1,7 +1,15 @@
 import type { Metadata } from "next";
+import { Inter } from "next/font/google";
+import "./globals.css";
+
+const inter = Inter({
+  subsets: ["latin"],
+  variable: "--font-inter",
+  display: "swap",
+});
 
 export const metadata: Metadata = {
-  metadataBase: new URL("https://kyruma.com"),
+  metadataBase: new URL("https://www.kyruma.com"),
 
   title: {
     default: "KYRUMA | Estudio de Estrategia y Negocio Creativo",
@@ -11,11 +19,15 @@ export const metadata: Metadata = {
   description:
     "Articulamos la estrategia, la identidad visual y los ecosistemas digitales de las compañías que definen su industria.",
 
+  alternates: {
+    canonical: "/",
+  },
+
   openGraph: {
     title: "KYRUMA | Estudio de Estrategia y Negocio Creativo",
     description:
       "Diseñamos empresas en las que la gente confía. No competimos por atención; construimos legado.",
-    url: "https://kyruma.com",
+    url: "/",
     siteName: "KYRUMA",
     locale: "es_ES",
     type: "website",
@@ -25,7 +37,7 @@ export const metadata: Metadata = {
         url: "/og-image.jpg",
         width: 1200,
         height: 630,
-        alt: "KYRUMA — Creative Business & Strategy Studio",
+        alt: "KYRUMA — Estudio de Estrategia y Negocio Creativo",
       },
     ],
   },
@@ -33,11 +45,27 @@ export const metadata: Metadata = {
   twitter: {
     card: "summary_large_image",
     title: "KYRUMA | Estudio de Estrategia y Negocio Creativo",
-    description: "Diseñamos empresas en las que la gente confía.",
+    description:
+      "Diseñamos empresas en las que la gente confía. No competimos por atención; construimos legado.",
     images: ["/og-image.jpg"],
   },
 
-  alternates: {
-    canonical: "https://kyruma.com",
+  robots: {
+    index: true,
+    follow: true,
   },
 };
+
+export default function RootLayout({
+  children,
+}: Readonly<{
+  children: React.ReactNode;
+}>) {
+  return (
+    <html lang="es">
+      <body className={`${inter.variable} antialiased`}>
+        {children}
+      </body>
+    </html>
+  );
+}
