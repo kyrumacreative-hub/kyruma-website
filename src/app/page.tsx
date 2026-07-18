@@ -66,7 +66,7 @@ const translations = {
       h2: "Claridad antes de la creación.",
       principleLabel: "El principio KYRUMA",
       principle:
-        "Cada decisión debe hacer que el negocio sea más claro, más fuerte y más fácil de confiar.",
+        "Cada decisión debe make el negocio sea más claro, más fuerte y más fácil de confiar.",
       items: [
         {
           number: "I.",
@@ -276,12 +276,12 @@ function Header({ language, setLanguage }: HeaderProps) {
         transition-all
         duration-700
         ease-[cubic-bezier(0.16,1,0.3,1)]
-        ${
+        \${
           isVisible
             ? "translate-y-0 opacity-100"
             : "-translate-y-full opacity-0"
         }
-        ${
+        \${
           isScrolled
             ? "border-black/[0.06] bg-white/70 shadow-[0_8px_40px_rgba(17,17,17,0.025)] backdrop-blur-xl"
             : "border-transparent bg-[#F7F7F5]/60 backdrop-blur-xl"
@@ -378,7 +378,7 @@ function Header({ language, setLanguage }: HeaderProps) {
                 transition-colors
                 duration-300
                 ease-[cubic-bezier(0.25,1,0.5,1)]
-                ${
+                \${
                   language === "es"
                     ? "text-[#111111]"
                     : "hover:text-[#FF5A00]"
@@ -398,7 +398,7 @@ function Header({ language, setLanguage }: HeaderProps) {
                 transition-colors
                 duration-300
                 ease-[cubic-bezier(0.25,1,0.5,1)]
-                ${
+                \${
                   language === "en"
                     ? "text-[#111111]"
                     : "hover:text-[#FF5A00]"
@@ -409,6 +409,7 @@ function Header({ language, setLanguage }: HeaderProps) {
             </button>
           </div>
 
+          {/* BOTÓN NAVBAR CORREGIDO CON !text-white */}
           <a
             href="#contact"
             className="
@@ -425,7 +426,7 @@ function Header({ language, setLanguage }: HeaderProps) {
               font-light
               uppercase
               tracking-[0.16em]
-              text-white
+              !text-white
               transition-all
               duration-500
               ease-[cubic-bezier(0.25,1,0.5,1)]
@@ -439,6 +440,7 @@ function Header({ language, setLanguage }: HeaderProps) {
             <span
               className="
                 inline-block
+                !text-white
                 transition-transform
                 duration-500
                 ease-[cubic-bezier(0.25,1,0.5,1)]
@@ -452,6 +454,7 @@ function Header({ language, setLanguage }: HeaderProps) {
               aria-hidden="true"
               className="
                 inline-block
+                !text-white
                 transition-transform
                 duration-500
                 ease-[cubic-bezier(0.25,1,0.5,1)]
@@ -608,6 +611,8 @@ export default function Home() {
               </p>
 
               <div className="mt-12 flex flex-wrap items-center gap-8">
+                
+                {/* BOTÓN HERO PRINCIPAL SUSTITUIDO Y CORREGIDO */}
                 <a
                   href="#contact"
                   className="
@@ -624,7 +629,7 @@ export default function Home() {
                     font-light
                     uppercase
                     tracking-widest
-                    text-white
+                    !text-white
                     transition-all
                     duration-500
                     ease-[cubic-bezier(0.25,1,0.5,1)]
@@ -636,6 +641,7 @@ export default function Home() {
                   <span
                     className="
                       inline-block
+                      !text-white
                       transition-transform
                       duration-500
                       ease-[cubic-bezier(0.25,1,0.5,1)]
@@ -649,6 +655,7 @@ export default function Home() {
                     aria-hidden="true"
                     className="
                       inline-block
+                      !text-white
                       transition-transform
                       duration-500
                       ease-[cubic-bezier(0.25,1,0.5,1)]
@@ -1007,127 +1014,32 @@ export default function Home() {
               {t.method.h2}
             </h2>
 
-            <div className="mt-20 md:mt-28">
-              {t.method.items.map((step) => (
-                <article
-                  key={step.number}
-                  className="
-                    group
-                    relative
-                    grid
-                    grid-cols-1
-                    gap-6
-                    overflow-hidden
-                    border-t
-                    border-black/[0.06]
-                    py-12
-                    transition-all
-                    duration-700
-                    ease-[cubic-bezier(0.16,1,0.3,1)]
-                    md:grid-cols-12
-                  "
-                >
-                  <div
-                    aria-hidden="true"
-                    className="
-                      absolute
-                      left-0
-                      top-0
-                      h-px
-                      w-0
-                      bg-[#FF5A00]
-                      transition-all
-                      duration-700
-                      ease-[cubic-bezier(0.16,1,0.3,1)]
-                      group-hover:w-full
-                    "
-                  />
-
-                  <div className="md:col-span-4">
-                    <h3
-                      className="
-                        text-2xl
-                        font-light
-                        leading-relaxed
-                        tracking-[-0.025em]
-                        text-[#111111]
-                        transition-all
-                        duration-700
-                        ease-[cubic-bezier(0.16,1,0.3,1)]
-                        group-hover:translate-x-2
-                        group-hover:text-[#FF5A00]
-                        md:text-3xl
-                      "
-                    >
-                      <span
-                        className="
-                          mr-3
-                          text-neutral-300
-                          transition-colors
-                          duration-700
-                          group-hover:text-[#FF5A00]
-                        "
-                      >
-                        {step.number}
-                      </span>
-
-                      {step.title}
-                    </h3>
-                  </div>
-
-                  <div className="md:col-span-8">
-                    <p
-                      className="
-                        max-w-2xl
-                        text-base
-                        font-light
-                        leading-loose
-                        text-neutral-600
-                        md:text-lg
-                      "
-                    >
-                      {step.description}
-                    </p>
-                  </div>
-                </article>
-              ))}
-
-              <div className="border-t border-black/[0.06]" />
-            </div>
-
-            <div
-              className="
-                mt-24
-                grid
-                gap-12
-                md:mt-32
-                lg:grid-cols-12
-              "
-            >
+            <div className="mt-20 grid grid-cols-1 gap-12 border-t border-black/[0.06] pt-12 lg:grid-cols-12">
               <div className="lg:col-span-4">
-                <div className="flex items-center gap-3">
-                  <span className="h-1.5 w-1.5 rounded-full bg-[#FF5A00]" />
-
-                  <span className="text-sm font-light text-neutral-500">
+                <div className="flex flex-col gap-3">
+                  <span className="text-[10px] font-light uppercase tracking-widest text-neutral-400">
                     {t.method.principleLabel}
                   </span>
+                  <p className="text-lg font-light leading-relaxed text-[#111111]">
+                    “{t.method.principle}”
+                  </p>
                 </div>
               </div>
 
-              <div className="lg:col-span-7 lg:col-start-6">
-                <p
-                  className="
-                    text-2xl
-                    font-light
-                    leading-relaxed
-                    tracking-[-0.025em]
-                    text-[#111111]
-                    md:text-3xl
-                    lg:text-4xl
-                  "
-                >
-                  {t.method.principle}
-                </p>
+              <div className="grid grid-cols-1 gap-8 sm:grid-cols-2 lg:col-span-8 lg:col-start-5">
+                {t.method.items.map((item) => (
+                  <div key={item.number} className="flex flex-col gap-3">
+                    <span className="text-xs font-light tracking-widest text-[#FF5A00]">
+                      {item.number}
+                    </span>
+                    <h3 className="text-xl font-light text-[#111111]">
+                      {item.title}
+                    </h3>
+                    <p className="text-sm font-light leading-relaxed text-neutral-600">
+                      {item.description}
+                    </p>
+                  </div>
+                ))}
               </div>
             </div>
           </div>
@@ -1135,222 +1047,60 @@ export default function Home() {
 
         <section
           id="contact"
-          className="
-            relative
-            overflow-hidden
-            bg-[#F7F7F5]
-            py-32
-            md:py-48
-            lg:py-56
-          "
+          className="relative overflow-hidden bg-[#F7F7F5] py-32 md:py-48 lg:py-56"
         >
           <div
             aria-hidden="true"
-            className="
-              pointer-events-none
-              absolute
-              -bottom-[30%]
-              -right-[15%]
-              h-[700px]
-              w-[700px]
-              rounded-full
-              bg-[#FF5A00]/[0.045]
-              blur-[140px]
-            "
+            className="pointer-events-none absolute -left-[20%] bottom-0 h-[600px] w-[600px] rounded-full bg-[#FF5A00]/[0.02] blur-[120px]"
           />
 
           <div className="relative mx-auto w-full max-w-6xl px-6 md:px-12">
-            <div className="flex items-center gap-3">
-              <span
-                className="
-                  text-[10px]
-                  font-light
-                  uppercase
-                  tracking-[0.22em]
-                  text-neutral-500
-                "
-              >
-                {t.contact.label}
-              </span>
-
-              <span className="h-1 w-1 rounded-full bg-[#FF5A00]" />
-            </div>
-
-            <h2
-              className="
-                mb-6
-                mt-8
-                max-w-4xl
-                text-4xl
-                font-light
-                leading-relaxed
-                tracking-tight
-                text-[#111111]
-                md:text-6xl
-              "
-            >
-              {t.contact.h2}
-            </h2>
-
-            <div
-              className="
-                mt-20
-                grid
-                gap-16
-                border-t
-                border-black/[0.06]
-                pt-12
-                md:mt-28
-                lg:grid-cols-12
-                lg:items-end
-              "
-            >
-              <div className="lg:col-span-5">
-                <p
-                  className="
-                    max-w-lg
-                    text-base
-                    font-light
-                    leading-loose
-                    text-neutral-600
-                    md:text-lg
-                  "
-                >
-                  {t.contact.body}
-                </p>
+            <div className="max-w-3xl">
+              <div className="flex items-center gap-3">
+                <span className="text-[10px] font-light uppercase tracking-[0.22em] text-neutral-500">
+                  {t.contact.label}
+                </span>
+                <span className="h-1 w-1 rounded-full bg-[#FF5A00]" />
               </div>
 
-              <div className="lg:col-span-6 lg:col-start-7">
+              <h2 className="mt-8 text-4xl font-light leading-tight tracking-tight text-[#111111] md:text-6xl">
+                {t.contact.h2}
+              </h2>
+
+              <p className="mt-8 text-base font-light leading-loose text-neutral-600 md:text-lg">
+                {t.contact.body}
+              </p>
+
+              {/* CIERRE DE SECCIÓN RECONSTRUIDO CORRECTAMENTE */}
+              <div className="mt-12">
                 <a
                   href="mailto:hello@kyruma.com"
-                  aria-label={`${t.contact.cta}: hello@kyruma.com`}
                   className="
                     group
+                    relative
                     flex
+                    w-full
                     items-center
                     justify-between
-                    gap-6
-                    rounded-3xl
-                    border
-                    border-black/[0.06]
-                    bg-white
-                    p-6
-                    transition-all
-                    duration-500
-                    ease-[cubic-bezier(0.25,1,0.5,1)]
-                    hover:scale-[1.01]
-                    hover:border-[#FF5A00]/30
-                    hover:bg-[#FF5A00]
-                    hover:shadow-[0_25px_60px_rgba(255,90,0,0.12)]
-                    md:p-8
+                    border-b
+                    border-black/[0.1]
+                    pb-4
+                    text-xl
+                    font-light
+                    text-[#111111]
+                    transition-colors
+                    duration-300
+                    hover:border-[#FF5A00]
+                    md:text-2xl
                   "
                 >
-                  <div>
-                    <span
-                      className="
-                        mb-2
-                        block
-                        text-[9px]
-                        font-light
-                        uppercase
-                        tracking-[0.18em]
-                        text-neutral-400
-                        transition-colors
-                        duration-500
-                        ease-[cubic-bezier(0.25,1,0.5,1)]
-                        group-hover:text-black/50
-                      "
-                    >
-                      {t.contact.cta}
-                    </span>
-
-                    <span
-                      className="
-                        break-all
-                        text-xl
-                        font-light
-                        leading-relaxed
-                        tracking-[-0.03em]
-                        text-[#111111]
-                        transition-all
-                        duration-500
-                        ease-[cubic-bezier(0.25,1,0.5,1)]
-                        group-hover:-translate-y-[1px]
-                        md:text-3xl
-                      "
-                    >
-                      hello@kyruma.com
-                    </span>
-                  </div>
-
-                  <span
-                    aria-hidden="true"
-                    className="
-                      flex
-                      h-12
-                      w-12
-                      shrink-0
-                      items-center
-                      justify-center
-                      rounded-full
-                      bg-[#111111]
-                      text-lg
-                      text-white
-                      transition-all
-                      duration-500
-                      ease-[cubic-bezier(0.25,1,0.5,1)]
-                      group-hover:translate-x-1
-                      group-hover:scale-[1.05]
-                      group-hover:bg-white
-                      group-hover:text-[#FF5A00]
-                      md:h-14
-                      md:w-14
-                    "
-                  >
+                  <span>hello@kyruma.com</span>
+                  <span className="transition-transform duration-300 group-hover:translate-x-2 text-[#FF5A00]">
                     →
                   </span>
                 </a>
               </div>
             </div>
-
-            <footer
-              className="
-                mt-32
-                flex
-                flex-col
-                gap-6
-                border-t
-                border-black/[0.06]
-                pt-8
-                sm:flex-row
-                sm:items-center
-                sm:justify-between
-              "
-            >
-              <span
-                className="
-                  text-[10px]
-                  font-light
-                  uppercase
-                  tracking-[0.22em]
-                  text-neutral-400
-                "
-              >
-                KYRUMA — Creative Business Studio
-              </span>
-
-              <span
-                className="
-                  text-[10px]
-                  font-light
-                  uppercase
-                  tracking-[0.18em]
-                  text-neutral-400
-                "
-              >
-                {t.contact.footer}
-              </span>
-            </footer>
           </div>
         </section>
       </main>
