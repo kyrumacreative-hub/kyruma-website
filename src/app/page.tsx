@@ -1026,7 +1026,8 @@ export default function Home() {
               <div className="grid grid-cols-1 gap-8 sm:grid-cols-2 lg:col-span-8 lg:col-start-5">
                 {t.method.items.map((item) => (
                   <div key={item.number} className="flex flex-col gap-3">
-                    <span className="text-xs font-medium tracking-widest text-[#D44B00]">
+                    {/* CAMBIO DE CONTRASTE CLAVE AQUÍ: text-[#A83C00] */}
+                    <span className="text-xs font-medium tracking-widest text-[#A83C00]">
                       {item.number}
                     </span>
                     <h3 className="text-xl font-light text-[#111111]">
