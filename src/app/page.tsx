@@ -323,7 +323,7 @@ function Header({ language, setLanguage }: HeaderProps) {
                 font-light
                 uppercase
                 tracking-[0.18em]
-                text-neutral-400
+                text-neutral-600
                 transition-colors
                 duration-300
                 ease-[cubic-bezier(0.25,1,0.5,1)]
@@ -366,7 +366,7 @@ function Header({ language, setLanguage }: HeaderProps) {
               font-light
               uppercase
               tracking-[0.15em]
-              text-neutral-400
+              text-neutral-500
             "
             aria-label="Language selector"
           >
@@ -381,14 +381,14 @@ function Header({ language, setLanguage }: HeaderProps) {
                 \${
                   language === "es"
                     ? "text-[#111111]"
-                    : "hover:text-[#FF5A00]"
+                    : "text-neutral-600 hover:text-[#FF5A00]"
                 }
               `}
             >
               ES
             </button>
 
-            <span className="text-neutral-300">/</span>
+            <span className="text-neutral-400">/</span>
 
             <button
               type="button"
@@ -401,7 +401,7 @@ function Header({ language, setLanguage }: HeaderProps) {
                 \${
                   language === "en"
                     ? "text-[#111111]"
-                    : "hover:text-[#FF5A00]"
+                    : "text-neutral-600 hover:text-[#FF5A00]"
                 }
               `}
             >
@@ -409,7 +409,6 @@ function Header({ language, setLanguage }: HeaderProps) {
             </button>
           </div>
 
-          {/* BOTÓN NAVBAR CORREGIDO CON !text-white */}
           <a
             href="#contact"
             className="
@@ -573,7 +572,7 @@ export default function Home() {
                   font-light
                   uppercase
                   tracking-[0.3em]
-                  text-neutral-400
+                  text-neutral-600
                   md:text-xs
                 "
               >
@@ -611,8 +610,6 @@ export default function Home() {
               </p>
 
               <div className="mt-12 flex flex-wrap items-center gap-8">
-                
-                {/* BOTÓN HERO PRINCIPAL SUSTITUIDO Y CORREGIDO */}
                 <a
                   href="#contact"
                   className="
@@ -677,7 +674,7 @@ export default function Home() {
                     font-light
                     uppercase
                     tracking-[0.16em]
-                    text-neutral-500
+                    text-neutral-600
                     transition-all
                     duration-500
                     ease-[cubic-bezier(0.25,1,0.5,1)]
@@ -715,7 +712,7 @@ export default function Home() {
                   font-light
                   uppercase
                   tracking-[0.25em]
-                  text-neutral-400
+                  text-neutral-600
                 "
               >
                 {t.hero.pillars.map((pillar, index) => (
@@ -747,7 +744,7 @@ export default function Home() {
                   font-light
                   uppercase
                   tracking-widest
-                  text-neutral-500
+                  text-neutral-600
                 "
               >
                 {t.perspective.label}
@@ -771,7 +768,7 @@ export default function Home() {
               {t.perspective.h2First}
               <br />
 
-              <span className="text-neutral-400">
+              <span className="text-neutral-500">
                 {t.perspective.h2Second}
               </span>
             </h2>
@@ -792,7 +789,7 @@ export default function Home() {
                 <div className="flex items-center gap-3">
                   <span className="h-px w-6 bg-[#FF5A00]" />
 
-                  <span className="text-sm font-light text-neutral-500">
+                  <span className="text-sm font-light text-neutral-600">
                     {t.perspective.belief}
                   </span>
                 </div>
@@ -828,7 +825,7 @@ export default function Home() {
                   font-light
                   uppercase
                   tracking-[0.22em]
-                  text-neutral-500
+                  text-neutral-600
                 "
               >
                 {t.capabilities.label}
@@ -853,7 +850,7 @@ export default function Home() {
               {t.capabilities.h2First}
               <br />
 
-              <span className="text-neutral-400">
+              <span className="text-neutral-500">
                 {t.capabilities.h2Second}
               </span>
             </h2>
@@ -890,7 +887,7 @@ export default function Home() {
                         text-xs
                         font-light
                         tracking-[0.16em]
-                        text-neutral-300
+                        text-neutral-500
                         transition-all
                         duration-700
                         ease-[cubic-bezier(0.16,1,0.3,1)]
@@ -942,7 +939,7 @@ export default function Home() {
                         font-light
                         uppercase
                         tracking-[0.16em]
-                        text-neutral-300
+                        text-neutral-500
                         opacity-0
                         transition-all
                         duration-700
@@ -990,7 +987,7 @@ export default function Home() {
                   font-light
                   uppercase
                   tracking-[0.22em]
-                  text-neutral-500
+                  text-neutral-600
                 "
               >
                 {t.method.label}
@@ -1017,7 +1014,7 @@ export default function Home() {
             <div className="mt-20 grid grid-cols-1 gap-12 border-t border-black/[0.06] pt-12 lg:grid-cols-12">
               <div className="lg:col-span-4">
                 <div className="flex flex-col gap-3">
-                  <span className="text-[10px] font-light uppercase tracking-widest text-neutral-400">
+                  <span className="text-[10px] font-light uppercase tracking-widest text-neutral-600">
                     {t.method.principleLabel}
                   </span>
                   <p className="text-lg font-light leading-relaxed text-[#111111]">
@@ -1029,7 +1026,7 @@ export default function Home() {
               <div className="grid grid-cols-1 gap-8 sm:grid-cols-2 lg:col-span-8 lg:col-start-5">
                 {t.method.items.map((item) => (
                   <div key={item.number} className="flex flex-col gap-3">
-                    <span className="text-xs font-light tracking-widest text-[#FF5A00]">
+                    <span className="text-xs font-medium tracking-widest text-[#D44B00]">
                       {item.number}
                     </span>
                     <h3 className="text-xl font-light text-[#111111]">
@@ -1057,7 +1054,7 @@ export default function Home() {
           <div className="relative mx-auto w-full max-w-6xl px-6 md:px-12">
             <div className="max-w-3xl">
               <div className="flex items-center gap-3">
-                <span className="text-[10px] font-light uppercase tracking-[0.22em] text-neutral-500">
+                <span className="text-[10px] font-light uppercase tracking-[0.22em] text-neutral-600">
                   {t.contact.label}
                 </span>
                 <span className="h-1 w-1 rounded-full bg-[#FF5A00]" />
@@ -1071,7 +1068,6 @@ export default function Home() {
                 {t.contact.body}
               </p>
 
-              {/* CIERRE DE SECCIÓN RECONSTRUIDO CORRECTAMENTE */}
               <div className="mt-12">
                 <a
                   href="mailto:hello@kyruma.com"
