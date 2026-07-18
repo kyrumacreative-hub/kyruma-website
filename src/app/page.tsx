@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
+import { sendGAEvent } from "@next/third-parties/google";
 
 type Language = "es" | "en";
 
@@ -411,6 +412,12 @@ function Header({ language, setLanguage }: HeaderProps) {
 
           <a
             href="#contact"
+            onClick={() =>
+              sendGAEvent("event", "start_consultation", {
+                event_category: "conversion",
+                event_label: "navbar_cta",
+              })
+            }
             className="
               group
               hidden
@@ -612,6 +619,12 @@ export default function Home() {
               <div className="mt-12 flex flex-wrap items-center gap-8">
                 <a
                   href="#contact"
+                  onClick={() =>
+                    sendGAEvent("event", "start_consultation", {
+                      event_category: "conversion",
+                      event_label: "hero_cta",
+                    })
+                  }
                   className="
                     group
                     inline-flex
@@ -1072,6 +1085,12 @@ export default function Home() {
               <div className="mt-12">
                 <a
                   href="mailto:hello@kyruma.com"
+                  onClick={() =>
+                    sendGAEvent("event", "start_consultation", {
+                      event_category: "conversion",
+                      event_label: "contact_card",
+                    })
+                  }
                   className="
                     group
                     relative
