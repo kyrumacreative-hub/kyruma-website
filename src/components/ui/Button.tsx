@@ -12,25 +12,85 @@ export default function Button({
   href = "#",
   variant = "primary",
 }: ButtonProps) {
-  const base =
-    "group inline-flex h-14 items-center justify-center rounded-full px-7 text-[15px] font-medium transition-all duration-300";
+  if (variant === "secondary") {
+    return (
+      <Link
+        href={href}
+        className="
+          group
+          inline-flex
+          h-14
+          items-center
+          justify-center
+          gap-5
+          rounded-full
+          border
+          border-black/10
+          bg-transparent
+          px-7
+          text-[14px]
+          font-semibold
+          text-[var(--foreground)]
+          hover:border-black/20
+          hover:bg-white
+        "
+      >
+        <span>{children}</span>
 
-  const variants = {
-    primary:
-      "bg-[#111111] text-white hover:bg-[#1A1A1A] hover:-translate-y-[1px]",
-
-    secondary:
-      "border border-black/10 bg-white/70 text-[#111111] backdrop-blur-xl hover:border-black/20 hover:bg-white",
-  };
+        <span
+          aria-hidden="true"
+          className="
+            flex
+            h-7
+            w-7
+            items-center
+            justify-center
+            rounded-full
+            bg-black/[0.05]
+            text-sm
+            text-[var(--foreground)]
+            transition-transform
+            duration-300
+            group-hover:translate-x-1
+          "
+        >
+          →
+        </span>
+      </Link>
+    );
+  }
 
   return (
     <Link
       href={href}
-      className={`${base} ${variants[variant]}`}
+      className="
+        group
+        inline-flex
+        h-14
+        items-center
+        justify-center
+        gap-5
+        rounded-full
+        bg-[var(--foreground)]
+        px-7
+        text-[14px]
+        font-semibold
+        text-white
+        hover:bg-[var(--primary)]
+      "
     >
       <span>{children}</span>
 
-      <span className="ml-2 transition-transform duration-300 group-hover:translate-x-1">
+      <span
+        aria-hidden="true"
+        className="
+          text-base
+          text-white
+          transition-transform
+          duration-300
+          group-hover:translate-x-1
+        "
+      >
         →
       </span>
     </Link>

@@ -1,29 +1,33 @@
 import Container from "@/components/ui/Container";
 
-const services = [
+const capabilities = [
   {
     number: "01",
-    title: "Brand Strategy",
+    title: "Strategy",
     description:
-      "Positioning, messaging and strategic direction that give businesses clarity and purpose.",
+      "We define the strategic foundations that give businesses clarity, direction and a distinctive position.",
+    areas: ["Positioning", "Brand Strategy", "Messaging", "Direction"],
   },
   {
     number: "02",
-    title: "Visual Identity",
+    title: "Identity",
     description:
-      "Identity systems designed to be recognised, remembered and trusted across every touchpoint.",
+      "We translate strategy into distinctive visual systems designed to create recognition, consistency and meaning.",
+    areas: ["Visual Identity", "Art Direction", "Brand Systems", "Guidelines"],
   },
   {
     number: "03",
-    title: "Digital Experience",
+    title: "Digital",
     description:
-      "Websites and digital products where design, performance and usability work together.",
+      "We create digital experiences where clarity, functionality and expression come together at every interaction.",
+    areas: ["Web Design", "Digital Experience", "Development", "Interaction"],
   },
   {
     number: "04",
-    title: "AI & Systems",
+    title: "Systems",
     description:
-      "Automation and intelligent workflows that help ambitious companies operate more efficiently.",
+      "We connect processes, technology and intelligent tools to help businesses operate with greater clarity and efficiency.",
+    areas: ["Automation", "AI", "Workflows", "Business Systems"],
   },
 ];
 
@@ -31,48 +35,108 @@ export default function Services() {
   return (
     <section
       id="services"
-      className="bg-white py-44"
+      className="relative bg-[#09090b] py-32 md:py-48 lg:py-56"
     >
       <Container>
-        <div className="max-w-4xl">
-          <p className="text-[11px] font-semibold uppercase tracking-[0.35em] text-[#FF5A00]">
-            Capabilities
-          </p>
+        <div className="flex flex-col gap-16 md:gap-24">
+          {/* Header */}
 
-          <h2 className="mt-8 text-[clamp(3rem,7vw,5.5rem)] font-semibold leading-[0.92] tracking-[-0.05em] text-[#111111]">
-            Everything your
-            <br />
-            business needs.
-            <br />
-            Nothing it doesn't.
-          </h2>
-        </div>
+          <div className="flex items-center gap-4">
+            <span className="h-1.5 w-1.5 rounded-full bg-[var(--primary)]" />
 
-        <div className="mt-28 divide-y divide-black/10">
-          {services.map((service) => (
-            <div
-              key={service.number}
-              className="grid gap-8 py-12 lg:grid-cols-12 lg:items-start"
-            >
-              <div className="lg:col-span-2">
-                <span className="text-sm font-medium text-[#FF5A00]">
-                  {service.number}
-                </span>
-              </div>
+            <span className="text-[10px] font-medium uppercase tracking-[0.3em] text-neutral-500 md:text-[11px]">
+              Capabilities
+            </span>
+          </div>
 
-              <div className="lg:col-span-4">
-                <h3 className="text-3xl font-semibold tracking-[-0.04em] text-[#111111]">
-                  {service.title}
-                </h3>
-              </div>
+          <div className="max-w-5xl">
+            <h2 className="text-4xl font-normal leading-[1.1] tracking-tight text-white md:text-5xl lg:text-6xl">
+              Different disciplines.
+              <br />
 
-              <div className="lg:col-span-6">
-                <p className="max-w-xl text-[17px] leading-8 text-zinc-500">
-                  {service.description}
-                </p>
-              </div>
+              <span className="text-neutral-500">
+                One direction.
+              </span>
+            </h2>
+          </div>
+
+          {/* Introduction */}
+
+          <div className="grid gap-12 border-t border-white/[0.06] pt-12 lg:grid-cols-12">
+            <div className="lg:col-span-4">
+              <span className="text-sm font-light tracking-wide text-neutral-600">
+                What we do
+              </span>
             </div>
-          ))}
+
+            <div className="lg:col-span-7 lg:col-start-6">
+              <p className="text-base font-light leading-relaxed tracking-wide text-neutral-400 md:text-lg md:leading-loose">
+                We work across strategy, identity, digital experiences and
+                systems to create businesses that communicate and operate as
+                one coherent whole.
+              </p>
+            </div>
+          </div>
+
+          {/* Bento Grid */}
+
+          <div className="grid gap-6 md:grid-cols-2">
+            {capabilities.map((capability) => (
+              <article
+                key={capability.number}
+                className="
+                  group
+                  flex
+                  min-h-[420px]
+                  flex-col
+                  justify-between
+                  rounded-2xl
+                  border
+                  border-white/[0.04]
+                  bg-neutral-900/30
+                  p-8
+                  transition-all
+                  duration-700
+                  ease-[cubic-bezier(0.16,1,0.3,1)]
+                  hover:-translate-y-1
+                  hover:border-white/[0.08]
+                  hover:bg-neutral-900/50
+                  md:p-12
+                "
+              >
+                <div className="flex items-start justify-between">
+                  <span className="text-xs font-medium text-[var(--primary)]">
+                    {capability.number}
+                  </span>
+
+                  <span className="text-xl font-light text-neutral-700 transition-all duration-700 ease-[cubic-bezier(0.25,1,0.5,1)] group-hover:translate-x-1 group-hover:text-white">
+                    ↗
+                  </span>
+                </div>
+
+                <div className="mt-24">
+                  <h3 className="text-3xl font-normal leading-[1.1] tracking-tight text-white md:text-4xl">
+                    {capability.title}
+                  </h3>
+
+                  <p className="mt-8 max-w-md text-base font-light leading-relaxed tracking-wide text-neutral-400 md:leading-loose">
+                    {capability.description}
+                  </p>
+
+                  <div className="mt-10 flex flex-wrap gap-x-5 gap-y-3">
+                    {capability.areas.map((area) => (
+                      <span
+                        key={area}
+                        className="text-xs font-light tracking-wide text-neutral-600"
+                      >
+                        {area}
+                      </span>
+                    ))}
+                  </div>
+                </div>
+              </article>
+            ))}
+          </div>
         </div>
       </Container>
     </section>

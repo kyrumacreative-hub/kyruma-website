@@ -1,81 +1,84 @@
-import BackgroundGrid from "@/components/ui/BackgroundGrid";
 import Button from "@/components/ui/Button";
 import Container from "@/components/ui/Container";
-import HeroVisual from "@/components/ui/HeroVisual";
 
 export default function Hero() {
   return (
-    <section className="relative min-h-screen overflow-hidden bg-[#F7F7F5]">
+    <section className="relative flex min-h-screen items-center overflow-hidden bg-black py-32 md:py-48 lg:py-56">
+      {/* Ambient light */}
 
-      <BackgroundGrid />
+      <div
+        aria-hidden="true"
+        className="pointer-events-none absolute -right-[25%] -top-[30%] h-[900px] w-[900px] rounded-full bg-[#FF5A00]/[0.05] blur-[200px]"
+      />
 
-      <Container className="relative z-10 flex min-h-screen items-center">
+      <Container className="relative z-10">
+        <div className="flex flex-col gap-16 md:gap-20 lg:gap-24">
+          {/* Eyebrow */}
 
-        <div className="grid w-full items-center gap-24 lg:grid-cols-2">
+          <div className="flex items-center gap-4">
+            <span className="h-1.5 w-1.5 shrink-0 rounded-full bg-[var(--primary)]" />
 
-          {/* LEFT */}
-
-          <div className="max-w-[640px]">
-
-            <span className="inline-flex items-center rounded-full border border-black/10 bg-white/70 px-4 py-2 text-[11px] font-medium uppercase tracking-[0.35em] text-[#FF5A00] backdrop-blur-xl">
+            <span className="text-[10px] font-medium uppercase tracking-[0.3em] text-neutral-500 md:text-[11px]">
               Independent Creative Business Studio
             </span>
-
-            <h1 className="mt-10 text-[clamp(4rem,7vw,6.5rem)] font-semibold leading-[0.92] tracking-[-0.06em] text-[#111111]">
-
-              We build
-              <br />
-              businesses
-              <br />
-              people trust.
-
-            </h1>
-
-            <p className="mt-10 max-w-[560px] text-[20px] leading-[1.8] text-zinc-500">
-
-              Strategy, identity and digital experiences
-              designed to help ambitious companies become
-              brands people believe in.
-
-            </p>
-
-            <div className="mt-14 flex flex-wrap gap-4">
-
-              <Button href="#contact">
-                Start a Project
-              </Button>
-
-              <Button
-                href="#process"
-                variant="secondary"
-              >
-                Explore our Process
-              </Button>
-
-            </div>
-
-            <div className="mt-20 flex gap-8 text-sm text-zinc-400">
-
-              <span>Strategy</span>
-
-              <span>Identity</span>
-
-              <span>Experience</span>
-
-              <span>Systems</span>
-
-            </div>
-
           </div>
 
-          {/* RIGHT */}
+          {/* Main title */}
 
-          <HeroVisual />
+          <div className="max-w-6xl">
+            <h1 className="text-5xl font-light leading-[1.05] tracking-tighter text-white md:text-7xl md:leading-[1.02] lg:text-8xl">
+              We build businesses
+              <br className="hidden md:block" />
+              {" "}people trust.
+            </h1>
+          </div>
 
+          {/* Supporting content */}
+
+          <div className="grid gap-16 border-t border-white/[0.06] pt-12 lg:grid-cols-12 lg:items-end">
+            <div className="hidden lg:col-span-5 lg:block">
+              <p className="text-sm font-light tracking-wide text-neutral-600">
+                Strategy · Identity · Digital · Systems
+              </p>
+            </div>
+
+            <div className="flex flex-col gap-10 lg:col-span-6 lg:col-start-7">
+              <p className="max-w-xl text-base font-light leading-relaxed tracking-wide text-neutral-400 md:text-lg md:leading-loose">
+                Strategy, identity and digital experiences for ambitious
+                businesses ready to become clear, relevant and unforgettable.
+              </p>
+
+              <div className="flex flex-wrap gap-4">
+                <Button href="#contact">
+                  Start a Project
+                </Button>
+
+                <Button
+                  href="#services"
+                  variant="secondary"
+                >
+                  Explore KYRUMA
+                </Button>
+              </div>
+            </div>
+          </div>
+
+          {/* Scroll */}
+
+          <div className="flex items-center justify-between border-t border-white/[0.06] pt-6">
+            <span className="text-xs font-light tracking-wide text-neutral-600 lg:hidden">
+              Strategy · Identity · Digital · Systems
+            </span>
+
+            <a
+              href="#statement"
+              className="ml-auto text-[10px] font-medium uppercase tracking-[0.25em] text-neutral-600 hover:text-white"
+            >
+              Scroll to explore ↓
+            </a>
+          </div>
         </div>
-
       </Container>
-
     </section>
   );
 }

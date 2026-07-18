@@ -1,85 +1,53 @@
 export default function HeroVisual() {
   return (
-    <div className="relative flex items-center justify-center h-full">
+    <div className="relative flex h-[620px] items-center justify-center">
+      {/* Ambient light */}
 
-      {/* Ambient Light */}
+      <div className="absolute h-[700px] w-[700px] rounded-full bg-[#FF5A00]/[0.05] blur-[180px]" />
 
-      <div className="absolute h-[700px] w-[700px] rounded-full bg-[#FF5A00]/[0.03] blur-[180px]" />
+      {/* Large card */}
 
-      {/* Shadow */}
+      <div className="relative h-[520px] w-[420px] overflow-hidden rounded-[42px] border border-black/5 bg-white shadow-[0_40px_120px_rgba(0,0,0,.08)]">
+        {/* Editorial image */}
 
-      <div className="absolute bottom-8 h-[420px] w-[420px] rounded-full bg-black/[0.05] blur-[90px]" />
-
-      {/* Sculpture */}
-
-      <div className="relative">
-
-        {/* Back Layer */}
-
-        <div
-          className="
-            absolute
-            left-8
-            top-8
-            h-[420px]
-            w-[260px]
-            rounded-[90px]
-            border
-            border-black/[0.03]
-            bg-white/40
-            backdrop-blur-xl
-          "
+        <img
+          src="https://images.unsplash.com/photo-1511818966892-d7d671e672a2?auto=format&fit=crop&w=1200&q=80"
+          alt=""
+          className="h-full w-full object-cover"
         />
 
-        {/* Middle Layer */}
+        {/* Overlay */}
 
-        <div
-          className="
-            absolute
-            left-4
-            top-4
-            h-[420px]
-            w-[260px]
-            rounded-[90px]
-            border
-            border-black/[0.04]
-            bg-white/70
-            backdrop-blur-xl
-          "
-        />
+        <div className="absolute inset-0 bg-gradient-to-t from-black/45 via-black/5 to-transparent" />
 
-        {/* Front Layer */}
+        {/* Brand label */}
 
-        <div
-          className="
-            relative
-            flex
-            h-[420px]
-            w-[260px]
-            items-end
-            justify-center
-            overflow-hidden
-            rounded-[90px]
-            border
-            border-white
-            bg-gradient-to-b
-            from-white
-            via-[#F8F8F6]
-            to-[#ECECE8]
-            shadow-[0_60px_120px_rgba(0,0,0,.10)]
-          "
-        >
-          {/* Top Highlight */}
+        <div className="absolute left-8 top-8 rounded-full bg-white/90 px-4 py-2 text-[11px] font-semibold uppercase tracking-[0.28em] backdrop-blur">
+          KYRUMA
+        </div>
 
-          <div className="absolute top-6 left-8 right-8 h-24 rounded-full bg-white/80 blur-2xl" />
+        {/* Bottom content */}
 
-          {/* Vertical Reflection */}
+        <div className="absolute bottom-8 left-8 right-8">
+          <div className="text-xs uppercase tracking-[0.25em] text-white/70">
+            Featured Project
+          </div>
 
-          <div className="absolute left-6 top-0 h-full w-px bg-white/70" />
+          <h3 className="mt-2 text-3xl font-semibold tracking-[-0.04em] text-white">
+            Building brands people trust.
+          </h3>
+        </div>
+      </div>
 
-          {/* Accent */}
+      {/* Floating card */}
 
-          <div className="mb-10 h-3 w-3 rounded-full bg-[#FF5A00]" />
+      <div className="absolute -bottom-6 -left-8 rounded-3xl border border-black/5 bg-white px-8 py-6 shadow-[0_25px_60px_rgba(0,0,0,.08)]">
+        <div className="text-xs uppercase tracking-[0.24em] text-zinc-400">
+          Focus
+        </div>
+
+        <div className="mt-2 text-xl font-semibold tracking-[-0.04em]">
+          Strategy · Identity · Digital
         </div>
       </div>
     </div>

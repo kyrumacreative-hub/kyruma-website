@@ -2,48 +2,76 @@ import Container from "@/components/ui/Container";
 
 export default function Statement() {
   return (
-    <section className="bg-white py-44">
+    <section
+      id="statement"
+      className="relative overflow-hidden bg-white py-32 md:py-40 lg:py-48"
+    >
       <Container>
-        <div className="mx-auto max-w-5xl">
+        {/* Section label */}
 
-          <p className="text-[11px] font-semibold uppercase tracking-[0.35em] text-[#FF5A00]">
+        <div className="flex items-center gap-3">
+          <span className="h-2 w-2 shrink-0 rounded-full bg-[var(--primary)]" />
+
+          <span className="text-[10px] font-semibold uppercase tracking-[0.32em] text-zinc-500 md:text-[11px]">
             Our Perspective
-          </p>
+          </span>
+        </div>
 
-          <h2 className="mt-10 text-[clamp(3rem,8vw,6.5rem)] font-semibold leading-[0.9] tracking-[-0.06em] text-[#111111]">
-            Most companies
+        {/* Main statement */}
+
+        <div className="mt-16 max-w-[1100px]">
+          <h2 className="text-[clamp(3.5rem,7vw,6.75rem)] font-semibold leading-[0.9] tracking-[-0.065em] text-[var(--foreground)]">
+            Attention is easy
             <br />
-            chase attention.
+            to get.
             <br />
-            <br />
-            The best
-            <br />
-            earn trust.
+
+            <span className="text-zinc-300">
+              Trust is harder
+              <br />
+              to earn.
+            </span>
           </h2>
+        </div>
 
-          <div className="mt-20 max-w-2xl">
+        {/* Perspective content */}
 
-            <p className="text-xl leading-[1.9] text-zinc-500">
+        <div className="mt-28 grid gap-12 border-t border-black/10 pt-10 lg:grid-cols-12">
+          {/* Label */}
 
-              Trust doesn't happen by accident.
-
-              It is the result of thousands of intentional decisions —
-              strategy, positioning, design and every interaction a person
-              has with your business.
-
+          <div className="lg:col-span-3">
+            <p className="text-sm font-medium text-[var(--foreground)]">
+              What we believe
             </p>
-
-            <p className="mt-8 text-xl leading-[1.9] text-zinc-500">
-
-              At KYRUMA we don't create isolated deliverables.
-
-              We build systems that help ambitious companies become brands
-              people understand, remember and trust.
-
-            </p>
-
           </div>
 
+          {/* Content */}
+
+          <div className="lg:col-span-7 lg:col-start-6">
+            <p className="text-xl font-medium leading-[1.55] text-[var(--foreground)] md:text-2xl lg:text-[1.75rem]">
+              A strong brand is not simply how a business looks.
+              It is how clearly it communicates, how consistently it acts
+              and how people experience it.
+            </p>
+
+            <p className="mt-10 max-w-[650px] text-base leading-[1.8] text-[var(--muted)] md:text-lg">
+              We bring strategy, identity and digital experience together
+              to help businesses create clarity, build meaningful
+              relationships and earn trust over time.
+            </p>
+          </div>
+        </div>
+
+        {/* Closing principle */}
+
+        <div className="mt-28 flex flex-col gap-6 border-t border-black/10 pt-6 sm:flex-row sm:items-center sm:justify-between">
+          <p className="text-sm font-medium text-zinc-400">
+            Every detail communicates.
+          </p>
+
+          <span className="text-[10px] font-semibold uppercase tracking-[0.22em] text-zinc-400">
+            KYRUMA Perspective — 01
+          </span>
         </div>
       </Container>
     </section>
