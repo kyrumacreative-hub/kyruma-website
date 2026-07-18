@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import Container from "@/components/ui/Container";
 
 const navigation = [
@@ -19,14 +19,61 @@ const navigation = [
 ];
 
 export default function Navbar() {
-  const [scrolled, setScrolled] = useState(false);
+  const [isVisible, setIsVisible] = useState(true);
+
+  const lastScrollY = useRef(0);
+  const ticking = useRef(false);
 
   useEffect(() => {
-    const handleScroll = () => {
-      setScrolled(window.scrollY > 40);
+    lastScrollY.current = window.scrollY;
+
+    const updateNavbar = () => {
+      const currentScrollY = window.scrollY;
+      const difference = currentScrollY - lastScrollY.current;
+
+      /*
+       * Always show navbar near the top.
+       */
+
+      if (currentScrollY < 80) {
+        setIsVisible(true);
+        lastScrollY.current = currentScrollY;
+        ticking.current = false;
+        return;
+      }
+
+      /*
+       * Ignore tiny movements.
+       * Prevents navbar flickering on trackpads
+       * and mobile momentum scrolling.
+       */
+
+      if (Math.abs(difference) < 8) {
+        ticking.current = false;
+        return;
+      }
+
+      /*
+       * Scroll down → hide.
+       * Scroll up → reveal.
+       */
+
+      if (difference > 0) {
+        setIsVisible(false);
+      } else {
+        setIsVisible(true);
+      }
+
+      lastScrollY.current = currentScrollY;
+      ticking.current = false;
     };
 
-    handleScroll();
+    const handleScroll = () => {
+      if (!ticking.current) {
+        window.requestAnimationFrame(updateNavbar);
+        ticking.current = true;
+      }
+    };
 
     window.addEventListener("scroll", handleScroll, {
       passive: true,
@@ -44,23 +91,35 @@ export default function Navbar() {
         inset-x-0
         top-0
         z-50
+        bg-black/40
+        backdrop-blur-xl
         transition-all
         duration-500
+        ease-[cubic-bezier(0.16,1,0.3,1)]
         ${
-          scrolled
-            ? "border-b border-black/[0.06] bg-[var(--background)]/90 backdrop-blur-xl"
-            : "bg-transparent"
+          isVisible
+            ? "translate-y-0 opacity-100"
+            : "-translate-y-full opacity-0"
         }
       `}
     >
       <Container>
-        <div className="flex h-24 items-center justify-between">
+        <div className="flex h-20 items-center justify-between md:h-24">
           {/* Brand */}
 
           <a
             href="#"
             aria-label="KYRUMA — Back to top"
-            className="relative z-10 text-[17px] font-bold tracking-[0.18em] text-[var(--foreground)]"
+            className="
+              text-[14px]
+              font-semibold
+              tracking-[0.28em]
+              text-white
+              transition-opacity
+              duration-700
+              ease-[cubic-bezier(0.25,1,0.5,1)]
+              hover:opacity-60
+            "
           >
             KYRUMA
           </a>
@@ -69,20 +128,29 @@ export default function Navbar() {
 
           <nav
             aria-label="Main navigation"
-            className="hidden items-center gap-10 lg:flex"
+            className="hidden items-center gap-10 md:flex lg:gap-12"
           >
             {navigation.map((item) => (
               <a
                 key={item.label}
                 href={item.href}
-                className="text-[13px] font-medium text-[var(--muted)] transition-colors duration-300 hover:text-[var(--foreground)]"
+                className="
+                  text-[13px]
+                  font-light
+                  tracking-wide
+                  text-neutral-400
+                  transition-colors
+                  duration-700
+                  ease-[cubic-bezier(0.25,1,0.5,1)]
+                  hover:text-white
+                "
               >
                 {item.label}
               </a>
             ))}
           </nav>
 
-          {/* Contact */}
+          {/* CTA */}
 
           <a
             href="#contact"
@@ -91,30 +159,47 @@ export default function Navbar() {
               inline-flex
               items-center
               gap-3
-              text-[13px]
-              font-semibold
-              text-[var(--foreground)]
+              rounded-full
+              border
+              border-white/[0.08]
+              bg-neutral-950
+              px-5
+              py-3
+              text-[12px]
+              font-medium
+              text-white
+              transition-all
+              duration-700
+              ease-[cubic-bezier(0.25,1,0.5,1)]
+              hover:scale-[1.02]
+              hover:border-white/20
+              hover:bg-neutral-900
+              md:px-6
             "
           >
-            <span>Start a Project</span>
-
             <span
               className="
-                flex
-                h-9
-                w-9
-                items-center
-                justify-center
-                rounded-full
-                bg-[var(--foreground)]
-                text-white
-                transition-all
-                duration-300
-                group-hover:bg-[var(--primary)]
-                group-hover:translate-x-1
+                transition-transform
+                duration-700
+                ease-[cubic-bezier(0.25,1,0.5,1)]
+                group-hover:-translate-y-0.5
               "
             >
-              →
+              Start a Project
+            </span>
+
+            <span
+              aria-hidden="true"
+              className="
+                text-neutral-500
+                transition-all
+                duration-700
+                ease-[cubic-bezier(0.25,1,0.5,1)]
+                group-hover:translate-x-0.5
+                group-hover:text-white
+              "
+            >
+              ↗
             </span>
           </a>
         </div>

@@ -1,3 +1,4 @@
+import CinematicReveal from "@/components/ui/CinematicReveal";
 import Container from "@/components/ui/Container";
 
 const steps = [
@@ -37,14 +38,31 @@ export default function Process() {
   return (
     <section
       id="process"
-      className="relative bg-black py-32 md:py-48 lg:py-56"
+      className="relative overflow-hidden bg-black py-32 md:py-48 lg:py-56"
     >
-      <Container>
+      {/* Ambient depth */}
+
+      <div
+        aria-hidden="true"
+        className="
+          pointer-events-none
+          absolute
+          -left-[35%]
+          top-[20%]
+          h-[900px]
+          w-[900px]
+          rounded-full
+          bg-white/[0.012]
+          blur-[200px]
+        "
+      />
+
+      <Container className="relative z-10">
         <div className="flex flex-col gap-16 md:gap-24">
-          {/* Label */}
+          {/* Section label */}
 
           <div className="flex items-center gap-4">
-            <span className="h-1.5 w-1.5 rounded-full bg-[var(--primary)]" />
+            <span className="h-1.5 w-1.5 shrink-0 rounded-full bg-[var(--primary)]" />
 
             <span className="text-[10px] font-medium uppercase tracking-[0.3em] text-neutral-500 md:text-[11px]">
               Our Method
@@ -54,13 +72,13 @@ export default function Process() {
           {/* Heading */}
 
           <div className="grid gap-16 lg:grid-cols-12 lg:items-end">
-            <div className="lg:col-span-7">
+            <CinematicReveal className="lg:col-span-7">
               <h2 className="text-4xl font-normal leading-[1.1] tracking-tight text-white md:text-5xl lg:text-6xl">
                 Clarity before
                 <br />
                 creation.
               </h2>
-            </div>
+            </CinematicReveal>
 
             <div className="lg:col-span-4 lg:col-start-9">
               <p className="text-base font-light leading-relaxed tracking-wide text-neutral-400 md:text-lg md:leading-loose">
@@ -70,7 +88,7 @@ export default function Process() {
             </div>
           </div>
 
-          {/* Steps */}
+          {/* Process steps */}
 
           <div className="flex flex-col gap-5">
             {steps.map((step) => (
@@ -85,30 +103,75 @@ export default function Process() {
                   border-white/[0.04]
                   bg-neutral-900/30
                   p-8
+                  shadow-[inset_0_1px_0_rgba(255,255,255,0.02)]
                   transition-all
                   duration-700
                   ease-[cubic-bezier(0.16,1,0.3,1)]
+                  hover:translate-x-1
                   hover:border-white/[0.08]
                   hover:bg-neutral-900/50
+                  hover:shadow-[inset_0_1px_0_rgba(255,255,255,0.04),0_24px_70px_rgba(0,0,0,0.16)]
                   md:p-12
                   lg:grid-cols-12
                   lg:items-center
                 "
               >
+                {/* Number */}
+
                 <div className="lg:col-span-1">
-                  <span className="text-xs font-medium text-[var(--primary)]">
+                  <span
+                    className="
+                      text-xs
+                      font-medium
+                      text-[var(--primary)]
+                      transition-opacity
+                      duration-700
+                      ease-[cubic-bezier(0.25,1,0.5,1)]
+                      group-hover:opacity-70
+                    "
+                  >
                     {step.number}
                   </span>
                 </div>
 
+                {/* Title */}
+
                 <div className="lg:col-span-4">
-                  <h3 className="text-3xl font-normal leading-[1.1] tracking-tight text-white md:text-4xl">
+                  <h3
+                    className="
+                      text-3xl
+                      font-normal
+                      leading-[1.1]
+                      tracking-tight
+                      text-white
+                      transition-transform
+                      duration-700
+                      ease-[cubic-bezier(0.25,1,0.5,1)]
+                      group-hover:translate-x-1
+                      md:text-4xl
+                    "
+                  >
                     {step.title}
                   </h3>
                 </div>
 
+                {/* Description */}
+
                 <div className="lg:col-span-6 lg:col-start-7">
-                  <p className="text-base font-light leading-relaxed tracking-wide text-neutral-400 md:leading-loose">
+                  <p
+                    className="
+                      text-base
+                      font-light
+                      leading-relaxed
+                      tracking-wide
+                      text-neutral-400
+                      transition-colors
+                      duration-700
+                      ease-[cubic-bezier(0.25,1,0.5,1)]
+                      group-hover:text-neutral-300
+                      md:leading-loose
+                    "
+                  >
                     {step.description}
                   </p>
                 </div>
@@ -118,7 +181,7 @@ export default function Process() {
 
           {/* Principle */}
 
-          <div className="grid gap-12 border-t border-white/[0.06] pt-16 lg:grid-cols-12">
+          <div className="grid gap-12 border-t border-white/[0.06] pt-16 lg:grid-cols-12 lg:gap-16">
             <div className="lg:col-span-4">
               <span className="text-sm font-light tracking-wide text-neutral-600">
                 The KYRUMA principle

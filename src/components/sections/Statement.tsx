@@ -1,77 +1,119 @@
+import CinematicReveal from "@/components/ui/CinematicReveal";
 import Container from "@/components/ui/Container";
 
 export default function Statement() {
   return (
     <section
       id="statement"
-      className="relative overflow-hidden bg-white py-32 md:py-40 lg:py-48"
+      className="relative overflow-hidden bg-black py-32 md:py-48 lg:py-56"
     >
-      <Container>
-        {/* Section label */}
+      {/* Ambient light */}
 
-        <div className="flex items-center gap-3">
-          <span className="h-2 w-2 shrink-0 rounded-full bg-[var(--primary)]" />
+      <div
+        aria-hidden="true"
+        className="
+          pointer-events-none
+          absolute
+          -left-[30%]
+          top-[10%]
+          h-[800px]
+          w-[800px]
+          rounded-full
+          bg-white/[0.015]
+          blur-[180px]
+        "
+      />
 
-          <span className="text-[10px] font-semibold uppercase tracking-[0.32em] text-zinc-500 md:text-[11px]">
-            Our Perspective
-          </span>
-        </div>
+      <Container className="relative z-10">
+        <div className="flex flex-col gap-16 md:gap-24">
+          {/* Section label */}
 
-        {/* Main statement */}
+          <div className="flex items-center gap-4">
+            <span className="h-1.5 w-1.5 shrink-0 rounded-full bg-[var(--primary)]" />
 
-        <div className="mt-16 max-w-[1100px]">
-          <h2 className="text-[clamp(3.5rem,7vw,6.75rem)] font-semibold leading-[0.9] tracking-[-0.065em] text-[var(--foreground)]">
-            Attention is easy
-            <br />
-            to get.
-            <br />
-
-            <span className="text-zinc-300">
-              Trust is harder
-              <br />
-              to earn.
+            <span className="text-[10px] font-medium uppercase tracking-[0.3em] text-neutral-500 md:text-[11px]">
+              Our Perspective
             </span>
-          </h2>
-        </div>
-
-        {/* Perspective content */}
-
-        <div className="mt-28 grid gap-12 border-t border-black/10 pt-10 lg:grid-cols-12">
-          {/* Label */}
-
-          <div className="lg:col-span-3">
-            <p className="text-sm font-medium text-[var(--foreground)]">
-              What we believe
-            </p>
           </div>
 
-          {/* Content */}
+          {/* Main statement */}
 
-          <div className="lg:col-span-7 lg:col-start-6">
-            <p className="text-xl font-medium leading-[1.55] text-[var(--foreground)] md:text-2xl lg:text-[1.75rem]">
-              A strong brand is not simply how a business looks.
-              It is how clearly it communicates, how consistently it acts
-              and how people experience it.
-            </p>
+          <CinematicReveal className="max-w-6xl">
+            <h2 className="text-4xl font-normal leading-[1.1] tracking-tight text-white md:text-5xl lg:text-6xl">
+              Attention is easy
+              <br />
+              to get.
+              <br />
 
-            <p className="mt-10 max-w-[650px] text-base leading-[1.8] text-[var(--muted)] md:text-lg">
-              We bring strategy, identity and digital experience together
-              to help businesses create clarity, build meaningful
-              relationships and earn trust over time.
-            </p>
+              <span className="text-neutral-600">
+                Trust is harder
+                <br />
+                to earn.
+              </span>
+            </h2>
+          </CinematicReveal>
+
+          {/* Perspective content */}
+
+          <div
+            className="
+              grid
+              gap-12
+              border-t
+              border-white/[0.06]
+              pt-12
+              lg:grid-cols-12
+              lg:gap-16
+            "
+          >
+            {/* Label */}
+
+            <div className="lg:col-span-3">
+              <p className="text-sm font-light tracking-wide text-neutral-600">
+                What we believe
+              </p>
+            </div>
+
+            {/* Content */}
+
+            <div className="flex flex-col gap-10 lg:col-span-7 lg:col-start-6">
+              <p className="text-xl font-light leading-relaxed tracking-tight text-white md:text-2xl md:leading-relaxed lg:text-3xl">
+                A strong brand is not simply how a business looks. It is how
+                clearly it communicates, how consistently it acts and how
+                people experience it.
+              </p>
+
+              <p className="max-w-2xl text-base font-light leading-relaxed tracking-wide text-neutral-400 md:text-lg md:leading-loose">
+                We bring strategy, identity and digital experience together to
+                help businesses create clarity, build meaningful relationships
+                and earn trust over time.
+              </p>
+            </div>
           </div>
-        </div>
 
-        {/* Closing principle */}
+          {/* Closing principle */}
 
-        <div className="mt-28 flex flex-col gap-6 border-t border-black/10 pt-6 sm:flex-row sm:items-center sm:justify-between">
-          <p className="text-sm font-medium text-zinc-400">
-            Every detail communicates.
-          </p>
+          <div
+            className="
+              flex
+              flex-col
+              gap-6
+              border-t
+              border-white/[0.06]
+              pt-8
+              sm:flex-row
+              sm:items-center
+              sm:justify-between
+            "
+          >
+            <p className="text-sm font-light tracking-wide text-neutral-600">
+              Every detail communicates.
+            </p>
 
-          <span className="text-[10px] font-semibold uppercase tracking-[0.22em] text-zinc-400">
-            KYRUMA Perspective — 01
-          </span>
+            <span className="text-[10px] font-medium uppercase tracking-[0.22em] text-neutral-700">
+              KYRUMA Perspective — 01
+            </span>
+          </div>
         </div>
       </Container>
     </section>
