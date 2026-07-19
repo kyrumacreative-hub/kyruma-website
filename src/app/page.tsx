@@ -2,6 +2,7 @@
 
 import { useEffect, useRef, useState } from "react";
 import { sendGAEvent } from "@next/third-parties/google";
+import { useTheme } from "@/components/ThemeProvider";
 
 type Language = "es" | "en";
 
@@ -67,7 +68,7 @@ const translations = {
       h2: "Claridad antes de la creación.",
       principleLabel: "El principio KYRUMA",
       principle:
-        "Cada decisión debe make el negocio sea más claro, más fuerte y más fácil de confiar.",
+        "Cada decisión debe hacer que el negocio sea más claro, más fuerte y más fácil de confiar.",
       items: [
         {
           number: "I.",
@@ -99,7 +100,7 @@ const translations = {
       label: "INICIAR UNA CONVERSACIÓN",
       h2: "Creemos algo memorable.",
       body:
-        "Cada gran compañía merece una marca que refleje la calidad de su propuesta. Las plazas para nuevos proyectos son limitadas cada trimestre.",
+        "Cada gran compañía merece una marca que refleje la calidad de su propuesta. Las plazas para nuevos proyectos son limited cada trimestre.",
       cta: "Iniciar Consulta",
       footer: "Estrategia · Identidad · Digital · Sistemas",
     },
@@ -216,6 +217,7 @@ function Header({ language, setLanguage }: HeaderProps) {
 
   const lastScrollY = useRef(0);
   const t = translations[language];
+  const { theme, setTheme } = useTheme();
 
   useEffect(() => {
     const handleScroll = () => {
@@ -277,15 +279,15 @@ function Header({ language, setLanguage }: HeaderProps) {
         transition-all
         duration-700
         ease-[cubic-bezier(0.16,1,0.3,1)]
-        \${
+        ${
           isVisible
             ? "translate-y-0 opacity-100"
             : "-translate-y-full opacity-0"
         }
-        \${
+        ${
           isScrolled
-            ? "border-black/[0.06] bg-white/70 shadow-[0_8px_40px_rgba(17,17,17,0.025)] backdrop-blur-xl"
-            : "border-transparent bg-[#F7F7F5]/60 backdrop-blur-xl"
+            ? "border-[var(--border)] bg-[var(--surface)]/70 shadow-[0_8px_40px_rgba(17,17,17,0.025)] backdrop-blur-xl"
+            : "border-transparent bg-[var(--background)]/60 backdrop-blur-xl"
         }
       `}
     >
@@ -298,7 +300,7 @@ function Header({ language, setLanguage }: HeaderProps) {
             font-light
             uppercase
             tracking-[0.25em]
-            text-[#111111]
+            text-[var(--foreground)]
             transition-all
             duration-500
             ease-[cubic-bezier(0.25,1,0.5,1)]
@@ -328,7 +330,7 @@ function Header({ language, setLanguage }: HeaderProps) {
                 transition-colors
                 duration-300
                 ease-[cubic-bezier(0.25,1,0.5,1)]
-                hover:text-[#111111]
+                hover:text-[var(--foreground)]
               "
             >
               {item.label}
@@ -379,9 +381,9 @@ function Header({ language, setLanguage }: HeaderProps) {
                 transition-colors
                 duration-300
                 ease-[cubic-bezier(0.25,1,0.5,1)]
-                \${
+                ${
                   language === "es"
-                    ? "text-[#111111]"
+                    ? "text-[var(--foreground)]"
                     : "text-neutral-600 hover:text-[#FF5A00]"
                 }
               `}
@@ -399,14 +401,64 @@ function Header({ language, setLanguage }: HeaderProps) {
                 transition-colors
                 duration-300
                 ease-[cubic-bezier(0.25,1,0.5,1)]
-                \${
+                ${
                   language === "en"
-                    ? "text-[#111111]"
+                    ? "text-[var(--foreground)]"
                     : "text-neutral-600 hover:text-[#FF5A00]"
                 }
               `}
             >
               EN
+            </button>
+          </div>
+
+          <div
+            className="flex items-center gap-2"
+            aria-label="Theme selector"
+          >
+            <button
+              type="button"
+              onClick={() => setTheme("light")}
+              aria-label="Light mode"
+              aria-pressed={theme === "light"}
+              title="Light"
+              className={`flex h-7 w-7 items-center justify-center rounded-full text-xs transition-all duration-300 ${
+                theme === "light"
+                  ? "bg-[var(--foreground)] text-[var(--background)]"
+                  : "text-[var(--muted)] hover:text-[#FF5A00]"
+              }`}
+            >
+              ☀
+            </button>
+
+            <button
+              type="button"
+              onClick={() => setTheme("system")}
+              aria-label="Automatic system theme"
+              aria-pressed={theme === "system"}
+              title="Automatic"
+              className={`flex h-7 w-7 items-center justify-center rounded-full text-xs transition-all duration-300 ${
+                theme === "system"
+                  ? "bg-[var(--foreground)] text-[var(--background)]"
+                  : "text-[var(--muted)] hover:text-[#FF5A00]"
+              }`}
+            >
+              ◐
+            </button>
+
+            <button
+              type="button"
+              onClick={() => setTheme("dark")}
+              aria-label="Dark mode"
+              aria-pressed={theme === "dark"}
+              title="Dark"
+              className={`flex h-7 w-7 items-center justify-center rounded-full text-xs transition-all duration-300 ${
+                theme === "dark"
+                  ? "bg-[var(--foreground)] text-[var(--background)]"
+                  : "text-[var(--muted)] hover:text-[#FF5A00]"
+              }`}
+            >
+              ☾
             </button>
           </div>
 
@@ -510,8 +562,8 @@ export default function Home() {
         className="
           min-h-screen
           overflow-hidden
-          bg-[#F7F7F5]
-          text-[#111111]
+          bg-[var(--background)]
+          text-[var(--foreground)]
           transition-colors
           duration-700
           ease-[cubic-bezier(0.16,1,0.3,1)]
@@ -526,7 +578,7 @@ export default function Home() {
             flex-col
             justify-between
             overflow-hidden
-            bg-[#F7F7F5]
+            bg-[var(--background)]
             py-32
             pt-44
             md:py-48
@@ -593,7 +645,7 @@ export default function Home() {
                   font-light
                   leading-[1.05]
                   tracking-tighter
-                  text-[#111111]
+                  text-[var(--foreground)]
                   md:text-7xl
                   lg:text-8xl
                 "
@@ -691,7 +743,7 @@ export default function Home() {
                     transition-all
                     duration-500
                     ease-[cubic-bezier(0.25,1,0.5,1)]
-                    hover:text-[#111111]
+                    hover:text-[var(--foreground)]
                   "
                 >
                   {t.hero.explore}
@@ -719,7 +771,7 @@ export default function Home() {
                   gap-x-8
                   gap-y-4
                   border-t
-                  border-black/[0.06]
+                  border-[var(--border)]
                   pt-8
                   text-[10px]
                   font-light
@@ -747,7 +799,7 @@ export default function Home() {
 
         <section
           id="perspective"
-          className="bg-[#FFFFFF] py-32 md:py-48 lg:py-56"
+          className="bg-[var(--surface)] py-32 md:py-48 lg:py-56"
         >
           <div className="mx-auto w-full max-w-6xl px-6 md:px-12">
             <div className="flex items-center">
@@ -774,7 +826,7 @@ export default function Home() {
                 font-light
                 leading-tight
                 tracking-tight
-                text-[#111111]
+                text-[var(--foreground)]
                 md:text-6xl
               "
             >
@@ -792,7 +844,7 @@ export default function Home() {
                 grid
                 gap-12
                 border-t
-                border-black/[0.06]
+                border-[var(--border)]
                 pt-12
                 md:mt-32
                 lg:grid-cols-12
@@ -828,7 +880,7 @@ export default function Home() {
 
         <section
           id="capabilities"
-          className="bg-[#F7F7F5] py-32 md:py-48 lg:py-56"
+          className="bg-[var(--background)] py-32 md:py-48 lg:py-56"
         >
           <div className="mx-auto w-full max-w-6xl px-6 md:px-12">
             <div className="flex items-center gap-3">
@@ -855,7 +907,7 @@ export default function Home() {
                 font-light
                 leading-relaxed
                 tracking-tight
-                text-[#111111]
+                text-[var(--foreground)]
                 md:text-5xl
                 lg:text-6xl
               "
@@ -882,8 +934,8 @@ export default function Home() {
                     overflow-hidden
                     rounded-3xl
                     border
-                    border-black/[0.06]
-                    bg-white
+                    border-[var(--border)]
+                    bg-[var(--surface)]
                     p-8
                     transition-all
                     duration-700
@@ -918,7 +970,7 @@ export default function Home() {
                         font-light
                         leading-relaxed
                         tracking-[-0.035em]
-                        text-[#111111]
+                        text-[var(--foreground)]
                         transition-all
                         duration-700
                         ease-[cubic-bezier(0.16,1,0.3,1)]
@@ -990,7 +1042,7 @@ export default function Home() {
 
         <section
           id="method"
-          className="bg-[#FFFFFF] py-32 md:py-48 lg:py-56"
+          className="bg-[var(--surface)] py-32 md:py-48 lg:py-56"
         >
           <div className="mx-auto w-full max-w-6xl px-6 md:px-12">
             <div className="flex items-center gap-3">
@@ -1016,7 +1068,7 @@ export default function Home() {
                 font-light
                 leading-relaxed
                 tracking-tight
-                text-[#111111]
+                text-[var(--foreground)]
                 md:text-5xl
                 lg:text-6xl
               "
@@ -1024,13 +1076,13 @@ export default function Home() {
               {t.method.h2}
             </h2>
 
-            <div className="mt-20 grid grid-cols-1 gap-12 border-t border-black/[0.06] pt-12 lg:grid-cols-12">
+            <div className="mt-20 grid grid-cols-1 gap-12 border-t border-[var(--border)] pt-12 lg:grid-cols-12">
               <div className="lg:col-span-4">
                 <div className="flex flex-col gap-3">
                   <span className="text-[10px] font-light uppercase tracking-widest text-neutral-600">
                     {t.method.principleLabel}
                   </span>
-                  <p className="text-lg font-light leading-relaxed text-[#111111]">
+                  <p className="text-lg font-light leading-relaxed text-[var(--foreground)]">
                     “{t.method.principle}”
                   </p>
                 </div>
@@ -1039,11 +1091,10 @@ export default function Home() {
               <div className="grid grid-cols-1 gap-8 sm:grid-cols-2 lg:col-span-8 lg:col-start-5">
                 {t.method.items.map((item) => (
                   <div key={item.number} className="flex flex-col gap-3">
-                    {/* ULTRA-CONTRASTE REQUERIDO AQUÍ: text-[#8F3300] */}
                     <span className="text-xs font-medium tracking-widest text-[#8F3300]">
                       {item.number}
                     </span>
-                    <h3 className="text-xl font-light text-[#111111]">
+                    <h3 className="text-xl font-light text-[var(--foreground)]">
                       {item.title}
                     </h3>
                     <p className="text-sm font-light leading-relaxed text-neutral-600">
@@ -1058,7 +1109,7 @@ export default function Home() {
 
         <section
           id="contact"
-          className="relative overflow-hidden bg-[#F7F7F5] py-32 md:py-48 lg:py-56"
+          className="relative overflow-hidden bg-[var(--background)] py-32 md:py-48 lg:py-56"
         >
           <div
             aria-hidden="true"
@@ -1074,7 +1125,7 @@ export default function Home() {
                 <span className="h-1 w-1 rounded-full bg-[#FF5A00]" />
               </div>
 
-              <h2 className="mt-8 text-4xl font-light leading-tight tracking-tight text-[#111111] md:text-6xl">
+              <h2 className="mt-8 text-4xl font-light leading-tight tracking-tight text-[var(--foreground)] md:text-6xl">
                 {t.contact.h2}
               </h2>
 
@@ -1099,11 +1150,11 @@ export default function Home() {
                     items-center
                     justify-between
                     border-b
-                    border-black/[0.1]
+                    border-[var(--border-strong)]
                     pb-4
                     text-xl
                     font-light
-                    text-[#111111]
+                    text-[var(--foreground)]
                     transition-colors
                     duration-300
                     hover:border-[#FF5A00]

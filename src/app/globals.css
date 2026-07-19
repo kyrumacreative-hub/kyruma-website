@@ -2,15 +2,50 @@
 
 /* ==========================================================
    KYRUMA — GLOBAL VISUAL SYSTEM
-   Light / Luminous Identity
+   Light / Dark / System
 ========================================================== */
 
-:root {
+:root,
+html.light {
+  color-scheme: light;
+
   --background: #f7f7f5;
   --surface: #ffffff;
+  --surface-soft: #f1f1ef;
+
   --foreground: #111111;
   --muted: #737373;
+  --muted-soft: #a3a3a3;
+
+  --border: rgba(17, 17, 17, 0.08);
+  --border-strong: rgba(17, 17, 17, 0.14);
+
   --primary: #ff5a00;
+
+  --scrollbar-track: #f7f7f5;
+  --scrollbar-thumb: #d4d4d4;
+  --scrollbar-thumb-hover: #b8b8b8;
+}
+
+html.dark {
+  color-scheme: dark;
+
+  --background: #0a0a0a;
+  --surface: #111111;
+  --surface-soft: #171717;
+
+  --foreground: #f5f5f3;
+  --muted: #a3a3a3;
+  --muted-soft: #737373;
+
+  --border: rgba(255, 255, 255, 0.1);
+  --border-strong: rgba(255, 255, 255, 0.16);
+
+  --primary: #ff6a1a;
+
+  --scrollbar-track: #0a0a0a;
+  --scrollbar-thumb: #333333;
+  --scrollbar-thumb-hover: #4a4a4a;
 }
 
 /* ==========================================================
@@ -23,6 +58,10 @@ html {
 
   -webkit-text-size-adjust: 100%;
   text-size-adjust: 100%;
+
+  transition:
+    background-color 0.4s ease,
+    color 0.4s ease;
 }
 
 /* ==========================================================
@@ -57,6 +96,10 @@ body {
   -moz-osx-font-smoothing: grayscale;
 
   font-synthesis: none;
+
+  transition:
+    background-color 0.4s ease,
+    color 0.4s ease;
 }
 
 /* ==========================================================
@@ -121,12 +164,12 @@ select {
 ========================================================== */
 
 ::selection {
-  background: #ff5a00;
+  background: var(--primary);
   color: #ffffff;
 }
 
 ::-moz-selection {
-  background: #ff5a00;
+  background: var(--primary);
   color: #ffffff;
 }
 
@@ -139,16 +182,16 @@ select {
 }
 
 ::-webkit-scrollbar-track {
-  background: #f7f7f5;
+  background: var(--scrollbar-track);
 }
 
 ::-webkit-scrollbar-thumb {
-  background: #d4d4d4;
+  background: var(--scrollbar-thumb);
   border-radius: 999px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: #b8b8b8;
+  background: var(--scrollbar-thumb-hover);
 }
 
 /* ==========================================================
@@ -158,6 +201,23 @@ select {
 :focus-visible {
   outline: 2px solid rgba(255, 90, 0, 0.65);
   outline-offset: 4px;
+}
+
+/* ==========================================================
+   THEME TRANSITIONS
+========================================================== */
+
+body,
+header,
+main,
+section,
+article,
+footer,
+nav {
+  transition:
+    background-color 0.4s ease,
+    border-color 0.4s ease,
+    color 0.4s ease;
 }
 
 /* ==========================================================

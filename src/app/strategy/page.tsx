@@ -2,6 +2,7 @@
 
 import { useEffect, useRef, useState } from "react";
 import { sendGAEvent } from "@next/third-parties/google";
+import { useTheme } from "@/components/ThemeProvider";
 
 type Language = "es" | "en";
 
@@ -87,7 +88,7 @@ const translations = {
           number: "04",
           title: "Brand Architecture",
           description:
-            "Organizamos marcas, servicios y líneas de negocio para crear estructuras claras, escalables y comprensibles.",
+            "Organizamos marcas, services y líneas de negocio para crear estructuras claras, escalables y comprensibles.",
         },
         {
           number: "05",
@@ -290,6 +291,7 @@ function Header({ language, setLanguage }: HeaderProps) {
   const [isScrolled, setIsScrolled] = useState(false);
   const lastScrollY = useRef(0);
   const t = translations[language];
+  const { theme, setTheme } = useTheme();
 
   useEffect(() => {
     const handleScroll = () => {
@@ -330,15 +332,15 @@ function Header({ language, setLanguage }: HeaderProps) {
           : "-translate-y-full opacity-0"
       } ${
         isScrolled
-          ? "border-black/[0.06] bg-white/70 shadow-[0_8px_40px_rgba(17,17,17,0.025)] backdrop-blur-xl"
-          : "border-transparent bg-[#F7F7F5]/60 backdrop-blur-xl"
+          ? "border-[var(--border)] bg-[var(--surface)]/70 shadow-[0_8px_40px_rgba(17,17,17,0.025)] backdrop-blur-xl"
+          : "border-transparent bg-[var(--background)]/60 backdrop-blur-xl"
       }`}
     >
       <div className="mx-auto flex h-20 w-full max-w-6xl items-center justify-between px-6 md:px-12">
         <a
           href="/"
           aria-label="KYRUMA — Home"
-          className="text-sm font-light uppercase tracking-[0.25em] text-[#111111] transition-all duration-500 hover:opacity-60"
+          className="text-sm font-light uppercase tracking-[0.25em] text-[var(--foreground)] transition-all duration-500 hover:opacity-60"
         >
           KYRUMA
         </a>
@@ -351,7 +353,7 @@ function Header({ language, setLanguage }: HeaderProps) {
             <a
               key={item.href}
               href={item.href}
-              className="group relative py-2 text-[10px] font-light uppercase tracking-[0.18em] text-neutral-600 transition-colors duration-300 hover:text-[#111111]"
+              className="group relative py-2 text-[10px] font-light uppercase tracking-[0.18em] text-neutral-600 transition-colors duration-300 hover:text-[var(--foreground)]"
             >
               {item.label}
               <span className="absolute -bottom-1 left-1/2 h-1 w-1 -translate-x-1/2 scale-0 rounded-full bg-[#FF5A00] opacity-0 transition-all duration-500 group-hover:scale-100 group-hover:opacity-100" />
@@ -366,7 +368,7 @@ function Header({ language, setLanguage }: HeaderProps) {
               onClick={() => setLanguage("es")}
               className={
                 language === "es"
-                  ? "text-[#111111]"
+                  ? "text-[var(--foreground)]"
                   : "text-neutral-600 hover:text-[#FF5A00]"
               }
             >
@@ -380,11 +382,58 @@ function Header({ language, setLanguage }: HeaderProps) {
               onClick={() => setLanguage("en")}
               className={
                 language === "en"
-                  ? "text-[#111111]"
+                  ? "text-[var(--foreground)]"
                   : "text-neutral-600 hover:text-[#FF5A00]"
               }
             >
               EN
+            </button>
+          </div>
+
+          <div className="flex items-center gap-2" aria-label="Theme selector">
+            <button
+              type="button"
+              onClick={() => setTheme("light")}
+              aria-label="Light mode"
+              aria-pressed={theme === "light"}
+              title="Light"
+              className={`flex h-7 w-7 items-center justify-center rounded-full text-xs transition-all duration-300 ${
+                theme === "light"
+                  ? "bg-[var(--foreground)] text-[var(--background)]"
+                  : "text-[var(--muted)] hover:text-[#FF5A00]"
+              }`}
+            >
+              ☀
+            </button>
+
+            <button
+              type="button"
+              onClick={() => setTheme("system")}
+              aria-label="Automatic system theme"
+              aria-pressed={theme === "system"}
+              title="Automatic"
+              className={`flex h-7 w-7 items-center justify-center rounded-full text-xs transition-all duration-300 ${
+                theme === "system"
+                  ? "bg-[var(--foreground)] text-[var(--background)]"
+                  : "text-[var(--muted)] hover:text-[#FF5A00]"
+              }`}
+            >
+              ◐
+            </button>
+
+            <button
+              type="button"
+              onClick={() => setTheme("dark")}
+              aria-label="Dark mode"
+              aria-pressed={theme === "dark"}
+              title="Dark"
+              className={`flex h-7 w-7 items-center justify-center rounded-full text-xs transition-all duration-300 ${
+                theme === "dark"
+                  ? "bg-[var(--foreground)] text-[var(--background)]"
+                  : "text-[var(--muted)] hover:text-[#FF5A00]"
+              }`}
+            >
+              ☾
             </button>
           </div>
 
@@ -429,10 +478,10 @@ export default function StrategyPage() {
     <>
       <Header language={language} setLanguage={setLanguage} />
 
-      <main className="min-h-screen overflow-hidden bg-[#F7F7F5] text-[#111111]">
+      <main className="min-h-screen overflow-hidden bg-[var(--background)] text-[var(--foreground)]">
         <section
           id="home"
-          className="relative flex min-h-screen flex-col justify-center overflow-hidden bg-[#F7F7F5] py-32 pt-44 md:py-48 md:pt-60 lg:py-56 lg:pt-64"
+          className="relative flex min-h-screen flex-col justify-center overflow-hidden bg-[var(--background)] py-32 pt-44 md:py-48 md:pt-60 lg:py-56 lg:pt-64"
         >
           <div className="pointer-events-none absolute -right-[25%] top-[5%] h-[700px] w-[700px] rounded-full bg-[#FF5A00]/[0.035] blur-[140px] md:h-[1000px] md:w-[1000px]" />
 
@@ -442,7 +491,7 @@ export default function StrategyPage() {
                 {t.hero.eyebrow}
               </span>
 
-              <h1 className="max-w-5xl text-5xl font-light leading-[1.05] tracking-tighter text-[#111111] md:text-7xl lg:text-8xl">
+              <h1 className="max-w-5xl text-5xl font-light leading-[1.05] tracking-tighter text-[var(--foreground)] md:text-7xl lg:text-8xl">
                 {t.hero.h1}
               </h1>
 
@@ -469,7 +518,7 @@ export default function StrategyPage() {
 
                 <a
                   href="#perspective"
-                  className="group inline-flex items-center gap-3 text-xs font-light uppercase tracking-[0.16em] text-neutral-600 hover:text-[#111111]"
+                  className="group inline-flex items-center gap-3 text-xs font-light uppercase tracking-[0.16em] text-neutral-600 hover:text-[var(--foreground)]"
                 >
                   {t.hero.explore}
                   <span className="text-[#FF5A00] transition-transform duration-500 group-hover:translate-x-2">
@@ -478,7 +527,7 @@ export default function StrategyPage() {
                 </a>
               </div>
 
-              <div className="mt-24 flex flex-wrap gap-x-8 gap-y-4 border-t border-black/[0.06] pt-8 text-[10px] font-light uppercase tracking-[0.25em] text-neutral-600">
+              <div className="mt-24 flex flex-wrap gap-x-8 gap-y-4 border-t border-[var(--border)] pt-8 text-[10px] font-light uppercase tracking-[0.25em] text-neutral-600">
                 {t.hero.pillars.map((pillar, index) => (
                   <div key={pillar} className="flex items-center gap-x-8">
                     <span>{pillar}</span>
@@ -494,7 +543,7 @@ export default function StrategyPage() {
 
         <section
           id="perspective"
-          className="bg-white py-32 md:py-48 lg:py-56"
+          className="bg-[var(--surface)] py-32 md:py-48 lg:py-56"
         >
           <div className="mx-auto w-full max-w-6xl px-6 md:px-12">
             <div className="flex items-center gap-3">
@@ -512,7 +561,7 @@ export default function StrategyPage() {
               </span>
             </h2>
 
-            <div className="mt-24 grid gap-12 border-t border-black/[0.06] pt-12 lg:grid-cols-12">
+            <div className="mt-24 grid gap-12 border-t border-[var(--border)] pt-12 lg:grid-cols-12">
               <div className="lg:col-span-3">
                 <div className="flex items-center gap-3">
                   <span className="h-px w-6 bg-[#FF5A00]" />
@@ -561,7 +610,7 @@ export default function StrategyPage() {
 
         <section
           id="capabilities"
-          className="bg-[#F7F7F5] py-32 md:py-48 lg:py-56"
+          className="bg-[var(--background)] py-32 md:py-48 lg:py-56"
         >
           <div className="mx-auto w-full max-w-6xl px-6 md:px-12">
             <span className="text-[10px] font-light uppercase tracking-[0.22em] text-neutral-600">
@@ -580,7 +629,7 @@ export default function StrategyPage() {
               {t.capabilities.items.map((item) => (
                 <article
                   key={item.number}
-                  className="group flex min-h-[320px] flex-col justify-between rounded-3xl border border-black/[0.06] bg-white p-8 transition-all duration-700 hover:-translate-y-1 hover:border-[#FF5A00]/30 md:p-10"
+                  className="group flex min-h-[320px] flex-col justify-between rounded-3xl border border-[var(--border)] bg-[var(--surface)] p-8 transition-all duration-700 hover:-translate-y-1 hover:border-[#FF5A00]/30 md:p-10"
                 >
                   <span className="text-xs font-medium tracking-widest text-[#8F3300]">
                     {item.number}
@@ -602,7 +651,7 @@ export default function StrategyPage() {
 
         <section
           id="approach"
-          className="bg-white py-32 md:py-48 lg:py-56"
+          className="bg-[var(--surface)] py-32 md:py-48 lg:py-56"
         >
           <div className="mx-auto w-full max-w-6xl px-6 md:px-12">
             <span className="text-[10px] font-light uppercase tracking-[0.22em] text-neutral-600">
@@ -613,7 +662,7 @@ export default function StrategyPage() {
               {t.approach.h2}
             </h2>
 
-            <div className="mt-20 grid gap-12 border-t border-black/[0.06] pt-12 lg:grid-cols-12">
+            <div className="mt-20 grid gap-12 border-t border-[var(--border)] pt-12 lg:grid-cols-12">
               <div className="lg:col-span-4">
                 <span className="text-[10px] font-light uppercase tracking-widest text-neutral-600">
                   {t.approach.principleLabel}
@@ -642,7 +691,7 @@ export default function StrategyPage() {
 
         <section
           id="contact"
-          className="relative overflow-hidden bg-[#F7F7F5] py-32 md:py-48 lg:py-56"
+          className="relative overflow-hidden bg-[var(--background)] py-32 md:py-48 lg:py-56"
         >
           <div className="mx-auto w-full max-w-6xl px-6 md:px-12">
             <div className="max-w-3xl">
@@ -666,7 +715,7 @@ export default function StrategyPage() {
                     event_label: "strategy_contact",
                   })
                 }
-                className="group mt-12 flex w-full items-center justify-between border-b border-black/[0.1] pb-4 text-xl font-light transition-colors hover:border-[#FF5A00] md:text-2xl"
+                className="group mt-12 flex w-full items-center justify-between border-b border-[var(--border-strong)] pb-4 text-xl font-light transition-colors hover:border-[#FF5A00] md:text-2xl"
               >
                 <span>hello@kyruma.com</span>
                 <span className="text-[#FF5A00] transition-transform duration-300 group-hover:translate-x-2">

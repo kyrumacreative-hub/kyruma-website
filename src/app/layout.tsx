@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import { GoogleAnalytics } from "@next/third-parties/google";
+import { ThemeProvider } from "@/components/ThemeProvider";
 import "./globals.css";
 
 const inter = Inter({
@@ -65,74 +66,76 @@ export default function RootLayout({
   return (
     <html lang="es">
       <body className={`${inter.variable} antialiased`}>
-        <script
-          type="application/ld+json"
-          dangerouslySetInnerHTML={{
-            __html: JSON.stringify({
-              "@context": "https://schema.org",
-              "@graph": [
-                {
-                  "@type": "Organization",
-                  "@id": "https://www.kyruma.com/#organization",
-                  name: "KYRUMA",
-                  url: "https://www.kyruma.com/",
-                  logo: {
-                    "@type": "ImageObject",
-                    url: "https://www.kyruma.com/og-image.jpg",
-                  },
-                  description:
-                    "Independent Creative Business & Strategy Studio. Strategy, identity, digital experiences and systems for ambitious businesses.",
-                  email: "hello@kyruma.com",
-                  sameAs: [
-                    "https://www.linkedin.com/company/kyruma/",
-                    "https://www.instagram.com/kyrumacreative/",
-                  ],
-                  knowsAbout: [
-                    "Business Strategy",
-                    "Brand Strategy",
-                    "Brand Identity",
-                    "Digital Experiences",
-                    "Business Systems",
-                    "Artificial Intelligence",
-                  ],
-                },
-                {
-                  "@type": "WebSite",
-                  "@id": "https://www.kyruma.com/#website",
-                  url: "https://www.kyruma.com/",
-                  name: "KYRUMA",
-                  publisher: {
+        <ThemeProvider>
+          <script
+            type="application/ld+json"
+            dangerouslySetInnerHTML={{
+              __html: JSON.stringify({
+                "@context": "https://schema.org",
+                "@graph": [
+                  {
+                    "@type": "Organization",
                     "@id": "https://www.kyruma.com/#organization",
+                    name: "KYRUMA",
+                    url: "https://www.kyruma.com/",
+                    logo: {
+                      "@type": "ImageObject",
+                      url: "https://www.kyruma.com/og-image.jpg",
+                    },
+                    description:
+                      "Independent Creative Business & Strategy Studio. Strategy, identity, digital experiences and systems for ambitious businesses.",
+                    email: "hello@kyruma.com",
+                    sameAs: [
+                      "https://www.linkedin.com/company/kyruma/",
+                      "https://www.instagram.com/kyrumacreative/",
+                    ],
+                    knowsAbout: [
+                      "Business Strategy",
+                      "Brand Strategy",
+                      "Brand Identity",
+                      "Digital Experiences",
+                      "Business Systems",
+                      "Artificial Intelligence",
+                    ],
                   },
-                  inLanguage: ["es", "en"],
-                },
-                {
-                  "@type": "ProfessionalService",
-                  "@id": "https://www.kyruma.com/#service",
-                  name: "KYRUMA",
-                  url: "https://www.kyruma.com/",
-                  image: "https://www.kyruma.com/og-image.jpg",
-                  provider: {
-                    "@id": "https://www.kyruma.com/#organization",
+                  {
+                    "@type": "WebSite",
+                    "@id": "https://www.kyruma.com/#website",
+                    url: "https://www.kyruma.com/",
+                    name: "KYRUMA",
+                    publisher: {
+                      "@id": "https://www.kyruma.com/#organization",
+                    },
+                    inLanguage: ["es", "en"],
                   },
-                  serviceType: [
-                    "Business Strategy",
-                    "Brand Strategy",
-                    "Brand Identity",
-                    "Digital Experiences",
-                    "Business Systems",
-                    "Artificial Intelligence Systems",
-                  ],
-                },
-              ],
-            }),
-          }}
-        />
+                  {
+                    "@type": "ProfessionalService",
+                    "@id": "https://www.kyruma.com/#service",
+                    name: "KYRUMA",
+                    url: "https://www.kyruma.com/",
+                    image: "https://www.kyruma.com/og-image.jpg",
+                    provider: {
+                      "@id": "https://www.kyruma.com/#organization",
+                    },
+                    serviceType: [
+                      "Business Strategy",
+                      "Brand Strategy",
+                      "Brand Identity",
+                      "Digital Experiences",
+                      "Business Systems",
+                      "Artificial Intelligence Systems",
+                    ],
+                  },
+                ],
+              }),
+            }}
+          />
 
-        {children}
+          {children}
 
-        {/* Google Analytics */}
-        <GoogleAnalytics gaId="G-XDB5TYYW0J" />
+          {/* Google Analytics */}
+          <GoogleAnalytics gaId="G-XDB5TYYW0J" />
+        </ThemeProvider>
       </body>
     </html>
   );
