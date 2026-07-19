@@ -103,6 +103,7 @@ export default function RootLayout({
                   "@id": "https://www.kyruma.com/#service",
                   name: "KYRUMA",
                   url: "https://www.kyruma.com/",
+                  image: "https://www.kyruma.com/og-image.jpg",
                   provider: {
                     "@id": "https://www.kyruma.com/#organization",
                   },
