@@ -87,6 +87,14 @@ export default function RootLayout({
                     "https://www.linkedin.com/company/kyruma/",
                     "https://www.instagram.com/kyrumacreative/",
                   ],
+                  knowsAbout: [
+                    "Business Strategy",
+                    "Brand Strategy",
+                    "Brand Identity",
+                    "Digital Experiences",
+                    "Business Systems",
+                    "Artificial Intelligence",
+                  ],
                 },
                 {
                   "@type": "WebSite",
@@ -120,8 +128,9 @@ export default function RootLayout({
             }),
           }}
         />
+
         {children}
-        
+
         {/* Google Analytics */}
         <GoogleAnalytics gaId="G-XDB5TYYW0J" />
       </body>
