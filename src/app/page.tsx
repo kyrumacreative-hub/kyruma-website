@@ -1,829 +1,339 @@
 "use client";
 
+import { FormEvent, useRef, useState } from "react";
 import { sendGAEvent } from "@next/third-parties/google";
 import { useLanguage } from "@/components/LanguageProvider";
 import KyrumaBooker from "@/components/booking/KyrumaBooker";
 
-type Language = "es" | "en";
-
-const translations = {
+const copy = {
   es: {
-    nav: {
-      services: "Servicios",
-      process: "El Método",
-      about: "Perspectiva",
-      contact: "Contacto",
-      cta: "Iniciar Consulta",
-    },
     hero: {
-      eyebrow: "ESTUDIO INDEPENDIENTE DE ESTRATEGIA Y NEGOCIO CREATIVO",
-      h1: "Diseñamos empresas en las que la gente confía.",
-      subtitle:
-        "Articulamos la estrategia, la identidad visual y los ecosistemas digitales de las compañías que definen su industria. No competimos por atención; construimos legado.",
-      explore: "Descubrir KYRUMA",
-      pillars: ["Estrategia", "Identidad", "Digital", "Sistemas"],
+      eyebrow: "CREATIVE PARTNER · ESTRATEGIA, IDENTIDAD Y DIGITAL",
+      titleA: "Tu empresa puede haber evolucionado.",
+      titleB: "La percepción de tu marca quizá no.",
+      body: "Alineamos estrategia, identidad y experiencia digital para que la forma en la que tu empresa es percibida esté a la altura del negocio que has construido.",
+      cta: "Iniciar una conversación",
+      explore: "Descubrir el enfoque",
     },
-    perspective: {
-      label: "PERSPECTIVA KYRUMA — 01",
-      h2First: "La atención es fácil de conseguir.",
-      h2Second: "La confianza es más difícil de ganar.",
-      belief: "En qué creemos",
-      body:
-        "Una marca sólida no es simplemente cómo se ve un negocio. Es la claridad con la que se comunica, la coherencia con la que actúa y cómo la gente lo experimenta. Unimos estrategia, identidad y experiencia digital para ayudar a las empresas a crear claridad, construir relaciones significativas y ganarse la confianza a lo largo del tiempo.",
+    problem: {
+      label: "LA BRECHA DE PERCEPCIÓN — 01",
+      title: "Cuando el negocio evoluciona más rápido que su marca, aparece una distancia.",
+      body: "Producto, equipo, ambición y capacidad pueden haber cambiado mientras identidad, mensaje y experiencia siguen representando una etapa anterior. Esa diferencia afecta a cómo una empresa es entendida, valorada y recordada.",
+      close: "KYRUMA trabaja para cerrar esa distancia.",
     },
-    capabilities: {
-      label: "CAPACIDADES — 02",
-      h2First: "Diferentes disciplinas.",
-      h2Second: "Una sola dirección.",
-      explore: "Explorar",
+    offer: {
+      label: "QUÉ HACEMOS — 02",
+      title: "Una dirección. Tres capas que trabajan juntas.",
       items: [
-        {
-          number: "01",
-          title: "Estrategia",
-          description:
-            "Posicionamiento de mercado, arquitectura de marca y dirección estratégica corporativa.",
-        },
-        {
-          number: "02",
-          title: "Identidad",
-          description:
-            "Sistemas de identidad visual diseñados para comunicar claridad, consistencia y distinción.",
-        },
-        {
-          number: "03",
-          title: "Digital",
-          description:
-            "Sitios web premium y productos interactivos construidos bajo una ingeniería estética impecable.",
-        },
-        {
-          number: "04",
-          title: "Sistemas e IA",
-          description:
-            "Flujos de trabajo internos y sistemas impulsados por IA para mejorar la eficiencia y la escala.",
-        },
+        ["01", "Estrategia", "Definimos antes de diseñar.", "Posicionamiento, propuesta de valor, arquitectura de marca, narrativa y dirección para tomar mejores decisiones."],
+        ["02", "Identidad", "Convertimos la estrategia en un sistema reconocible.", "Una identidad verbal y visual coherente, construida para representar correctamente el negocio."],
+        ["03", "Experiencia Digital", "Llevamos la marca a los lugares donde las personas la experimentan.", "Experiencias digitales claras, útiles y preparadas para convertir percepción en relación."],
       ],
     },
     method: {
       label: "EL MÉTODO — 03",
-      h2: "Claridad antes de la creación.",
-      principleLabel: "El principio KYRUMA",
-      principle:
-        "Cada decisión debe hacer que el negocio sea más claro, más fuerte y más fácil de confiar.",
+      title: "Claridad antes de la creación.",
       items: [
-        {
-          number: "I.",
-          title: "Diagnóstico",
-          description:
-            "Analizamos la anatomía de su negocio y las ineficiencias del mercado antes de tomar decisiones.",
-        },
-        {
-          number: "II.",
-          title: "Fundamento",
-          description:
-            "Establecemos un núcleo estratégico definitivo que guiará cada paso corporativo futuro.",
-        },
-        {
-          number: "III.",
-          title: "Ejecución",
-          description:
-            "Damos forma a la identidad y la infraestructura digital en un sistema coherente y propietario.",
-        },
-        {
-          number: "IV.",
-          title: "Evolución",
-          description:
-            "Acompañamos la escala de la marca en el tiempo, asegurando su absoluta relevancia e impacto.",
-        },
+        ["I", "Entender", "Analizamos negocio, contexto, audiencia y percepción antes de proponer soluciones."],
+        ["II", "Definir", "Construimos una dirección estratégica compartida y criterios claros de decisión."],
+        ["III", "Crear", "Traducimos esa dirección a identidad y experiencia con un único sistema coherente."],
+        ["IV", "Evolucionar", "Acompañamos el sistema para mantener coherencia a medida que el negocio crece."],
       ],
     },
-    contact: {
-      label: "INICIAR UNA CONVERSACIÓN",
-      h2: "Creemos algo memorable.",
-      body:
-        "Cada gran compañía merece una marca que refleje la calidad de su propuesta. Las plazas para nuevos proyectos son limited cada trimestre.",
-      cta: "Iniciar Consulta",
-      footer: "Estrategia · Identidad · Digital · Sistemas",
+    work: {
+      label: "CASE STUDIES — 04",
+      title: "El trabajo debe demostrar lo que las palabras prometen.",
+      body: "Nuestros casos se documentan como contexto → intervención → resultado. Solo publicamos resultados que podamos verificar. Los primeros case studies de KYRUMA se incorporarán aquí cuando su documentación esté cerrada.",
+      note: "Sin métricas inventadas. Sin resultados inflados. La evidencia también construye confianza.",
+    },
+    systems: {
+      label: "SYSTEMS & AI",
+      title: "La estrategia define. La identidad expresa. Digital crea la experiencia. Los sistemas ayudan a escalarla.",
+      body: "Cuando aporta valor real, conectamos procesos, automatización e IA con el ecosistema de marca. La tecnología permanece detrás de la experiencia: útil, integrada e invisible.",
+    },
+    closing: {
+      label: "UNA CONVERSACIÓN PUEDE SER EL PRINCIPIO",
+      title: "Si tu negocio ha cambiado, quizá sea el momento de que su percepción también lo haga.",
+      body: "Cuéntanos dónde estás y qué quieres construir. Te responderemos con criterio, no con una propuesta genérica.",
+    },
+    form: {
+      name: "Nombre",
+      company: "Empresa",
+      email: "Email profesional",
+      help: "¿En qué podemos ayudarte?",
+      helpOptions: ["Estrategia", "Identidad", "Experiencia Digital", "Systems & AI", "Necesito orientación"],
+      collaboration: "¿Qué tipo de colaboración estás buscando?",
+      collaborationOptions: ["Creative Partnership · colaboración continuada", "Proyecto específico", "Por definir juntos"],
+      need: "Cuéntanos sobre tu empresa y qué quieres conseguir",
+      submit: "Iniciar conversación",
+      sending: "Enviando…",
+      successTitle: "Tu mensaje ya está con nosotros.",
+      successBody: "Gracias por confiar en KYRUMA. Revisa tu bandeja de entrada: acabamos de enviarte una confirmación.",
+      error: "No hemos podido enviar tu consulta. Inténtalo de nuevo o escríbenos a hello@kyruma.com.",
+      privacy: "Acepto que KYRUMA utilice estos datos para responder a mi consulta.",
+      newsletter: "Quiero recibir ocasionalmente perspectivas y novedades de KYRUMA por email. Puedo darme de baja en cualquier momento.",
     },
   },
-
   en: {
-    nav: {
-      services: "Services",
-      process: "Method",
-      about: "Perspective",
-      contact: "Contact",
-      cta: "Start Consultation",
-    },
     hero: {
-      eyebrow: "INDEPENDENT CREATIVE BUSINESS & STRATEGY STUDIO",
-      h1: "We build businesses people trust.",
-      subtitle:
-        "Strategy, identity and digital experiences for ambitious businesses ready to become clear, relevant and unforgettable.",
-      explore: "Explore KYRUMA",
-      pillars: ["Strategy", "Identity", "Digital", "Systems"],
+      eyebrow: "CREATIVE PARTNER · STRATEGY, IDENTITY & DIGITAL",
+      titleA: "Your business may have evolved.",
+      titleB: "The way people perceive it may not have.",
+      body: "We align strategy, identity and digital experience so the way your company is perceived reflects the business you have built.",
+      cta: "Start a conversation",
+      explore: "Explore our approach",
     },
-    perspective: {
-      label: "KYRUMA PERSPECTIVE — 01",
-      h2First: "Attention is easy to get.",
-      h2Second: "Trust is harder to earn.",
-      belief: "What we believe",
-      body:
-        "A strong brand is not simply how a business looks. It is how clearly it communicates, how consistently it acts and how people experience it. We bring strategy, identity and digital experience together to help businesses create clarity, build meaningful relationships and earn trust over time.",
+    problem: {
+      label: "THE PERCEPTION GAP — 01",
+      title: "When the business evolves faster than its brand, a gap appears.",
+      body: "Product, team, ambition and capabilities may have changed while identity, message and experience still represent an earlier stage. That distance affects how a company is understood, valued and remembered.",
+      close: "KYRUMA works to close that distance.",
     },
-    capabilities: {
-      label: "CAPABILITIES — 02",
-      h2First: "Different disciplines.",
-      h2Second: "One direction.",
-      explore: "Explore",
+    offer: {
+      label: "WHAT WE DO — 02",
+      title: "One direction. Three layers working together.",
       items: [
-        {
-          number: "01",
-          title: "Strategy",
-          description:
-            "Business positioning, brand architecture and strategic direction.",
-        },
-        {
-          number: "02",
-          title: "Identity",
-          description:
-            "Identity systems designed to communicate clarity, consistency and trust.",
-        },
-        {
-          number: "03",
-          title: "Digital",
-          description:
-            "Premium websites and digital products built around user experience.",
-        },
-        {
-          number: "04",
-          title: "Systems & AI",
-          description:
-            "Internal workflows and AI-powered systems that improve efficiency and scalability.",
-        },
+        ["01", "Strategy", "We define before we design.", "Positioning, value proposition, brand architecture, narrative and direction for better decisions."],
+        ["02", "Identity", "We turn strategy into a recognizable system.", "A coherent verbal and visual identity built to represent the business accurately."],
+        ["03", "Digital Experience", "We take the brand where people experience it.", "Clear, useful digital experiences designed to turn perception into relationship."],
       ],
     },
     method: {
       label: "METHOD — 03",
-      h2: "Clarity before creation.",
-      principleLabel: "The KYRUMA principle",
-      principle:
-        "Every decision should make the business clearer, stronger and easier to trust.",
+      title: "Clarity before creation.",
       items: [
-        {
-          number: "I.",
-          title: "Understand",
-          description:
-            "We analyze the anatomy of your business and market inefficiencies before making decisions.",
-        },
-        {
-          number: "II.",
-          title: "Define",
-          description:
-            "We establish a definitive strategic foundation that guides every future corporate step.",
-        },
-        {
-          number: "III.",
-          title: "Create & Build",
-          description:
-            "We shape identity and digital infrastructure into a coherent, proprietary ecosystem.",
-        },
-        {
-          number: "IV.",
-          title: "Evolve",
-          description:
-            "We support the brand’s scale over time, ensuring absolute relevance and metric impact.",
-        },
+        ["I", "Understand", "We examine the business, context, audience and perception before proposing solutions."],
+        ["II", "Define", "We build a shared strategic direction and clear criteria for decision-making."],
+        ["III", "Create", "We translate that direction into identity and experience through one coherent system."],
+        ["IV", "Evolve", "We support the system so it remains coherent as the business grows."],
       ],
     },
-    contact: {
-      label: "START A CONVERSATION",
-      h2: "Let's build something memorable.",
-      body:
-        "Every great company deserves a brand that reflects the quality of its value proposition. Openings for new projects are limited each quarter.",
-      cta: "Start Consultation",
-      footer: "Strategy · Identity · Digital · Systems",
+    work: {
+      label: "CASE STUDIES — 04",
+      title: "The work should prove what the words promise.",
+      body: "Our cases are documented as context → intervention → result. We only publish results we can verify. KYRUMA's first case studies will appear here once their documentation is complete.",
+      note: "No invented metrics. No inflated outcomes. Evidence builds trust too.",
+    },
+    systems: {
+      label: "SYSTEMS & AI",
+      title: "Strategy defines. Identity expresses. Digital creates the experience. Systems help it scale.",
+      body: "When it creates real value, we connect processes, automation and AI to the brand ecosystem. Technology stays behind the experience: useful, integrated and invisible.",
+    },
+    closing: {
+      label: "A CONVERSATION CAN BE THE BEGINNING",
+      title: "If your business has changed, it may be time for its perception to change too.",
+      body: "Tell us where you are and what you want to build. We will respond with perspective, not a generic proposal.",
+    },
+    form: {
+      name: "Name",
+      company: "Company",
+      email: "Work email",
+      help: "How can we help?",
+      helpOptions: ["Strategy", "Identity", "Digital Experience", "Systems & AI", "I need guidance"],
+      collaboration: "What kind of collaboration are you looking for?",
+      collaborationOptions: ["Creative Partnership · ongoing collaboration", "Specific project", "To define together"],
+      need: "Tell us about your company and what you want to achieve",
+      submit: "Start conversation",
+      sending: "Sending…",
+      successTitle: "Your message is with us.",
+      successBody: "Thank you for trusting KYRUMA. Check your inbox: we have just sent you a confirmation.",
+      error: "We could not send your enquiry. Please try again or email us at hello@kyruma.com.",
+      privacy: "I agree that KYRUMA may use this information to respond to my enquiry.",
+      newsletter: "I would like to occasionally receive perspectives and news from KYRUMA by email. I can unsubscribe at any time.",
     },
   },
 } as const;
 
+function Label({ children }: { children: React.ReactNode }) {
+  return <p className="section-label">{children}<span className="accent-dot" /></p>;
+}
+
 export default function Home() {
   const { language } = useLanguage();
-  const t = translations[language as Language] || translations.es;
+  const t = copy[language];
+
+  const [formState, setFormState] = useState<"idle" | "sending" | "success" | "error">("idle");
+  const startedAt = useRef(Date.now());
+
+  async function submitContact(event: FormEvent<HTMLFormElement>) {
+    event.preventDefault();
+    if (formState === "sending") return;
+
+    const form = event.currentTarget;
+    const data = new FormData(form);
+    setFormState("sending");
+
+    try {
+      const response = await fetch("/api/contact", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          name: data.get("name"),
+          company: data.get("company"),
+          email: data.get("email"),
+          help: data.get("help"),
+          collaboration: data.get("collaboration"),
+          need: data.get("need"),
+          privacy: data.get("privacy") === "on",
+          newsletter: data.get("newsletter") === "on",
+          website: data.get("website"),
+          language,
+          startedAt: startedAt.current,
+        }),
+      });
+
+      if (!response.ok) throw new Error("Contact request failed");
+
+      sendGAEvent("event", "contact_submit", {
+        event_category: "conversion",
+        collaboration: data.get("collaboration"),
+        help: data.get("help"),
+        newsletter_opt_in: data.get("newsletter") === "on",
+      });
+      form.reset();
+      setFormState("success");
+    } catch {
+      setFormState("error");
+    }
+  }
 
   return (
-    <main
-      className="
-        min-h-screen
-        overflow-hidden
-        bg-[var(--background)]
-        text-[var(--foreground)]
-        transition-colors
-        duration-700
-        ease-[cubic-bezier(0.16,1,0.3,1)]
-      "
-    >
-      <section
-        id="home"
-        className="
-          relative
-          flex
-          min-h-screen
-          flex-col
-          justify-between
-          overflow-hidden
-          bg-[var(--background)]
-          py-32
-          pt-44
-          md:py-48
-          md:pt-60
-          lg:py-56
-          lg:pt-64
-        "
-      >
-        <div
-          aria-hidden="true"
-          className="
-            pointer-events-none
-            absolute
-            -right-[25%]
-            top-[5%]
-            h-[700px]
-            w-[700px]
-            rounded-full
-            bg-[#FF5A00]/[0.035]
-            blur-[140px]
-            md:h-[1000px]
-            md:w-[1000px]
-          "
-        />
-
-        <div
-          aria-hidden="true"
-          className="
-            pointer-events-none
-            absolute
-            right-[10%]
-            top-[38%]
-            hidden
-            h-2
-            w-2
-            rounded-full
-            bg-[#FF5A00]
-            shadow-[0_0_40px_rgba(255,90,0,0.35)]
-            lg:block
-          "
-        />
-
-        <div className="relative mx-auto w-full max-w-6xl px-6 md:px-12">
-          <div className="max-w-5xl">
-            <span
-              className="
-                mb-8
-                block
-                text-[10px]
-                font-light
-                uppercase
-                tracking-[0.3em]
-                text-neutral-600
-                md:text-xs
-              "
-            >
-              {t.hero.eyebrow}
-            </span>
-
-            <h1
-              className="
-                max-w-5xl
-                text-5xl
-                font-light
-                leading-[1.05]
-                tracking-tighter
-                text-[var(--foreground)]
-                md:text-7xl
-                lg:text-8xl
-              "
-            >
-              {t.hero.h1}
+    <main id="top" className="overflow-hidden bg-[var(--background)] text-[var(--foreground)]">
+      <section id="home" className="relative flex min-h-[100svh] items-end pt-36 md:pt-44">
+        <div className="site-container w-full pb-16 md:pb-20 lg:pb-24">
+          <div className="max-w-[1100px]">
+            <Label>{t.hero.eyebrow}</Label>
+            <h1 className="mt-8 max-w-[1080px] text-[clamp(3.25rem,8.2vw,7.5rem)] font-light leading-[0.96] tracking-[-0.055em]">
+              {t.hero.titleA}<br /><span className="text-[var(--muted)]">{t.hero.titleB}</span>
             </h1>
-
-            <p
-              className="
-                mt-8
-                max-w-xl
-                text-base
-                font-light
-                leading-relaxed
-                text-neutral-600
-                md:text-lg
-                md:leading-loose
-              "
-            >
-              {t.hero.subtitle}
-            </p>
-
-            <div className="mt-12 flex flex-wrap items-center gap-8">
-              <a
-                href="#contact"
-                onClick={() =>
-                  sendGAEvent("event", "start_consultation", {
-                    event_category: "conversion",
-                    event_label: "hero_cta",
-                  })
-                }
-                className="
-                  group
-                  inline-flex
-                  items-center
-                  justify-center
-                  gap-3
-                  rounded-full
-                  bg-[#111111]
-                  px-8
-                  py-3.5
-                  text-xs
-                  font-light
-                  uppercase
-                  tracking-widest
-                  !text-white
-                  transition-all
-                  duration-500
-                  ease-[cubic-bezier(0.25,1,0.5,1)]
-                  hover:scale-[1.02]
-                  hover:bg-[#FF5A00]
-                  hover:shadow-[0_14px_40px_rgba(255,90,0,0.18)]
-                "
-              >
-                <span
-                  className="
-                    inline-block
-                    !text-white
-                    transition-transform
-                    duration-500
-                    ease-[cubic-bezier(0.25,1,0.5,1)]
-                    group-hover:-translate-y-[1px]
-                  "
-                >
-                  {t.nav.cta}
-                </span>
-
-                <span
-                  aria-hidden="true"
-                  className="
-                    inline-block
-                    !text-white
-                    transition-transform
-                    duration-500
-                    ease-[cubic-bezier(0.25,1,0.5,1)]
-                    group-hover:translate-x-1
-                  "
-                >
-                  →
-                </span>
-              </a>
-
-              <a
-                href="#perspective"
-                className="
-                  group
-                  inline-flex
-                  items-center
-                  gap-3
-                  text-xs
-                  font-light
-                  uppercase
-                  tracking-[0.16em]
-                  text-neutral-600
-                  transition-all
-                  duration-500
-                  ease-[cubic-bezier(0.25,1,0.5,1)]
-                  hover:text-[var(--foreground)]
-                "
-              >
-                {t.hero.explore}
-
-                <span
-                  aria-hidden="true"
-                  className="
-                    text-[#FF5A00]
-                    transition-transform
-                    duration-500
-                    ease-[cubic-bezier(0.25,1,0.5,1)]
-                    group-hover:translate-x-2
-                  "
-                >
-                  →
-                </span>
-              </a>
-            </div>
-
-            <div
-              className="
-                mt-24
-                flex
-                flex-wrap
-                gap-x-8
-                gap-y-4
-                border-t
-                border-[var(--border)]
-                pt-8
-                text-[10px]
-                font-light
-                uppercase
-                tracking-[0.25em]
-                text-neutral-600
-              "
-            >
-              {t.hero.pillars.map((pillar, index) => (
-                <div
-                  key={pillar}
-                  className="flex items-center gap-x-8"
-                >
-                  <span>{pillar}</span>
-
-                  {index < t.hero.pillars.length - 1 && (
-                    <span className="text-[#FF5A00]">·</span>
-                  )}
-                </div>
-              ))}
-            </div>
-          </div>
-        </div>
-      </section>
-
-      <section
-        id="perspective"
-        className="bg-[var(--surface)] py-32 md:py-48 lg:py-56"
-      >
-        <div className="mx-auto w-full max-w-6xl px-6 md:px-12">
-          <div className="flex items-center">
-            <span
-              className="
-                text-[10px]
-                font-light
-                uppercase
-                tracking-widest
-                text-neutral-600
-              "
-            >
-              {t.perspective.label}
-            </span>
-
-            <span className="ml-2 inline-block h-1 w-1 rounded-full bg-[#FF5A00]" />
-          </div>
-
-          <h2
-            className="
-              mt-4
-              max-w-4xl
-              text-4xl
-              font-light
-              leading-tight
-              tracking-tight
-              text-[var(--foreground)]
-              md:text-6xl
-            "
-          >
-            {t.perspective.h2First}
-            <br />
-
-            <span className="text-neutral-500">
-              {t.perspective.h2Second}
-            </span>
-          </h2>
-
-          <div
-            className="
-              mt-24
-              grid
-              gap-12
-              border-t
-              border-[var(--border)]
-              pt-12
-              md:mt-32
-              lg:grid-cols-12
-            "
-          >
-            <div className="lg:col-span-3">
-              <div className="flex items-center gap-3">
-                <span className="h-px w-6 bg-[#FF5A00]" />
-
-                <span className="text-sm font-light text-neutral-600">
-                  {t.perspective.belief}
-                </span>
+            <div className="mt-10 grid gap-8 border-t border-[var(--border)] pt-8 md:mt-14 md:grid-cols-12 md:items-end">
+              <p className="max-w-[620px] text-base font-light leading-[1.75] text-[var(--muted)] md:col-span-7 md:text-lg">{t.hero.body}</p>
+              <div className="flex flex-wrap gap-6 md:col-span-5 md:justify-end">
+                <a className="button-primary" href="#contact" onClick={() => sendGAEvent("event", "start_consultation", { event_category: "conversion", event_label: "hero" })}>{t.hero.cta}<span>→</span></a>
+                <a className="text-link" href="#perspective">{t.hero.explore}<span>↓</span></a>
               </div>
             </div>
+          </div>
+        </div>
+      </section>
 
-            <div className="lg:col-span-7 lg:col-start-6">
-              <p
-                className="
-                  max-w-2xl
-                  text-base
-                  font-light
-                  leading-loose
-                  text-neutral-600
-                  md:text-lg
-                "
-              >
-                {t.perspective.body}
-              </p>
+      <section id="perspective" className="section surface-section">
+        <div className="site-container">
+          <Label>{t.problem.label}</Label>
+          <div className="mt-8 grid gap-12 lg:grid-cols-12 lg:gap-8">
+            <h2 className="section-title lg:col-span-8">{t.problem.title}</h2>
+            <div className="lg:col-span-4 lg:pt-3">
+              <p className="body-copy">{t.problem.body}</p>
+              <p className="mt-8 text-base font-normal leading-relaxed text-[var(--foreground)]">{t.problem.close}</p>
             </div>
           </div>
         </div>
       </section>
 
-      <section
-        id="capabilities"
-        className="bg-[var(--background)] py-32 md:py-48 lg:py-56"
-      >
-        <div className="mx-auto w-full max-w-6xl px-6 md:px-12">
-          <div className="flex items-center gap-3">
-            <span
-              className="
-                text-[10px]
-                font-light
-                uppercase
-                tracking-[0.22em]
-                text-neutral-600
-              "
-            >
-              {t.capabilities.label}
-            </span>
-
-            <span className="h-1 w-1 rounded-full bg-[#FF5A00]" />
-          </div>
-
-          <h2
-            className="
-              mt-8
-              max-w-4xl
-              text-4xl
-              font-light
-              leading-relaxed
-              tracking-tight
-              text-[var(--foreground)]
-              md:text-5xl
-              lg:text-6xl
-            "
-          >
-            {t.capabilities.h2First}
-            <br />
-
-            <span className="text-neutral-500">
-              {t.capabilities.h2Second}
-            </span>
-          </h2>
-
-          <div className="mt-20 grid grid-cols-1 gap-8 md:mt-28 md:grid-cols-2 md:gap-12">
-            {t.capabilities.items.map((capability) => (
-              <article
-                key={capability.number}
-                className="
-                  group
-                  relative
-                  flex
-                  min-h-[280px]
-                  flex-col
-                  justify-between
-                  overflow-hidden
-                  rounded-3xl
-                  border
-                  border-[var(--border)]
-                  bg-[var(--surface)]
-                  p-8
-                  transition-all
-                  duration-700
-                  ease-[cubic-bezier(0.16,1,0.3,1)]
-                  hover:-translate-y-1
-                  hover:border-[#FF5A00]/30
-                  hover:shadow-[0_30px_60px_rgba(0,0,0,0.01),0_0_50px_rgba(255,90,0,0.03)]
-                  md:p-12
-                "
-              >
-                <div className="relative flex justify-end">
-                  <span
-                    className="
-                      text-xs
-                      font-light
-                      tracking-[0.16em]
-                      text-neutral-500
-                      transition-all
-                      duration-700
-                      ease-[cubic-bezier(0.16,1,0.3,1)]
-                      group-hover:text-[#FF5A00]
-                    "
-                  >
-                    {capability.number}
-                  </span>
-                </div>
-
-                <div className="relative mt-20">
-                  <h3
-                    className="
-                      text-3xl
-                      font-light
-                      leading-relaxed
-                      tracking-[-0.035em]
-                      text-[var(--foreground)]
-                      transition-all
-                      duration-700
-                      ease-[cubic-bezier(0.16,1,0.3,1)]
-                      group-hover:-translate-y-1
-                      md:text-4xl
-                    "
-                  >
-                    {capability.title}
-                  </h3>
-
-                  <p
-                    className="
-                      mt-6
-                      max-w-md
-                      text-base
-                      font-light
-                      leading-loose
-                      text-neutral-600
-                    "
-                  >
-                    {capability.description}
-                  </p>
-
-                  <div
-                    className="
-                      mt-8
-                      flex
-                      items-center
-                      gap-3
-                      text-xs
-                      font-light
-                      uppercase
-                      tracking-[0.16em]
-                      text-neutral-500
-                      opacity-0
-                      transition-all
-                      duration-700
-                      ease-[cubic-bezier(0.16,1,0.3,1)]
-                      group-hover:translate-x-1
-                      group-hover:text-[#FF5A00]
-                      group-hover:opacity-100
-                    "
-                  >
-                    <span>{t.capabilities.explore}</span>
-                    <span aria-hidden="true">↗</span>
-                  </div>
-                </div>
-
-                <div
-                  aria-hidden="true"
-                  className="
-                    absolute
-                    bottom-0
-                    left-0
-                    h-[2px]
-                    w-0
-                    bg-[#FF5A00]
-                    transition-all
-                    duration-700
-                    ease-[cubic-bezier(0.16,1,0.3,1)]
-                    group-hover:w-full
-                  "
-                />
+      <section id="capabilities" className="section">
+        <div className="site-container">
+          <Label>{t.offer.label}</Label>
+          <h2 className="section-title mt-8 max-w-4xl">{t.offer.title}</h2>
+          <div className="mt-16 border-t border-[var(--border)] md:mt-24">
+            {t.offer.items.map(([number, title, lead, body]) => (
+              <article key={number} className="group grid gap-6 border-b border-[var(--border)] py-10 md:grid-cols-12 md:py-14">
+                <p className="micro md:col-span-1">{number}</p>
+                <h3 className="text-3xl font-light tracking-[-0.035em] md:col-span-3 md:text-4xl">{title}</h3>
+                <p className="text-base font-normal leading-relaxed md:col-span-3">{lead}</p>
+                <p className="body-copy md:col-span-4 md:col-start-9">{body}</p>
               </article>
             ))}
           </div>
         </div>
       </section>
 
-      <section
-        id="method"
-        className="bg-[var(--surface)] py-32 md:py-48 lg:py-56"
-      >
-        <div className="mx-auto w-full max-w-6xl px-6 md:px-12">
-          <div className="flex items-center gap-3">
-            <span
-              className="
-                text-[10px]
-                font-light
-                uppercase
-                tracking-[0.22em]
-                text-neutral-600
-              "
-            >
-              {t.method.label}
-            </span>
-
-            <span className="h-1 w-1 rounded-full bg-[#FF5A00]" />
+      <section id="method" className="section surface-section">
+        <div className="site-container">
+          <Label>{t.method.label}</Label>
+          <h2 className="section-title mt-8">{t.method.title}</h2>
+          <div className="mt-16 grid gap-px overflow-hidden border border-[var(--border)] bg-[var(--border)] md:mt-24 md:grid-cols-2 lg:grid-cols-4">
+            {t.method.items.map(([number, title, body]) => (
+              <article key={number} className="min-h-[280px] bg-[var(--surface)] p-7 md:p-9">
+                <p className="micro">{number}</p>
+                <h3 className="mt-16 text-2xl font-light tracking-[-0.03em]">{title}</h3>
+                <p className="body-copy mt-5 text-sm">{body}</p>
+              </article>
+            ))}
           </div>
+        </div>
+      </section>
 
-          <h2
-            className="
-              mt-8
-              text-4xl
-              font-light
-              leading-relaxed
-              tracking-tight
-              text-[var(--foreground)]
-              md:text-5xl
-              lg:text-6xl
-            "
-          >
-            {t.method.h2}
-          </h2>
-
-          <div className="mt-20 grid grid-cols-1 gap-12 border-t border-[var(--border)] pt-12 lg:grid-cols-12">
-            <div className="lg:col-span-4">
-              <div className="flex flex-col gap-3">
-                <span className="text-[10px] font-light uppercase tracking-widest text-neutral-600">
-                  {t.method.principleLabel}
-                </span>
-                <p className="text-lg font-light leading-relaxed text-[var(--foreground)]">
-                  “{t.method.principle}”
-                </p>
-              </div>
-            </div>
-
-            <div className="grid grid-cols-1 gap-8 sm:grid-cols-2 lg:col-span-8 lg:col-start-5">
-              {t.method.items.map((item) => (
-                <div key={item.number} className="flex flex-col gap-3">
-                  <span className="text-xs font-medium tracking-widest text-[#8F3300]">
-                    {item.number}
-                  </span>
-                  <h3 className="text-xl font-light text-[var(--foreground)]">
-                    {item.title}
-                  </h3>
-                  <p className="text-sm font-light leading-relaxed text-neutral-600">
-                    {item.description}
-                  </p>
-                </div>
-              ))}
+      <section id="work" className="section">
+        <div className="site-container">
+          <Label>{t.work.label}</Label>
+          <div className="mt-8 grid gap-12 lg:grid-cols-12">
+            <h2 className="section-title lg:col-span-7">{t.work.title}</h2>
+            <div className="lg:col-span-4 lg:col-start-9">
+              <p className="body-copy">{t.work.body}</p>
+              <p className="mt-8 border-l border-[var(--primary)] pl-5 text-sm font-light leading-relaxed text-[var(--muted)]">{t.work.note}</p>
             </div>
           </div>
         </div>
       </section>
 
-      <section
-        id="contact"
-        className="relative overflow-hidden bg-[var(--background)] py-32 md:py-48 lg:py-56"
-      >
-        <div
-          aria-hidden="true"
-          className="pointer-events-none absolute -left-[20%] bottom-0 h-[600px] w-[600px] rounded-full bg-[#FF5A00]/[0.02] blur-[120px]"
-        />
+      <section id="systems" className="section border-y border-[var(--border)]">
+        <div className="site-container grid gap-10 lg:grid-cols-12">
+          <Label>{t.systems.label}</Label>
+          <h2 className="text-3xl font-light leading-[1.08] tracking-[-0.04em] md:text-5xl lg:col-span-7 lg:col-start-4">{t.systems.title}</h2>
+          <p className="body-copy lg:col-span-3 lg:col-start-10">{t.systems.body}</p>
+        </div>
+      </section>
 
-        <div className="relative mx-auto w-full max-w-6xl px-6 md:px-12">
-          <div className="max-w-3xl">
-            <div className="flex items-center gap-3">
-              <span className="text-[10px] font-light uppercase tracking-[0.22em] text-neutral-600">
-                {t.contact.label}
-              </span>
-              <span className="h-1 w-1 rounded-full bg-[#FF5A00]" />
+      <section id="contact" className="section surface-section">
+        <div className="site-container">
+          <Label>{t.closing.label}</Label>
+          <div className="mt-8 grid gap-16 lg:grid-cols-12">
+            <div className="lg:col-span-6">
+              <h2 className="section-title">{t.closing.title}</h2>
+              <p className="body-copy mt-8 max-w-xl">{t.closing.body}</p>
             </div>
 
-            <h2 className="mt-8 text-4xl font-light leading-tight tracking-tight text-[var(--foreground)] md:text-6xl">
-              {t.contact.h2}
-            </h2>
+            <form onSubmit={submitContact} className="grid gap-7 lg:col-span-5 lg:col-start-8">
+              <div className="grid gap-7 sm:grid-cols-2">
+                <label className="field"><span>{t.form.name}</span><input name="name" required autoComplete="name" /></label>
+                <label className="field"><span>{t.form.company}</span><input name="company" required autoComplete="organization" /></label>
+              </div>
+              <label className="field"><span>{t.form.email}</span><input name="email" required type="email" autoComplete="email" /></label>
+              <label className="field">
+                <span>{t.form.help}</span>
+                <select name="help" required defaultValue="">
+                  <option value="" disabled>—</option>
+                  {t.form.helpOptions.map((option) => <option key={option} value={option}>{option}</option>)}
+                </select>
+              </label>
+              <label className="field">
+                <span>{t.form.collaboration}</span>
+                <select name="collaboration" required defaultValue="">
+                  <option value="" disabled>—</option>
+                  {t.form.collaborationOptions.map((option) => <option key={option} value={option}>{option}</option>)}
+                </select>
+              </label>
+              <label className="field"><span>{t.form.need}</span><textarea name="need" required minLength={20} rows={5} /></label>
+              <label className="honeypot" aria-hidden="true">Website<input name="website" tabIndex={-1} autoComplete="off" /></label>
+              <div className="grid gap-4">
+                <label className="consent"><input name="privacy" type="checkbox" required /><span>{t.form.privacy}</span></label>
+                <label className="consent"><input name="newsletter" type="checkbox" /><span>{t.form.newsletter}</span></label>
+              </div>
+              <div className="flex flex-col items-start gap-4" aria-live="polite">
+                <button className="button-primary" type="submit" disabled={formState === "sending" || formState === "success"}>
+                  {formState === "sending" ? t.form.sending : t.form.submit}<span>→</span>
+                </button>
+                {formState === "success" && <div className="form-message success"><strong>{t.form.successTitle}</strong><p>{t.form.successBody}</p></div>}
+                {formState === "error" && <div className="form-message error"><p>{t.form.error}</p></div>}
+              </div>
+            </form>
 
-            <p className="mt-8 text-base font-light leading-loose text-neutral-600 md:text-lg">
-              {t.contact.body}
-            </p>
-
-            <div className="mt-12">
-              <a
-                href="mailto:hello@kyruma.com"
-                onClick={() =>
-                  sendGAEvent("event", "start_consultation", {
-                    event_category: "conversion",
-                    event_label: "contact_card",
-                  })
-                }
-                className="
-                  group
-                  relative
-                  flex
-                  w-full
-                  items-center
-                  justify-between
-                  border-b
-                  border-[var(--border-strong)]
-                  pb-4
-                  text-xl
-                  font-light
-                  text-[var(--foreground)]
-                  transition-colors
-                  duration-300
-                  hover:border-[#FF5A00]
-                  md:text-2xl
-                "
-              >
-                <span>hello@kyruma.com</span>
-                <span className="transition-transform duration-300 group-hover:translate-x-2 text-[#FF5A00]">
-                  →
-                </span>
-              </a>
+            <div className="mt-12 lg:col-span-12">
+              <div className="overflow-hidden rounded-3xl border border-[var(--border)] bg-[var(--surface)] p-4 md:p-6">
+                <KyrumaBooker />
+              </div>
             </div>
 
-            <div className="mt-12 overflow-hidden rounded-3xl border border-[var(--border)] bg-[var(--surface)] p-4 md:p-6">
-              <KyrumaBooker />
-            </div>
           </div>
         </div>
       </section>

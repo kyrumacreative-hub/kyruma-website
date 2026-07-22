@@ -17,21 +17,21 @@ export const metadata: Metadata = {
   metadataBase: new URL("https://www.kyruma.com"),
 
   title: {
-    default: "KYRUMA | Estudio de Estrategia y Negocio Creativo",
+    default: "KYRUMA | Estrategia, Identidad y Experiencia Digital",
     template: "%s | KYRUMA",
   },
 
   description:
-    "Articulamos la estrategia, la identidad visual y los ecosistemas digitales de las compañías que definen su industria.",
+    "Alineamos estrategia, identidad y experiencia digital para que la percepción de tu marca esté a la altura del negocio que has construido.",
 
   alternates: {
     canonical: "/",
   },
 
   openGraph: {
-    title: "KYRUMA | Estudio de Estrategia y Negocio Creativo",
+    title: "KYRUMA | Estrategia, Identidad y Experiencia Digital",
     description:
-      "Diseñamos empresas en las que la gente confía. No competimos por atención; construimos legado.",
+      "Estrategia, identidad y experiencia digital para empresas que quieren cerrar la brecha entre lo que son y cómo son percibidas.",
     url: "/",
     siteName: "KYRUMA",
     locale: "es_ES",
@@ -49,9 +49,9 @@ export const metadata: Metadata = {
 
   twitter: {
     card: "summary_large_image",
-    title: "KYRUMA | Estudio de Estrategia y Negocio Creativo",
+    title: "KYRUMA | Estrategia, Identidad y Experiencia Digital",
     description:
-      "Diseñamos empresas en las que la gente confía. No competimos por atención; construimos legado.",
+      "Estrategia, identidad y experiencia digital para empresas que quieren cerrar la brecha entre lo que son y cómo son percibidas.",
     images: ["/og-image.jpg"],
   },
 

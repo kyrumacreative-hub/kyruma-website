@@ -238,3 +238,91 @@ nav {
     scroll-behavior: auto !important;
   }
 }
+/* ==========================================================
+   KYRUMA — LANDING SYSTEM v1.0
+========================================================== */
+
+.site-container {
+  width: min(100% - 3rem, 1280px);
+  margin-inline: auto;
+}
+
+.section { padding-block: clamp(7rem, 12vw, 11rem); }
+.surface-section { background: var(--surface); }
+
+.section-label {
+  display: flex;
+  align-items: center;
+  gap: .75rem;
+  font-size: 10px;
+  line-height: 1.2;
+  font-weight: 400;
+  letter-spacing: .22em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+.accent-dot { width: 4px; height: 4px; border-radius: 999px; background: var(--primary); flex: none; }
+.section-title { max-width: 920px; font-size: clamp(2.5rem, 5.3vw, 5.25rem); line-height: 1.02; letter-spacing: -.05em; font-weight: 300; }
+.body-copy { font-size: 1rem; line-height: 1.8; font-weight: 300; color: var(--muted); }
+.micro { font-size: 10px; line-height: 1.2; letter-spacing: .2em; font-weight: 400; color: var(--muted); }
+
+.button-primary {
+  display: inline-flex; align-items: center; justify-content: center; gap: .75rem;
+  min-height: 44px; border-radius: 999px; padding: .72rem 1.25rem;
+  background: var(--foreground); color: var(--background) !important;
+  font-size: 10px; line-height: 1; font-weight: 500; letter-spacing: .14em; text-transform: uppercase;
+  transition: transform 250ms cubic-bezier(.2,.8,.2,1), background-color 250ms ease, color 250ms ease, opacity 250ms ease;
+}
+.button-primary span { transition: transform 250ms cubic-bezier(.2,.8,.2,1); }
+.button-primary:hover span { transform: translateX(3px); }
+.button-primary:hover { transform: translateY(-1px); }
+.button-primary:disabled { opacity: .38; cursor: not-allowed; transform: none; }
+
+.text-link { display: inline-flex; align-items: center; gap: .65rem; font-size: 11px; font-weight: 400; letter-spacing: .12em; text-transform: uppercase; }
+.text-link span { color: var(--primary); transition: transform 250ms cubic-bezier(.2,.8,.2,1); }
+.text-link:hover span { transform: translateX(3px); }
+.nav-link, .control { font-size: 10px; font-weight: 400; letter-spacing: .14em; text-transform: uppercase; color: var(--muted); transition: color 250ms ease; }
+.nav-link:hover, .control:hover, .control[aria-pressed="true"] { color: var(--foreground); }
+
+.field { display: grid; gap: .65rem; }
+.field > span, .field-label { font-size: 10px; font-weight: 400; letter-spacing: .15em; text-transform: uppercase; color: var(--muted); }
+.field input, .field textarea {
+  width: 100%; border: 0; border-bottom: 1px solid var(--border-strong); border-radius: 0;
+  background: transparent; padding: .65rem 0 .85rem; color: var(--foreground); outline: none;
+  font-size: 16px; font-weight: 300; transition: border-color 250ms ease;
+}
+.field input:focus, .field textarea:focus { border-color: var(--primary); }
+.field textarea { resize: vertical; }
+.choice { min-height: 44px; border: 1px solid var(--border); border-radius: 999px; padding: .65rem .8rem; font-size: 11px; color: var(--muted); transition: border-color 250ms ease, color 250ms ease, background-color 250ms ease; }
+.choice:hover { border-color: var(--border-strong); color: var(--foreground); }
+.choice[aria-pressed="true"] { border-color: var(--primary); color: var(--foreground); }
+
+html.dark .surface-section { background: #111111; }
+html.dark .button-primary { background: #f5f5f3; color: #111111 !important; }
+html.dark ::selection { background: #ff6a1a; color: #111111; }
+
+@media (max-width: 640px) {
+  .site-container { width: min(100% - 2rem, 1280px); }
+  .section { padding-block: 6rem; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .button-primary:hover, .button-primary:hover span, .text-link:hover span { transform: none; }
+}
+
+/* KYRUMA — Contact & Email Experience v1.0 */
+.field select {
+  width: 100%; border: 0; border-bottom: 1px solid var(--border-strong); border-radius: 0;
+  background: transparent; padding: .65rem 0 .85rem; color: var(--foreground); outline: none;
+  font-size: 16px; font-weight: 300; transition: border-color 250ms ease;
+}
+.field select:focus { border-color: var(--primary); }
+.consent { display: flex; align-items: flex-start; gap: .8rem; max-width: 36rem; cursor: pointer; }
+.consent input { width: 16px; height: 16px; margin-top: 2px; flex: none; accent-color: var(--primary); }
+.consent span { font-size: 11px; line-height: 1.65; font-weight: 300; color: var(--muted); }
+.honeypot { position: absolute !important; width: 1px !important; height: 1px !important; overflow: hidden !important; clip: rect(0 0 0 0) !important; white-space: nowrap !important; }
+.form-message { max-width: 34rem; padding-top: .25rem; font-size: 13px; line-height: 1.7; }
+.form-message strong { display: block; margin-bottom: .35rem; font-weight: 500; color: var(--foreground); }
+.form-message p { margin: 0; color: var(--muted); }
+.form-message.success { border-left: 1px solid var(--primary); padding-left: 1rem; }
+.form-message.error { border-left: 1px solid var(--border-strong); padding-left: 1rem; }
