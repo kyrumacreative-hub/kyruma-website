@@ -34,7 +34,7 @@ function emailShell(content: string, language: "es" | "en") {
     ? "Estrategia · Identidad · Experiencia Digital"
     : "Strategy · Identity · Digital Experience";
 
-  return `<!doctype html><html><body style="margin:0;padding:0;background:#f7f7f5;color:#111111;font-family:Arial,Helvetica,sans-serif"><table role="presentation" width="100%" cellspacing="0" cellpadding="0" style="background:#f7f7f5"><tr><td align="center" style="padding:28px 16px"><table role="presentation" width="100%" cellspacing="0" cellpadding="0" style="max-width:640px;background:#ffffff;border:1px solid rgba(17,17,17,.08)"><tr><td style="padding:42px 42px 18px;font-size:18px;letter-spacing:.18em;font-weight:600">KYRUMA<span style="color:#ff5a00">.</span></td></tr><tr><td style="padding:44px 42px 52px">${content}</td></tr><tr><td style="padding:26px 42px;border-top:1px solid #e8e8e5;font-size:10px;line-height:1.7;letter-spacing:.14em;text-transform:uppercase;color:#737373">${footer}<br>kyruma.com</td></tr></table></td></tr></table></body></html>`;
+  return `<!doctype html><html><body style="margin:0;padding:0;background:#f7f7f5;color:#111111;font-family:Arial,Helvetica,sans-serif"><table role="presentation" width="100%" cellspacing="0" cellpadding="0" style="background:#f7f7f5"><tr><td align="center" style="padding:28px 16px"><table role="presentation" width="100%" cellspacing="0" cellpadding="0" style="max-width:640px;background:#ffffff;border:1px solid rgba(17,17,17,.08)"><tr><td style="padding:42px 42px 18px;font-size:18px;letter-spacing:.18em;font-weight:600">KYRUMA<span style="color:#ff5a00">.</span></td></tr><tr><td style="padding:44px 42px 52px">${content}</td></tr><tr><td style="padding:26px 42px;border-top:1px solid #e8e8e5;font-size:10px;line-height:1.7;letter-spacing:.14em;text-transform:uppercase;color:#737373">${footer}<br><span style="color:#ff5a00">kyruma.com</span></td></tr></table></td></tr></table></body></html>`;
 }
 
 async function sendEmail(apiKey: string, payload: Record<string, unknown>) {
@@ -92,18 +92,20 @@ export async function POST(request: NextRequest) {
       <div style="margin-top:34px;padding-top:28px;border-top:1px solid #e8e8e5;font-size:15px;line-height:1.8">${safe.need}</div>`, language);
 
     const clientContent = language === "es" ? `
-      <p style="margin:0 0 18px;font-size:11px;letter-spacing:.16em;text-transform:uppercase;color:#737373">Consulta recibida</p>
+      <p style="margin:0 0 18px;font-size:11px;letter-spacing:.16em;text-transform:uppercase;color:#ff5a00">Consulta recibida</p>
       <h1 style="margin:0 0 28px;font-size:40px;line-height:1.06;font-weight:400;letter-spacing:-.04em">Gracias por confiar<br>en KYRUMA.</h1>
       <p style="margin:0 0 20px;font-size:16px;line-height:1.8;color:#3f3f3f">Hola, ${safe.name}.</p>
       <p style="margin:0 0 20px;font-size:16px;line-height:1.8;color:#3f3f3f">Hemos recibido correctamente tu mensaje. Revisaremos personalmente la información que nos has enviado y nos pondremos en contacto contigo lo antes posible.</p>
       <p style="margin:0 0 34px;font-size:16px;line-height:1.8;color:#3f3f3f">Creemos que una buena colaboración comienza entendiendo el negocio antes de proponer soluciones. Nuestro siguiente paso será comprender mejor vuestro contexto, qué necesitáis y qué queréis conseguir.</p>
-      <p style="margin:0;font-size:16px;line-height:1.8">Hablamos pronto.<br><strong style="font-weight:600">KYRUMA</strong></p>` : `
-      <p style="margin:0 0 18px;font-size:11px;letter-spacing:.16em;text-transform:uppercase;color:#737373">Enquiry received</p>
+      <p style="margin:0;font-size:16px;line-height:1.8">Hablamos pronto.<br><strong style="font-weight:600">KYRUMA<span style="color:#ff5a00">.</span></strong></p>
+      <div style="margin-top:38px;width:32px;height:2px;background:#ff5a00"></div>` : `
+      <p style="margin:0 0 18px;font-size:11px;letter-spacing:.16em;text-transform:uppercase;color:#ff5a00">Enquiry received</p>
       <h1 style="margin:0 0 28px;font-size:40px;line-height:1.06;font-weight:400;letter-spacing:-.04em">Thank you for trusting<br>KYRUMA.</h1>
       <p style="margin:0 0 20px;font-size:16px;line-height:1.8;color:#3f3f3f">Hello, ${safe.name}.</p>
       <p style="margin:0 0 20px;font-size:16px;line-height:1.8;color:#3f3f3f">We have received your message. We will personally review the information you shared and get back to you as soon as possible.</p>
       <p style="margin:0 0 34px;font-size:16px;line-height:1.8;color:#3f3f3f">We believe a strong collaboration begins by understanding the business before proposing solutions. Our next step is to understand your context, what you need and what you want to achieve.</p>
-      <p style="margin:0;font-size:16px;line-height:1.8">Speak soon.<br><strong style="font-weight:600">KYRUMA</strong></p>`;
+      <p style="margin:0;font-size:16px;line-height:1.8">Speak soon.<br><strong style="font-weight:600">KYRUMA<span style="color:#ff5a00">.</span></strong></p>
+      <div style="margin-top:38px;width:32px;height:2px;background:#ff5a00"></div>`;
 
     // Internal delivery is critical. Client acknowledgement follows only after it succeeds.
     await sendEmail(apiKey, {
