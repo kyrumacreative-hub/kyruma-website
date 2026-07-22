@@ -1,6 +1,6 @@
 "use client";
 
-import { FormEvent } from "react";
+import { FormEvent, useRef, useState } from "react";
 import { sendGAEvent } from "@next/third-parties/google";
 import { useLanguage } from "@/components/LanguageProvider";
 
@@ -65,7 +65,12 @@ const copy = {
       collaborationOptions: ["Creative Partnership · colaboración continuada", "Proyecto específico", "Por definir juntos"],
       need: "Cuéntanos sobre tu empresa y qué quieres conseguir",
       submit: "Iniciar conversación",
-      privacy: "Al continuar, aceptas que KYRUMA utilice estos datos únicamente para responder a tu consulta.",
+      sending: "Enviando…",
+      successTitle: "Tu mensaje ya está con nosotros.",
+      successBody: "Gracias por confiar en KYRUMA. Revisa tu bandeja de entrada: acabamos de enviarte una confirmación.",
+      error: "No hemos podido enviar tu consulta. Inténtalo de nuevo o escríbenos a hello@kyruma.com.",
+      privacy: "Acepto que KYRUMA utilice estos datos para responder a mi consulta.",
+      newsletter: "Quiero recibir ocasionalmente perspectivas y novedades de KYRUMA por email. Puedo darme de baja en cualquier momento.",
     },
   },
   en: {
@@ -128,7 +133,12 @@ const copy = {
       collaborationOptions: ["Creative Partnership · ongoing collaboration", "Specific project", "To define together"],
       need: "Tell us about your company and what you want to achieve",
       submit: "Start conversation",
-      privacy: "By continuing, you agree that KYRUMA may use this information only to respond to your enquiry.",
+      sending: "Sending…",
+      successTitle: "Your message is with us.",
+      successBody: "Thank you for trusting KYRUMA. Check your inbox: we have just sent you a confirmation.",
+      error: "We could not send your enquiry. Please try again or email us at hello@kyruma.com.",
+      privacy: "I agree that KYRUMA may use this information to respond to my enquiry.",
+      newsletter: "I would like to occasionally receive perspectives and news from KYRUMA by email. I can unsubscribe at any time.",
     },
   },
 } as const;
@@ -141,15 +151,49 @@ export default function Home() {
   const { language } = useLanguage();
   const t = copy[language];
 
-  function submitContact(event: FormEvent<HTMLFormElement>) {
+  const [formState, setFormState] = useState<"idle" | "sending" | "success" | "error">("idle");
+  const startedAt = useRef(Date.now());
+
+  async function submitContact(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
-    const data = new FormData(event.currentTarget);
-    const subject = encodeURIComponent(`KYRUMA — ${data.get("company") || data.get("name")}`);
-    const body = encodeURIComponent(
-      `${t.form.name}: ${data.get("name")}\n${t.form.company}: ${data.get("company")}\n${t.form.email}: ${data.get("email")}\n${t.form.help}: ${data.get("help")}\n${t.form.collaboration}: ${data.get("collaboration")}\n\n${t.form.need}:\n${data.get("need")}`
-    );
-    sendGAEvent("event", "contact_submit", { event_category: "conversion", collaboration: data.get("collaboration"), help: data.get("help") });
-    window.location.href = `mailto:hello@kyruma.com?subject=${subject}&body=${body}`;
+    if (formState === "sending") return;
+
+    const form = event.currentTarget;
+    const data = new FormData(form);
+    setFormState("sending");
+
+    try {
+      const response = await fetch("/api/contact", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          name: data.get("name"),
+          company: data.get("company"),
+          email: data.get("email"),
+          help: data.get("help"),
+          collaboration: data.get("collaboration"),
+          need: data.get("need"),
+          privacy: data.get("privacy") === "on",
+          newsletter: data.get("newsletter") === "on",
+          website: data.get("website"),
+          language,
+          startedAt: startedAt.current,
+        }),
+      });
+
+      if (!response.ok) throw new Error("Contact request failed");
+
+      sendGAEvent("event", "contact_submit", {
+        event_category: "conversion",
+        collaboration: data.get("collaboration"),
+        help: data.get("help"),
+        newsletter_opt_in: data.get("newsletter") === "on",
+      });
+      form.reset();
+      setFormState("success");
+    } catch {
+      setFormState("error");
+    }
   }
 
   return (
@@ -267,10 +311,18 @@ export default function Home() {
                   {t.form.collaborationOptions.map((option) => <option key={option} value={option}>{option}</option>)}
                 </select>
               </label>
-              <label className="field"><span>{t.form.need}</span><textarea name="need" required rows={5} /></label>
-              <div className="flex flex-col items-start gap-4">
-                <button className="button-primary" type="submit">{t.form.submit}<span>→</span></button>
-                <p className="max-w-md text-[11px] font-light leading-relaxed text-[var(--muted)]">{t.form.privacy}</p>
+              <label className="field"><span>{t.form.need}</span><textarea name="need" required minLength={20} rows={5} /></label>
+              <label className="honeypot" aria-hidden="true">Website<input name="website" tabIndex={-1} autoComplete="off" /></label>
+              <div className="grid gap-4">
+                <label className="consent"><input name="privacy" type="checkbox" required /><span>{t.form.privacy}</span></label>
+                <label className="consent"><input name="newsletter" type="checkbox" /><span>{t.form.newsletter}</span></label>
+              </div>
+              <div className="flex flex-col items-start gap-4" aria-live="polite">
+                <button className="button-primary" type="submit" disabled={formState === "sending" || formState === "success"}>
+                  {formState === "sending" ? t.form.sending : t.form.submit}<span>→</span>
+                </button>
+                {formState === "success" && <div className="form-message success"><strong>{t.form.successTitle}</strong><p>{t.form.successBody}</p></div>}
+                {formState === "error" && <div className="form-message error"><p>{t.form.error}</p></div>}
               </div>
             </form>
           </div>

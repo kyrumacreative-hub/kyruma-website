@@ -309,3 +309,20 @@ html.dark ::selection { background: #ff6a1a; color: #111111; }
 @media (prefers-reduced-motion: reduce) {
   .button-primary:hover, .button-primary:hover span, .text-link:hover span { transform: none; }
 }
+
+/* KYRUMA — Contact & Email Experience v1.0 */
+.field select {
+  width: 100%; border: 0; border-bottom: 1px solid var(--border-strong); border-radius: 0;
+  background: transparent; padding: .65rem 0 .85rem; color: var(--foreground); outline: none;
+  font-size: 16px; font-weight: 300; transition: border-color 250ms ease;
+}
+.field select:focus { border-color: var(--primary); }
+.consent { display: flex; align-items: flex-start; gap: .8rem; max-width: 36rem; cursor: pointer; }
+.consent input { width: 16px; height: 16px; margin-top: 2px; flex: none; accent-color: var(--primary); }
+.consent span { font-size: 11px; line-height: 1.65; font-weight: 300; color: var(--muted); }
+.honeypot { position: absolute !important; width: 1px !important; height: 1px !important; overflow: hidden !important; clip: rect(0 0 0 0) !important; white-space: nowrap !important; }
+.form-message { max-width: 34rem; padding-top: .25rem; font-size: 13px; line-height: 1.7; }
+.form-message strong { display: block; margin-bottom: .35rem; font-weight: 500; color: var(--foreground); }
+.form-message p { margin: 0; color: var(--muted); }
+.form-message.success { border-left: 1px solid var(--primary); padding-left: 1rem; }
+.form-message.error { border-left: 1px solid var(--border-strong); padding-left: 1rem; }
