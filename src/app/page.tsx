@@ -2,6 +2,7 @@
 
 import { sendGAEvent } from "@next/third-parties/google";
 import { useLanguage } from "@/components/LanguageProvider";
+import KyrumaBooker from "@/components/booking/KyrumaBooker";
 
 type Language = "es" | "en";
 
@@ -818,6 +819,10 @@ export default function Home() {
                   →
                 </span>
               </a>
+            </div>
+
+            <div className="mt-12 overflow-hidden rounded-3xl border border-[var(--border)] bg-[var(--surface)] p-4 md:p-6">
+              <KyrumaBooker />
             </div>
           </div>
         </div>
