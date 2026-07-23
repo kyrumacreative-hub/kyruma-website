@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
-import { GoogleAnalytics } from "@next/third-parties/google";
+import CookieConsent from "@/components/consent/CookieConsent";
 import { ThemeProvider } from "@/components/ThemeProvider";
 import { LanguageProvider } from "@/components/LanguageProvider";
 import Navbar from "@/components/layout/Navbar";
@@ -141,8 +141,7 @@ export default function RootLayout({
 
             <Footer />
 
-            {/* Google Analytics */}
-            <GoogleAnalytics gaId="G-XDB5TYYW0J" />
+            <CookieConsent />
           </LanguageProvider>
         </ThemeProvider>
       </body>
