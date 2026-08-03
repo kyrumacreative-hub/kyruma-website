@@ -1,23 +1,27 @@
-import { motion } from "@/design/motion";
+import { MotionConfigValues } from "./config";
 
 export const transitions = {
+  instant: {
+    duration: MotionConfigValues.duration.instant,
+  },
+
   fast: {
-    duration: motion.duration.fast,
-    ease: motion.easing.standard,
+    duration: MotionConfigValues.duration.fast,
+    ease: MotionConfigValues.easing.standard,
   },
 
   base: {
-    duration: motion.duration.base,
-    ease: motion.easing.standard,
+    duration: MotionConfigValues.duration.normal,
+    ease: MotionConfigValues.easing.standard,
   },
 
   slow: {
-    duration: motion.duration.slow,
-    ease: motion.easing.smooth,
+    duration: MotionConfigValues.duration.slow,
+    ease: MotionConfigValues.easing.smooth,
   },
 
-  page: {
-    duration: motion.duration.xl,
-    ease: motion.easing.smooth,
+  cinematic: {
+    duration: MotionConfigValues.duration.cinematic,
+    ease: MotionConfigValues.easing.smooth,
   },
 } as const;

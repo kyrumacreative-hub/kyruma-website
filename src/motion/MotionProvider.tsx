@@ -4,20 +4,24 @@ import {
   LazyMotion,
   MotionConfig,
   domAnimation,
-  useReducedMotion,
 } from "framer-motion";
+import { ReactNode } from "react";
+
+interface MotionProviderProps {
+  children: ReactNode;
+}
 
 export function MotionProvider({
   children,
-}: {
-  children: React.ReactNode;
-}) {
-  const reducedMotion = useReducedMotion();
-
+}: MotionProviderProps) {
   return (
-    <LazyMotion features={domAnimation}>
+    <LazyMotion features={domAnimation} strict>
       <MotionConfig
-        reducedMotion={reducedMotion ? "always" : "never"}
+        reducedMotion="user"
+        transition={{
+          duration: 0.35,
+          ease: [0.22, 1, 0.36, 1],
+        }}
       >
         {children}
       </MotionConfig>
