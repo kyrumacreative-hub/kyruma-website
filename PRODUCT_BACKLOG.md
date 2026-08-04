@@ -6,17 +6,11 @@ Este documento es la fuente única de prioridades del producto. Las ideas se reg
 
 Solo puede haber un objetivo activo.
 
-### Marketing Foundation v1
+### Validación con el primer cliente
 
-Infraestructura de medición y atribución con consentimiento: GTM, Meta Pixel y Conversion API, GA4, Microsoft Clarity, SEO técnico, eventos, atribución y footer social.
-
-### Release gate de KYRUMA Discovery™ RC1
-
-- Revisar textos, tono y consistencia de KYRUMA Discovery™.
-- Verificar la experiencia móvil, el progreso, el guardado automático, el email recibido y la pantalla final.
-- Realizar un recorrido completo como un cliente sin contexto previo.
-- Ejecutar una prueba controlada de recepción de correo en producción antes de enviar el primer enlace.
-- Recoger feedback real en `KYR-DISCOVERY-FEEDBACK-001` tras el primer uso.
+- Enviar KYRUMA Discovery™ al primer cliente real.
+- Recoger observaciones en `KYR-DISCOVERY-FEEDBACK-001`.
+- Corregir únicamente incidencias demostradas por uso real.
 
 ## NEXT
 
@@ -25,6 +19,10 @@ Infraestructura de medición y atribución con consentimiento: GTM, Meta Pixel y
 Analizar cada KYRUMA Discovery™ para generar un resumen ejecutivo, objetivos, retos, oportunidades, recomendaciones de KYRUMA y preguntas sugeridas para la reunión.
 
 ## READY
+
+### Operación — Activación de Marketing Foundation
+
+Configurar en una sesión específica los IDs y credenciales de GTM/GA4, Meta Pixel y Conversion API, Microsoft Clarity y Google Search Console. La infraestructura está instalada, permanece inactiva sin variables de entorno y no requiere cambiar la arquitectura.
 
 ### Lead Intake Flow
 
