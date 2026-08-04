@@ -6,6 +6,12 @@ import { useLanguage } from "@/components/LanguageProvider";
 export default function Footer() {
   const { language } = useLanguage();
   const year = new Date().getFullYear();
+  const socialLinks = [
+    { label: "Instagram", href: process.env.NEXT_PUBLIC_INSTAGRAM_URL || "https://www.instagram.com/kyrumacreative/" },
+    { label: "LinkedIn", href: process.env.NEXT_PUBLIC_LINKEDIN_URL || "https://www.linkedin.com/company/kyruma/" },
+    { label: "TikTok", href: process.env.NEXT_PUBLIC_TIKTOK_URL },
+    { label: "Email", href: "mailto:hello@kyruma.com" },
+  ].filter((link): link is { label: string; href: string } => Boolean(link.href));
 
   return (
     <footer className="border-t border-[var(--border)] bg-[var(--background)]">
@@ -46,6 +52,14 @@ export default function Footer() {
           <p className="mt-4 text-sm text-[var(--muted)]">
             ES / EN
           </p>
+        </div>
+
+        <div className="md:col-span-12 border-t border-[var(--border)] pt-8">
+          <p className="micro">{language === "es" ? "TAMBIÉN PUEDES ENCONTRARNOS AQUÍ" : "YOU CAN ALSO FIND US HERE"}</p>
+          <p className="body-copy mt-3 max-w-xl text-sm">{language === "es" ? "Queremos que contactar con KYRUMA sea tan sencillo como empezar una conversación." : "We want contacting KYRUMA to be as easy as starting a conversation."}</p>
+          <div className="mt-5 flex flex-wrap gap-3">
+            {socialLinks.map((link) => <a key={link.label} href={link.href} target={link.label === "Email" ? undefined : "_blank"} rel={link.label === "Email" ? undefined : "noreferrer"} className="rounded-full border border-[var(--border-strong)] px-4 py-2 text-sm transition-all hover:-translate-y-0.5 hover:border-[var(--primary)] hover:text-[var(--primary)]">{link.label} <span aria-hidden="true">↗</span></a>)}
+          </div>
         </div>
       </div>
 

@@ -3,9 +3,9 @@
 import Image from "next/image";
 import Link from "next/link";
 import { useEffect, useRef, useState } from "react";
-import { sendGAEvent } from "@next/third-parties/google";
 import { useTheme } from "@/components/ThemeProvider";
 import { useLanguage } from "@/components/LanguageProvider";
+import { trackMarketingEvent } from "@/features/marketing/MarketingScripts";
 
 const copy = {
   es: { approach: "Enfoque", services: "Qué hacemos", method: "Método", work: "Trabajo", cta: "Iniciar conversación" },
@@ -51,7 +51,7 @@ export default function Navbar() {
             <button className="control" aria-pressed={language === "en"} onClick={() => setLanguage("en")}>EN</button>
           </div>
           <button className="control hidden sm:block" onClick={() => setTheme(theme === "system" ? "light" : theme === "light" ? "dark" : "system")} aria-label={`Theme: ${theme}`}>{theme === "light" ? "○" : theme === "dark" ? "●" : "◐"}</button>
-          <Link href="/#contact" className="button-primary hidden md:inline-flex" onClick={() => sendGAEvent("event", "start_consultation", { event_category: "conversion", event_label: "navbar" })}>{t.cta}<span>→</span></Link>
+          <Link href="/#contact" className="button-primary hidden md:inline-flex" onClick={() => trackMarketingEvent("hero_cta", { placement: "navbar" })}>{t.cta}<span>→</span></Link>
           <button className="control lg:hidden" aria-expanded={menu} aria-label="Menu" onClick={() => setMenu(!menu)}>{menu ? "×" : "Menu"}</button>
         </div>
       </div>

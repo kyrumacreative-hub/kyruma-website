@@ -2,11 +2,11 @@
 
 import Link from "next/link";
 import { useEffect, useState } from "react";
-import { GoogleAnalytics } from "@next/third-parties/google";
+import MarketingScripts, { MARKETING_CONSENT_KEY } from "@/features/marketing/MarketingScripts";
 
 type Consent = "accepted" | "rejected" | null;
 
-const STORAGE_KEY = "kyruma-analytics-consent";
+const STORAGE_KEY = MARKETING_CONSENT_KEY;
 
 export default function CookieConsent() {
   const [consent, setConsent] = useState<Consent>(null);
@@ -35,9 +35,7 @@ export default function CookieConsent() {
 
   return (
     <>
-      {consent === "accepted" && (
-        <GoogleAnalytics gaId="G-XDB5TYYW0J" />
-      )}
+      {consent === "accepted" && <MarketingScripts />}
 
       {consent === null && (
         <div

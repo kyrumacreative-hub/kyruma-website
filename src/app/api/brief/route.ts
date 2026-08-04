@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 
 import { websiteBrief } from "@/features/workspace/data/website-brief";
 import { AnswerValue } from "@/features/workspace/engine/answers";
+import { sendMetaConversion } from "@/features/marketing/metaCapi";
 
 export const runtime = "nodejs";
 
@@ -87,7 +88,8 @@ export async function POST(req: NextRequest) {
     const apiKey = process.env.RESEND_API_KEY;
     if (!apiKey) return NextResponse.json({ ok: false }, { status: 500 });
 
-    const answers = parseAnswers(await req.json());
+    const body = await req.json();
+    const answers = parseAnswers(body);
     if (!answers) return NextResponse.json({ ok: false, error: "Invalid brief" }, { status: 400 });
 
     const rows = websiteBrief.sections.flatMap((section) => section.questions
@@ -110,6 +112,8 @@ export async function POST(req: NextRequest) {
       subject: `Nuevo KYRUMA Discovery — ${companyName}`,
       html: `<h1>Nuevo KYRUMA Discovery recibido</h1><table width="100%" cellpadding="0" cellspacing="0" style="border-collapse:collapse">${rows}</table>`,
     });
+
+    await sendMetaConversion({ eventName: "CompleteDiscovery", email: typeof answers.email === "string" ? answers.email : undefined, eventSourceUrl: isRecord(body) && typeof body.landingPage === "string" ? body.landingPage : undefined, consent: isRecord(body) && body.marketingConsent === true }).catch((error) => console.error("Meta CAPI Discovery event failed", error));
 
     return NextResponse.json({ ok: true });
   } catch (error) {

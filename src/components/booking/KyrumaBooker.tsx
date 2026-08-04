@@ -2,6 +2,7 @@
 
 import Cal, { getCalApi } from "@calcom/embed-react";
 import { useEffect } from "react";
+import { trackMarketingEvent } from "@/features/marketing/MarketingScripts";
 
 export default function KyrumaBooker() {
   useEffect(() => {
@@ -19,6 +20,11 @@ export default function KyrumaBooker() {
         },
         hideEventTypeDetails: false,
         layout: "month_view",
+      });
+
+      cal("on", {
+        action: "bookingSuccessfulV2",
+        callback: () => trackMarketingEvent("meeting_scheduled", { source: "calcom" }),
       });
     })();
   }, []);

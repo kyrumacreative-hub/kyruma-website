@@ -1,4 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
+import { sendMetaConversion } from "@/features/marketing/metaCapi";
 
 export const runtime = "nodejs";
 
@@ -17,6 +18,8 @@ type ContactPayload = {
   privacy?: unknown;
   website?: unknown;
   startedAt?: unknown;
+  marketingConsent?: unknown;
+  landingPage?: unknown;
 };
 
 function text(value: unknown, max = 2000) {
@@ -64,6 +67,8 @@ export async function POST(request: NextRequest) {
     const privacy = body.privacy === true;
     const honeypot = text(body.website, 200);
     const startedAt = typeof body.startedAt === "number" ? body.startedAt : 0;
+    const marketingConsent = body.marketingConsent === true;
+    const landingPage = text(body.landingPage, 500);
 
     // Silent success for bots; do not send anything.
     if (honeypot || !startedAt || Date.now() - startedAt < 2500) {
@@ -115,6 +120,8 @@ export async function POST(request: NextRequest) {
       subject: `Nueva conversación · ${company}`,
       html: internalHtml,
     });
+
+    await sendMetaConversion({ eventName: "Lead", email, eventSourceUrl: landingPage, consent: marketingConsent }).catch((error) => console.error("Meta CAPI contact event failed", error));
 
     await sendEmail(apiKey, {
       from: "KYRUMA <hello@kyruma.com>",

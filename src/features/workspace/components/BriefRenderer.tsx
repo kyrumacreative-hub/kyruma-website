@@ -1,6 +1,7 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
+import { getAttribution, hasMarketingConsent, trackMarketingEvent } from "@/features/marketing/MarketingScripts";
 
 import { ProjectBrief } from "../types/brief";
 import { useWorkspace } from "../hooks/useWorkspace";
@@ -33,11 +34,36 @@ export default function BriefRenderer({ brief }: BriefRendererProps) {
   const [isReviewing, setIsReviewing] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [fieldErrors, setFieldErrors] = useState<Record<string, string>>({});
+  const hasStarted = useRef(false);
+  const hasTrackedStart = useRef(false);
+  const hasTrackedResume = useRef(false);
 
   const totalConversations = brief.sections.length;
   const isFirstConversation = currentSection === 0;
   const isLastConversation = currentSection === totalConversations - 1;
   const progress = ((currentSection + 1) / totalConversations) * 100;
+
+  useEffect(() => {
+    if (!isReady) return;
+    if (!hasTrackedStart.current) {
+      hasTrackedStart.current = true;
+      trackMarketingEvent("start_discovery");
+    }
+    if ((currentSection > 0 || Object.keys(answers).length > 0) && !hasTrackedResume.current) {
+      hasTrackedResume.current = true;
+      trackMarketingEvent("resume_discovery", { conversation: currentSection + 1 });
+    }
+  }, [answers, currentSection, isReady]);
+
+  useEffect(() => {
+    const trackExit = () => {
+      if (!isSubmitted && !isReviewing) {
+        trackMarketingEvent("exit_before_finish", { conversation: currentSection + 1 });
+      }
+    };
+    window.addEventListener("pagehide", trackExit);
+    return () => window.removeEventListener("pagehide", trackExit);
+  }, [currentSection, isReviewing, isSubmitted]);
 
   if (!isReady) {
     return <p aria-live="polite" className="py-12 text-sm text-neutral-500 dark:text-neutral-400">Preparando vuestro Discovery…</p>;
@@ -56,6 +82,11 @@ export default function BriefRenderer({ brief }: BriefRendererProps) {
 
   function continueDiscovery() {
     if (!validateConversation()) return;
+    if (!hasStarted.current) {
+      hasStarted.current = true;
+      trackMarketingEvent("conversation_started", { conversation: currentSection + 1 });
+    }
+    trackMarketingEvent("conversation_completed", { conversation: currentSection + 1 });
     nextConversation();
   }
 
@@ -91,12 +122,15 @@ export default function BriefRenderer({ brief }: BriefRendererProps) {
           brief: brief.id,
           submittedAt: new Date().toISOString(),
           answers,
+          marketingConsent: hasMarketingConsent(),
+          landingPage: getAttribution()?.landing_page,
         }),
       });
 
       if (!response.ok) throw new Error();
 
       clearWorkspace();
+      trackMarketingEvent("complete_discovery");
       setIsSubmitted(true);
     } catch {
       setError("No se ha podido compartir vuestro Discovery. Por favor, intentadlo de nuevo.");

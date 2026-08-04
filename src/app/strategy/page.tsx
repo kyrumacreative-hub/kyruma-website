@@ -2,8 +2,8 @@
 
 import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
-import { sendGAEvent } from "@next/third-parties/google";
 import { useTheme } from "@/components/ThemeProvider";
+import { trackMarketingEvent } from "@/features/marketing/MarketingScripts";
 
 type Language = "es" | "en";
 
@@ -441,10 +441,7 @@ function Header({ language, setLanguage }: HeaderProps) {
           <a
             href="#contact"
             onClick={() =>
-              sendGAEvent("event", "start_consultation", {
-                event_category: "conversion",
-                event_label: "strategy_navbar_cta",
-              })
+              trackMarketingEvent("hero_cta", { placement: "strategy_navbar" })
             }
             className="hidden rounded-full bg-[#111111] px-6 py-2.5 text-[10px] font-light uppercase tracking-[0.16em] !text-white transition-all duration-500 hover:bg-[#FF5A00] sm:inline-flex"
           >
@@ -506,10 +503,7 @@ export default function StrategyPage() {
                 <a
                   href="#contact"
                   onClick={() =>
-                    sendGAEvent("event", "start_consultation", {
-                      event_category: "conversion",
-                      event_label: "strategy_hero_cta",
-                    })
+                    trackMarketingEvent("hero_cta", { placement: "strategy_hero" })
                   }
                   className="group inline-flex items-center gap-3 rounded-full bg-[#111111] px-8 py-3.5 text-xs font-light uppercase tracking-widest !text-white transition-all duration-500 hover:bg-[#FF5A00]"
                 >
@@ -713,10 +707,7 @@ export default function StrategyPage() {
               <a
                 href="mailto:hello@kyruma.com"
                 onClick={() =>
-                  sendGAEvent("event", "start_consultation", {
-                    event_category: "conversion",
-                    event_label: "strategy_contact",
-                  })
+                  trackMarketingEvent("contact", { placement: "strategy_email" })
                 }
                 className="group mt-12 flex w-full items-center justify-between border-b border-[var(--border-strong)] pb-4 text-xl font-light transition-colors hover:border-[#FF5A00] md:text-2xl"
               >

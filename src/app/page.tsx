@@ -1,7 +1,7 @@
 "use client";
 
 import { FormEvent, useEffect, useRef, useState } from "react";
-import { sendGAEvent } from "@next/third-parties/google";
+import { getAttribution, hasMarketingConsent, trackMarketingEvent } from "@/features/marketing/MarketingScripts";
 import { useLanguage } from "@/components/LanguageProvider";
 import KyrumaBooker from "@/components/booking/KyrumaBooker";
 
@@ -183,17 +183,16 @@ export default function Home() {
           website: data.get("website"),
           language,
           startedAt: startedAt.current,
+          marketingConsent: hasMarketingConsent(),
+          landingPage: getAttribution()?.landing_page,
         }),
       });
 
       if (!response.ok) throw new Error("Contact request failed");
 
-      sendGAEvent("event", "contact_submit", {
-        event_category: "conversion",
-        collaboration: data.get("collaboration"),
-        help: data.get("help"),
-        newsletter_opt_in: data.get("newsletter") === "on",
-      });
+      trackMarketingEvent("contact", { placement: "contact_form" });
+      trackMarketingEvent("contact_submitted", { collaboration: data.get("collaboration"), help: data.get("help"), newsletter_opt_in: data.get("newsletter") === "on" });
+      trackMarketingEvent("lead");
       form.reset();
       setFormState("success");
     } catch {
@@ -213,7 +212,7 @@ export default function Home() {
             <div className="mt-10 grid gap-8 border-t border-[var(--border)] pt-8 md:mt-14 md:grid-cols-12 md:items-end">
               <p className="max-w-[620px] text-base font-light leading-[1.75] text-[var(--muted)] md:col-span-7 md:text-lg">{t.hero.body}</p>
               <div className="flex flex-wrap gap-6 md:col-span-5 md:justify-end">
-                <a className="button-primary" href="#contact" onClick={() => sendGAEvent("event", "start_consultation", { event_category: "conversion", event_label: "hero" })}>{t.hero.cta}<span>→</span></a>
+                <a className="button-primary" href="#contact" onClick={() => trackMarketingEvent("hero_cta", { placement: "hero" })}>{t.hero.cta}<span>→</span></a>
                 <a className="text-link" href="#perspective">{t.hero.explore}<span>↓</span></a>
               </div>
             </div>
