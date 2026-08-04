@@ -16,12 +16,16 @@ interface Props {
   question: BriefQuestion;
   value: AnswerValue;
   onChange: (value: AnswerValue) => void;
+  invalid?: boolean;
+  errorId?: string;
 }
 
 export default function QuestionRenderer({
   question,
   value,
   onChange,
+  invalid = false,
+  errorId,
 }: Props) {
   const textValue = typeof value === "string" ? value : "";
   const listValue = Array.isArray(value) ? value : [];
@@ -37,6 +41,8 @@ export default function QuestionRenderer({
           value={textValue}
           placeholder={question.placeholder}
           onChange={onChange}
+          invalid={invalid}
+          errorId={errorId}
         />
       );
 
@@ -46,6 +52,8 @@ export default function QuestionRenderer({
           value={textValue}
           placeholder={question.placeholder}
           onChange={onChange}
+          invalid={invalid}
+          errorId={errorId}
         />
       );
 
@@ -55,24 +63,27 @@ export default function QuestionRenderer({
           value={textValue}
           onChange={onChange}
           options={question.options ?? []}
+          name={question.id}
+          invalid={invalid}
+          errorId={errorId}
         />
       );
 
     case "select":
-      return <SelectField value={textValue} placeholder={question.placeholder} options={question.options ?? []} onChange={onChange} />;
+      return <SelectField value={textValue} placeholder={question.placeholder} options={question.options ?? []} onChange={onChange} invalid={invalid} errorId={errorId} />;
 
     case "checkbox":
-      return <CheckboxField value={listValue} options={question.options ?? []} onChange={onChange} />;
+      return <CheckboxField value={listValue} options={question.options ?? []} onChange={onChange} name={question.id} invalid={invalid} errorId={errorId} />;
 
     case "number":
-      return <NumberField value={textValue} placeholder={question.placeholder} min={question.validation?.min} max={question.validation?.max} onChange={onChange} />;
+      return <NumberField value={textValue} placeholder={question.placeholder} min={question.validation?.min} max={question.validation?.max} onChange={onChange} invalid={invalid} errorId={errorId} />;
 
     case "date":
-      return <DateField value={textValue} onChange={onChange} />;
+      return <DateField value={textValue} onChange={onChange} invalid={invalid} errorId={errorId} />;
 
     case "file":
     case "upload":
-      return <FileField value={listValue} accept={question.accept} multiple={question.multiple} onChange={onChange} />;
+      return <FileField value={listValue} accept={question.accept} multiple={question.multiple} onChange={onChange} invalid={invalid} errorId={errorId} />;
 
     default:
       return (

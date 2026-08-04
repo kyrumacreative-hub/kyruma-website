@@ -1,3 +1,5 @@
+import Image from "next/image";
+
 export default function HeroVisual() {
   return (
     <div className="relative flex h-[620px] items-center justify-center">
@@ -10,10 +12,12 @@ export default function HeroVisual() {
       <div className="relative h-[520px] w-[420px] overflow-hidden rounded-[42px] border border-black/5 bg-white shadow-[0_40px_120px_rgba(0,0,0,.08)]">
         {/* Editorial image */}
 
-        <img
+        <Image
           src="https://images.unsplash.com/photo-1511818966892-d7d671e672a2?auto=format&fit=crop&w=1200&q=80"
           alt=""
-          className="h-full w-full object-cover"
+          fill
+          sizes="(max-width: 768px) 100vw, 420px"
+          className="object-cover"
         />
 
         {/* Overlay */}

@@ -31,12 +31,12 @@ export default function WorkspacePage() {
 
               <div className="flex gap-3">
                 <span>✓</span>
-                <p>Tu progreso se guarda automáticamente.</p>
+                <p>Vuestro progreso se guarda automáticamente.</p>
               </div>
 
               <div className="flex gap-3">
                 <span>✓</span>
-                <p>Puedes detenerte y continuar cuando quieras.</p>
+                <p>Podéis deteneros y continuar cuando queráis.</p>
               </div>
 
               <div className="flex gap-3">

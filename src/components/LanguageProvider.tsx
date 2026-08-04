@@ -34,6 +34,8 @@ export function LanguageProvider({
     ) as Language | null;
 
     if (savedLanguage === "es" || savedLanguage === "en") {
+      // The browser preference is intentionally restored after hydration.
+      // eslint-disable-next-line react-hooks/set-state-in-effect
       setLanguageState(savedLanguage);
     } else {
       const browserLanguage = navigator.language.toLowerCase();

@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
+import Link from "next/link";
 import { sendGAEvent } from "@next/third-parties/google";
 import { useTheme } from "@/components/ThemeProvider";
 
@@ -337,13 +338,13 @@ function Header({ language, setLanguage }: HeaderProps) {
       }`}
     >
       <div className="mx-auto flex h-20 w-full max-w-6xl items-center justify-between px-6 md:px-12">
-        <a
+        <Link
           href="/"
           aria-label="KYRUMA — Home"
           className="text-sm font-light uppercase tracking-[0.25em] text-[var(--foreground)] transition-all duration-500 hover:opacity-60"
         >
           KYRUMA
-        </a>
+        </Link>
 
         <nav
           aria-label="Strategy navigation"
@@ -460,6 +461,8 @@ export default function StrategyPage() {
   const [languageReady, setLanguageReady] = useState(false);
 
   useEffect(() => {
+    // The preference is intentionally restored after hydration.
+    // eslint-disable-next-line react-hooks/set-state-in-effect
     setLanguage(
       navigator.language.toLowerCase().startsWith("en") ? "en" : "es"
     );

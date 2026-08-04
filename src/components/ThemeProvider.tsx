@@ -34,6 +34,8 @@ export function ThemeProvider({ children }: { children: ReactNode }) {
       storedTheme === "dark" ||
       storedTheme === "system"
     ) {
+      // The browser preference is intentionally restored after hydration.
+      // eslint-disable-next-line react-hooks/set-state-in-effect
       setThemeState(storedTheme);
     }
   }, []);
@@ -49,6 +51,7 @@ export function ThemeProvider({ children }: { children: ReactNode }) {
             : "light"
           : theme;
 
+      // This synchronizes React state with the system media query.
       setResolvedTheme(nextResolvedTheme);
 
       document.documentElement.classList.remove("light", "dark");

@@ -1,6 +1,6 @@
 "use client";
 
-import { FormEvent, useRef, useState } from "react";
+import { FormEvent, useEffect, useRef, useState } from "react";
 import { sendGAEvent } from "@next/third-parties/google";
 import { useLanguage } from "@/components/LanguageProvider";
 import KyrumaBooker from "@/components/booking/KyrumaBooker";
@@ -153,7 +153,11 @@ export default function Home() {
   const t = copy[language];
 
   const [formState, setFormState] = useState<"idle" | "sending" | "success" | "error">("idle");
-  const startedAt = useRef(Date.now());
+  const startedAt = useRef(0);
+
+  useEffect(() => {
+    startedAt.current = Date.now();
+  }, []);
 
   async function submitContact(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();

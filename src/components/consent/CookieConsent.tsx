@@ -16,6 +16,8 @@ export default function CookieConsent() {
     const stored = window.localStorage.getItem(STORAGE_KEY);
 
     if (stored === "accepted" || stored === "rejected") {
+      // Consent is restored from browser storage after hydration.
+      // eslint-disable-next-line react-hooks/set-state-in-effect
       setConsent(stored);
     }
 

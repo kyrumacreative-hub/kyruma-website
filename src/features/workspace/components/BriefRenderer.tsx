@@ -19,6 +19,7 @@ interface BriefRendererProps {
 export default function BriefRenderer({ brief }: BriefRendererProps) {
   const {
     section,
+    isReady,
     answers,
     updateAnswer,
     currentSection,
@@ -37,6 +38,10 @@ export default function BriefRenderer({ brief }: BriefRendererProps) {
   const isFirstConversation = currentSection === 0;
   const isLastConversation = currentSection === totalConversations - 1;
   const progress = ((currentSection + 1) / totalConversations) * 100;
+
+  if (!isReady) {
+    return <p aria-live="polite" className="py-12 text-sm text-neutral-500 dark:text-neutral-400">Preparando vuestro Discovery…</p>;
+  }
 
   function validateConversation() {
     const nextErrors = section.questions.reduce<Record<string, string>>((errors, question) => {
@@ -162,6 +167,8 @@ export default function BriefRenderer({ brief }: BriefRendererProps) {
               <QuestionRenderer
                 question={question}
                 value={answers[question.id] ?? ""}
+                invalid={Boolean(fieldErrors[question.id])}
+                errorId={`${question.id}-error`}
                 onChange={(value) => {
                   updateAnswer(question.id, value);
                   if (fieldErrors[question.id]) {
@@ -173,7 +180,7 @@ export default function BriefRenderer({ brief }: BriefRendererProps) {
                   }
                 }}
               />
-              {fieldErrors[question.id] && <p role="alert" className="text-sm text-red-600 dark:text-red-400">{fieldErrors[question.id]}</p>}
+              {fieldErrors[question.id] && <p id={`${question.id}-error`} role="alert" className="text-sm text-red-600 dark:text-red-400">{fieldErrors[question.id]}</p>}
             </fieldset>
           ))}
         </div>

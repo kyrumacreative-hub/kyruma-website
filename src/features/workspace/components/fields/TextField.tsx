@@ -3,6 +3,8 @@ interface TextFieldProps {
   placeholder?: string;
   onChange: (value: string) => void;
   type?: string;
+  invalid?: boolean;
+  errorId?: string;
 }
 
 export default function TextField({
@@ -10,6 +12,8 @@ export default function TextField({
   placeholder,
   onChange,
   type = "text",
+  invalid = false,
+  errorId,
 }: TextFieldProps) {
   return (
     <input
@@ -17,6 +21,8 @@ export default function TextField({
       value={value}
       placeholder={placeholder}
       onChange={(e) => onChange(e.target.value)}
+      aria-invalid={invalid}
+      aria-describedby={invalid ? errorId : undefined}
       className="
         w-full
         rounded-2xl
