@@ -16,12 +16,15 @@ export default function WorkspacePage() {
             </span>
 
             <h1 className="text-5xl font-light leading-tight">
-              Empecemos por lo que quieres hacer posible.
+              Bienvenido a<br />KYRUMA Discovery™
             </h1>
 
             <p className="mt-8 text-lg leading-8 text-neutral-600 dark:text-neutral-400">
-              KYRUMA Discovery™ es una conversación guiada para entender vuestro negocio,
-              descubrir oportunidades y diseñar el siguiente paso con sentido.
+              Las mejores soluciones no empiezan con tecnología. Empiezan entendiendo vuestro negocio.
+            </p>
+
+            <p className="mt-4 text-base leading-7 text-neutral-500 dark:text-neutral-400">
+              Antes de hablar de soluciones queremos comprender vuestro negocio.
             </p>
 
             <div className="mt-12 space-y-4">

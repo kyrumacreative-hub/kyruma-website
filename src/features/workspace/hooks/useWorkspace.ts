@@ -67,6 +67,14 @@ export function useWorkspace(brief: ProjectBrief) {
     setWorkspace((previousWorkspace) => ({ ...previousWorkspace, currentSection: sectionIndex, currentQuestion: questionIndex }));
   }
 
+  function nextConversation() {
+    goToSection(currentSection + 1);
+  }
+
+  function previousConversation() {
+    goToSection(currentSection - 1);
+  }
+
   const totalQuestions = getTotalQuestions(brief);
   const currentQuestionIndex = getCurrentQuestionIndex(brief, currentSection, currentQuestion);
   const progress = getProgress(totalQuestions, currentQuestionIndex);
@@ -88,5 +96,7 @@ export function useWorkspace(brief: ProjectBrief) {
     currentSection,
     goToSection,
     goToQuestion,
+    nextConversation,
+    previousConversation,
   };
 }
