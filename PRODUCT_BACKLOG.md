@@ -6,7 +6,11 @@ Este documento es la fuente única de prioridades del producto. Las ideas se reg
 
 Solo puede haber un objetivo activo.
 
-### Client Polish + validación del primer cliente
+### Marketing Foundation v1
+
+Infraestructura de medición y atribución con consentimiento: GTM, Meta Pixel y Conversion API, GA4, Microsoft Clarity, SEO técnico, eventos, atribución y footer social.
+
+### Release gate de KYRUMA Discovery™ RC1
 
 - Revisar textos, tono y consistencia de KYRUMA Discovery™.
 - Verificar la experiencia móvil, el progreso, el guardado automático, el email recibido y la pantalla final.
@@ -21,12 +25,6 @@ Solo puede haber un objetivo activo.
 Analizar cada KYRUMA Discovery™ para generar un resumen ejecutivo, objetivos, retos, oportunidades, recomendaciones de KYRUMA y preguntas sugeridas para la reunión.
 
 ## READY
-
-### Marketing Foundation
-
-**Dependencia:** KYRUMA Discovery™ validado con clientes reales.
-
-Infraestructura de adquisición y medición: Meta Pixel, Meta Conversion API, Google Analytics 4 mediante Google Tag Manager, Microsoft Clarity, Google Search Console, atribución, footer social y eventos personalizados.
 
 ### Lead Intake Flow
 
