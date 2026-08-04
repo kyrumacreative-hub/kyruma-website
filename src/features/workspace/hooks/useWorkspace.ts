@@ -3,79 +3,77 @@
 import { useEffect, useState } from "react";
 
 import { ProjectBrief } from "../types/brief";
-
-import { saveWorkspace } from "../utils/storage";
-
+import { saveWorkspace, loadWorkspace } from "../utils/storage";
 import { nextQuestion, previousQuestion } from "../engine/navigation";
-import {
-  getCurrentQuestionIndex,
-  getProgress,
-  getTotalQuestions,
-} from "../engine/progress";
-import { updateAnswer as updateAnswerEngine } from "../engine/answers";
-import { AnswerValue } from "../engine/answers";
+import { getCurrentQuestionIndex, getProgress, getTotalQuestions } from "../engine/progress";
+import { AnswerValue, updateAnswer as updateAnswerEngine } from "../engine/answers";
+
+interface WorkspaceData {
+  currentSection: number;
+  currentQuestion: number;
+  answers: Record<string, AnswerValue>;
+}
+
+function getInitialWorkspaceData(brief: ProjectBrief): WorkspaceData {
+  const savedWorkspace = loadWorkspace<Partial<WorkspaceData>>();
+  const savedSection = savedWorkspace?.currentSection;
+  const savedQuestion = savedWorkspace?.currentQuestion;
+  const hasValidPosition = typeof savedSection === "number"
+    && typeof savedQuestion === "number"
+    && brief.sections[savedSection]?.questions[savedQuestion];
+
+  return {
+    answers: savedWorkspace?.answers ?? {},
+    currentSection: hasValidPosition ? savedSection : 0,
+    currentQuestion: hasValidPosition ? savedQuestion : 0,
+  };
+}
 
 export function useWorkspace(brief: ProjectBrief) {
-  const [currentSection, setCurrentSection] = useState(0);
-  const [currentQuestion, setCurrentQuestion] = useState(0);
-  const [answers, setAnswers] = useState<Record<string, AnswerValue>>({});
+  const [workspace, setWorkspace] = useState(() => getInitialWorkspaceData(brief));
+  const { currentSection, currentQuestion, answers } = workspace;
 
   const section = brief.sections[currentSection];
   const question = section.questions[currentQuestion];
 
   function updateAnswer(id: string, value: AnswerValue) {
-    setAnswers((prev) => updateAnswerEngine(prev, id, value));
+    setWorkspace((previousWorkspace) => ({
+      ...previousWorkspace,
+      answers: updateAnswerEngine(previousWorkspace.answers, id, value),
+    }));
   }
 
   function next() {
-    const nextState = nextQuestion(
-      brief,
-      currentSection,
-      currentQuestion
-    );
-
-    setCurrentSection(nextState.section);
-    setCurrentQuestion(nextState.question);
+    setWorkspace((previousWorkspace) => {
+      const nextState = nextQuestion(brief, previousWorkspace.currentSection, previousWorkspace.currentQuestion);
+      return { ...previousWorkspace, currentSection: nextState.section, currentQuestion: nextState.question };
+    });
   }
 
   function previous() {
-    const previousState = previousQuestion(
-      brief,
-      currentSection,
-      currentQuestion
-    );
-
-    setCurrentSection(previousState.section);
-    setCurrentQuestion(previousState.question);
+    setWorkspace((previousWorkspace) => {
+      const previousState = previousQuestion(brief, previousWorkspace.currentSection, previousWorkspace.currentQuestion);
+      return { ...previousWorkspace, currentSection: previousState.section, currentQuestion: previousState.question };
+    });
   }
 
   function goToSection(sectionIndex: number) {
-    if (sectionIndex < 0 || sectionIndex >= brief.sections.length) return;
+    if (!brief.sections[sectionIndex]) return;
+    setWorkspace((previousWorkspace) => ({ ...previousWorkspace, currentSection: sectionIndex, currentQuestion: 0 }));
+  }
 
-    setCurrentSection(sectionIndex);
-    setCurrentQuestion(0);
+  function goToQuestion(sectionIndex: number, questionIndex: number) {
+    if (!brief.sections[sectionIndex]?.questions[questionIndex]) return;
+    setWorkspace((previousWorkspace) => ({ ...previousWorkspace, currentSection: sectionIndex, currentQuestion: questionIndex }));
   }
 
   const totalQuestions = getTotalQuestions(brief);
-
-  const currentQuestionIndex = getCurrentQuestionIndex(
-    brief,
-    currentSection,
-    currentQuestion
-  );
-
-  const progress = getProgress(
-    totalQuestions,
-    currentQuestionIndex
-  );
+  const currentQuestionIndex = getCurrentQuestionIndex(brief, currentSection, currentQuestion);
+  const progress = getProgress(totalQuestions, currentQuestionIndex);
 
   useEffect(() => {
-    saveWorkspace({
-      answers,
-      currentSection,
-      currentQuestion,
-    });
-  }, [answers, currentSection, currentQuestion]);
+    saveWorkspace(workspace);
+  }, [workspace]);
 
   return {
     section,
@@ -89,5 +87,6 @@ export function useWorkspace(brief: ProjectBrief) {
     currentQuestionIndex,
     currentSection,
     goToSection,
+    goToQuestion,
   };
 }
