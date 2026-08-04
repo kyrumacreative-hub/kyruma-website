@@ -7,6 +7,7 @@ import { useWorkspace } from "../hooks/useWorkspace";
 
 import QuestionRenderer from "./QuestionRenderer";
 import ProgressBar from "./ProgressBar";
+import WorkspaceSidebar from "./WorkspaceSidebar";
 
 interface BriefRendererProps {
   brief: ProjectBrief;
@@ -25,6 +26,8 @@ export default function BriefRenderer({
     progress,
     currentQuestionIndex,
     totalQuestions,
+    currentSection,
+    goToSection,
   } = useWorkspace(brief);
 
   const [sending, setSending] = useState(false);
@@ -99,15 +102,14 @@ export default function BriefRenderer({
   }
 
   return (
-    <form
-      onSubmit={(e) => e.preventDefault()}
-      className="space-y-10"
-    >
-      <ProgressBar
-        progress={progress}
-        current={currentQuestionIndex + 1}
-        total={totalQuestions}
-      />
+    <form onSubmit={(e) => e.preventDefault()} className="grid gap-8 xl:grid-cols-[12rem_1fr]">
+      <aside className="hidden border-r border-neutral-200 pr-5 dark:border-neutral-800 xl:block">
+        <p className="mb-4 text-xs font-medium uppercase tracking-[0.2em] text-neutral-500">Tu briefing</p>
+        <WorkspaceSidebar brief={brief} currentSection={currentSection} onSectionChange={goToSection} />
+      </aside>
+
+      <div className="space-y-10">
+        <ProgressBar progress={progress} current={currentQuestionIndex + 1} total={totalQuestions} />
 
       <div>
         <p className="text-sm uppercase tracking-[0.3em] text-neutral-500">
@@ -137,11 +139,12 @@ export default function BriefRenderer({
         </div>
       )}
 
-      <div className="flex justify-between pt-10">
+      <div className="flex items-center justify-between gap-4 pt-4">
         <button
           type="button"
           onClick={previous}
-          className="rounded-full border border-white/10 px-6 py-3 text-white hover:bg-white/5 transition-colors"
+          disabled={currentQuestionIndex === 0}
+          className="rounded-full border border-neutral-300 px-6 py-3 text-neutral-900 transition-colors hover:bg-neutral-100 disabled:cursor-not-allowed disabled:opacity-40 dark:border-white/10 dark:text-white dark:hover:bg-white/5"
         >
           Atrás
         </button>
@@ -164,6 +167,7 @@ export default function BriefRenderer({
             {sending ? "Enviando..." : "Comenzar proyecto"}
           </button>
         )}
+      </div>
       </div>
     </form>
   );

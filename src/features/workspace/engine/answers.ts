@@ -1,9 +1,10 @@
-export type Answers = Record<string, string>;
+export type AnswerValue = string | string[];
+export type Answers = Record<string, AnswerValue>;
 
 export function updateAnswer(
   answers: Answers,
   id: string,
-  value: string
+  value: AnswerValue
 ): Answers {
   return {
     ...answers,

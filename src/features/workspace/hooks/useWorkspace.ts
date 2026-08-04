@@ -13,16 +13,17 @@ import {
   getTotalQuestions,
 } from "../engine/progress";
 import { updateAnswer as updateAnswerEngine } from "../engine/answers";
+import { AnswerValue } from "../engine/answers";
 
 export function useWorkspace(brief: ProjectBrief) {
   const [currentSection, setCurrentSection] = useState(0);
   const [currentQuestion, setCurrentQuestion] = useState(0);
-  const [answers, setAnswers] = useState<Record<string, string>>({});
+  const [answers, setAnswers] = useState<Record<string, AnswerValue>>({});
 
   const section = brief.sections[currentSection];
   const question = section.questions[currentQuestion];
 
-  function updateAnswer(id: string, value: string) {
+  function updateAnswer(id: string, value: AnswerValue) {
     setAnswers((prev) => updateAnswerEngine(prev, id, value));
   }
 
@@ -46,6 +47,13 @@ export function useWorkspace(brief: ProjectBrief) {
 
     setCurrentSection(previousState.section);
     setCurrentQuestion(previousState.question);
+  }
+
+  function goToSection(sectionIndex: number) {
+    if (sectionIndex < 0 || sectionIndex >= brief.sections.length) return;
+
+    setCurrentSection(sectionIndex);
+    setCurrentQuestion(0);
   }
 
   const totalQuestions = getTotalQuestions(brief);
@@ -79,5 +87,7 @@ export function useWorkspace(brief: ProjectBrief) {
     progress,
     totalQuestions,
     currentQuestionIndex,
+    currentSection,
+    goToSection,
   };
 }

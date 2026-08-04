@@ -16,6 +16,9 @@ export interface BriefQuestion {
     | "select"
     | "radio"
     | "checkbox"
+    | "number"
+    | "date"
+    | "file"
     | "upload";
 
   required?: boolean;

@@ -1,13 +1,21 @@
 "use client";
 
 import { BriefQuestion } from "../types/brief";
+import { AnswerValue } from "../engine/answers";
 
 import TextField from "./fields/TextField";
+import RadioField from "./fields/RadioField";
+import TextareaField from "./fields/TextareaField";
+import SelectField from "./fields/SelectField";
+import CheckboxField from "./fields/CheckboxField";
+import NumberField from "./fields/NumberField";
+import DateField from "./fields/DateField";
+import FileField from "./fields/FileField";
 
 interface Props {
   question: BriefQuestion;
-  value: string;
-  onChange: (value: string) => void;
+  value: AnswerValue;
+  onChange: (value: AnswerValue) => void;
 }
 
 export default function QuestionRenderer({
@@ -15,6 +23,9 @@ export default function QuestionRenderer({
   value,
   onChange,
 }: Props) {
+  const textValue = typeof value === "string" ? value : "";
+  const listValue = Array.isArray(value) ? value : [];
+
   switch (question.type) {
     case "text":
     case "email":
@@ -23,7 +34,7 @@ export default function QuestionRenderer({
       return (
         <TextField
           type={question.type}
-          value={value}
+          value={textValue}
           placeholder={question.placeholder}
           onChange={onChange}
         />
@@ -31,27 +42,37 @@ export default function QuestionRenderer({
 
     case "textarea":
       return (
-        <textarea
-          value={value}
+        <TextareaField
+          value={textValue}
           placeholder={question.placeholder}
-          onChange={(e) => onChange(e.target.value)}
-          className="
-            w-full
-            min-h-[180px]
-            rounded-2xl
-            border
-            border-neutral-300
-            bg-white
-            p-6
-            outline-none
-            transition
-            focus:border-[var(--primary)]
-            dark:border-neutral-700
-            dark:bg-neutral-950
-            dark:text-white
-          "
+          onChange={onChange}
         />
       );
+
+    case "radio":
+      return (
+        <RadioField
+          value={textValue}
+          onChange={onChange}
+          options={question.options ?? []}
+        />
+      );
+
+    case "select":
+      return <SelectField value={textValue} placeholder={question.placeholder} options={question.options ?? []} onChange={onChange} />;
+
+    case "checkbox":
+      return <CheckboxField value={listValue} options={question.options ?? []} onChange={onChange} />;
+
+    case "number":
+      return <NumberField value={textValue} placeholder={question.placeholder} min={question.validation?.min} max={question.validation?.max} onChange={onChange} />;
+
+    case "date":
+      return <DateField value={textValue} onChange={onChange} />;
+
+    case "file":
+    case "upload":
+      return <FileField value={listValue} accept={question.accept} multiple={question.multiple} onChange={onChange} />;
 
     default:
       return (
