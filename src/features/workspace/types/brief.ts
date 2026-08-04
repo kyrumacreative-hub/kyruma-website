@@ -1,27 +1,39 @@
-export type QuestionType =
-  | "text"
-  | "textarea"
-  | "email"
-  | "tel"
-  | "url"
-  | "select"
-  | "radio"
-  | "checkbox"
-  | "file";
-
-export interface BriefOption {
-  label: string;
-  value: string;
-}
-
 export interface BriefQuestion {
   id: string;
+
   label: string;
+
   description?: string;
-  type: QuestionType;
+
   placeholder?: string;
+
+  type:
+    | "text"
+    | "email"
+    | "tel"
+    | "url"
+    | "textarea"
+    | "select"
+    | "radio"
+    | "checkbox"
+    | "upload";
+
   required?: boolean;
-  options?: BriefOption[];
+
+  options?: {
+    label: string;
+    value: string;
+  }[];
+
+  multiple?: boolean;
+
+  accept?: string[];
+
+  validation?: {
+    min?: number;
+    max?: number;
+    pattern?: string;
+  };
 }
 
 export interface BriefSection {
