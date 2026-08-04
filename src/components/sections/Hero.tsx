@@ -4,19 +4,23 @@ import Container from "@/components/ui/Container";
 import Reveal from "@/components/motion/Reveal";
 import Stagger from "@/components/motion/Stagger";
 
+import HeroVisual from "./HeroVisual";
+
 export default function Hero() {
   return (
-    <section className="relative flex min-h-screen items-center overflow-hidden bg-black py-32 md:py-48 lg:py-56">
+    <section className="relative overflow-hidden bg-black">
       {/* Ambient Light */}
 
       <div
         aria-hidden="true"
-        className="pointer-events-none absolute -right-[25%] -top-[30%] h-[900px] w-[900px] rounded-full bg-[#FF5A00]/[0.05] blur-[200px]"
+        className="pointer-events-none absolute left-1/2 top-0 h-[900px] w-[900px] -translate-x-1/2 rounded-full bg-[#FF5A00]/[0.05] blur-[220px]"
       />
 
       <Container className="relative z-10">
-        <Stagger>
-          <div className="flex flex-col gap-16 md:gap-20 lg:gap-24">
+        <div className="flex min-h-screen flex-col justify-center py-28 lg:py-36">
+
+          <Stagger>
+
             {/* Eyebrow */}
 
             <Reveal
@@ -38,35 +42,31 @@ export default function Hero() {
               variant="up"
               delay={0.15}
             >
-              <div className="max-w-6xl">
-                <h1 className="text-5xl font-light leading-[1.05] tracking-tighter text-white md:text-7xl md:leading-[1.02] lg:text-8xl">
+              <div className="mt-10 max-w-6xl">
+                <h1 className="text-5xl font-light leading-[1.02] tracking-[-0.04em] text-white md:text-7xl lg:text-8xl">
                   We build businesses
-                  <br className="hidden md:block" />
-                  {" "}people trust.
+                  <br />
+                  people trust.
                 </h1>
               </div>
             </Reveal>
 
-            {/* Supporting Content */}
+            {/* Intro */}
 
             <Reveal
               variant="up"
               delay={0.30}
             >
-              <div className="grid gap-16 border-t border-white/[0.06] pt-12 lg:grid-cols-12 lg:items-end">
-                <div className="hidden lg:col-span-5 lg:block">
-                  <p className="text-sm font-light tracking-wide text-neutral-600">
-                    Strategy · Identity · Digital · Systems
-                  </p>
-                </div>
+              <div className="mt-12 grid gap-14 lg:grid-cols-12">
 
-                <div className="flex flex-col gap-10 lg:col-span-6 lg:col-start-7">
-                  <p className="max-w-xl text-base font-light leading-relaxed tracking-wide text-neutral-400 md:text-lg md:leading-loose">
+                <div className="lg:col-span-7">
+                  <p className="max-w-xl text-lg leading-relaxed text-neutral-400">
                     Strategy, identity and digital experiences for ambitious
                     businesses ready to become clear, relevant and unforgettable.
                   </p>
 
-                  <div className="flex flex-wrap gap-4">
+                  <div className="mt-10 flex flex-wrap gap-4">
+
                     <Button href="#contact">
                       Start a Project
                     </Button>
@@ -77,8 +77,35 @@ export default function Hero() {
                     >
                       Explore KYRUMA
                     </Button>
+
                   </div>
                 </div>
+
+                <div className="hidden items-end justify-end lg:flex lg:col-span-5">
+
+                  <div className="text-right text-sm uppercase tracking-[0.28em] text-neutral-600">
+                    Strategy
+                    <br />
+                    Identity
+                    <br />
+                    Digital
+                    <br />
+                    Systems
+                  </div>
+
+                </div>
+
+              </div>
+            </Reveal>
+
+            {/* Visual */}
+
+            <Reveal
+              variant="scale"
+              delay={0.45}
+            >
+              <div className="mt-24">
+                <HeroVisual />
               </div>
             </Reveal>
 
@@ -86,23 +113,23 @@ export default function Hero() {
 
             <Reveal
               variant="fade"
-              delay={0.45}
+              delay={0.6}
             >
-              <div className="flex items-center justify-between border-t border-white/[0.06] pt-6">
-                <span className="text-xs font-light tracking-wide text-neutral-600 lg:hidden">
-                  Strategy · Identity · Digital · Systems
-                </span>
+              <div className="mt-16 flex justify-end">
 
                 <a
                   href="#statement"
-                  className="ml-auto text-[10px] font-medium uppercase tracking-[0.25em] text-neutral-600 transition-colors hover:text-white"
+                  className="text-[10px] font-medium uppercase tracking-[0.28em] text-neutral-600 transition-colors hover:text-white"
                 >
                   Scroll to explore ↓
                 </a>
+
               </div>
             </Reveal>
-          </div>
-        </Stagger>
+
+          </Stagger>
+
+        </div>
       </Container>
     </section>
   );
