@@ -13,7 +13,7 @@ export default function ProgressBar({
     <div className="space-y-4">
       <div className="flex items-center justify-between text-sm">
         <span className="font-medium text-neutral-900 dark:text-white">
-          Paso {current} de {total}
+          Conversación {current} de {total}
         </span>
 
         <span className="text-neutral-500">

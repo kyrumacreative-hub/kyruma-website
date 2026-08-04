@@ -8,7 +8,7 @@ interface WorkspaceSidebarProps {
 
 export default function WorkspaceSidebar({ brief, currentSection, onSectionChange }: WorkspaceSidebarProps) {
   return (
-    <nav aria-label="Secciones del briefing" className="space-y-2">
+    <nav aria-label="Conversaciones de KYRUMA Discovery" className="space-y-2">
       {brief.sections.map((section, index) => {
         const isCurrent = index === currentSection;
         const isComplete = index < currentSection;

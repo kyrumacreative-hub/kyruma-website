@@ -1,4 +1,4 @@
-const STORAGE_KEY = "kyruma-workspace";
+const STORAGE_KEY = "kyruma-discovery-v1";
 
 export function saveWorkspace(data: unknown) {
   if (typeof window === "undefined") return;

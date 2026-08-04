@@ -107,8 +107,8 @@ export async function POST(req: NextRequest) {
       from: "KYRUMA <hello@kyruma.com>",
       to: ["hello@kyruma.com"],
       reply_to: typeof answers.email === "string" ? answers.email : undefined,
-      subject: `Nuevo Project Brief — ${companyName}`,
-      html: `<h1>Nuevo Brief recibido</h1><table width="100%" cellpadding="0" cellspacing="0" style="border-collapse:collapse">${rows}</table>`,
+      subject: `Nuevo KYRUMA Discovery — ${companyName}`,
+      html: `<h1>Nuevo KYRUMA Discovery recibido</h1><table width="100%" cellpadding="0" cellspacing="0" style="border-collapse:collapse">${rows}</table>`,
     });
 
     return NextResponse.json({ ok: true });

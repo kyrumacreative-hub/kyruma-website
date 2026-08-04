@@ -12,38 +12,38 @@ export default function WorkspacePage() {
           <aside className="flex flex-col justify-center">
 
             <span className="mb-6 inline-flex w-fit rounded-full border border-[var(--primary)]/20 bg-[var(--primary)]/5 px-4 py-2 text-xs font-medium uppercase tracking-[0.25em] text-[var(--primary)]">
-              KYRUMA Workspace
+              KYRUMA Discovery™
             </span>
 
             <h1 className="text-5xl font-light leading-tight">
-              Bienvenido.
+              Empecemos por lo que quieres hacer posible.
             </h1>
 
             <p className="mt-8 text-lg leading-8 text-neutral-600 dark:text-neutral-400">
-              Antes de diseñar una solución queremos comprender vuestro negocio.
-              Este briefing nos ayuda a conocer vuestra empresa, objetivos y necesidades.
+              KYRUMA Discovery™ es una conversación guiada para entender vuestro negocio,
+              descubrir oportunidades y diseñar el siguiente paso con sentido.
             </p>
 
             <div className="mt-12 space-y-4">
 
               <div className="flex gap-3">
                 <span>✓</span>
-                <p>Guardado automático.</p>
+                <p>Tu progreso se guarda automáticamente.</p>
               </div>
 
               <div className="flex gap-3">
                 <span>✓</span>
-                <p>Puedes continuar más tarde.</p>
+                <p>Puedes detenerte y continuar cuando quieras.</p>
               </div>
 
               <div className="flex gap-3">
                 <span>✓</span>
-                <p>Un especialista revisará personalmente el proyecto.</p>
+                <p>Un especialista de KYRUMA revisará cada respuesta.</p>
               </div>
 
               <div className="flex gap-3">
                 <span>✓</span>
-                <p>Duración aproximada: 20 minutos.</p>
+                <p>Una conversación clara, a vuestro ritmo.</p>
               </div>
 
             </div>
