@@ -11,6 +11,7 @@ Solo puede haber un objetivo activo.
 - Revisar textos, tono y consistencia de KYRUMA Discovery™.
 - Verificar la experiencia móvil, el progreso, el guardado automático, el email recibido y la pantalla final.
 - Realizar un recorrido completo como un cliente sin contexto previo.
+- Ejecutar una prueba controlada de recepción de correo en producción antes de enviar el primer enlace.
 - Recoger feedback real en `KYR-DISCOVERY-FEEDBACK-001` tras el primer uso.
 
 ## NEXT
