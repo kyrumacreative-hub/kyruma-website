@@ -1,6 +1,6 @@
 # KYRUMA OS™ — Identity and Authorization
 
-**Estado:** Propuesta; proveedor de identidad pendiente de evaluación.
+**Estado:** Modelo aprobado; la elección de proveedor de identidad sigue pendiente de RFC.
 
 ## Modelo recomendado
 
@@ -52,4 +52,4 @@ flowchart LR
 | Auth.js + proveedor de base de datos | Mayor control y menos dependencia | Más responsabilidad operativa. |
 | SSO empresarial desde inicio | Adecuado para clientes grandes | Prematuro antes de conocer demanda. |
 
-**Recomendación:** elegir proveedor gestionado con soporte de sesiones, invitaciones, organización y exportación de datos durante la fase Identity. Estado: **pendiente**.
+**Recomendación:** elegir el proveedor mediante RFC contra el puerto de identidad ya implementado. Un proveedor gestionado sigue siendo una alternativa preferente, pero la elección concreta permanece **pendiente**.

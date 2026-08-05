@@ -1,7 +1,7 @@
 # KYRUMA OS™ — Architecture Review
 
 **Rama revisada:** `architecture/kyruma-os-foundation`
-**Estado:** Revisión ejecutiva; la arquitectura permanece congelada.
+**Estado:** Revisión ejecutiva histórica previa a Foundation Phase 1 y 2; la arquitectura de dominio permanece congelada.
 **Conclusión recomendada:** **APPROVE WITH CONDITIONS**
 
 ## 1. Resumen ejecutivo
@@ -114,7 +114,7 @@ Feature flag/route privada no enlazada públicamente; revocar variables/sesiones
 
 ## Verificación de congelación
 
-- El diff de la rama respecto a `main` contiene solo documentación de arquitectura y revisión.
-- No se añadieron dependencias a `package.json` ni código en `src/`.
+- En el momento de esta revisión, el diff respecto a `main` contenía solo documentación de arquitectura y revisión.
+- En el momento de esta revisión, no se habían añadido dependencias a `package.json` ni código en `src/`.
 - No se alteraron APIs, providers, web pública, Discovery ni la ruta `/workspace`.
 - No se fusionó ni desplegó la rama.

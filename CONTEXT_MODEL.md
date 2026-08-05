@@ -14,7 +14,7 @@ flowchart LR
   H --> I[Context Guard / future domain module]
 ```
 
-`PartnerContextProvider.resolve(actor, selection)` es la frontera única de resolución. El puerto recibe el identificador público de Partner; la clave técnica permanece dentro del contexto del servidor.
+`PartnerContextProvider.resolve(actor, selection)` es la frontera única de resolución. El puerto recibe un `KYR-XXX` validado; la clave técnica permanece dentro del contexto del servidor. `contextKey` es un detalle interno de invalidación y no se serializa ni se usa como autorización.
 
 ## Ciclo de vida
 

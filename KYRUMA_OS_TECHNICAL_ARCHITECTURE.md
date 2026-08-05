@@ -1,6 +1,6 @@
 # KYRUMA OS™ — Technical Architecture
 
-**Estado:** Propuesta para revisión ejecutiva
+**Estado:** Arquitectura aprobada; proveedores e infraestructura operativa siguen pendientes.
 **Alcance:** arquitectura; no implementa funcionalidad operativa.
 
 ## Resumen ejecutivo

@@ -1,6 +1,6 @@
 # KYRUMA OS™ — Implementation Roadmap
 
-**Estado:** Propuesta incremental alineada con Business Decision Pack v1.0. Technical Foundation se limita a documentación y está completa; la primera fase funcional no comienza sin RFC aprobado y autorización expresa.
+**Estado:** Roadmap incremental alineado con Business Decision Pack v1.0. Identity & Permissions y Partner Context están implementados como infraestructura sin proveedor ni dominio funcional. Ninguna fase posterior comienza sin RFC aprobado y autorización expresa.
 
 | Fase | Objetivo / entregables | Dependencias | Riesgos y criterio de aceptación | Fuera de alcance |
 | --- | --- | --- | --- | --- |
