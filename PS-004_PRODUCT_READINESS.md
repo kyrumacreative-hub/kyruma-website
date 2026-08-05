@@ -4,7 +4,7 @@
 **Documento evaluado:** `product/specifications/PS-004-Lead-Lifecycle.md`  
 **Versión:** 0.1  
 **Estado de Product:** Draft  
-**Estado de Engineering:** Pending Technical Review
+**Estado de Engineering:** Technical Review completed — Approved with Conditions
 
 ## Documento creado
 
@@ -21,26 +21,24 @@ El documento está dentro del repositorio, puede versionarse mediante Git y pued
 
 Todas las secciones de contenido permanecen pendientes de Product. En particular:
 
-- EP-004.1 — Lead Creation no tiene contenido fuente localizado y queda marcado como `TODO(Product)`.
+- EP-004.1 — Lead Creation está incorporada, incluyendo Objective, User Story, Actors, Triggers, Preconditions, Main Flow, Business Rules, Permissions, Domain Events, State Machine, Data Model, Entity Relationships, Edge Cases, Acceptance Criteria y Definition of Done.
 - EP-004.2 a EP-004.7 no se han completado.
-- State Machine, Permissions, Domain Events, Data Model, Acceptance Criteria, Edge Cases, Out of Scope y Traceability Matrix no contienen definición de Product.
+- Los capítulos globales de State Machine, Permissions, Domain Events, Data Model, Acceptance Criteria, Edge Cases, Out of Scope y Traceability Matrix permanecen pendientes fuera del alcance de EP-004.1.
 
 ## Bloqueos para Technical Review
 
-La revisión técnica de EP-004.1 no puede aprobarse hasta que Product incorpore al menos:
+La revisión técnica de EP-004.1 se ha emitido como `APPROVED WITH CONDITIONS`. Antes de implementar, deben cerrarse:
 
-1. Business Rules y definición de Lead, Organization, Contact y Owner.
-2. UC-001 completo: actor, precondiciones, flujo, ramas alternativas, errores y resultado.
-3. EV-001, EV-002 y EV-003: hecho, productor, payload, versión y consumidores esperados.
-4. State Machine y transiciones válidas/invalidas.
-5. Matriz de Capabilities, Membership, Context y visibilidad.
-6. Data Model, tratamiento de datos personales, retención, archivado y exportación.
-7. Acceptance Criteria, Edge Cases y Out of Scope trazables.
+1. RFC de Context pre-Partner/Organization y Capability de Lead.
+2. RFC de persistencia, transacción, Audit y Timeline.
+3. Política de datos personales de Contact.
+4. Definiciones de Organization, Contact, Owner, Lead activo y contratos de eventos.
+5. Decisiones sobre duplicados y reintentos para API/importación.
 
 ## Recomendación final
 
-**NOT READY FOR TECHNICAL REVIEW.**
+**READY FOR PRODUCT CORRECTIONS; NOT READY FOR IMPLEMENTATION.**
 
-La estructura oficial está preparada y debe utilizarse exclusivamente para las futuras modificaciones de PS-004. Product debe trasladar el contenido aprobado de EP-004.1 al documento y resolver los bloques indicados antes de solicitar una nueva Technical Review.
+La estructura oficial está preparada y debe utilizarse exclusivamente para las futuras modificaciones de PS-004. Product debe resolver las condiciones indicadas en `TECHNICAL_REVIEW_EP-004.1_LEAD_CREATION.md` antes de solicitar autorización de implementación.
 
 No se ha implementado Lead Lifecycle, ni se ha modificado Foundation, arquitectura, dependencias o código funcional.
