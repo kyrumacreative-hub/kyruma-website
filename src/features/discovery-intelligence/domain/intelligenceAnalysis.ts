@@ -1,4 +1,5 @@
 import { InvalidAnalysisMetadataError, InvalidAnalysisStateTransitionError } from "./errors";
+import { analysisEvent, type IntelligenceDomainEvent, type IntelligenceEventDetails } from "./events";
 import {
   AnalysisStatus,
   type AnalysisStatusValue,
@@ -27,6 +28,7 @@ export interface IntelligenceAnalysisProperties {
   requestedBy: string;
   requestedAt: Date;
   correlationId: CorrelationId;
+  requestedEvent: IntelligenceEventDetails;
 }
 
 const allowedTransitions: Readonly<Record<AnalysisStatusValue, readonly AnalysisStatusValue[]>> = {
@@ -60,6 +62,7 @@ export class IntelligenceAnalysis {
   private currentGeneratedAt?: Date;
   private currentFailedAt?: Date;
   private currentArchivedAt?: Date;
+  private pendingEvents: IntelligenceDomainEvent[] = [];
 
   constructor(properties: IntelligenceAnalysisProperties) {
     this.id = properties.id;
@@ -73,6 +76,10 @@ export class IntelligenceAnalysis {
     this.requestedBy = requireNonEmpty(properties.requestedBy, "requestedBy");
     this.requestedAt = properties.requestedAt;
     this.correlationId = properties.correlationId;
+    this.recordEvent(analysisEvent("IntelligenceAnalysisRequested", this.id, properties.requestedEvent, {
+      sourceSnapshotId: this.sourceSnapshotId.value,
+      analysisVersion: this.analysisVersion.value,
+    }));
   }
 
   get status(): AnalysisStatusValue { return this.currentStatus.value; }
@@ -82,32 +89,52 @@ export class IntelligenceAnalysis {
   get failedAt(): Date | undefined { return this.currentFailedAt; }
   get archivedAt(): Date | undefined { return this.currentArchivedAt; }
 
-  startProcessing(modelRunId: ModelRunId): void {
+  startProcessing(modelRunId: ModelRunId, event: IntelligenceEventDetails): void {
     this.transitionTo("processing");
     this.currentModelRunId = modelRunId;
+    this.recordEvent(analysisEvent("IntelligenceAnalysisStarted", this.id, event, { modelRunId: modelRunId.value }));
   }
 
-  markGenerated(confidence: ConfidenceScore, generatedAt: Date): void {
+  markGenerated(confidence: ConfidenceScore, generatedAt: Date, event: IntelligenceEventDetails): void {
     this.transitionTo("generated");
     this.currentConfidence = confidence;
     this.currentGeneratedAt = generatedAt;
+    this.recordEvent(analysisEvent("IntelligenceAnalysisGenerated", this.id, event, { confidence: confidence.value }));
   }
 
   submitForReview(): void { this.transitionTo("under_review"); }
 
-  recordReview(decision: ReviewDecisionValue): void { this.transitionTo(decision); }
+  recordReview(decision: ReviewDecisionValue, event: IntelligenceEventDetails): void {
+    this.transitionTo(decision);
+    this.recordEvent(analysisEvent("IntelligenceAnalysisReviewed", this.id, event, { decision }));
+  }
 
-  markFailed(failedAt: Date): void {
+  markFailed(failedAt: Date, event: IntelligenceEventDetails): void {
     this.transitionTo("failed");
     this.currentFailedAt = failedAt;
+    this.recordEvent(analysisEvent("IntelligenceAnalysisFailed", this.id, event));
   }
 
-  markSuperseded(): void { this.transitionTo("superseded"); }
+  markSuperseded(event: IntelligenceEventDetails): void {
+    this.transitionTo("superseded");
+    this.recordEvent(analysisEvent("IntelligenceAnalysisSuperseded", this.id, event));
+  }
 
-  archive(archivedAt: Date): void {
+  archive(archivedAt: Date, event: IntelligenceEventDetails): void {
     this.transitionTo("archived");
     this.currentArchivedAt = archivedAt;
+    this.recordEvent(analysisEvent("IntelligenceAnalysisArchived", this.id, event));
   }
+
+  recordEvent(event: IntelligenceDomainEvent): void { this.pendingEvents.push(event); }
+
+  pullDomainEvents(): readonly IntelligenceDomainEvent[] {
+    const events = [...this.pendingEvents];
+    this.clearDomainEvents();
+    return events;
+  }
+
+  clearDomainEvents(): void { this.pendingEvents = []; }
 
   private transitionTo(next: AnalysisStatusValue): void {
     if (!allowedTransitions[this.status].includes(next)) {

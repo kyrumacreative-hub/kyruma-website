@@ -74,3 +74,24 @@ export class InvalidAnalysisStateTransitionError extends Error {
     this.name = "InvalidAnalysisStateTransitionError";
   }
 }
+
+export class InvalidSnapshotMetadataError extends Error {
+  constructor(field: string) {
+    super(`${field} must be a non-empty string.`);
+    this.name = "InvalidSnapshotMetadataError";
+  }
+}
+
+export class IncompleteDiscoverySourceError extends Error {
+  constructor() {
+    super("A source snapshot can only be created from a completed discovery submission.");
+    this.name = "IncompleteDiscoverySourceError";
+  }
+}
+
+export class InvalidDomainEventIdError extends Error {
+  constructor() {
+    super("A domain event identifier must be a non-empty string.");
+    this.name = "InvalidDomainEventIdError";
+  }
+}
