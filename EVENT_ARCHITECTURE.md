@@ -4,7 +4,7 @@
 
 ## Principios
 
-Un evento de dominio declara un hecho ya confirmado (`DiscoveryCompleted`), con identificador, versión, actor, ámbito, fecha y referencia al recurso. Un evento de analítica describe comportamiento web y permanece sujeto a consentimiento. Nunca se reutiliza un evento de analítica como disparador operativo.
+Un evento de dominio declara un hecho ya confirmado (`DiscoveryCompleted`), con identificador, versión, actor, ámbito, fecha y referencia al recurso. Un `Timeline Event` es una proyección comprensible de un hecho de negocio con visibilidad `internal` o `shared`; un `Audit Event` es un registro técnico/de seguridad independiente. Un evento de analítica describe comportamiento web y permanece sujeto a consentimiento. Ninguno sustituye a los demás ni se reutiliza como disparador operativo.
 
 ```mermaid
 sequenceDiagram
@@ -30,8 +30,8 @@ El `data` contiene referencias y atributos mínimos, nunca respuestas completas,
 
 | Evento | Productor | Consumidores potenciales | Payload mínimo |
 | --- | --- | --- | --- |
-| LeadCreated | Acquisition | Timeline, notificación | `leadId`, fuente, estado |
-| PartnerCreated | Partners | Timeline, permisos | `partnerId`, `organizationId` |
+| LeadCreated | Acquisition | Timeline interna, notificación futura | `leadId`, fuente, estado `NEW` |
+| PartnerCreated | Partners | Timeline interna, permisos | `partnerId`, `partnerPublicId`, `organizationId`, estado `ONBOARDING` |
 | DiscoveryStarted | Discovery | Timeline | `discoveryId`, versión |
 | DiscoveryCompleted | Discovery | revisión, Intelligence futura | `discoveryId`, `submissionId`, versión |
 | DiscoveryReviewed | Discovery | Timeline, partner | `discoveryId`, revisor, resultado |

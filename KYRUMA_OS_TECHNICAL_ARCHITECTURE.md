@@ -94,12 +94,12 @@ Los componentes de plataforma viven en `components/platform` y reciben view mode
 | `EmptyState`, `ErrorState`, `LoadingState`, `Skeleton` | Estados transversales de vista. | Copy sin revelar recursos no autorizados; opción de reintento segura. |
 | `PermissionBoundary` | Frontera visual posterior a la autorización de servidor. | No sustituye el guard del caso de uso; 404/403 según política. |
 
-## Decisiones pendientes de negocio
+## Decisiones pendientes antes de implementación
 
-1. Definición comercial de Partner frente a Organization y cuándo un Lead se convierte en Partner.
-2. Modelo de visibilidad del portal: qué puede ver y editar un Partner, un Viewer y una persona externa.
-3. Régimen de conservación, eliminación y exportación de datos de clientes.
-4. Países, jurisdicción, responsables de tratamiento y requisitos contractuales.
-5. Propiedad de archivos, tamaño máximo y coste/retención aceptable.
+1. Proveedor de identidad, sesiones e invitaciones.
+2. Base de datos relacional, almacenamiento de archivos, región, copias y objetivos de recuperación.
+3. Régimen jurídico aplicable de conservación, eliminación, exportación y responsables de tratamiento.
+4. Límites operativos de archivos: tamaño, formatos, coste y escaneo.
+5. Namespace final de la superficie interna y estrategia de migración de `/workspace`, si alguna vez fuera necesaria.
 
-Estas decisiones bloquean implementación, no esta propuesta.
+Las definiciones de Partner, Workspace, Lead Lifecycle, visibilidad y orden funcional están aprobadas en `BUSINESS_DECISION_ALIGNMENT.md`. Las decisiones pendientes bloquean implementación, no esta propuesta.

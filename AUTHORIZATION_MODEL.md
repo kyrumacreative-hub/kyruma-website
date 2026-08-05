@@ -16,7 +16,7 @@ Autenticación establece quién es el User. Autorización decide qué puede hace
 | Partner | Su Organization/Workspace | Lectura y acciones explícitamente compartidas. |
 | Viewer | Ámbito limitado | Solo lectura de recursos publicados. |
 
-Ejemplos de capacidades: `partner.read`, `discovery.review`, `proposal.publish`, `project.manage`, `document.share`, `note.internal.read`, `audit.read`, `admin.manage`. Las excepciones se conceden por Membership o recurso, con vencimiento y razón.
+El catálogo aprobado inicial incluye capacidades por Partner, Workspace, Discovery, Meeting, Proposal, Strategy, Project, Task, Document, Deliverable, Internal Note, Insight, Notification, Audit y Admin. Se implementará como catálogo consolidable, conservando la separación entre lectura, gestión y publicación. Las excepciones se conceden por Membership o recurso, con vencimiento y razón.
 
 ```mermaid
 flowchart LR
@@ -33,7 +33,7 @@ flowchart LR
 
 1. Cada petición autenticada resuelve actor, Membership activa y Organization antes de cargar datos.
 2. El servidor aplica autorización; ocultar botones en cliente es solo UX.
-3. Los recursos internos (`InternalNote`, borradores, auditoría) deniegan por defecto a roles Partner/Viewer.
+3. La decisión combina rol, Membership, Organization, Partner, Workspace, recurso, acción, visibilidad y estado de la relación. Los recursos internos (`InternalNote`, borradores, auditoría) deniegan por defecto a roles Partner/Viewer.
 4. Cambios de rol, invitaciones, exportaciones, enlaces públicos y accesos de emergencia generan Audit Event.
 5. Las listas, búsquedas y contadores se filtran por ámbito para no revelar existencia de recursos.
 

@@ -18,7 +18,7 @@ flowchart TB
 
 ## Convenciones de modelo
 
-- PK interna UUIDv7/ULID; `publicId`/slug separado, no secuencial y revocable.
+- PK interna UUIDv7/ULID; `publicId`/slug separado. Partner añade `partnerPublicId` consecutivo, estable y no reutilizable con formato `KYR-XXX`, generado de forma transaccional frente a concurrencia y nunca usado para autorización.
 - `organization_id` obligatorio en datos de negocio. `workspace_id` obligatorio para recursos de workspace.
 - Foreign keys, restricciones de estado y transacciones para conversión Lead→Partner, envío de propuesta y publicación de entregable.
 - `created_at`, `updated_at`, `created_by`, `version`; `deleted_at` para soft delete cuando la retención lo permita.
@@ -29,7 +29,7 @@ flowchart TB
 - `discovery_template` y `discovery_template_version`: esquema versionado de preguntas.
 - `discovery` identifica el proceso de un Partner/Workspace; `discovery_submission` guarda un snapshot de respuestas con `template_version_id`.
 - Las respuestas no se migran destructivamente al cambiar preguntas. Las vistas interpretan cada versión o muestran campos retirados de forma segura.
-- Archivos: DB solo guarda metadatos, clasificación, propietario, hash y referencia de objeto. Descargas mediante URL firmada de corta duración, después de autorización.
+- Archivos: DB solo guarda metadatos, clasificación, propietario funcional, visibilidad, hash y referencia de objeto. Descargas mediante URL firmada de corta duración, después de autorización.
 
 ## Migraciones, copias y portabilidad
 
@@ -40,4 +40,4 @@ flowchart TB
 
 ## Datos sensibles
 
-Discovery, notas, propuestas, contactos y archivos se clasifican al menos como confidenciales. Cifrado en tránsito y en reposo se exige al proveedor; cifrado a nivel de campo se evalúa para datos de alta sensibilidad cuando se defina su naturaleza. Los logs guardan IDs y metadatos mínimos, no contenido.
+Discovery, notas, propuestas, contactos y archivos se clasifican al menos como confidenciales. NIF/CIF, dirección, teléfono, cuentas bancarias, contratos, documentos de identidad, información financiera, notas internas y registros de acceso requieren clasificación restringida cuando aplique. Cifrado en tránsito y en reposo se exige al proveedor; cifrado a nivel de campo se evalúa para datos de alta sensibilidad cuando se defina su naturaleza. Los logs guardan IDs y metadatos mínimos, no contenido.

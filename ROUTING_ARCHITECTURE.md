@@ -9,7 +9,7 @@
 | `/`, `/services/*`, `/strategy`, `/contact` | Pública | Ninguna | Se mantiene. |
 | `/workspace` | Cliente potencial | Ninguna; validación de API actual | Se mantiene como Discovery público compatible. |
 | `/os` | Personal interno | Sesión + capacidad `os.access` | Futuro índice interno; prefijo explícito evita confundirlo con Discovery. |
-| `/os/partners/[partnerSlug]/*` | Personal y partner autorizado | Membership + capacidad/recurso | Espacio operativo futuro. |
+| `/os/partners/[partnerSlug]/*` | Personal y partner autorizado | Membership + capacidad/recurso + visibilidad | Espacio operativo futuro; acceso externo solo tras activación expresa. |
 | `/settings` | Usuario autenticado | Sesión; límites por sección | Preferencias e identidad, no administración global. |
 | `/admin` | Super Admin/Admin | `admin.access` | Administración, auditoría y configuración sensible. |
 
@@ -49,7 +49,7 @@ app/
 
 - `PublicLayout`: existente; no introduce providers de plataforma.
 - `OsLayout`: sesión, actor, idioma y shell; no carga el Partner antes de necesitarlo.
-- `PartnerLayout`: resuelve `partnerSlug → partnerId` dentro de la Organization autorizada, selecciona Workspace activo y pasa un contexto mínimo a hijos.
+- `PartnerLayout`: resuelve `partnerSlug → partnerId` dentro de la Organization autorizada, selecciona Workspace autorizado y pasa un contexto mínimo a hijos. No presupone que exista ni esté activo un portal externo.
 - Los IDs internos nunca se exponen en URL, correos ni errores. Slugs son únicos por Organization, no globalmente inferibles cuando el producto lo requiera.
 - Un recurso compartido con partner requiere un enlace autenticado o token revocable, con vencimiento y audience definidos. No se usarán IDs como secretos.
 
