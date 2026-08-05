@@ -6,6 +6,8 @@ El formato sigue una adaptación de Keep a Changelog y usa versionado semántico
 
 ## [0.1.0] — 2026-08-05
 
+**Resumen:** primera Engineering Release interna de KYRUMA OS™. Cierra la Foundation aprobada como referencia estable y reutilizable antes de cualquier dominio funcional.
+
 ### Added
 
 - Arquitectura técnica de KYRUMA OS™: límites de plataforma, modelo de dominio, routing, datos, eventos, seguridad, riesgos y roadmap.
@@ -17,6 +19,15 @@ El formato sigue una adaptación de Keep a Changelog y usa versionado semántico
 ### Changed
 
 - Se consolida el patrón de futuros módulos: reciben `ResolvedPartnerContext`, verifican Capability y visibilidad, y no resuelven contexto por su cuenta.
+
+### Fixed
+
+- No aplica: esta release no introduce correcciones funcionales sobre dominios de negocio.
+
+### Documentation
+
+- Technical Foundation, Architecture Review, Business Decision Alignment, Identity & Permissions, Partner Context y Foundation Readiness.
+- Changelog, notas de release e historial de versiones para trazabilidad de hitos internos.
 
 ### Excluded
 

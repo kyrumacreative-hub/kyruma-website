@@ -1,7 +1,7 @@
 # KYRUMA OS™ Engineering Release v0.1.0
 
 **Fecha:** 2026-08-05  
-**Estado:** Released (Engineering internal)  
+**Estado:** Approved
 **Tag:** `os-foundation-v0.1.0`  
 **Alcance:** Foundation aprobada y congelada
 
@@ -46,6 +46,10 @@ Entregar una base técnica trazable para futuros dominios de KYRUMA OS™ sin al
 
 También quedan fuera Login, proveedor de identidad, base de datos real, rutas internas, UI, Audit persistente, Timeline funcional, integraciones y automatizaciones.
 
+## Pendiente
+
+La siguiente etapa es **EP-004 — Lead Lifecycle**, con estado **Waiting for Product Specification**. No comenzará hasta que exista su especificación de producto y autorización expresa.
+
 ## Decisiones relevantes
 
 - La autenticación se mantiene desacoplada del proveedor.
@@ -65,6 +69,17 @@ También quedan fuera Login, proveedor de identidad, base de datos real, rutas i
 | Eventos sin outbox ni garantías de entrega | Abierto, no bloqueante | Antes de consumidores críticos o efectos externos. |
 | Audit y Timeline sin implementación persistente | Abierto, condicionante | Antes de activar un dominio que los requiera. |
 
+## Dependencias pendientes
+
+- Selección del proveedor de identidad antes de Login o rutas internas.
+- Selección del proveedor de PostgreSQL antes del primer Repository Adapter real.
+- Política jurídica de plazos de retención antes de persistir datos de dominio.
+- Product Specification aprobada de EP-004 antes de iniciar Lead Lifecycle.
+
+## Decisión ejecutiva de aprobación
+
+La dirección de KYRUMA aprueba formalmente la Foundation como **KYRUMA OS™ Engineering Release v0.1.0 — Foundation**. La Foundation queda congelada salvo correcciones de bugs, vulnerabilidades o incompatibilidades demostradas por futuros dominios. Esta aprobación no autoriza la implementación de ningún dominio funcional.
+
 ## Verificación de release
 
 - `npm run test:foundation`: 8 pruebas superadas.
@@ -73,4 +88,4 @@ También quedan fuera Login, proveedor de identidad, base de datos real, rutas i
 
 ## No implica
 
-Esta Engineering Release no se ha fusionado con `main`, no se ha desplegado y no constituye una Release pública. La siguiente implementación funcional requiere una Product Specification y aprobación expresa.
+Esta Engineering Release no se ha fusionado con `main`, no se ha desplegado y no constituye una Release pública.

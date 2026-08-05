@@ -1,19 +1,18 @@
 # KYRUMA OS™ — Implementation Roadmap
 
-**Estado:** Roadmap incremental alineado con Business Decision Pack v1.0. Identity & Permissions y Partner Context están implementados como infraestructura sin proveedor ni dominio funcional. Ninguna fase posterior comienza sin RFC aprobado y autorización expresa.
+**Estado:** Foundation completada mediante KYRUMA OS™ Engineering Release v0.1.0. Ningún dominio funcional comienza sin Product Specification aprobada y autorización expresa.
 
-| Fase | Objetivo / entregables | Dependencias | Riesgos y criterio de aceptación | Fuera de alcance |
+| Fase | Estado | Objetivo / entregables | Dependencias | Riesgos y criterio de aceptación | Fuera de alcance |
 | --- | --- | --- | --- | --- |
-| 1. Identity and permissions | Proveedor elegido, User/Membership, capacidades, invitación/revocación y Audit Event básico. | TD-007, matriz de permisos y política de sesión. | Tests de denegación y aislamiento; sin privilegios implícitos. | SSO avanzado, automatizaciones. |
-| 2. Partner context | Organization, Partner, Workspace interno principal y shell autorizado. | Fase 1, `KYR-XXX` transaccional y definición de activación externa. | Un actor solo ve sus ámbitos; Partner empieza `ONBOARDING`; `/workspace` sigue igual. | Portal externo, proyectos, IA. |
-| 3. Lead Lifecycle | Persistencia de Lead, estados aprobados, conversión interna explícita y timeline interna. | Fase 2, retención de PII. | Conversión trazable/idempotente; no CRM genérico. | Campañas, scoring, automatizaciones. |
-| 4. Discovery persistence | Plantillas versionadas y Submission inmutable vinculable a Lead/Organization/Partner. | Fase 3, política de datos. | UI pública compatible; historial y acceso probados. | Reescritura del Discovery, IA. |
-| 5. Discovery review | Revisión interna, estados `UNDER_REVIEW/REVIEWED` y Timeline separada de auditoría. | Fase 4, criterios de revisión. | Nada se comparte o convierte automáticamente. | Insights de IA. |
-| 6. Meetings and proposals | Meetings y propuestas versionadas con estados de envío/aceptación. | Reglas comerciales y calendario/propuesta elegidos. | Estados y permisos consistentes, no doble envío. | Facturación automática. |
-| 7. Projects and deliverables | Project, Task, Strategy Decision, Document, Asset y Deliverable internos. | Proceso de entrega validado. | Un proyecto refleja el proceso KYRUMA, no un gestor genérico. | Portal público completo. |
-| 8. Client Portal | Vista Partner de recursos `shared`, invitaciones y enlaces públicos controlados. | Fase 7, matriz de visibilidad y archivos. | Ninguna nota/draft interno filtrado; UX/accesibilidad revisadas. | Colaboración en tiempo real no validada. |
-| 9. Intelligence | Insights en borrador, trazabilidad a sources y revisión humana. | Criterios de IA, proveedor aprobado y evaluación de privacidad. | Nunca publica ni modifica datos automáticamente. | Agente autónomo o scoring. |
-| 10. Automations | Notificaciones, recordatorios y efectos de eventos aprobados. | Outbox, políticas de comunicación y dueños operativos. | Idempotencia, opt-out, observabilidad y rollback. | Flujos autónomos no auditables. |
+| Foundation — Architecture, Identity & Permissions, Partner Context, Readiness | Completed | Infraestructura de identidad, permisos y contexto desacoplada. | Decisiones de Foundation aprobadas. | Pruebas de aislamiento y contexto; web pública y `/workspace` sin cambios. | Dominios funcionales, login, proveedor y base de datos real. |
+| EP-004 — Lead Lifecycle | Waiting for Product Specification | Persistencia de Lead, estados aprobados, conversión interna explícita y Timeline interna. | Product Specification, política de retención de PII y autorización expresa. | Conversión trazable/idempotente; no CRM genérico. | Campañas, scoring, automatizaciones. |
+| EP-005 — Discovery persistence | Blocked by predecessor | Plantillas versionadas y Submission inmutable vinculable a Lead/Organization/Partner. | EP-004 y política de datos. | UI pública compatible; historial y acceso probados. | Reescritura del Discovery, IA. |
+| EP-006 — Discovery review | Blocked by predecessor | Revisión interna, estados `UNDER_REVIEW/REVIEWED` y Timeline separada de auditoría. | EP-005 y criterios de revisión. | Nada se comparte o convierte automáticamente. | Insights de IA. |
+| EP-007 — Meetings and proposals | Planned | Meetings y propuestas versionadas con estados de envío/aceptación. | Reglas comerciales y calendario/propuesta elegidos. | Estados y permisos consistentes, no doble envío. | Facturación automática. |
+| EP-008 — Projects and deliverables | Planned | Project, Task, Strategy Decision, Document, Asset y Deliverable internos. | Proceso de entrega validado. | Un proyecto refleja el proceso KYRUMA, no un gestor genérico. | Portal público completo. |
+| EP-009 — Client Portal | Planned | Vista Partner de recursos `shared`, invitaciones y enlaces públicos controlados. | EP-008, matriz de visibilidad y archivos. | Ninguna nota/draft interno filtrado; UX/accesibilidad revisadas. | Colaboración en tiempo real no validada. |
+| EP-010 — Intelligence | Planned | Insights en borrador, trazabilidad a sources y revisión humana. | Criterios de IA, proveedor aprobado y evaluación de privacidad. | Nunca publica ni modifica datos automáticamente. | Agente autónomo o scoring. |
+| EP-011 — Automations | Planned | Notificaciones, recordatorios y efectos de eventos aprobados. | Outbox, políticas de comunicación y dueños operativos. | Idempotencia, opt-out, observabilidad y rollback. | Flujos autónomos no auditables. |
 
 ## Gates obligatorios
 
