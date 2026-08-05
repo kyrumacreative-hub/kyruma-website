@@ -4,10 +4,10 @@
 
 | Field | Value |
 | --- | --- |
-| Version | 0.1 |
-| Status | Draft |
+| Version | 1.0 |
+| Status | Ready for Engineering |
 | Owner | Product |
-| Engineering | Pending Technical Review |
+| Engineering | Ready for Engineering |
 | Depends on | KYRUMA Discovery™, Lead Lifecycle™, Foundation |
 
 ## 2. Executive Summary
@@ -149,16 +149,16 @@ Todos usan envelope versionado e idempotente, payload mínimo y correlation ID. 
 
 ## 11. Permissions
 
-La matriz final queda pendiente de RFC. Propuesta inicial:
+Matriz aprobada por RFC-006:
 
 | Action | Super Admin | Admin | Strategist | Designer/Developer/Viewer | Partner |
 | --- | --- | --- | --- | --- | --- |
-| Request / Read | Yes | Yes | Yes | Read if granted | No |
+| Request / Read | Yes | Yes | Yes | No by default | No |
 | Review | Yes | Yes | Yes | No | No |
 | Archive | Yes | Yes | No | No | No |
 | Configure model/prompt/policy | Yes | No | No | No | No |
 
-Roles solo agrupan capacidades; Membership, scope, visibilidad, grants y revocations continúan siendo obligatorios.
+Capacidades canónicas: `intelligence.request`, `intelligence.read`, `intelligence.review`, `intelligence.archive` e `intelligence.policy.manage`. Roles solo agrupan capacidades; Membership, scope, visibilidad, grants y revocations continúan siendo obligatorios.
 
 ## 12. Data Model
 
