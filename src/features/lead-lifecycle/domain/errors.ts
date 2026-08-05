@@ -25,3 +25,7 @@ export class DuplicateActiveLeadError extends Error {
 export class InvalidLeadIdentifierError extends Error {
   readonly code = "INVALID_LEAD_IDENTIFIER";
 }
+
+export class InvalidDomainEventError extends Error {
+  readonly code = "INVALID_DOMAIN_EVENT";
+}
