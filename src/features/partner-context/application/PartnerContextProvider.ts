@@ -1,6 +1,7 @@
 import { authorize } from "../../identity/domain/authorization";
 import { effectiveCapabilities } from "../../identity/domain/capabilities";
 import type { AuthenticatedActor, Membership } from "../../identity/domain/types";
+import { isPartnerPublicId } from "../domain/partnerPublicId";
 import { resolveWorkspace } from "../domain/workspace";
 import type { ContextEvent, ContextSelection, PartnerContextRecord, ResolvedPartnerContext } from "../domain/types";
 import type { ContextEventPublisher } from "../ports/ContextEventPublisher";
@@ -42,8 +43,9 @@ export class DefaultPartnerContextProvider implements PartnerContextProvider {
   ) {}
 
   async resolve(actor: AuthenticatedActor, selection: ContextSelection): Promise<ResolvedPartnerContext> {
+    if (!isPartnerPublicId(selection.partnerPublicId)) throw new PartnerContextNotFoundError();
     const record = await this.repository.findByPartnerPublicId(selection.partnerPublicId);
-    if (!record) throw new PartnerContextNotFoundError();
+    if (!record || record.partner.publicId !== selection.partnerPublicId) throw new PartnerContextNotFoundError();
 
     const workspace = resolveWorkspace(record, selection.workspaceId);
     const membership = selectMembership(actor, record, workspace.id);

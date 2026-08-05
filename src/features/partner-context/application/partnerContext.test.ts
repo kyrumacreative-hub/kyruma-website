@@ -45,6 +45,20 @@ test("denies an external partner access to an internal resource", async () => {
   assert.throws(() => requireContextAccess(context, "document.read", "internal"), { code: "CONTEXT_ACCESS_DENIED" });
 });
 
+test("does not resolve an externally disabled workspace for a partner", async () => {
+  const provider = new DefaultPartnerContextProvider(repository([{ ...firstRecord, workspaces: [{ id: "workspace-1", displayName: "Primary", access: "external_disabled" }] }]));
+
+  await assert.rejects(() => provider.resolve(actor, { partnerPublicId: "KYR-001" }));
+});
+
+test("does not query a repository for an invalid public Partner identifier", async () => {
+  let queried = false;
+  const provider = new DefaultPartnerContextProvider({ findByPartnerPublicId: async () => { queried = true; return firstRecord; } });
+
+  await assert.rejects(() => provider.resolve(actor, { partnerPublicId: "partner-1" }));
+  assert.equal(queried, false);
+});
+
 test("requires a workspace selection when a partner has no primary workspace", async () => {
   const provider = new DefaultPartnerContextProvider(repository([{ ...firstRecord, workspaces: [
     { id: "workspace-1", displayName: "One", access: "internal" },
