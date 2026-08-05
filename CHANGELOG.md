@@ -1,5 +1,9 @@
 # Changelog
 
+## [0.2.0] — 2026-08-05
+
+**PS-005 Discovery Intelligence™ v1.0 — Engineering Complete.** Added immutable snapshots, human-reviewed analysis lifecycle, PostgreSQL persistence, Foundation capabilities and application coordination. API, UI, Event Bus and autonomous actions remain excluded.
+
 Todas las modificaciones relevantes de KYRUMA OS™ se registran aquí por Engineering Release. Una release de ingeniería no implica despliegue, publicación pública ni fusión con `main`.
 
 El formato sigue una adaptación de Keep a Changelog y usa versionado semántico mientras el producto se encuentra en fase pre-1.0.

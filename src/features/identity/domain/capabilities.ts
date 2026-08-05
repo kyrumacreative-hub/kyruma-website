@@ -14,6 +14,7 @@ export const capabilityCatalog = [
   "deliverable.read", "deliverable.create", "deliverable.publish", "deliverable.approve",
   "note.internal.read", "note.internal.create",
   "insight.read", "insight.review", "insight.publish",
+  "intelligence.request", "intelligence.read", "intelligence.review", "intelligence.archive",
   "notification.read", "notification.manage", "audit.read", "admin.manage",
 ] as const;
 
@@ -28,11 +29,13 @@ const leadCapabilities: readonly Capability[] = [
   "lead.ownership.update", "lead.discovery.start", "lead.qualification.start",
   "lead.qualification.approve", "lead.partner.create",
 ];
+const intelligenceCapabilities: readonly Capability[] = ["intelligence.request", "intelligence.read", "intelligence.review", "intelligence.archive"];
 
 export const roleCapabilities: Record<Role, readonly Capability[]> = {
   super_admin: allCapabilities,
   admin: [
     ...leadCapabilities,
+    ...intelligenceCapabilities,
     "partner.read", "partner.create", "partner.update", "partner.lifecycle.manage", "workspace.read", "workspace.manage", "workspace.invite",
     "discovery.read", "discovery.review", "discovery.link", "discovery.export", "meeting.read", "meeting.create", "meeting.update",
     "proposal.read", "proposal.create", "proposal.publish", "strategy.read", "strategy.create", "strategy.update", "strategy.publish",
@@ -44,12 +47,12 @@ export const roleCapabilities: Record<Role, readonly Capability[]> = {
     "lead.create", "lead.read", "lead.update", "lead.discovery.start", "lead.qualification.start",
     "partner.read", "workspace.read", "discovery.read", "discovery.review", "discovery.export", "meeting.read", "meeting.create", "meeting.update",
     "proposal.read", "proposal.create", "proposal.publish", "strategy.read", "strategy.create", "strategy.update", "strategy.publish", "project.read",
-    "task.read", "task.create", "task.update", "document.read", "document.upload", "document.update", "deliverable.read", "insight.read", "insight.review", "note.internal.read", "note.internal.create",
+    "task.read", "task.create", "task.update", "document.read", "document.upload", "document.update", "deliverable.read", "insight.read", "insight.review", "intelligence.request", "intelligence.read", "intelligence.review", "note.internal.read", "note.internal.create",
   ],
-  designer: ["lead.read", "workspace.read", "project.read", "project.update", "task.read", "task.create", "task.update", "document.read", "document.upload", "document.update", "deliverable.read", "deliverable.create"],
-  developer: ["lead.read", "workspace.read", "project.read", "project.update", "task.read", "task.create", "task.update", "document.read", "document.upload", "document.update", "deliverable.read", "deliverable.create"],
+  designer: ["lead.read", "workspace.read", "project.read", "project.update", "task.read", "task.create", "task.update", "document.read", "document.upload", "document.update", "deliverable.read", "deliverable.create", "intelligence.read"],
+  developer: ["lead.read", "workspace.read", "project.read", "project.update", "task.read", "task.create", "task.update", "document.read", "document.upload", "document.update", "deliverable.read", "deliverable.create", "intelligence.read"],
   partner: ["partner.read", "workspace.read", "discovery.read", "proposal.read", "proposal.accept", "strategy.read", "project.read", "task.read", "document.read", "deliverable.read", "deliverable.approve", "insight.read", "meeting.read"],
-  viewer: ["lead.read", "partner.read", "workspace.read", "discovery.read", "proposal.read", "strategy.read", "project.read", "task.read", "document.read", "deliverable.read", "insight.read", "meeting.read"],
+  viewer: ["lead.read", "partner.read", "workspace.read", "discovery.read", "proposal.read", "strategy.read", "project.read", "task.read", "document.read", "deliverable.read", "insight.read", "meeting.read", "intelligence.read"],
 };
 
 export function effectiveCapabilities(role: Role, grants: readonly Capability[] = [], revocations: readonly Capability[] = []) {

@@ -47,3 +47,47 @@ model Qualification {
 
   @@index([leadId, decidedAt])
 }
+
+model IntelligenceSnapshot {
+  id                     String                 @id
+  discoverySubmissionId  String
+  submissionVersion      Int
+  scopeType              String
+  organizationId         String
+  partnerId              String?
+  workspaceId            String?
+  contentHash            String
+  classification         String
+  retentionPolicyVersion String
+  createdAt              DateTime
+  payload                Json
+  analyses               IntelligenceAnalysis[]
+
+  @@unique([discoverySubmissionId, submissionVersion])
+  @@index([organizationId, createdAt])
+}
+
+model IntelligenceAnalysis {
+  id                         String               @id
+  sourceSnapshotId           String
+  discoverySubmissionId      String
+  discoverySubmissionVersion Int
+  analysisVersion            Int
+  status                     String
+  modelReference             String
+  modelRunId                 String?
+  promptTemplateVersion      Int
+  policyVersion              String
+  requestedBy                String
+  requestedAt                DateTime
+  generatedAt                DateTime?
+  failedAt                   DateTime?
+  archivedAt                 DateTime?
+  confidence                 Float?
+  correlationId              String
+  snapshot                   IntelligenceSnapshot @relation(fields: [sourceSnapshotId], references: [id], onDelete: Restrict)
+
+  @@unique([sourceSnapshotId, analysisVersion])
+  @@unique([sourceSnapshotId, correlationId])
+  @@index([discoverySubmissionId, analysisVersion])
+}
