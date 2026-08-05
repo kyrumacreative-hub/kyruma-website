@@ -3,7 +3,7 @@ import { IntelligenceAnalysis, type IntelligenceAnalysisProperties } from "./int
 
 export class IntelligenceAnalysisFactory {
   static request(properties: IntelligenceAnalysisProperties): IntelligenceAnalysis {
-    if (!properties.sourceSnapshotId || !properties.discoverySubmissionId || !properties.discoverySubmissionVersion) {
+    if (!properties.sourceSnapshotId || !properties.discoverySubmissionId || !properties.discoverySubmissionVersion || !properties.requestedEvent) {
       throw new MissingDiscoverySourceError();
     }
     return new IntelligenceAnalysis(properties);

@@ -28,7 +28,16 @@ export interface IntelligenceAnalysisProperties {
   requestedBy: string;
   requestedAt: Date;
   correlationId: CorrelationId;
-  requestedEvent: IntelligenceEventDetails;
+  requestedEvent?: IntelligenceEventDetails;
+}
+
+export interface RestoredIntelligenceAnalysisProperties extends IntelligenceAnalysisProperties {
+  status: AnalysisStatusValue;
+  modelRunId?: ModelRunId;
+  confidence?: ConfidenceScore;
+  generatedAt?: Date;
+  failedAt?: Date;
+  archivedAt?: Date;
 }
 
 const allowedTransitions: Readonly<Record<AnalysisStatusValue, readonly AnalysisStatusValue[]>> = {
@@ -76,10 +85,24 @@ export class IntelligenceAnalysis {
     this.requestedBy = requireNonEmpty(properties.requestedBy, "requestedBy");
     this.requestedAt = properties.requestedAt;
     this.correlationId = properties.correlationId;
-    this.recordEvent(analysisEvent("IntelligenceAnalysisRequested", this.id, properties.requestedEvent, {
-      sourceSnapshotId: this.sourceSnapshotId.value,
-      analysisVersion: this.analysisVersion.value,
-    }));
+    if (properties.requestedEvent) {
+      this.recordEvent(analysisEvent("IntelligenceAnalysisRequested", this.id, properties.requestedEvent, {
+        sourceSnapshotId: this.sourceSnapshotId.value,
+        analysisVersion: this.analysisVersion.value,
+      }));
+    }
+  }
+
+  static restore(properties: RestoredIntelligenceAnalysisProperties): IntelligenceAnalysis {
+    const analysis = new IntelligenceAnalysis(properties);
+    analysis.currentStatus = new AnalysisStatus(properties.status);
+    analysis.currentModelRunId = properties.modelRunId;
+    analysis.currentConfidence = properties.confidence;
+    analysis.currentGeneratedAt = properties.generatedAt;
+    analysis.currentFailedAt = properties.failedAt;
+    analysis.currentArchivedAt = properties.archivedAt;
+    analysis.clearDomainEvents();
+    return analysis;
   }
 
   get status(): AnalysisStatusValue { return this.currentStatus.value; }
