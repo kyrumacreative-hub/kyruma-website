@@ -1,5 +1,5 @@
 import { DuplicateWorkspaceOwnerError, InvalidWorkspaceInvitationError, InvalidWorkspaceStateError, MissingInitialWorkspaceOwnerError } from "./errors";
-import { InvitationExpiry, InvitationStatus, type InvitationStatusValue, InvitationTokenHash, MembershipId, WorkspaceMemberId, WorkspaceInvitationId, WorkspaceSettingsVersion } from "./valueObjects";
+import { CorrelationId, InvitationExpiry, InvitationRecipientReference, InvitationRole, InvitationStatus, type InvitationStatusValue, InvitationTokenHash, MembershipId, WorkspaceMemberId, WorkspaceInvitationId, WorkspaceSettingsVersion } from "./valueObjects";
 
 export type WorkspaceMemberStatus = "active" | "removed";
 export class WorkspaceMember {
@@ -18,7 +18,7 @@ export class WorkspaceInvitation {
   private currentStatus: InvitationStatus;
   private acceptedAtValue?: Date;
   private revokedAtValue?: Date;
-  constructor(readonly id: WorkspaceInvitationId, readonly tokenHash: InvitationTokenHash, readonly expiry: InvitationExpiry, readonly createdAt: Date, status: InvitationStatusValue = "pending", acceptedAt?: Date, revokedAt?: Date) { this.currentStatus = InvitationStatus.create(status); this.acceptedAtValue = acceptedAt; this.revokedAtValue = revokedAt; }
+  constructor(readonly id: WorkspaceInvitationId, readonly recipientReference: InvitationRecipientReference, readonly intendedRole: InvitationRole, readonly tokenHash: InvitationTokenHash, readonly expiry: InvitationExpiry, readonly createdAt: Date, readonly correlationId: CorrelationId, status: InvitationStatusValue = "pending", acceptedAt?: Date, revokedAt?: Date) { this.currentStatus = InvitationStatus.create(status); this.acceptedAtValue = acceptedAt; this.revokedAtValue = revokedAt; }
   get status() { return this.currentStatus.value; }
   get acceptedAt() { return this.acceptedAtValue; }
   get revokedAt() { return this.revokedAtValue; }

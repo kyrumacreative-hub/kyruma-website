@@ -1,0 +1,4 @@
+export interface WorkspacePersistenceModel { id: string; partnerId: string; organizationId: string; name: string; primary: boolean; status: string; initialOwnerMemberId: string; initialOwnerMembershipId: string; settingsVersion: number; createdAt: Date; correlationId: string; }
+export interface WorkspaceMemberPersistenceModel { id: string; workspaceId: string; membershipId: string; owner: boolean; status: "active" | "removed"; joinedAt: Date; removedAt?: Date; }
+export interface WorkspaceInvitationPersistenceModel { id: string; workspaceId: string; recipientReference: string; intendedRole: string; tokenHash: string; expiresAt: Date; status: string; createdAt: Date; acceptedAt?: Date; revokedAt?: Date; correlationId: string; }
+export interface WorkspaceSettingsPersistenceModel { workspaceId: string; version: number; values: Readonly<Record<string, unknown>>; }

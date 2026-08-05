@@ -3,7 +3,7 @@ import test from "node:test";
 import { DuplicateWorkspaceMemberError, DuplicateWorkspaceOwnerError, InvalidWorkspaceInvitationError, InvalidWorkspaceStateError, InvalidWorkspaceValueError, MissingInitialWorkspaceOwnerError, WorkspaceOwnerRemovalError } from "./errors";
 import { requireSingleActiveOwner, WorkspaceInvitation, WorkspaceMember } from "./entities";
 import { WorkspaceFactory } from "./workspaceFactory";
-import { CorrelationId, InvitationExpiry, InvitationTokenHash, MembershipId, OrganizationId, PartnerId, WorkspaceId, WorkspaceInvitationId, WorkspaceMemberId, WorkspaceName, WorkspaceSettingsVersion } from "./valueObjects";
+import { CorrelationId, InvitationExpiry, InvitationRecipientReference, InvitationRole, InvitationTokenHash, MembershipId, OrganizationId, PartnerId, WorkspaceId, WorkspaceInvitationId, WorkspaceMemberId, WorkspaceName, WorkspaceSettingsVersion } from "./valueObjects";
 import { workspaceEvent } from "./events";
 import { WorkspaceActivationService, WorkspaceInvitationService, WorkspaceMembershipService, WorkspaceProvisioningService } from "./services";
 
@@ -11,6 +11,7 @@ const now = new Date("2026-08-05T12:00:00.000Z");
 const owner = () => WorkspaceFactory.createInitialOwner({ id: WorkspaceMemberId.create("workspace-member-1"), membershipId: MembershipId.create("membership-owner-1"), joinedAt: now });
 const workspace = () => WorkspaceFactory.create({ id: WorkspaceId.create("workspace-1"), partnerId: PartnerId.create("partner-1"), organizationId: OrganizationId.create("organization-1"), name: WorkspaceName.create("KYRUMA Partner Workspace"), primary: true, initialOwner: owner(), settings: WorkspaceFactory.initialSettings({ locale: "es" }), createdAt: now, correlationId: CorrelationId.create("correlation-1") });
 const metadata = (eventId = "event-1") => ({ eventId, occurredAt: now, correlationId: "correlation-1", actorId: "admin-1" });
+const invitation = (id: string, hash: string, expiry = new Date("2026-08-06T12:00:00.000Z")) => new WorkspaceInvitation(WorkspaceInvitationId.create(id), InvitationRecipientReference.create("recipient-ref"), InvitationRole.create("viewer"), InvitationTokenHash.create(hash), InvitationExpiry.create(expiry, now), now, CorrelationId.create(`correlation-${id}`));
 
 test("creates a primary Workspace in provisioning, never active", () => {
   const value = workspace();
@@ -31,19 +32,19 @@ test("requires one active initial Owner and a primary initial Workspace", () => 
 });
 
 test("keeps invitation tokens hashed, expiring, single-use and revocable", () => {
-  const invitation = new WorkspaceInvitation(WorkspaceInvitationId.create("invitation-1"), InvitationTokenHash.create(`sha256:${"a".repeat(64)}`), InvitationExpiry.create(new Date("2026-08-06T12:00:00.000Z"), now), now);
-  invitation.accept(new Date("2026-08-05T13:00:00.000Z")); assert.equal(invitation.status, "accepted"); assert.ok(invitation.acceptedAt);
-  assert.throws(() => invitation.accept(new Date("2026-08-05T14:00:00.000Z")), InvalidWorkspaceInvitationError);
-  const revoked = new WorkspaceInvitation(WorkspaceInvitationId.create("invitation-2"), InvitationTokenHash.create(`sha256:${"b".repeat(64)}`), InvitationExpiry.create(new Date("2026-08-06T12:00:00.000Z"), now), now);
+  const accepted = invitation("invitation-1", `sha256:${"a".repeat(64)}`);
+  accepted.accept(new Date("2026-08-05T13:00:00.000Z")); assert.equal(accepted.status, "accepted"); assert.ok(accepted.acceptedAt);
+  assert.throws(() => accepted.accept(new Date("2026-08-05T14:00:00.000Z")), InvalidWorkspaceInvitationError);
+  const revoked = invitation("invitation-2", `sha256:${"b".repeat(64)}`);
   revoked.revoke(now); assert.equal(revoked.status, "revoked"); assert.ok(revoked.revokedAt);
   assert.throws(() => InvitationTokenHash.create("plaintext-token"), InvalidWorkspaceValueError);
 });
 
 test("rejects expired invitations and validates value objects", () => {
   assert.throws(() => InvitationExpiry.create(now, now), InvalidWorkspaceValueError);
-  const invitation = new WorkspaceInvitation(WorkspaceInvitationId.create("invitation-3"), InvitationTokenHash.create(`sha256:${"c".repeat(64)}`), InvitationExpiry.create(new Date("2026-08-05T12:01:00.000Z"), now), now);
-  invitation.expire(new Date("2026-08-05T12:02:00.000Z")); assert.equal(invitation.status, "expired");
-  assert.throws(() => invitation.accept(new Date("2026-08-05T12:02:00.000Z")), InvalidWorkspaceInvitationError);
+  const expired = invitation("invitation-3", `sha256:${"c".repeat(64)}`, new Date("2026-08-05T12:01:00.000Z"));
+  expired.expire(new Date("2026-08-05T12:02:00.000Z")); assert.equal(expired.status, "expired");
+  assert.throws(() => expired.accept(new Date("2026-08-05T12:02:00.000Z")), InvalidWorkspaceInvitationError);
   assert.equal(WorkspaceSettingsVersion.initial().next().value, 2);
 });
 
@@ -56,9 +57,9 @@ test("coordinates provisioning and activation through pure services with version
 
 test("coordinates invitation lifecycle and rejects expired or revoked reuse", () => {
   const value = workspace(); const service = new WorkspaceInvitationService();
-  const invitation = service.create({ workspace: value, invitationId: WorkspaceInvitationId.create("invitation-service"), tokenHash: InvitationTokenHash.create(`sha256:${"d".repeat(64)}`), expiry: InvitationExpiry.create(new Date("2026-08-06T12:00:00.000Z"), now), createdAt: now, metadata: metadata("invite") });
-  service.accept({ workspace: value, invitation, at: new Date("2026-08-05T13:00:00.000Z"), metadata: metadata("accept") });
-  assert.equal(invitation.status, "accepted"); assert.throws(() => service.revoke({ workspace: value, invitation, at: now, metadata: metadata("revoke") }), InvalidWorkspaceInvitationError);
+  const invited = service.create({ workspace: value, invitationId: WorkspaceInvitationId.create("invitation-service"), recipientReference: InvitationRecipientReference.create("recipient-ref"), intendedRole: InvitationRole.create("viewer"), tokenHash: InvitationTokenHash.create(`sha256:${"d".repeat(64)}`), expiry: InvitationExpiry.create(new Date("2026-08-06T12:00:00.000Z"), now), createdAt: now, correlationId: CorrelationId.create("correlation-invite"), metadata: metadata("invite") });
+  service.accept({ workspace: value, invitation: invited, at: new Date("2026-08-05T13:00:00.000Z"), metadata: metadata("accept") });
+  assert.equal(invited.status, "accepted"); assert.throws(() => service.revoke({ workspace: value, invitation: invited, at: now, metadata: metadata("revoke") }), InvalidWorkspaceInvitationError);
   assert.deepEqual(value.pullDomainEvents().map((event) => event.type), ["InvitationCreated", "InvitationAccepted"]);
 });
 
