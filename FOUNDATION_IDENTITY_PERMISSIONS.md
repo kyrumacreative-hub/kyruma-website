@@ -16,12 +16,14 @@
 - `super_admin` requiere una Membership de plataforma explícita; no se infiere por correo, rol visual ni URL.
 - `grants` y `revocations` permiten excepciones sin convertir los roles en la única fuente de permiso.
 - El guard devuelve una decisión o lanza un error seguro; futuros route handlers deberán registrarlo mediante Audit Event.
+- El catálogo incluye el namespace aditivo `lead.*`: `lead.create`, `lead.read`, `lead.update`, `lead.archive`, `lead.reactivate`, `lead.ownership.update`, `lead.discovery.start`, `lead.qualification.start`, `lead.qualification.approve` y `lead.partner.create`.
+- La matriz de Lead Lifecycle asigna todas las capacidades a Super Admin y Admin; Strategist puede crear, leer, actualizar, iniciar Discovery e iniciar Qualification; Designer, Developer y Viewer solo pueden leer; Partner no recibe capacidades `lead.*`.
 
 ## Límites intencionados
 
 - Sin proveedor de autenticación, sesiones reales, pantallas de login ni invitaciones enviadas.
 - Sin PostgreSQL, migraciones, credenciales ni tablas persistidas.
-- Sin rutas `/os`, Partner Context, Lead Lifecycle, Discovery persistence ni cambios a `/workspace`.
+- Sin rutas `/os`, API, UI, proveedor de identidad, Discovery persistence ni cambios a `/workspace`.
 - Sin Audit Event persistente hasta que la fase de datos y proveedor estén aprobados.
 
 ## Próxima decisión necesaria

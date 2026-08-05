@@ -1,0 +1,12 @@
+{
+  "extends": "./tsconfig.json",
+  "compilerOptions": {
+    "module": "commonjs",
+    "moduleResolution": "node",
+    "noEmit": false,
+    "outDir": ".lead-persistence-test-build",
+    "rootDir": "src",
+    "incremental": false
+  },
+  "include": ["src/features/lead-lifecycle/infrastructure/persistence/**/*.test.ts"]
+}

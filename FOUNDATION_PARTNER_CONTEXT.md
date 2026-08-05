@@ -26,6 +26,8 @@ Ningún consumidor necesita conocer repositorio, resolución de Membership ni re
 | `requireContextAccess` | Guard de servidor que combina Context + Capabilities + Membership + visibilidad. |
 | `switchPartnerContext` | Resuelve nuevo contexto, devuelve la clave anterior a invalidar y emite el cambio. |
 | `ContextEventPublisher` | Puerto sin consumidores de negocio en esta fase. |
+| `OrganizationContextProvider` | Resuelve el contexto pre-Partner por Organization sin requerir Partner ni Workspace. |
+| `requireOrganizationContextAccess` | Guard de servidor para Capability, Membership, scope y visibilidad en recursos pre-Partner. |
 
 ## No incluido
 

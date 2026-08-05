@@ -12,6 +12,8 @@ const eslintConfig = defineConfig([
     "out/**",
     "build/**",
     ".foundation-test-build/**",
+    ".lead-lifecycle-test-build/**",
+    ".lead-persistence-test-build/**",
     "next-env.d.ts",
   ]),
 ]);
