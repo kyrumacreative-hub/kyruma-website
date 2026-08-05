@@ -2,7 +2,7 @@
 
 ## Estado
 
-**NOT READY FOR ENGINEERING**
+**READY FOR ENGINEERING**
 
 ## Completado
 
@@ -10,15 +10,12 @@
 - Aggregate, entidades, estados, Value Objects y eventos.
 - Casos de uso, contratos, modelo de datos y criterios de aceptación.
 - Prohibición explícita de acciones autónomas y de mutación de datos fuente.
-
-## Bloqueos para Technical Approval
-
-1. Definir contexto y autorización para Discovery pre‑Partner y post‑Partner.
-2. Aprobar catálogo y matriz de capacidades `intelligence.*`.
-3. Aprobar proveedor/modelo, región, tratamiento de PII, retención y uso de datos.
-4. Aprobar contrato de snapshot, salida estructurada, idempotencia y reconciliación de llamadas al modelo.
-5. Resolver cómo se aplican Audit, Timeline y Transactional Outbox a una llamada de modelo potencialmente no transaccional.
+- RFC-006: contexto derivado y autorización aprobados.
+- RFC-007: política de gateway, PII y versiones aprobada.
+- RFC-008: snapshots, Outbox e idempotencia aprobados.
 
 ## Recomendación
 
-Abrir Technical Review y RFCs. No iniciar Engineering hasta que los RFCs estén aprobados y este documento cambie a **READY FOR ENGINEERING**.
+**PS-005 Discovery Intelligence™ v1.0 — READY FOR ENGINEERING.**
+
+Engineering deberá implementar primero contratos, contexto derivado y extensión aditiva de capacidades. Un adaptador de gateway externo no podrá activarse sin la aprobación operacional de proveedor, región y DPA definida en RFC-007.
