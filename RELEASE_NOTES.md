@@ -1,5 +1,19 @@
 # KYRUMA OS™ Engineering Release v0.1.0
 
+## PS-006 Partner Creation™ v1.0
+
+**Estado:** Engineering Complete
+
+Incluye el Aggregate Partner, conversión atómica con Workspace principal y Membership Owner inicial, secuencia pública `KYR-XXX`, persistencia PostgreSQL/Prisma y Application Layer interna limitada a creación y lectura. No incluye API, UI, Event Bus, onboarding, despliegue ni activación externa.
+
+**Fecha:** 2026-08-05
+
+### Controles superados
+
+- Foundation, Lead Lifecycle™, Discovery Intelligence™ y Partner Creation™ en verde.
+- Esquema Prisma y siete migraciones validados en desarrollo y test.
+- Pruebas PostgreSQL, lint, TypeScript y build superados.
+
 ## PS-005 Discovery Intelligence™ v1.0
 
 **Estado:** Engineering Complete

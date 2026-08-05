@@ -91,3 +91,46 @@ model IntelligenceAnalysis {
   @@unique([sourceSnapshotId, correlationId])
   @@index([discoverySubmissionId, analysisVersion])
 }
+
+model Partner {
+  id                       String              @id
+  code                     String              @unique
+  leadId                   String              @unique
+  organizationId           String
+  primaryWorkspaceId       String              @unique
+  initialOwnerMembershipId String              @unique
+  status                   String
+  correlationId            String?             @unique
+  createdAt                DateTime
+  workspaces               PartnerWorkspace[]
+  memberships              PartnerMembership[]
+}
+
+model PartnerCodeSequence {
+  id        Int @id @default(1)
+  nextValue Int
+}
+
+model PartnerWorkspace {
+  id        String  @id
+  partnerId String
+  primary   Boolean
+  partner   Partner @relation(fields: [partnerId], references: [id], onDelete: Restrict)
+
+}
+
+model PartnerMembership {
+  id        String  @id
+  partnerId String
+  role      String
+  status    String
+  partner   Partner @relation(fields: [partnerId], references: [id], onDelete: Restrict)
+
+  @@unique([partnerId, role])
+}
+
+model PartnerCreationIdempotency {
+  correlationId String   @id
+  partnerId     String   @unique
+  createdAt     DateTime
+}

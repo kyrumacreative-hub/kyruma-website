@@ -1,0 +1,3 @@
+export type PartnerEventType = "PartnerCreationStarted" | "PartnerCreated" | "PartnerCodeAssigned" | "WorkspaceCreated" | "InitialMembershipCreated" | "PartnerCreationCompleted" | "PartnerCreationFailed";
+export interface PartnerDomainEvent { readonly eventId: string; readonly aggregateId: string; readonly aggregateType: "Partner"; readonly version: 1; readonly occurredAt: Date; readonly correlationId: string; readonly type: PartnerEventType; }
+export const partnerEvent = (type: PartnerEventType, aggregateId: string, eventId: string, occurredAt: Date, correlationId: string): PartnerDomainEvent => Object.freeze({ eventId, aggregateId, aggregateType: "Partner", version: 1, occurredAt: new Date(occurredAt), correlationId, type });
