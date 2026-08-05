@@ -2149,7 +2149,320 @@ EP-004.5 estará finalizada cuando:
 
 ## 11. EP-004.6 — Archive & Reactivation
 
+### 10.1 Objective
+
+Archive & Reactivation define cómo KYRUMA conserva un Lead cuando no debe continuar activamente y cómo puede recuperarlo para una nueva evaluación sin perder su historial.
+
+El objetivo es asegurar que archivar nunca equivale a eliminar y que reactivar un Lead es una decisión explícita, trazable y compatible con la unicidad de Leads activos.
+
+### 10.2 User Story
+
+Como Admin o Strategist,
+
+quiero archivar o reactivar un Lead,
+
+para conservar su contexto completo y poder retomar una posible Partnership cuando exista una nueva razón para evaluarla.
+
+### 10.3 Actors
+
+Puede archivar o reactivar:
+
+- Super Admin
+- Admin
+- Strategist
+
+Puede consultar:
+
+- Usuarios autorizados según capacidades del contexto.
+
+No pueden archivar ni reactivar:
+
+- Designer
+- Developer
+- Viewer
+- Partner
+
+### 10.4 Scope
+
+Incluye:
+
+- Archivo de Lead.
+- Registro del motivo, fecha y responsable.
+- Conservación de Timeline, Audit, Ownership, Discovery y Qualification.
+- Reactivación explícita.
+- Validación de unicidad de Lead activo.
+
+No incluye:
+
+- Eliminación de Lead o de historial.
+- Creación de Partner.
+- Cambios en contenido de Discovery.
+- Gestión de Projects, Onboarding o Client Portal™.
+
+### 10.5 Preconditions
+
+- El Lead existe y pertenece al contexto autorizado.
+- El actor dispone de permisos para archivar o reactivar.
+- Para reactivar, no existe otro Lead activo para la misma Organization.
+
+### 10.6 Main Flow
+
+#### Archivo
+
+1. Un usuario autorizado solicita archivar el Lead.
+2. Se registra el motivo.
+3. El sistema registra fecha y responsable.
+4. El Lead pasa a Archived.
+5. Se conservan todos los datos e historial existentes.
+6. Se generan Timeline, Audit y evento de dominio.
+
+#### Reactivación
+
+1. Un usuario autorizado solicita reactivar el Lead.
+2. El sistema valida que no exista otro Lead activo para la Organization.
+3. Se registra el motivo, fecha y responsable de la reactivación.
+4. El Lead vuelve al estado permitido por su historial de evaluación.
+5. Se generan Timeline, Audit y evento de dominio.
+
+### 10.7 Business Rules
+
+#### BR-057
+
+Archivar un Lead nunca elimina información ni historial.
+
+#### BR-058
+
+Todo archivo requiere motivo.
+
+#### BR-059
+
+Todo archivo registra fecha y usuario responsable.
+
+#### BR-060
+
+Un Lead archivado no puede iniciar procesos posteriores hasta ser reactivado.
+
+#### BR-061
+
+Todo Lead archivado puede reactivarse únicamente mediante una decisión explícita.
+
+#### BR-062
+
+No puede reactivarse un Lead si existe otro Lead activo para la misma Organization.
+
+#### BR-063
+
+Archivo y reactivación generan Timeline y Audit.
+
+#### BR-064
+
+El historial de archivo y reactivación nunca se elimina.
+
+### 10.8 Domain Events
+
+#### EV-018
+
+LeadArchived
+
+#### EV-019
+
+LeadReactivated
+
+### 10.9 Permissions
+
+Puede archivar o reactivar:
+
+- Super Admin
+- Admin
+- Strategist
+
+Puede consultar el historial:
+
+- Usuarios con acceso al contexto correspondiente.
+
+### 10.10 Data Model
+
+#### Archive Record
+
+Campos:
+
+- id
+- leadId
+- action
+- reason
+- performedBy
+- performedAt
+- previousStatus
+- resultingStatus
+
+### 10.11 State Machine
+
+Lead activo
+
+↓
+
+Archived
+
+↓
+
+Reactivated
+
+Archived es un estado final mientras no exista una reactivación explícita. Reactivation no elimina ni reemplaza el historial anterior.
+
+### 10.12 Edge Cases
+
+#### EC-025
+
+Falta motivo de archivo o reactivación.
+
+Resultado:
+
+Bloquear la operación.
+
+#### EC-026
+
+Se intenta reactivar y existe otro Lead activo para la Organization.
+
+Resultado:
+
+Bloquear la reactivación.
+
+#### EC-027
+
+Dos usuarios archivan o reactivan simultáneamente.
+
+Resultado:
+
+Solo una operación podrá completarse.
+
+### 10.13 Acceptance Criteria
+
+#### AC-041
+
+Archivar nunca elimina datos ni historial.
+
+#### AC-042
+
+Toda operación registra motivo, fecha y responsable.
+
+#### AC-043
+
+Un Lead archivado no avanza hasta reactivarse.
+
+#### AC-044
+
+No se reactiva un Lead cuando existe otro activo para la misma Organization.
+
+#### AC-045
+
+Archivo y reactivación generan Timeline, Audit y trazabilidad.
+
+### 10.14 Definition of Done
+
+EP-004.6 estará finalizada cuando:
+
+- el archivo sea reversible sin pérdida de información;
+- la reactivación preserve la unicidad de Lead activo;
+- todas las operaciones sean auditables;
+- Engineering pueda implementar el proceso sin interpretar el comportamiento esperado.
+
 ## 12. EP-004.7 — Validation
+
+### 11.1 Objective
+
+Validation & QA define los criterios necesarios para verificar que Lead Lifecycle™ conserva sus invariantes, permisos, transacciones, historial y trazabilidad en todas sus épicas.
+
+El objetivo es garantizar que la validación del dominio se base en reglas verificables y no únicamente en recorridos de interfaz.
+
+### 11.2 User Story
+
+Como responsable de KYRUMA OS™,
+
+quiero validar el ciclo completo de Lead Lifecycle™,
+
+para asegurar que cada Organization recorra un proceso consistente, seguro y trazable antes de convertirse en Partner.
+
+### 11.3 Scope
+
+Incluye:
+
+- Validación de Business Rules, State Machines y Acceptance Criteria.
+- Pruebas de Context, Capabilities, Memberships y visibilidad.
+- Pruebas de transacciones, concurrencia, rollback y duplicados.
+- Validación de Audit, Timeline y Domain Events.
+- Regresión de cada épica de PS-004.
+
+No incluye:
+
+- Implementación de UI no aprobada.
+- Pruebas de dominios fuera de Lead Lifecycle™.
+- Automatizaciones o análisis de Intelligence™.
+
+### 11.4 Validation Matrix
+
+| Área | Validación mínima |
+| --- | --- |
+| Lead Creation | Organization, Contact, Owner, Origin, estado Identified, unicidad y rollback. |
+| Ownership | Owner único, historial permanente, motivo y concurrencia. |
+| Discovery | Asociación al Lead, invitaciones, versiones, revocación y Discovery completada. |
+| Qualification | Preconditions, decisión, historial y separación de Partner Creation. |
+| Partner Creation | Lead cualificado, decisión humana, KYR-XXX, unicidad y Workspace independiente. |
+| Archive & Reactivation | Retención, motivo, reactivación y unicidad. |
+| Seguridad | Capability, Membership activa, scope, visibilidad y revocación. |
+| Eventos | Confirmación, versión, idempotencia, Audit y Timeline separados. |
+
+### 11.5 Business Rules
+
+#### BR-065
+
+Ninguna épica se considera terminada sin pruebas de sus Acceptance Criteria.
+
+#### BR-066
+
+Toda operación crítica debe validar autorización, contexto y visibilidad.
+
+#### BR-067
+
+Las operaciones transaccionales deben demostrar rollback ante fallo.
+
+#### BR-068
+
+Los casos de concurrencia y duplicados deben ser verificables.
+
+#### BR-069
+
+Las pruebas no utilizarán datos personales reales.
+
+### 11.6 Acceptance Criteria
+
+#### AC-046
+
+Cada Business Rule de PS-004 tiene una prueba o una justificación documentada.
+
+#### AC-047
+
+Cada transición válida e inválida tiene cobertura.
+
+#### AC-048
+
+Las denegaciones por Capability, Membership, scope y visibilidad son verificables.
+
+#### AC-049
+
+Los eventos solo se declaran tras confirmar la operación.
+
+#### AC-050
+
+La regresión confirma que ningún Partner se crea fuera del proceso definido.
+
+### 11.7 Definition of Done
+
+EP-004.7 estará finalizada cuando:
+
+- la matriz de validación esté cubierta;
+- las excepciones de cobertura estén justificadas;
+- QA confirme los criterios de aceptación;
+- el Domain Implementation Report pueda preparar una Engineering Release.
 
 ## 13. State Machine
 

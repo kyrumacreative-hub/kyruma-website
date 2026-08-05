@@ -4,7 +4,7 @@
 **Documento evaluado:** `product/specifications/PS-004-Lead-Lifecycle.md`  
 **Versión:** 0.1  
 **Estado de Product:** Draft  
-**Estado de Engineering:** Phase 2 Technical Review completed — Approved with Conditions
+**Estado de Engineering:** Final Technical Review completed — Ready with Conditions
 
 ## Documento creado
 
@@ -19,15 +19,16 @@ El documento está dentro del repositorio, puede versionarse mediante Git y pued
 - EP-004.3 — Discovery Integration: completa; incluida en la revisión Phase 2.
 - EP-004.4 — Qualification: completa; incluida en la revisión Phase 2.
 - EP-004.5 — Partner Creation: completa; incluida en la revisión Phase 2.
-- EP-004.6 y EP-004.7: pendientes.
+- EP-004.6 — Archive & Reactivation: completa; incluida en la revisión final.
+- EP-004.7 — Validation & QA: completa; incluida en la revisión final.
 
 ## Secciones pendientes
 
-EP-004.6 y EP-004.7, y los capítulos globales de State Machine, Permissions, Domain Events, Data Model, Acceptance Criteria, Edge Cases, Out of Scope y Traceability Matrix, siguen pendientes.
+Los capítulos globales de State Machine, Permissions, Domain Events, Data Model, Acceptance Criteria, Edge Cases, Out of Scope y Traceability Matrix siguen pendientes de consolidación transversal, pero las definiciones por épica necesarias para la revisión están presentes.
 
 ## Bloqueos para Technical Review
 
-La revisión Phase 2 se ha emitido como `APPROVED WITH CONDITIONS`. Antes de implementar, deben cerrarse:
+La revisión final se ha emitido como `READY WITH CONDITIONS`. Antes de implementar, deben cerrarse:
 
 1. RFC de Context pre-Partner/Organization y Capability de Lead.
 2. RFC de persistencia, transacción, Audit y Timeline.
@@ -37,8 +38,8 @@ La revisión Phase 2 se ha emitido como `APPROVED WITH CONDITIONS`. Antes de imp
 
 ## Recomendación final
 
-**READY FOR PRODUCT CORRECTIONS; NOT READY FOR IMPLEMENTATION.**
+**PS-004 CLOSED — READY WITH CONDITIONS.**
 
-La estructura oficial está preparada y debe utilizarse exclusivamente para las futuras modificaciones de PS-004. Product y Architecture deben resolver las condiciones de `TECHNICAL_REVIEW_EP-004.1_LEAD_CREATION.md` y `TECHNICAL_REVIEW_PS-004_PHASE_2.md` antes de solicitar autorización de implementación.
+La estructura oficial está cerrada para PS-004. Product y Architecture deben resolver las condiciones de `TECHNICAL_REVIEW_PS-004_FINAL.md` y los cinco RFCs congelados antes de solicitar autorización de implementación.
 
 No se ha implementado Lead Lifecycle, ni se ha modificado Foundation, arquitectura, dependencias o código funcional.
