@@ -12,6 +12,7 @@ const eslintConfig = defineConfig([
     "out/**",
     "build/**",
     ".foundation-test-build/**",
+    ".lead-lifecycle-test-build/**",
     "next-env.d.ts",
   ]),
 ]);

@@ -40,4 +40,5 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 .foundation-test-build/
+.lead-lifecycle-test-build/
 next-env.d.ts
