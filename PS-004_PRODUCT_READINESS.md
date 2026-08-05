@@ -36,6 +36,8 @@ Las decisiones de Product y Architecture se han cerrado mediante `ARCHITECTURE_D
 4. PII de Contact con acceso limitado a Super Admin, Admin y Owner del Lead.
 5. Invitaciones Discovery con token de un solo uso, expiración, revocación y auditoría.
 6. Envelope versionado e idempotente para eventos.
+7. LeadStatus y transiciones oficiales, incluida persistencia de Qualification antes de `qualified`.
+8. Contexto transaccional entregado a todos los repositorios mediante `TransactionRunner.run(context => ...)`.
 
 ## Recomendación final
 

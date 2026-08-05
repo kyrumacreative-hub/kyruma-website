@@ -2466,6 +2466,42 @@ EP-004.7 estará finalizada cuando:
 
 ## 13. State Machine
 
+### LeadStatus
+
+El enum oficial de LeadStatus es:
+
+- identified
+- discovery_in_progress
+- discovery_completed
+- qualified
+- on_hold
+- archived
+- partner_created
+
+### Transiciones permitidas
+
+identified
+
+→ discovery_in_progress
+
+discovery_in_progress
+
+→ discovery_completed
+
+discovery_completed
+
+→ qualified
+
+qualified
+
+→ partner_created
+
+Cualquier otra transición será rechazada por el dominio.
+
+La decisión de Qualification deberá persistirse antes de ejecutar la transición a `qualified`.
+
+Discovery nunca modifica directamente el Aggregate. Discovery registra Domain Events; la Application Layer invoca exclusivamente la transición correspondiente del Aggregate.
+
 ## 14. Permissions
 
 ## 15. Domain Events
