@@ -5,6 +5,7 @@ import { LeadStatus } from "../domain/valueObjects";
 import type { LeadAggregate } from "../domain/lead";
 import type { LeadDomainEvent } from "../domain/events";
 import {
+  ApplicationError,
   ApplicationDomainError,
   ApplicationInfrastructureError,
   ChangeLeadOwnerUseCase,
@@ -18,13 +19,27 @@ import type { LeadRepository } from "../ports/LeadRepository";
 import type { OwnershipRecord, OwnershipRepository } from "../ports/OwnershipRepository";
 import type { QualificationRecord, QualificationRepository } from "../ports/QualificationRepository";
 import type { TransactionRunner } from "../ports/TransactionRunner";
+import type { AuditContextRecorder, LeadAuditContext } from "../ports/AuditContextRecorder";
+import type { ResolvedOrganizationContext } from "../../partner-context/domain/types";
+import { effectiveCapabilities, type Role } from "../../identity/domain/capabilities";
+import { OrganizationContextAccessDeniedError } from "../../partner-context/application/requireOrganizationContextAccess";
 
 const input = {
   id: "lead-1", organizationId: "org-1", ownerId: "user-1", primaryContactId: "contact-1",
   origin: "manual", createdAt: new Date("2026-08-05"), createdBy: "user-1",
 };
 const operation = { eventId: "event-1", occurredAt: new Date("2026-08-05") };
-const allowed = { allowed: true };
+function organizationContext(role: Role = "admin", organizationId = "org-1"): ResolvedOrganizationContext {
+  const membership = { id: "membership-1", userId: "user-1", role, status: "active" as const, scope: { organizationId } };
+  return {
+    contextKey: `user-1:membership-1:${organizationId}`,
+    actor: { user: { id: "user-1", externalSubjectId: "subject-1", email: "admin@example.com" }, memberships: [membership] },
+    membership,
+    organization: { id: organizationId, displayName: "Organization" },
+    capabilities: effectiveCapabilities(role),
+    allowedVisibilities: role === "viewer" ? ["shared", "partner_private", "public_link"] : ["internal", "shared", "partner_private", "public_link"],
+  };
+}
 
 class MemoryLeadRepository implements LeadRepository {
   lead: LeadAggregate | null = null;
@@ -50,6 +65,11 @@ class MemoryQualificationRepository implements QualificationRepository {
   constructor(private readonly leads: MemoryLeadRepository) {}
   async save(record: QualificationRecord): Promise<void> { this.statusWhenSaved = this.leads.lead?.status.value; this.records.push(record); }
   async findLatest(leadId: string): Promise<QualificationRecord | null> { return this.records.filter((record) => record.leadId === leadId).at(-1) ?? null; }
+}
+
+class MemoryAuditRecorder implements AuditContextRecorder {
+  entries: LeadAuditContext[] = [];
+  async record(entry: LeadAuditContext): Promise<void> { this.entries.push(entry); }
 }
 
 function transactionHarness() {
@@ -79,11 +99,13 @@ test("CreateLead persists before dispatching its typed events", async () => {
   const leads = new MemoryLeadRepository();
   const transactions = transactionHarness();
   const events = dispatcherHarness(transactions.wasCommitted);
-  const outcome = await new CreateLeadUseCase(transactions.runner, leads, events.dispatcher).execute(input, allowed, operation);
+  const audit = new MemoryAuditRecorder();
+  const outcome = await new CreateLeadUseCase(transactions.runner, leads, events.dispatcher, audit).execute(input, organizationContext(), operation);
 
   assert.deepEqual(outcome, { id: "lead-1", status: "identified" });
   assert.equal(leads.lead?.id.value, "lead-1");
   assert.deepEqual(events.received[0].map((event) => event.type), ["LeadCreated", "OwnerAssigned"]);
+  assert.deepEqual(audit.entries[0], { actorId: "user-1", organizationId: "org-1", membershipId: "membership-1", timestamp: operation.occurredAt, action: "create" });
 });
 
 test("CreateLead rejects a duplicate active Organization inside the transaction", async () => {
@@ -91,8 +113,9 @@ test("CreateLead rejects a duplicate active Organization inside the transaction"
   leads.active = LeadFactory.create(input);
   const transactions = transactionHarness();
   const events = dispatcherHarness(transactions.wasCommitted);
+  const audit = new MemoryAuditRecorder();
   await assert.rejects(
-    () => new CreateLeadUseCase(transactions.runner, leads, events.dispatcher).execute(input, allowed, operation),
+    () => new CreateLeadUseCase(transactions.runner, leads, events.dispatcher, audit).execute(input, organizationContext(), operation),
     ApplicationDomainError,
   );
   assert.equal(events.received.length, 0);
@@ -104,8 +127,9 @@ test("ChangeLeadOwner persists ownership history and the Aggregate atomically", 
   const ownership = new MemoryOwnershipRepository();
   const transactions = transactionHarness();
   const events = dispatcherHarness(transactions.wasCommitted);
-  const outcome = await new ChangeLeadOwnerUseCase(transactions.runner, leads, ownership, events.dispatcher).execute(
-    { leadId: "lead-1", ownerId: "user-2", assignedBy: "admin-1", reason: "capacity" }, allowed, operation,
+  const audit = new MemoryAuditRecorder();
+  const outcome = await new ChangeLeadOwnerUseCase(transactions.runner, leads, ownership, events.dispatcher, audit).execute(
+    { leadId: "lead-1", ownerId: "user-2", assignedBy: "admin-1", reason: "capacity" }, organizationContext(), operation,
   );
 
   assert.equal(outcome.status, "identified");
@@ -119,7 +143,8 @@ test("StartDiscovery transitions the Aggregate only through the Application Laye
   leads.lead = LeadFactory.create(input);
   const transactions = transactionHarness();
   const events = dispatcherHarness(transactions.wasCommitted);
-  const outcome = await new StartDiscoveryUseCase(transactions.runner, leads, events.dispatcher).execute({ leadId: "lead-1" }, allowed, operation);
+  const audit = new MemoryAuditRecorder();
+  const outcome = await new StartDiscoveryUseCase(transactions.runner, leads, events.dispatcher, audit).execute({ leadId: "lead-1" }, organizationContext(), operation);
 
   assert.equal(outcome.status, "discovery_in_progress");
   assert.equal(events.received[0][0]?.type, "DiscoveryStarted");
@@ -133,9 +158,10 @@ test("CompleteQualification persists its decision before qualifying the Lead", a
   const qualifications = new MemoryQualificationRepository(leads);
   const transactions = transactionHarness();
   const events = dispatcherHarness(transactions.wasCommitted);
-  const outcome = await new CompleteQualificationUseCase(transactions.runner, leads, qualifications, events.dispatcher).execute(
+  const audit = new MemoryAuditRecorder();
+  const outcome = await new CompleteQualificationUseCase(transactions.runner, leads, qualifications, events.dispatcher, audit).execute(
     { leadId: "lead-1", hasCompletedDiscovery: true, qualification: { id: "qualification-1", leadId: "lead-1", decision: "approved", reason: "fit", decidedBy: "user-1", decidedAt: operation.occurredAt } },
-    allowed,
+    organizationContext(),
     operation,
   );
 
@@ -152,7 +178,8 @@ test("CreatePartner only accepts a qualified Lead and dispatches after commit", 
   leads.lead.transitionTo(LeadStatus.create("qualified"));
   const transactions = transactionHarness();
   const events = dispatcherHarness(transactions.wasCommitted);
-  const outcome = await new CreatePartnerUseCase(transactions.runner, leads, events.dispatcher).execute({ leadId: "lead-1", partnerId: "partner-1" }, allowed, operation);
+  const audit = new MemoryAuditRecorder();
+  const outcome = await new CreatePartnerUseCase(transactions.runner, leads, events.dispatcher, audit).execute({ leadId: "lead-1", partnerId: "partner-1" }, organizationContext(), operation);
 
   assert.equal(outcome.status, "partner_created");
   assert.equal(events.received[0][0]?.type, "PartnerCreated");
@@ -161,8 +188,29 @@ test("CreatePartner only accepts a qualified Lead and dispatches after commit", 
 test("infrastructure failures are mapped instead of leaking from a use case", async () => {
   const transactions: TransactionRunner = { run: async () => { throw new Error("database unavailable"); } };
   const events: DomainEventDispatcher = { dispatch: async () => undefined };
+  const audit = new MemoryAuditRecorder();
   await assert.rejects(
-    () => new CreateLeadUseCase(transactions, new MemoryLeadRepository(), events).execute(input, allowed, operation),
+    () => new CreateLeadUseCase(transactions, new MemoryLeadRepository(), events, audit).execute(input, organizationContext(), operation),
     ApplicationInfrastructureError,
+  );
+});
+
+test("guards deny a capability missing from the active Membership", async () => {
+  const transactions = transactionHarness();
+  const events = dispatcherHarness(transactions.wasCommitted);
+  await assert.rejects(
+    () => new CreateLeadUseCase(transactions.runner, new MemoryLeadRepository(), events.dispatcher, new MemoryAuditRecorder()).execute(input, organizationContext("viewer"), operation),
+    OrganizationContextAccessDeniedError,
+  );
+});
+
+test("guards isolate a Lead from a different Organization context", async () => {
+  const leads = new MemoryLeadRepository();
+  leads.lead = LeadFactory.create(input);
+  const transactions = transactionHarness();
+  const events = dispatcherHarness(transactions.wasCommitted);
+  await assert.rejects(
+    () => new StartDiscoveryUseCase(transactions.runner, leads, events.dispatcher, new MemoryAuditRecorder()).execute({ leadId: "lead-1" }, organizationContext("admin", "org-2"), operation),
+    (error: unknown) => error instanceof ApplicationError && error.code === "LEAD_CONTEXT_MISMATCH",
   );
 });
