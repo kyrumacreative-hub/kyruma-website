@@ -4,7 +4,7 @@
 **Documento evaluado:** `product/specifications/PS-004-Lead-Lifecycle.md`  
 **Versión:** 0.1  
 **Estado de Product:** Draft  
-**Estado de Engineering:** Final Technical Review completed — Ready with Conditions
+**Estado de Engineering:** Ready for Engineering
 
 ## Documento creado
 
@@ -26,20 +26,21 @@ El documento está dentro del repositorio, puede versionarse mediante Git y pued
 
 Los capítulos globales de State Machine, Permissions, Domain Events, Data Model, Acceptance Criteria, Edge Cases, Out of Scope y Traceability Matrix siguen pendientes de consolidación transversal, pero las definiciones por épica necesarias para la revisión están presentes.
 
-## Bloqueos para Technical Review
+## Decisiones de arquitectura cerradas
 
-La revisión final se ha emitido como `READY WITH CONDITIONS`. Antes de implementar, deben cerrarse:
+Las decisiones de Product y Architecture se han cerrado mediante `ARCHITECTURE_DECISION_RECORD.md`:
 
-1. RFC de Context pre-Partner/Organization y Capability de Lead.
-2. RFC de persistencia, transacción, Audit y Timeline.
-3. Política de datos personales de Contact.
-4. Definiciones de Organization, Contact, Owner, Lead activo y contratos de eventos.
-5. Decisiones sobre duplicados, reintentos e invitaciones externas.
+1. Contexto pre-Partner/Organization aditivo.
+2. Capabilities de Lead Lifecycle y Ownership de Super Admin/Admin.
+3. PostgreSQL y transacciones atómicas; proveedor durante preparación de infraestructura.
+4. PII de Contact con acceso limitado a Super Admin, Admin y Owner del Lead.
+5. Invitaciones Discovery con token de un solo uso, expiración, revocación y auditoría.
+6. Envelope versionado e idempotente para eventos.
 
 ## Recomendación final
 
-**PS-004 CLOSED — READY WITH CONDITIONS.**
+**PS-004 Lead Lifecycle™ v1.0 — READY FOR ENGINEERING.**
 
-La estructura oficial está cerrada para PS-004. Product y Architecture deben resolver las condiciones de `TECHNICAL_REVIEW_PS-004_FINAL.md` y los cinco RFCs congelados antes de solicitar autorización de implementación.
+La estructura oficial está cerrada para PS-004 y cumple el gate de arquitectura. El siguiente paso es una Engineering Epic aprobada; no autoriza por sí misma la implementación de código ni cambios de Foundation sin el RFC de implementación correspondiente.
 
 No se ha implementado Lead Lifecycle, ni se ha modificado Foundation, arquitectura, dependencias o código funcional.
