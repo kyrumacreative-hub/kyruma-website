@@ -96,8 +96,8 @@ Los componentes de plataforma viven en `components/platform` y reciben view mode
 
 ## Decisiones pendientes antes de implementación
 
-1. Proveedor de identidad, sesiones e invitaciones.
-2. Base de datos relacional, almacenamiento de archivos, región, copias y objetivos de recuperación.
+1. Proveedor de identidad, sesiones e invitaciones; el contrato de identidad es independiente del proveedor.
+2. Proveedor de PostgreSQL, almacenamiento de archivos, región, copias y objetivos de recuperación.
 3. Régimen jurídico aplicable de conservación, eliminación, exportación y responsables de tratamiento.
 4. Límites operativos de archivos: tamaño, formatos, coste y escaneo.
 5. Namespace final de la superficie interna y estrategia de migración de `/workspace`, si alguna vez fuera necesaria.
