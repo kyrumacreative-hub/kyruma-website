@@ -29,6 +29,11 @@ El formato sigue una adaptación de Keep a Changelog y usa versionado semántico
 - Technical Foundation, Architecture Review, Business Decision Alignment, Identity & Permissions, Partner Context y Foundation Readiness.
 - Changelog, notas de release e historial de versiones para trazabilidad de hitos internos.
 
+### Integration
+
+- Foundation y Engineering Standards integrados en `main` como nueva base estable para el primer dominio funcional.
+- La integración no implica despliegue ni activación de módulos funcionales.
+
 ### Excluded
 
 - Lead Lifecycle, Discovery persistente, Strategy, Projects, Documents, Meetings, Client Portal, Intelligence y automatizaciones.

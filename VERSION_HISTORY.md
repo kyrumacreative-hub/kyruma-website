@@ -2,7 +2,7 @@
 
 | Versión | Nombre | Estado | Fecha | Rama | Commits principales | Referencia |
 | --- | --- | --- | --- | --- | --- | --- |
-| `v0.1.0` | Foundation | Approved | 2026-08-05 | `release/os-foundation-v0.1.0` | `d96b609`, `4c6b773`, `3edd115`, `0331cca` | `os-foundation-v0.1.0` |
+| `v0.1.0` | Foundation | Approved | 2026-08-05 | `release/os-foundation-v0.1.0` → `main` | `d96b609`, `4c6b773`, `3edd115`, `0331cca`, `f487443`, `cd99b15` | `os-foundation-v0.1.0` |
 
 ## Política de versiones
 

@@ -86,6 +86,10 @@ La dirección de KYRUMA aprueba formalmente la Foundation como **KYRUMA OS™ En
 - `npm run lint`: superado.
 - `npm run build`: superado.
 
+## Integración en la base estable
+
+La Foundation y los Engineering Standards fueron integrados en `main` tras la aprobación de esta release mediante los commits de merge `f487443` y `cd99b15`. `main` queda preparada para recibir el primer dominio funcional, pero permanece sin dominios funcionales nuevos, sin despliegue y sin activación de infraestructura adicional.
+
 ## No implica
 
-Esta Engineering Release no se ha fusionado con `main`, no se ha desplegado y no constituye una Release pública.
+Esta Engineering Release no se ha desplegado y no constituye una Release pública. Su integración en `main` es una consolidación técnica interna y no modifica el entorno de producción.
