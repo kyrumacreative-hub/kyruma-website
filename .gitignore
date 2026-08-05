@@ -45,4 +45,5 @@ yarn-error.log*
 .discovery-intelligence-test-build/
 .intelligence-persistence-test-build/
 .partner-creation-test-build/
+.partner-persistence-test-build/
 next-env.d.ts
