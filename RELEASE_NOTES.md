@@ -1,5 +1,11 @@
 # KYRUMA OS™ Engineering Release v0.1.0
 
+## PS-005 Discovery Intelligence™ v1.0
+
+**Estado:** Engineering Complete
+
+Incluye el dominio interno asistencial, snapshots inmutables, análisis versionado y revisado por personas, persistencia PostgreSQL y capacidades de Foundation. No incluye API, UI, Event Bus, automatizaciones ni despliegue.
+
 **Fecha:** 2026-08-05  
 **Estado:** Approved
 **Tag:** `os-foundation-v0.1.0`  
