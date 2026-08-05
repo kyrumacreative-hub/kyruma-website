@@ -1,17 +1,14 @@
-export type LeadStatus = "identified" | "discovery_in_progress" | "on_hold" | "archived";
+import type { ContactId, LeadId, LeadOrigin, LeadStatus, OrganizationId, OwnerId } from "./valueObjects";
 
 export interface Lead {
-  id: string;
-  organizationId: string;
-  ownerId: string;
-  primaryContactId: string;
-  origin: string;
+  id: LeadId;
+  organizationId: OrganizationId;
+  ownerId: OwnerId;
+  primaryContactId: ContactId;
+  origin: LeadOrigin;
   status: LeadStatus;
   createdAt: Date;
   createdBy: string;
-  archivedAt?: Date;
-  archivedBy?: string;
-  archiveReason?: string;
 }
 
 export interface CreateLeadInput {
