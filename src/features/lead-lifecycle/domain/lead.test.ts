@@ -14,6 +14,7 @@ import { LeadCreationService, LeadOwnershipService, LeadQualificationService } f
 import { LeadOrigin, LeadStatus } from "./valueObjects";
 import { LeadMapper } from "../infrastructure/persistence/leadMapper";
 import { PersistenceAdapterNotConfiguredError, PostgresLeadRepositoryAdapter } from "../infrastructure/persistence/repositories/PostgresLeadRepositoryAdapter";
+import type { TransactionRunner } from "../ports/TransactionRunner";
 
 const input = { id: "lead-1", organizationId: "org-1", ownerId: "user-1", primaryContactId: "contact-1", origin: "manual", createdAt: new Date("2026-08-05"), createdBy: "user-1" };
 
@@ -80,4 +81,9 @@ test("mapper converts an Aggregate without applying business rules", () => {
 
 test("PostgreSQL adapter skeleton fails without infrastructure", async () => {
   await assert.rejects(() => new PostgresLeadRepositoryAdapter().findById("lead-1"), PersistenceAdapterNotConfiguredError);
+});
+
+test("transaction contract keeps provider context opaque", async () => {
+  const runner: TransactionRunner = { run: async (operation) => operation({}) };
+  assert.equal(await runner.run(async () => "committed"), "committed");
 });
