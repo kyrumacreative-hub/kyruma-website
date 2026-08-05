@@ -16,6 +16,9 @@ model Lead {
   status           String
   createdAt        DateTime
   createdBy        String
+  archivedAt       DateTime?
+  archivedBy       String?
+  archiveReason    String?
   ownerships       Ownership[]
   qualifications   Qualification[]
 }
