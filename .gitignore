@@ -46,4 +46,5 @@ yarn-error.log*
 .intelligence-persistence-test-build/
 .partner-creation-test-build/
 .partner-persistence-test-build/
+.workspace-test-build/
 next-env.d.ts
