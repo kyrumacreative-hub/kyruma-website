@@ -1,0 +1,15 @@
+{
+  "extends": "./tsconfig.json",
+  "compilerOptions": {
+    "module": "commonjs",
+    "moduleResolution": "node",
+    "noEmit": false,
+    "outDir": ".foundation-test-build",
+    "rootDir": "src",
+    "incremental": false
+  },
+  "include": [
+    "src/features/identity/**/*.ts",
+    "src/features/partner-context/**/*.ts"
+  ]
+}
