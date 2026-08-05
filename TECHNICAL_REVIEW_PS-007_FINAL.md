@@ -2,12 +2,12 @@
 
 ## Decision
 
-**NOT READY FOR ENGINEERING**
+**READY FOR ENGINEERING**
 
 ## Justification
 
-The specification is structurally complete and compatible with Foundation in principle. However, RFC-012, RFC-013 and RFC-014 require explicit approval, and onboarding completion is not yet defined. Implementing before those decisions would create either duplicate Workspace persistence, an unsafe invitation path or a second authorization model.
+The specification is structurally complete and compatible with Foundation. RFC-012 establishes Workspace as canonical while preserving Partner Creation’s atomic handoff. RFC-013 establishes secure invitation handling without PII leakage. RFC-014 preserves Foundation as the sole identity/authorization source. Onboarding activation remains explicitly attested by Product and cannot be inferred by the domain.
 
 ## Required next step
 
-Product and Architecture approve the three RFC decisions and the onboarding-completion criterion. Then update the readiness document and issue a final `READY FOR ENGINEERING` review without changing the frozen domains.
+Engineering may begin only from a dedicated Workspace execution order. It must use the approved ports, preserve Organization/Partner/Workspace scope, implement no new authorization model and leave external delivery/identity composition disabled until their operational configuration exists.

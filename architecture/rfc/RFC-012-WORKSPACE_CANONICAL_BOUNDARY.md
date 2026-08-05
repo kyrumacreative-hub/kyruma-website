@@ -22,6 +22,8 @@ No PS-006 rewrite is required. Engineering must define an idempotent handoff and
 
 **Approved:** Workspace™ is canonical; Partner Creation requests creation and stores only `workspaceId`.
 
-## Architecture action
+## Architecture decision
 
-Validate the additive handoff/link strategy and future migration compatibility.
+**APPROVED.** The canonical Workspace uses the `workspaceId` allocated during the approved Partner Creation transaction. An additive Workspace persistence record will use that identifier as its primary key and retain `partnerId`, Organization scope and correlation ID. `PartnerWorkspace` remains the one-way provisioning evidence only; it cannot own state or lifecycle.
+
+This preserves existing PS-006 data and allows a migration-free idempotent handoff for new records. No Foundation contract changes are required.

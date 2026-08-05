@@ -20,6 +20,8 @@ The security model is compatible with Foundation and the approved Discovery invi
 
 **Approved:** secure token, persistent hash, expiry, revocation and full audit are mandatory.
 
-## Architecture action
+## Architecture decision
 
-Validate hash/token handling, atomic invalidation and the post-commit delivery boundary. Specific retention period and delivery provider remain an operational configuration, not an Engineering blocker.
+**APPROVED.** The domain receives a cryptographically secure opaque token, stores only its hash, and atomically marks an invitation accepted or revoked. The delivery adapter receives the opaque token only after commit and never activates a membership itself. Recipient contact is classified as PII, encrypted at rest by the future infrastructure adapter, and excluded from URLs, events and logs.
+
+Expiry duration, retention duration and delivery provider remain operational configuration. They do not block the domain, persistence contracts or safe default implementation.

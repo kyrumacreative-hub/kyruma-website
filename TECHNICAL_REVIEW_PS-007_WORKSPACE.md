@@ -2,7 +2,7 @@
 
 ## Decision
 
-**APPROVED FOR ARCHITECTURE REVIEW**
+**APPROVED**
 
 ## Architecture
 
@@ -26,4 +26,4 @@ Context isolation, Membership scope, grants and revocations are implementable wi
 
 ## Recommendation
 
-Proceed to Architecture Review, not Engineering. Product decisions are complete; RFC validation remains mandatory before implementation.
+RFC-012, RFC-013 and RFC-014 are approved. PS-007 is ready for the final Engineering readiness gate recorded in `TECHNICAL_REVIEW_PS-007_FINAL.md`.

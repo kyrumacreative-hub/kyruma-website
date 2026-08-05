@@ -5,9 +5,9 @@
 | Field | Value |
 | --- | --- |
 | Version | 0.1 |
-| Status | Ready for Architecture Review |
+| Status | Ready for Engineering |
 | Owner | Product |
-| Engineering | Pending Technical Review |
+| Engineering | Ready for Engineering |
 | Depends on | Foundation, Partner Creation™ |
 
 ## 2. Executive Summary

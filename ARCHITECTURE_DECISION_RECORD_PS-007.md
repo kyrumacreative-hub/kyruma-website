@@ -2,16 +2,16 @@
 
 ## ADR-007.1 — Canonical Workspace
 
-**Recommendation:** Workspace™ is the canonical Aggregate; Partner Creation retains only the provisioning handoff record. **Status:** requires RFC-012 approval.
+**Decision:** Workspace™ is the canonical Aggregate; Partner Creation retains only immutable provisioning evidence and `workspaceId`. **Status:** approved by RFC-012.
 
 ## ADR-007.2 — Invitations
 
-**Recommendation:** hash-only token, no PII in URL, atomic invalidation, post-commit delivery. **Status:** requires Product/legal decision under RFC-013.
+**Decision:** hash-only secure token, no PII in URL/events/logs, atomic invalidation and post-commit delivery. **Status:** approved by RFC-013.
 
 ## ADR-007.3 — Members and Teams
 
-**Recommendation:** Foundation Membership is canonical; Team is non-authorizing. **Status:** requires Product confirmation of initial Owner source under RFC-014.
+**Decision:** Foundation Membership is canonical; Team is non-authorizing; the PS-006 Owner identifier validates through a fail-closed Foundation port. **Status:** approved by RFC-014.
 
 ## ADR-007.4 — Activation
 
-**Recommendation:** Workspace activation stays explicitly separate from provisioning. **Status:** Product must define onboarding completion evidence.
+**Decision:** Workspace activation stays explicitly separate from provisioning and accepts only a Product-provided onboarding-completion attestation. **Status:** approved; Product owns the operational checklist.

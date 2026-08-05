@@ -2,14 +2,14 @@
 
 ## Status
 
-**ARCHITECTURE NOT APPROVED**
+**ARCHITECTURE APPROVED**
 
-| RFC | Status | Blocking reason |
+| RFC | Status | Decision |
 | --- | --- | --- |
-| RFC-012 | Proposed | Canonical Workspace ownership is unresolved. |
-| RFC-013 | Requires Product/legal decision | Invitation PII, expiry and retention are unresolved. |
-| RFC-014 | Requires Product decision | Initial Owner source and canonical Membership link are unresolved. |
+| RFC-012 | Approved | Workspace is canonical; Partner Creation is provisioning evidence only. |
+| RFC-013 | Approved | Hash-only secure invitations, atomic invalidation and post-commit delivery. |
+| RFC-014 | Approved | Foundation Membership is canonical; Owner reference validates through a fail-closed port. |
 
 ## Conclusion
 
-Foundation compatibility is achievable, but Architecture cannot approve Workspace™ for Engineering while its primary data ownership, invitation security and Membership source remain undecided.
+Workspace™ is compatible with Foundation, Partner Creation™ and future Audit/Event Bus boundaries without a new Foundation mechanism. Operational configuration of identity provider, invitation delivery and retention remains deferred, but it does not block domain engineering.

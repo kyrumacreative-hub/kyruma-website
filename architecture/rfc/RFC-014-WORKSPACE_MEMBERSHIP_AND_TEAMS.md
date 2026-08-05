@@ -20,6 +20,8 @@ This avoids authorization divergence. The requirement to nominate an actual init
 
 **Approved:** the initial Owner comes from the Membership created in PS-006, and a Workspace begins with exactly one active Owner.
 
-## Architecture action
+## Architecture decision
 
-Validate the reference integrity and confirm Foundation Membership remains canonical for identity, role, grants and revocations.
+**APPROVED.** `initialOwnerMembershipId` is treated as an opaque Foundation Membership identifier. A `FoundationMembershipPort` must validate that the identifier exists, is active, is Owner-eligible and belongs to the same Organization before Workspace provisioning completes; absence or mismatch fails the transaction closed. WorkspaceMember stores only that reference and never copies a user, role, grants or revocations. Teams remain non-authorizing.
+
+This resolves the current absence of a duplicated user field in Partner Creation without modifying Foundation.
