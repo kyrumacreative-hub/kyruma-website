@@ -15,12 +15,12 @@ import {
   SourceSnapshotId,
 } from "../../domain/valueObjects";
 import type { IntelligenceAnalysisReadModel, IntelligenceAnalysisHistoryReadModel, IntelligenceSnapshotReadModel } from "../../ports/readModels";
-import type { TransactionRunner } from "../../ports/TransactionRunner";
+import type { TransactionRunner } from "../../../lead-lifecycle/ports/TransactionRunner";
 import { DiscoverySourceSnapshotMapper } from "./discoverySourceSnapshotMapper";
 import { IntelligenceAnalysisMapper } from "./intelligenceAnalysisMapper";
 import { PrismaIntelligenceAnalysisRepository } from "./repositories/PrismaIntelligenceAnalysisRepository";
 import { PrismaIntelligenceSnapshotRepository } from "./repositories/PrismaIntelligenceSnapshotRepository";
-import { PersistenceNotConfiguredError } from "./repositories/PersistenceNotConfiguredError";
+import { PrismaTransactionContextMissingError, PrismaTransactionContextStore } from "../../../lead-lifecycle/infrastructure/persistence/PrismaTransactionContext";
 
 function event(eventId: string) {
   return { eventId, occurredAt: new Date("2026-08-05T12:00:00.000Z"), correlationId: new CorrelationId("correlation-1") };
@@ -75,13 +75,14 @@ test("snapshot mapper round-trips an immutable, versioned source snapshot", () =
   assert.equal(Object.isFrozen(restored.payload), true);
 });
 
-test("prepared Prisma adapters fail safely until a persistence implementation is configured", async () => {
-  const repository = new PrismaIntelligenceAnalysisRepository();
-  const snapshots = new PrismaIntelligenceSnapshotRepository();
+test("Prisma adapters require a real transaction context", async () => {
+  const contexts = new PrismaTransactionContextStore();
+  const repository = new PrismaIntelligenceAnalysisRepository(contexts);
+  const snapshots = new PrismaIntelligenceSnapshotRepository(contexts);
   const context = {};
 
-  await assert.rejects(() => repository.findById(new IntelligenceAnalysisId("analysis-1"), context), PersistenceNotConfiguredError);
-  await assert.rejects(() => snapshots.findById(new SourceSnapshotId("snapshot-1"), context), PersistenceNotConfiguredError);
+  await assert.rejects(() => repository.findById(new IntelligenceAnalysisId("analysis-1"), context), PrismaTransactionContextMissingError);
+  await assert.rejects(() => snapshots.findById(new SourceSnapshotId("snapshot-1"), context), PrismaTransactionContextMissingError);
 });
 
 test("transaction runner remains an opaque callback contract", async () => {
