@@ -1,0 +1,46 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Lead {
+  id               String          @id
+  organizationId   String
+  ownerId          String
+  primaryContactId String
+  origin           String
+  status           String
+  createdAt        DateTime
+  createdBy        String
+  ownerships       Ownership[]
+  qualifications   Qualification[]
+}
+
+model Ownership {
+  id         String   @id
+  leadId     String
+  ownerId    String
+  assignedBy String
+  assignedAt DateTime
+  reason     String?
+  active     Boolean
+  lead       Lead     @relation(fields: [leadId], references: [id], onDelete: Restrict)
+
+  @@index([leadId])
+}
+
+model Qualification {
+  id        String   @id
+  leadId    String
+  decision  String
+  reason    String
+  decidedBy String
+  decidedAt DateTime
+  lead      Lead     @relation(fields: [leadId], references: [id], onDelete: Restrict)
+
+  @@index([leadId, decidedAt])
+}
