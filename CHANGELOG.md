@@ -1,5 +1,9 @@
 # Changelog
 
+## [0.3.0] — 2026-08-05
+
+**PS-006 Partner Creation™ v1.0 — Engineering Complete.** Added the Partner domain, atomic PostgreSQL conversion persistence, concurrency-safe KYR identifier allocation, Organization-scoped application services and tests. API, UI, Event Bus and deployment remain excluded.
+
 ## [0.2.0] — 2026-08-05
 
 **PS-005 Discovery Intelligence™ v1.0 — Engineering Complete.** Added immutable snapshots, human-reviewed analysis lifecycle, PostgreSQL persistence, Foundation capabilities and application coordination. API, UI, Event Bus and autonomous actions remain excluded.
