@@ -2,7 +2,7 @@
 
 ## Decision
 
-**APPROVED WITH CONDITIONS**
+**APPROVED FOR ARCHITECTURE REVIEW**
 
 ## Architecture
 
@@ -14,7 +14,7 @@ Workspace owns operational Workspace lifecycle, members, invitations, teams and 
 
 ## Data and integrity
 
-The primary Workspace partial unique constraint introduced by PS-006 is compatible with PS-007. The canonical record versus provisioning record relationship requires RFC-012. Invitations require RFC-013. Members require RFC-014. Settings need optimistic concurrency; events need correlation and idempotency.
+The primary Workspace partial unique constraint introduced by PS-006 is compatible with PS-007. Product now defines Workspace as canonical, Partner Creation as handoff-only, the PS-006 Membership as the initial Owner, secure hashed invitations and minimum-onboarding activation. RFC-012/013/014 must now validate those decisions technically. Settings need optimistic concurrency; events need correlation and idempotency.
 
 ## Security
 
@@ -22,10 +22,8 @@ Context isolation, Membership scope, grants and revocations are implementable wi
 
 ## Conditions
 
-- Approve RFC-012, RFC-013 and RFC-014.
-- Product defines onboarding completion evidence.
 - No implementation creates a second membership, role or Workspace context mechanism.
 
 ## Recommendation
 
-Proceed to Architecture Review, not Engineering. The conditions are blocking for a v1 functional implementation.
+Proceed to Architecture Review, not Engineering. Product decisions are complete; RFC validation remains mandatory before implementation.

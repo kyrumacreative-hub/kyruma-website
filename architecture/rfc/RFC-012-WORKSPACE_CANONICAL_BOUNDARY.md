@@ -18,6 +18,10 @@ Partner Creation™ currently persists a `PartnerWorkspace` provisioning record 
 
 No PS-006 rewrite is required. Engineering must define an idempotent handoff and migration path before real Workspace persistence. The risk is blocking: without one canonical record, context and lifecycle rules can diverge.
 
-## Required decision
+## Product decision
 
-Architecture approval of Option 2 and permission for the future additive link migration.
+**Approved:** Workspace™ is canonical; Partner Creation requests creation and stores only `workspaceId`.
+
+## Architecture action
+
+Validate the additive handoff/link strategy and future migration compatibility.

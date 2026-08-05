@@ -5,7 +5,7 @@
 | Field | Value |
 | --- | --- |
 | Version | 0.1 |
-| Status | Draft — pending Architecture Decisions |
+| Status | Ready for Architecture Review |
 | Owner | Product |
 | Engineering | Pending Technical Review |
 | Depends on | Foundation, Partner Creation™ |
@@ -94,7 +94,7 @@ provisioning → onboarding → active → paused → archived
 
 ### UC-007.1 — Provision Initial Workspace
 
-Partner Creation requests initial primary Workspace provisioning inside its approved atomic conversion boundary. Workspace stores the resulting Workspace in `onboarding`; it does not activate the Workspace.
+Partner Creation requests initial primary Workspace provisioning inside its approved atomic conversion boundary and retains only the resulting `workspaceId`. Workspace™ is the canonical Aggregate and stores the result in `onboarding`; it does not activate the Workspace.
 
 ### UC-007.2 — Get Workspace Context
 
@@ -122,7 +122,7 @@ An authorized administrator updates versioned Settings with optimistic concurren
 
 ### UC-007.8 — Complete Onboarding
 
-An authorized internal user records Product-defined onboarding completion and transitions `onboarding → active`. This is the only activation path.
+An authorized internal user records completion of the Product-defined minimum onboarding and transitions `onboarding → active`. This is the only activation path.
 
 ## 9. Permissions
 
@@ -168,11 +168,11 @@ Events use the versioned, idempotent envelope, minimum payload and correlation I
 
 ### WorkspaceMember
 
-`id`, `workspaceId`, `membershipId`, `status`, `joinedAt`, `removedAt?`, `changedBy`, `version`.
+`id`, `workspaceId`, `membershipId`, `status`, `joinedAt`, `removedAt?`, `changedBy`, `version`. The initial active Owner references the Membership created in PS-006; a Workspace begins with exactly one such Owner.
 
 ### Invitation
 
-`id`, `workspaceId`, `recipientReference` (pending RFC-013), `role`, `tokenHash`, `expiresAt`, `acceptedAt?`, `revokedAt?`, `createdBy`, `correlationId`.
+`id`, `workspaceId`, `recipientReference`, `role`, `tokenHash`, `expiresAt`, `acceptedAt?`, `revokedAt?`, `createdBy`, `correlationId`. Tokens are secure, persisted only as hashes, expiring, revocable and fully audited.
 
 ### Team
 

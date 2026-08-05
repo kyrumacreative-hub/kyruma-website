@@ -16,6 +16,10 @@ Workspace invitations require a recipient reference and an external delivery pat
 
 The security model is compatible with Foundation and the approved Discovery invitation approach. Product/legal must approve the expiry and retention period before production delivery. This is blocking for invitations, but not for Aggregate-only Engineering.
 
-## Required decision
+## Product decision
 
-Product and legal approval of expiry, recipient PII retention and permitted delivery channels.
+**Approved:** secure token, persistent hash, expiry, revocation and full audit are mandatory.
+
+## Architecture action
+
+Validate hash/token handling, atomic invalidation and the post-commit delivery boundary. Specific retention period and delivery provider remain an operational configuration, not an Engineering blocker.

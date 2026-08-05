@@ -2,7 +2,7 @@
 
 ## Status
 
-**NOT READY FOR ENGINEERING**
+**READY FOR ARCHITECTURE REVIEW**
 
 ## Complete
 
@@ -10,13 +10,13 @@
 - Use cases, events, contracts, data model, permissions, acceptance criteria and edge cases.
 - Integration boundaries with Foundation and Partner Creation™.
 
-## Blocking decisions
+## Product decisions resolved
 
-1. RFC-012: canonical Workspace ownership and migration path from Partner Creation’s provisioning records.
-2. RFC-013: invitation recipient identity, PII classification, token delivery, expiry and retention policy.
-3. RFC-014: Membership ownership and capability model for Workspace Members and Teams.
-4. Product must define the evidence required for `onboarding → active`.
+1. Workspace™ is the canonical Workspace Aggregate; Partner Creation only requests creation and retains `workspaceId`.
+2. The initial Owner is the Membership created in PS-006, and exactly one active Owner exists at Workspace creation.
+3. Invitations use secure tokens, persistent hashes, expiry, revocation and audit.
+4. Activation requires Product’s minimum onboarding completion.
 
 ## Recommendation
 
-Resolve RFC-012/013/014 and the onboarding-completion definition. Afterwards the technical review can issue a final readiness decision without changing PS-004, PS-005, PS-006 or Foundation.
+Product completeness is sufficient for Architecture Review. Architecture must now validate the additive persistence handoff, token treatment and Foundation Membership integration through RFC-012/013/014 without changing PS-004, PS-005, PS-006 or Foundation.

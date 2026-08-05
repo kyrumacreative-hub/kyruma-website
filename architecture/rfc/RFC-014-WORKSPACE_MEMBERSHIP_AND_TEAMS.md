@@ -16,6 +16,10 @@ Partner Creation™ creates an initial Owner Membership record but no canonical 
 
 This avoids authorization divergence. The requirement to nominate an actual initial Owner is blocking for the integrated atomic creation flow because the current provisioning record has no user reference.
 
-## Required decision
+## Product decision
 
-Product confirms the intended initial Owner source and Architecture approves Foundation Membership as the canonical user/role record.
+**Approved:** the initial Owner comes from the Membership created in PS-006, and a Workspace begins with exactly one active Owner.
+
+## Architecture action
+
+Validate the reference integrity and confirm Foundation Membership remains canonical for identity, role, grants and revocations.
