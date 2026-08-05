@@ -32,6 +32,19 @@ export interface ResolvedPartnerContext {
   allowedVisibilities: readonly Visibility[];
 }
 
+/**
+ * Additive pre-Partner context for domains that operate before a Partner and
+ * Workspace exist. It intentionally cannot be used as a Partner Context.
+ */
+export interface ResolvedOrganizationContext {
+  contextKey: string;
+  actor: AuthenticatedActor;
+  membership: Membership;
+  organization: OrganizationContext;
+  capabilities: ReadonlySet<Capability>;
+  allowedVisibilities: readonly Visibility[];
+}
+
 export type ContextEventType = "PartnerContextResolved" | "PartnerContextChanged" | "WorkspaceResolved" | "MembershipResolved" | "ContextUnauthorized";
 
 export interface ContextEvent {
