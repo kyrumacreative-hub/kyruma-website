@@ -37,7 +37,7 @@ export class LeadOrigin {
   static create(value: string) { return new LeadOrigin(required(value, new InvalidLeadOriginError("Lead origin is required."))); }
 }
 
-const leadStatuses = ["identified", "discovery_in_progress", "on_hold", "archived"] as const;
+const leadStatuses = ["identified", "discovery_in_progress", "discovery_completed", "qualified", "on_hold", "archived", "partner_created"] as const;
 export type LeadStatusValue = (typeof leadStatuses)[number];
 
 export class LeadStatus {

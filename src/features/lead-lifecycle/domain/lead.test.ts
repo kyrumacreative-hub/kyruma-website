@@ -34,7 +34,7 @@ test("factory rejects missing Organization, Owner and Contact", () => {
 
 test("value objects reject invalid origin and state", () => {
   assert.throws(() => LeadOrigin.create(""), InvalidLeadOriginError);
-  assert.throws(() => LeadStatus.create("partner_created"), InvalidLeadStateError);
+  assert.throws(() => LeadStatus.create("not-a-lead-status"), InvalidLeadStateError);
 });
 
 test("creation service records typed events with required metadata", () => {
@@ -80,7 +80,7 @@ test("mapper converts an Aggregate without applying business rules", () => {
 });
 
 test("PostgreSQL adapter skeleton fails without infrastructure", async () => {
-  await assert.rejects(() => new PostgresLeadRepositoryAdapter().findById("lead-1"), PersistenceAdapterNotConfiguredError);
+  await assert.rejects(() => new PostgresLeadRepositoryAdapter().findById("lead-1", {}), PersistenceAdapterNotConfiguredError);
 });
 
 test("transaction contract keeps provider context opaque", async () => {

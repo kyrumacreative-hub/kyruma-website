@@ -1,4 +1,5 @@
 import type { LeadDomainEvent } from "./events";
+import { InvalidLeadStateError } from "./errors";
 import type { ContactId, LeadId, LeadOrigin, LeadStatus, OrganizationId, OwnerId } from "./valueObjects";
 
 export interface LeadProperties {
@@ -27,6 +28,16 @@ export class LeadAggregate {
   get createdBy() { return this.properties.createdBy; }
 
   changeOwner(ownerId: OwnerId) { this.properties.ownerId = ownerId; }
+  transitionTo(status: LeadStatus) {
+    const allowed: Record<string, string[]> = {
+      identified: ["discovery_in_progress"],
+      discovery_in_progress: ["discovery_completed"],
+      discovery_completed: ["qualified"],
+      qualified: ["partner_created"],
+    };
+    if (!allowed[this.status.value]?.includes(status.value)) throw new InvalidLeadStateError(`Invalid Lead transition: ${this.status.value} -> ${status.value}`);
+    this.properties.status = status;
+  }
   recordEvent(event: LeadDomainEvent) { this.pendingEvents.push(event); }
   pullDomainEvents() { const events = [...this.pendingEvents]; this.clearDomainEvents(); return events; }
   clearDomainEvents() { this.pendingEvents.length = 0; }
