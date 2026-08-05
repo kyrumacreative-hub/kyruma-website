@@ -23,6 +23,7 @@ import type { AuditContextRecorder, LeadAuditContext } from "../ports/AuditConte
 import type { ResolvedOrganizationContext } from "../../partner-context/domain/types";
 import { effectiveCapabilities, type Role } from "../../identity/domain/capabilities";
 import { OrganizationContextAccessDeniedError } from "../../partner-context/application/requireOrganizationContextAccess";
+import type { PartnerCreationPort } from "../ports/PartnerCreationPort";
 
 const input = {
   id: "lead-1", organizationId: "org-1", ownerId: "user-1", primaryContactId: "contact-1",
@@ -71,6 +72,10 @@ class MemoryAuditRecorder implements AuditContextRecorder {
   entries: LeadAuditContext[] = [];
   async record(entry: LeadAuditContext): Promise<void> { this.entries.push(entry); }
 }
+
+const partnerCreation: PartnerCreationPort = {
+  createFromLead: async () => ({ partnerId: "partner-1", publicId: "KYR-001", workspaceId: "workspace-1", membershipId: "membership-partner-1" }),
+};
 
 function transactionHarness() {
   let committed = false;
@@ -179,7 +184,9 @@ test("CreatePartner only accepts a qualified Lead and dispatches after commit", 
   const transactions = transactionHarness();
   const events = dispatcherHarness(transactions.wasCommitted);
   const audit = new MemoryAuditRecorder();
-  const outcome = await new CreatePartnerUseCase(transactions.runner, leads, events.dispatcher, audit).execute({ leadId: "lead-1", partnerId: "partner-1" }, organizationContext(), operation);
+  const qualification = new MemoryQualificationRepository(leads);
+  qualification.records.push({ id: "qualification-1", leadId: "lead-1", decision: "approved", reason: "fit", decidedBy: "user-1", decidedAt: operation.occurredAt });
+  const outcome = await new CreatePartnerUseCase(transactions.runner, leads, qualification, partnerCreation, events.dispatcher, audit).execute({ leadId: "lead-1", qualificationDecisionId: "qualification-1" }, organizationContext(), operation);
 
   assert.equal(outcome.status, "partner_created");
   assert.equal(events.received[0][0]?.type, "PartnerCreated");

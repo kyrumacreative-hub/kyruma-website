@@ -18,6 +18,7 @@ import type { DomainEventDispatcher } from "../ports/DomainEventDispatcher";
 import type { LeadRepository } from "../ports/LeadRepository";
 import type { OwnershipRecord, OwnershipRepository } from "../ports/OwnershipRepository";
 import type { QualificationRecord, QualificationRepository } from "../ports/QualificationRepository";
+import type { PartnerCreationPort, PartnerCreationResult } from "../ports/PartnerCreationPort";
 import type { TransactionRunner } from "../ports/TransactionRunner";
 
 /** Application-layer errors are safe to expose to adapters; infrastructure errors never leak. */
@@ -51,13 +52,14 @@ export interface CompleteQualificationInput {
   qualification: QualificationRecord;
   hasCompletedDiscovery: boolean;
 }
-export interface CreatePartnerInput { leadId: string; partnerId: string; }
+export interface CreatePartnerInput { leadId: string; qualificationDecisionId: string; }
+export interface PartnerCreatedResult extends LeadResult { partner: PartnerCreationResult; }
 
-function result(lead: { id: { value: string }; status: { value: string } }): LeadResult {
+export function result(lead: { id: { value: string }; status: { value: string } }): LeadResult {
   return { id: lead.id.value, status: lead.status.value };
 }
 
-function toApplicationError(error: unknown): never {
+export function toApplicationError(error: unknown): never {
   if (error instanceof ApplicationError) throw error;
   if (error instanceof DuplicateActiveLeadError || error instanceof InvalidLeadStateError) {
     throw new ApplicationDomainError(error.message);
@@ -213,26 +215,39 @@ export class CreatePartnerUseCase {
   constructor(
     private readonly transactions: TransactionRunner,
     private readonly leads: LeadRepository,
+    private readonly qualifications: QualificationRepository,
+    private readonly partnerCreation: PartnerCreationPort,
     private readonly events: DomainEventDispatcher,
     private readonly audit: AuditContextRecorder,
     private readonly guards = new LeadAuthorizationGuards(),
   ) {}
 
-  async execute(input: CreatePartnerInput, context: ResolvedOrganizationContext, operation: DomainOperationMetadata): Promise<LeadResult> {
+  async execute(input: CreatePartnerInput, context: ResolvedOrganizationContext, operation: DomainOperationMetadata): Promise<PartnerCreatedResult> {
     const audit = this.guards.createPartner(context, operation.occurredAt);
     try {
-      const lead = await this.transactions.run(async (transaction) => {
+      const created = await this.transactions.run(async (transaction) => {
         const aggregate = await this.leads.findById(input.leadId, transaction);
         if (!aggregate) throw new ApplicationError("Lead not found.", "LEAD_NOT_FOUND");
         this.guards.assertLeadOrganization(context, aggregate.organizationId.value);
+        const qualification = await this.qualifications.findLatest(input.leadId, transaction);
+        if (!qualification || qualification.id !== input.qualificationDecisionId) {
+          throw new ApplicationError("An eligible Qualification decision is required.", "QUALIFICATION_NOT_ELIGIBLE");
+        }
+        const partner = await this.partnerCreation.createFromLead({
+          leadId: aggregate.id.value,
+          organizationId: aggregate.organizationId.value,
+          qualificationDecisionId: qualification.id,
+          createdBy: context.actor.user.id,
+          createdAt: operation.occurredAt,
+        }, transaction);
         aggregate.transitionTo(LeadStatus.create("partner_created"));
-        aggregate.recordEvent({ ...eventMetadata({ eventId: operation.eventId, aggregateId: aggregate.id.value, occurredAt: operation.occurredAt }), type: "PartnerCreated", partnerId: input.partnerId });
+        aggregate.recordEvent({ ...eventMetadata({ eventId: operation.eventId, aggregateId: aggregate.id.value, occurredAt: operation.occurredAt }), type: "PartnerCreated", partnerId: partner.partnerId });
         await this.leads.update(aggregate, transaction);
         await this.audit.record(audit, transaction);
-        return aggregate;
+        return { aggregate, partner };
       });
-      await dispatchAfterCommit(this.events, lead.pullDomainEvents());
-      return result(lead);
+      await dispatchAfterCommit(this.events, created.aggregate.pullDomainEvents());
+      return { ...result(created.aggregate), partner: created.partner };
     } catch (error) {
       return toApplicationError(error);
     }

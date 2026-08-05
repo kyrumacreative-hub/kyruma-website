@@ -8,7 +8,7 @@
     "start": "next start",
     "lint": "eslint",
     "test:foundation": "tsc -p tsconfig.foundation-tests.json && node --test .foundation-test-build/features/identity/domain/authorization.test.js .foundation-test-build/features/partner-context/application/partnerContext.test.js .foundation-test-build/features/partner-context/application/organizationContext.test.js",
-    "test:lead-lifecycle": "tsc -p tsconfig.lead-lifecycle-tests.json && node --test .lead-lifecycle-test-build/features/lead-lifecycle/domain/lead.test.js .lead-lifecycle-test-build/features/lead-lifecycle/application/useCases.test.js"
+    "test:lead-lifecycle": "tsc -p tsconfig.lead-lifecycle-tests.json && node --test .lead-lifecycle-test-build/features/lead-lifecycle/domain/lead.test.js .lead-lifecycle-test-build/features/lead-lifecycle/application/useCases.test.js .lead-lifecycle-test-build/features/lead-lifecycle/application/completionUseCases.test.js"
   },
   "dependencies": {
     "@calcom/embed-react": "^1.5.3",

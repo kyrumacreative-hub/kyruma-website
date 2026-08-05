@@ -12,6 +12,22 @@ export class LeadContextMismatchError extends Error {
  * visibility evaluation; this class only maps an approved use case to one capability.
  */
 export class LeadAuthorizationGuards {
+  read(context: ResolvedOrganizationContext, timestamp: Date): LeadAuditContext {
+    return this.authorize(context, "lead.read", "read", timestamp);
+  }
+
+  update(context: ResolvedOrganizationContext, timestamp: Date): LeadAuditContext {
+    return this.authorize(context, "lead.update", "update", timestamp);
+  }
+
+  archive(context: ResolvedOrganizationContext, timestamp: Date): LeadAuditContext {
+    return this.authorize(context, "lead.archive", "archive", timestamp);
+  }
+
+  reactivate(context: ResolvedOrganizationContext, timestamp: Date): LeadAuditContext {
+    return this.authorize(context, "lead.reactivate", "reactivate", timestamp);
+  }
+
   create(context: ResolvedOrganizationContext, timestamp: Date): LeadAuditContext {
     return this.authorize(context, "lead.create", "create", timestamp);
   }
@@ -26,6 +42,10 @@ export class LeadAuthorizationGuards {
 
   completeQualification(context: ResolvedOrganizationContext, timestamp: Date): LeadAuditContext {
     return this.authorize(context, "lead.qualification.approve", "qualification.approve", timestamp);
+  }
+
+  startQualification(context: ResolvedOrganizationContext, timestamp: Date): LeadAuditContext {
+    return this.authorize(context, "lead.qualification.start", "qualification.start", timestamp);
   }
 
   createPartner(context: ResolvedOrganizationContext, timestamp: Date): LeadAuditContext {
