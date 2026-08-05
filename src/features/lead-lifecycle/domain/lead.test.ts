@@ -87,3 +87,16 @@ test("transaction contract keeps provider context opaque", async () => {
   const runner: TransactionRunner = { run: async (operation) => operation({}) };
   assert.equal(await runner.run(async () => "committed"), "committed");
 });
+
+test("Lead supports only approved archive and reactivation transitions", () => {
+  const lead = LeadFactory.create(input);
+  lead.archive({ eventId: "event-archive", occurredAt: new Date("2026-08-05"), actorId: "user-1", reason: "not now" });
+  assert.equal(lead.status.value, "archived");
+  assert.equal(lead.archivedBy, "user-1");
+  assert.equal(lead.pullDomainEvents()[0]?.type, "LeadArchived");
+
+  lead.reactivate({ eventId: "event-reactivate", occurredAt: new Date("2026-08-06"), actorId: "user-1", reason: "new opportunity" });
+  assert.equal(lead.status.value, "identified");
+  assert.equal(lead.pullDomainEvents()[0]?.type, "LeadReactivated");
+  assert.throws(() => lead.transitionTo(LeadStatus.create("partner_created")), InvalidLeadStateError);
+});

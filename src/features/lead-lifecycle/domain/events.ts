@@ -16,8 +16,11 @@ export interface DiscoveryCompleted extends DomainEventMetadata { type: "Discove
 export interface QualificationStarted extends DomainEventMetadata { type: "QualificationStarted"; }
 export interface QualificationCompleted extends DomainEventMetadata { type: "QualificationCompleted"; }
 export interface PartnerCreated extends DomainEventMetadata { type: "PartnerCreated"; partnerId: string; }
+export interface LeadArchived extends DomainEventMetadata { type: "LeadArchived"; reason: string; archivedBy: string; }
+export interface LeadReactivated extends DomainEventMetadata { type: "LeadReactivated"; reason: string; reactivatedBy: string; }
+export interface LeadUpdated extends DomainEventMetadata { type: "LeadUpdated"; primaryContactId: string; }
 
-export type LeadDomainEvent = LeadCreated | OwnerAssigned | OwnerChanged | DiscoveryStarted | DiscoveryCompleted | QualificationStarted | QualificationCompleted | PartnerCreated;
+export type LeadDomainEvent = LeadCreated | OwnerAssigned | OwnerChanged | DiscoveryStarted | DiscoveryCompleted | QualificationStarted | QualificationCompleted | PartnerCreated | LeadArchived | LeadReactivated | LeadUpdated;
 
 export function eventMetadata(input: Omit<DomainEventMetadata, "aggregateType" | "version">): DomainEventMetadata {
   if (!input.eventId.trim()) throw new InvalidDomainEventError("Domain event id is required.");
