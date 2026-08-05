@@ -24,9 +24,9 @@
 
 **Riesgos e impacto:** el catálogo cambia de forma aditiva y requiere pruebas de grants/revocations. Existe una contradicción funcional que Product debe cerrar: EP-004.1 permite que Strategist cree un Lead que exige Owner, mientras EP-004.2 reserva la asignación inicial de Owner a Super Admin/Admin.
 
-**Recomendación final:** implementar las capacidades anteriores; Product debe decidir si Strategist puede asignar Owner inicial, si recibe un Owner por defecto o si no puede completar creación manual.
+**Recomendación final:** implementar las capacidades anteriores. El Strategist puede solicitar una reasignación y proponer un nuevo Owner, pero no aprobar ni ejecutar cambios de Ownership; esas acciones quedan restringidas a Super Admin y Admin.
 
-**Estado:** REQUIRES PRODUCT DECISION.
+**Estado:** RESOLVED.
 
 ## 3. Persistencia, Audit y Timeline
 
@@ -36,25 +36,25 @@
 
 **Ventajas:** atomicidad, idempotencia, migraciones controladas y separación de seguridad/producto.
 
-**Riesgos e impacto:** necesita un proveedor gestionado, región, backup, acceso y política de recuperación; Foundation no cambia hasta el RFC de implementación de datos.
+**Riesgos e impacto:** necesita un proveedor gestionado, región, backup, acceso y política de recuperación; Foundation no cambia hasta el RFC de implementación de datos. La selección de proveedor queda fuera de Product y se resolverá durante la preparación de infraestructura.
 
 **Recomendación final:** adoptar PostgreSQL + Transactional Outbox; el proveedor se seleccionará con criterios de región, continuidad y coste.
 
-**Estado:** REQUIRES PRODUCT DECISION.
+**Estado:** RESOLVED.
 
 ## 4. PII de Contact e invitaciones Discovery
 
-**Decisión:** clasificar Contact y respuestas Discovery como datos personales; conservar metadatos mínimos en eventos, almacenar contenido únicamente en persistencia autorizada y emitir enlaces Discovery de alta entropía, con expiración, revocación y un uso definido por política.
+**Decisión:** clasificar nombre, apellidos, email y teléfono de Contact como PII. El acceso queda limitado a Super Admin, Admin y Owner del Lead. Las invitaciones Discovery usarán token de un solo uso, expiración, revocación, auditoría completa y URLs sin datos personales.
 
 **Justificación:** la seguridad de invitaciones y la retención de PII no pueden deducirse de reglas funcionales.
 
 **Ventajas:** minimización de datos, no exposición inter-ámbito y trazabilidad coherente con archivado antes que eliminación.
 
-**Riesgos e impacto:** necesita base legal, plazos de retención, exportación y criterios de Contact autorizado. Afecta interfaz futura, proveedor de correo/identidad y almacenamiento.
+**Riesgos e impacto:** los plazos de retención y exportación se aplicarán conforme a la política legal aprobada cuando se prepare infraestructura. Afecta interfaz futura, proveedor de correo/identidad y almacenamiento.
 
-**Recomendación final:** no almacenar PII ni enviar invitaciones reales hasta contar con aprobación Legal y de Seguridad.
+**Recomendación final:** aplicar estos controles desde el primer adaptador de persistencia e invitaciones, con pruebas de acceso por Owner y de token revocado/caducado.
 
-**Estado:** REQUIRES PRODUCT DECISION.
+**Estado:** RESOLVED.
 
 ## 5. Contratos de eventos e idempotencia
 
@@ -72,4 +72,4 @@
 
 ## Conclusión
 
-No queda ningún bloqueo de diseño arquitectónico sin una propuesta concreta. Sin embargo, PS-004 no puede declararse **READY FOR ENGINEERING** todavía: hay tres decisiones externas pendientes —la contradicción de Ownership de Product, el proveedor de PostgreSQL y la aprobación Legal/Seguridad de PII e invitaciones—. Foundation, Product y `PS-004_PRODUCT_READINESS.md` permanecen sin cambios en este sprint.
+Todas las condiciones de diseño arquitectónico quedan resueltas. PostgreSQL queda aprobado como motor de persistencia con transacciones atómicas; la elección de proveedor se incorpora a la preparación de infraestructura y no bloquea el inicio de Engineering. PS-004 puede declararse **READY FOR ENGINEERING** sin modificar Foundation hasta el RFC de implementación correspondiente.
