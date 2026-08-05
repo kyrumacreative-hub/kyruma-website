@@ -12,6 +12,8 @@ import { eventMetadata } from "./events";
 import { LeadFactory } from "./leadFactory";
 import { LeadCreationService, LeadOwnershipService, LeadQualificationService } from "./services";
 import { LeadOrigin, LeadStatus } from "./valueObjects";
+import { LeadMapper } from "../infrastructure/persistence/leadMapper";
+import { PersistenceAdapterNotConfiguredError, PostgresLeadRepositoryAdapter } from "../infrastructure/persistence/repositories/PostgresLeadRepositoryAdapter";
 
 const input = { id: "lead-1", organizationId: "org-1", ownerId: "user-1", primaryContactId: "contact-1", origin: "manual", createdAt: new Date("2026-08-05"), createdBy: "user-1" };
 
@@ -67,4 +69,15 @@ test("qualification service requires a completed Discovery", () => {
 
 test("event metadata rejects an empty event id", () => {
   assert.throws(() => eventMetadata({ eventId: "", aggregateId: "lead-1", occurredAt: new Date() }), InvalidDomainEventError);
+});
+
+test("mapper converts an Aggregate without applying business rules", () => {
+  const lead = LeadFactory.create(input);
+  const restored = LeadMapper.toDomain(LeadMapper.toPersistence(lead));
+  assert.equal(restored.id.value, lead.id.value);
+  assert.equal(restored.status.value, "identified");
+});
+
+test("PostgreSQL adapter skeleton fails without infrastructure", async () => {
+  await assert.rejects(() => new PostgresLeadRepositoryAdapter().findById("lead-1"), PersistenceAdapterNotConfiguredError);
 });
