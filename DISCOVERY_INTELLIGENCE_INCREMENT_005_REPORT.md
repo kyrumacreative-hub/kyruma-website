@@ -2,7 +2,7 @@
 
 ## Estado
 
-Application Layer iniciada y cubierta por pruebas unitarias.
+**DISCOVERY INTELLIGENCE — INCREMENT 5 COMPLETE**
 
 ## Entregado
 
@@ -15,3 +15,7 @@ Application Layer iniciada y cubierta por pruebas unitarias.
 ## Fuera de alcance
 
 API, UI, Event Bus e infraestructura de mensajería.
+
+## Validación final
+
+Foundation (13), Lead Lifecycle (33), persistencia Lead (5), Discovery Intelligence (22) y persistencia Intelligence (2) superadas. Lint, TypeScript y build superados. La única incidencia encontrada fue una regla de lint en un fixture de test, corregida sin alterar comportamiento.
