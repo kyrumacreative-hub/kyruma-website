@@ -1,11 +1,17 @@
-import { DuplicateWorkspaceOwnerError, InvalidWorkspaceInvitationError, MissingInitialWorkspaceOwnerError } from "./errors";
+import { DuplicateWorkspaceOwnerError, InvalidWorkspaceInvitationError, InvalidWorkspaceStateError, MissingInitialWorkspaceOwnerError } from "./errors";
 import { InvitationExpiry, InvitationStatus, type InvitationStatusValue, InvitationTokenHash, MembershipId, WorkspaceMemberId, WorkspaceInvitationId, WorkspaceSettingsVersion } from "./valueObjects";
 
 export type WorkspaceMemberStatus = "active" | "removed";
 export class WorkspaceMember {
-  constructor(readonly id: WorkspaceMemberId, readonly membershipId: MembershipId, readonly owner: boolean, readonly status: WorkspaceMemberStatus, readonly joinedAt: Date, readonly removedAt?: Date) {}
+  private currentStatus: WorkspaceMemberStatus;
+  private removedAtValue?: Date;
+  constructor(readonly id: WorkspaceMemberId, readonly membershipId: MembershipId, readonly owner: boolean, status: WorkspaceMemberStatus, readonly joinedAt: Date, removedAt?: Date) { this.currentStatus = status; this.removedAtValue = removedAt; }
   static initialOwner(input: { id: WorkspaceMemberId; membershipId: MembershipId; joinedAt: Date }) { return new WorkspaceMember(input.id, input.membershipId, true, "active", input.joinedAt); }
+  static member(input: { id: WorkspaceMemberId; membershipId: MembershipId; joinedAt: Date }) { return new WorkspaceMember(input.id, input.membershipId, false, "active", input.joinedAt); }
+  get status() { return this.currentStatus; }
+  get removedAt() { return this.removedAtValue; }
   get isActiveOwner() { return this.owner && this.status === "active"; }
+  remove(at: Date) { if (this.status !== "active") throw new InvalidWorkspaceStateError("Only an active Member can be removed."); this.currentStatus = "removed"; this.removedAtValue = new Date(at); }
 }
 
 export class WorkspaceInvitation {
