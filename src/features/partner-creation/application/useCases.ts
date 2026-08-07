@@ -6,7 +6,13 @@ import { LeadId, MembershipId, OrganizationId, PartnerId, WorkspaceId } from "..
 import { partnerEvent } from "../domain/events";
 import type { DomainEventDispatcher } from "../ports/DomainEventDispatcher";
 import type { QualifiedLeadReader } from "../ports/QualifiedLeadReader";
-import type { InitialMembershipRepository, PartnerCodeSequenceRepository, PartnerCreationIdempotencyRepository, PartnerRepository, WorkspaceProvisioningRepository } from "../ports/repositories";
+import type {
+  InitialMembershipRepository,
+  PartnerCodeSequenceRepository,
+  PartnerCreationIdempotencyRepository,
+  PartnerRepository
+} from "../ports/repositories";
+import type { WorkspaceProvisioner } from "../../workspace/application/services/WorkspaceProvisioner";
 import type { TransactionRunner } from "../../lead-lifecycle/ports/TransactionRunner";
 
 export type PartnerApplicationErrorCode = "FORBIDDEN" | "NOT_FOUND" | "CONFLICT" | "PRECONDITION" | "PERSISTENCE";
@@ -18,7 +24,7 @@ type Dependencies = {
   transactions: TransactionRunner;
   partners: PartnerRepository;
   codes: PartnerCodeSequenceRepository;
-  workspaces: WorkspaceProvisioningRepository;
+  workspaceProvisioner: WorkspaceProvisioner;
   memberships: InitialMembershipRepository;
   idempotency: PartnerCreationIdempotencyRepository;
   qualifiedLeads: QualifiedLeadReader;
@@ -57,49 +63,81 @@ export class CreatePartnerUseCase {
   async execute(input: CreatePartnerInput): Promise<PartnerOutput> {
     requireAccess(input.context, "partner.create");
     let result: { partner: ReturnType<typeof PartnerFactory.create>; created: boolean };
-    try { result = await this.deps.transactions.run(async (transaction) => {
-      const existingByCorrelation = await this.deps.idempotency.find(input.correlationId, transaction);
-      if (existingByCorrelation) {
-        const existing = await this.deps.partners.findById(existingByCorrelation, transaction);
-        if (!existing) throw new PartnerApplicationError("Partner conversion record is inconsistent.", "PERSISTENCE");
-        if (existing.organizationId.value !== input.context.organization.id) throw new PartnerApplicationError("Partner not found.", "NOT_FOUND");
-        return { partner: existing, created: false };
-      }
-      const existingByLead = await this.deps.partners.findByLeadId(input.leadId, transaction);
-      if (existingByLead) {
-        new PartnerCreationService().validateIdempotency(existingByLead.correlationId, input.correlationId);
-        throw new PartnerApplicationError("A Partner already exists for this Lead.", "CONFLICT");
-      }
-      if (!await this.deps.qualifiedLeads.isQualified({ leadId: input.leadId, organizationId: input.context.organization.id }, transaction)) {
-        throw new PartnerApplicationError("Lead is not qualified for Partner Creation.", "PRECONDITION");
-      }
-      const sequence = await this.deps.codes.allocate(transaction);
-      const partner = PartnerFactory.create({
-        id: PartnerId.create(input.partnerId),
-        code: new PartnerCodeAllocationService().allocate(sequence),
-        leadId: LeadId.create(input.leadId),
-        organizationId: OrganizationId.create(input.context.organization.id),
-        primaryWorkspaceId: WorkspaceId.create(input.workspaceId),
-        initialOwnerMembershipId: MembershipId.create(input.membershipId),
-        createdAt: input.occurredAt,
-        correlationId: input.correlationId,
-      });
-      partner.recordEvent(partnerEvent("PartnerCreationStarted", partner.id.value, `${input.eventId}:started`, input.occurredAt, input.correlationId));
-      partner.recordEvent(partnerEvent("PartnerCodeAssigned", partner.id.value, `${input.eventId}:code`, input.occurredAt, input.correlationId));
-      await this.deps.partners.save(partner, transaction);
-      await this.deps.workspaces.savePrimary({ workspaceId: partner.primaryWorkspaceId.value, partnerId: partner.id.value }, transaction);
-      partner.recordEvent(partnerEvent("WorkspaceCreated", partner.id.value, `${input.eventId}:workspace`, input.occurredAt, input.correlationId));
-      await this.deps.memberships.saveOwner({ membershipId: partner.initialOwnerMembershipId.value, partnerId: partner.id.value }, transaction);
-      partner.recordEvent(partnerEvent("InitialMembershipCreated", partner.id.value, `${input.eventId}:membership`, input.occurredAt, input.correlationId));
-      await this.deps.idempotency.save(input.correlationId, partner.id.value, transaction);
-      partner.recordEvent(partnerEvent("PartnerCreated", partner.id.value, input.eventId, input.occurredAt, input.correlationId));
-      partner.recordEvent(partnerEvent("PartnerCreationCompleted", partner.id.value, `${input.eventId}:completed`, input.occurredAt, input.correlationId));
-      return { partner, created: true };
-    }); } catch (error) { throw mapInfrastructureError(error); }
+    
+    try { 
+      result = await this.deps.transactions.run(async (transaction) => {
+        const existingByCorrelation = await this.deps.idempotency.find(input.correlationId, transaction);
+        if (existingByCorrelation) {
+          const existing = await this.deps.partners.findById(existingByCorrelation, transaction);
+          if (!existing) throw new PartnerApplicationError("Partner conversion record is inconsistent.", "PERSISTENCE");
+          if (existing.organizationId.value !== input.context.organization.id) throw new PartnerApplicationError("Partner not found.", "NOT_FOUND");
+          return { partner: existing, created: false };
+        }
+        
+        const existingByLead = await this.deps.partners.findByLeadId(input.leadId, transaction);
+        if (existingByLead) {
+          new PartnerCreationService().validateIdempotency(existingByLead.correlationId, input.correlationId);
+          throw new PartnerApplicationError("A Partner already exists for this Lead.", "CONFLICT");
+        }
+        
+        if (!await this.deps.qualifiedLeads.isQualified({ leadId: input.leadId, organizationId: input.context.organization.id }, transaction)) {
+          throw new PartnerApplicationError("Lead is not qualified for Partner Creation.", "PRECONDITION");
+        }
+        
+        const sequence = await this.deps.codes.allocate(transaction);
+        
+        const partner = PartnerFactory.create({
+          id: PartnerId.create(input.partnerId),
+          code: new PartnerCodeAllocationService().allocate(sequence),
+          leadId: LeadId.create(input.leadId),
+          organizationId: OrganizationId.create(input.context.organization.id),
+          primaryWorkspaceId: WorkspaceId.create(input.workspaceId),
+          initialOwnerMembershipId: MembershipId.create(input.membershipId),
+          createdAt: input.occurredAt,
+          correlationId: input.correlationId,
+        });
+
+        const workspace = partner.createPrimaryWorkspace({
+          workspaceId: input.workspaceId,
+          membershipId: input.membershipId,
+          occurredAt: input.occurredAt,
+          correlationId: input.correlationId,
+        });
+
+        partner.recordEvent(partnerEvent("PartnerCreationStarted", partner.id.value, `${input.eventId}:started`, input.occurredAt, input.correlationId));
+        partner.recordEvent(partnerEvent("PartnerCodeAssigned", partner.id.value, `${input.eventId}:code`, input.occurredAt, input.correlationId));
+        
+        await this.deps.partners.save(partner, transaction);
+        
+        // === ELIMINADO EL SEGUNDO ARGUMENTO (transaction) ===
+        await this.deps.workspaceProvisioner.provision({
+          workspace,
+          metadata: {
+            eventId: `${input.eventId}:workspace`,
+            occurredAt: input.occurredAt,
+            correlationId: input.correlationId,
+            actorId: input.context.actor.user.id,
+          },
+        });
+
+        partner.recordEvent(partnerEvent("WorkspaceCreated", partner.id.value, `${input.eventId}:workspace`, input.occurredAt, input.correlationId));
+        await this.deps.memberships.saveOwner({ membershipId: partner.initialOwnerMembershipId.value, partnerId: partner.id.value }, transaction);
+        partner.recordEvent(partnerEvent("InitialMembershipCreated", partner.id.value, `${input.eventId}:membership`, input.occurredAt, input.correlationId));
+        await this.deps.idempotency.save(input.correlationId, partner.id.value, transaction);
+        partner.recordEvent(partnerEvent("PartnerCreated", partner.id.value, input.eventId, input.occurredAt, input.correlationId));
+        partner.recordEvent(partnerEvent("PartnerCreationCompleted", partner.id.value, `${input.eventId}:completed`, input.occurredAt, input.correlationId));
+        
+        return { partner, created: true };
+      }); 
+    } catch (error) { 
+      throw mapInfrastructureError(error); 
+    }
+    
     if (result.created) {
       try { await this.deps.events.dispatch(result.partner.pullDomainEvents()); }
       catch (error) { throw mapInfrastructureError(error); }
     }
+    
     return toOutput(result.partner);
   }
 }
