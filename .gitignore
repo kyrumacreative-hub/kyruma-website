@@ -49,3 +49,4 @@ yarn-error.log*
 .workspace-test-build/
 .workspace-persistence-contract-test-build/
 next-env.d.ts
+.workspace-persistence-test-build/
