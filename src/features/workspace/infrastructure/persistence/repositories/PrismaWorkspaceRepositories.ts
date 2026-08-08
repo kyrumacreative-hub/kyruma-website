@@ -36,10 +36,30 @@ export class PrismaWorkspaceRepository implements WorkspaceRepository {
     workspace: Workspace,
     context: TransactionContext,
   ): Promise<void> {
-    const model = WorkspaceMapper.toPersistence(workspace);
+    const transaction = this.contexts.get(context);
 
-    await this.contexts.get(context).workspace.create({
-      data: toWorkspaceCreateRecord(model),
+    const workspaceModel = WorkspaceMapper.toPersistence(workspace);
+
+    await transaction.workspace.create({
+      data: toWorkspaceCreateRecord(workspaceModel),
+    });
+
+    const settingsModel = WorkspaceSettingsMapper.toPersistence(
+      workspace.settings,
+      workspace.id.value,
+    );
+
+    await transaction.workspaceSettings.create({
+      data: toWorkspaceSettingsCreateRecord(settingsModel),
+    });
+
+    const memberModel = WorkspaceMemberMapper.toPersistence(
+      workspace.initialOwner,
+      workspace.id.value,
+    );
+
+    await transaction.workspaceMember.create({
+      data: toWorkspaceMemberCreateRecord(memberModel),
     });
   }
 

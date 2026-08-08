@@ -3,13 +3,22 @@ import { randomUUID } from "node:crypto";
 import test, { after, beforeEach } from "node:test";
 import { PrismaClient } from "@prisma/client";
 
+import { PrismaTransactionContextStore } from "../../../lead-lifecycle/infrastructure/persistence/PrismaTransactionContext";
+import { PrismaTransactionRunner } from "../../../lead-lifecycle/infrastructure/persistence/PrismaTransactionRunner";
+
+import { WorkspaceFactory } from "../../domain/workspaceFactory";
+import { WorkspaceSettings } from "../../domain/entities";
 import {
+  WorkspaceId,
+  PartnerId,
+  OrganizationId,
+  CorrelationId,
+  WorkspaceName,
   WorkspaceMemberId,
   MembershipId,
 } from "../../domain/valueObjects";
 
-import { PrismaTransactionContextStore } from "../../../lead-lifecycle/infrastructure/persistence/PrismaTransactionContext";
-import { PrismaTransactionRunner } from "../../../lead-lifecycle/infrastructure/persistence/PrismaTransactionRunner";
+import { PrismaWorkspaceRepository } from "./repositories/PrismaWorkspaceRepositories";
 
 const client = new PrismaClient();
 
@@ -24,27 +33,28 @@ const transactions = new PrismaTransactionRunner(
   },
 );
 
+const workspaces = new PrismaWorkspaceRepository(contexts);
 
-function workspaceInput() {
-  return {
-    id: randomUUID(),
-    partnerId: randomUUID(),
-    organizationId: randomUUID(),
-    correlationId: randomUUID(),
-    name: "KYRUMA Test Workspace",
+function createWorkspace() {
+  const owner = WorkspaceFactory.createInitialOwner({
+    id: WorkspaceMemberId.create(randomUUID()),
+    membershipId: MembershipId.create(randomUUID()),
+    joinedAt: new Date(),
+  });
+
+  return WorkspaceFactory.create({
+    id: WorkspaceId.create(randomUUID()),
+    partnerId: PartnerId.create(randomUUID()),
+    organizationId: OrganizationId.create(randomUUID()),
+    correlationId: CorrelationId.create(randomUUID()),
+    name: WorkspaceName.create("KYRUMA Test Workspace"),
     primary: true,
-    status: "provisioning",
-    initialOwnerMemberId: WorkspaceMemberId.create(
-      randomUUID(),
-    ),
-    initialOwnerMembershipId: MembershipId.create(
-      randomUUID(),
-    ),
-    settingsVersion: 1,
+    initialOwner: owner,
+    settings: WorkspaceSettings.initial(),
     createdAt: new Date(),
-  };
+    status: "provisioning" as any, // 'as any' añadido por si la comprobación estricta de TypeScript exige el tipo WorkspaceStatusValue aquí
+  });
 }
-
 
 beforeEach(async () => {
   await client.workspaceSettings.deleteMany();
@@ -52,7 +62,6 @@ beforeEach(async () => {
   await client.workspaceInvitation.deleteMany();
   await client.workspace.deleteMany();
 });
-
 
 after(async () => {
   await client.workspaceSettings.deleteMany();
@@ -62,43 +71,22 @@ after(async () => {
   await client.$disconnect();
 });
 
+test("persists Workspace aggregate through Prisma adapter", async () => {
+  const workspace = createWorkspace();
 
-test("persists Workspace through Prisma adapter", async () => {
-  const model = workspaceInput();
-
-  await transactions.run(async () => {
-
-    await client.workspace.create({
-      data: {
-        id: model.id,
-        partnerId: model.partnerId,
-        organizationId: model.organizationId,
-        correlationId: model.correlationId,
-        name: model.name,
-        primary: model.primary,
-        status: model.status,
-        initialOwnerMemberId:
-          model.initialOwnerMemberId.value,
-        initialOwnerMembershipId:
-          model.initialOwnerMembershipId.value,
-        settingsVersion: model.settingsVersion,
-        createdAt: model.createdAt,
-      },
-    });
-
+  // 1. Guardamos el agregado real
+  await transactions.run(async (context) => {
+    await workspaces.save(workspace, context);
   });
 
-
-  const persisted = await client.workspace.findUnique({
-    where: {
-      id: model.id,
-    },
+  // 2. Recuperamos el agregado real
+  const restored = await transactions.run(async (context) => {
+    return workspaces.findById(workspace.id.value, context);
   });
 
-
-  assert.ok(persisted);
-  assert.equal(
-    persisted.name,
-    "KYRUMA Test Workspace",
-  );
+  // 3. Verificamos su integridad
+  assert.ok(restored);
+  assert.equal(restored.name.value, "KYRUMA Test Workspace");
+  assert.equal(restored.status, "provisioning");
+  assert.equal(restored.primary, true);
 });
