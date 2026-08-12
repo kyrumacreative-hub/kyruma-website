@@ -129,4 +129,3 @@ The proposal supports PS-008 without modifying Foundation or PS-004–PS-007. It
 2. Choose privacy overlay versus privileged minimization procedure with equivalent traceability.
 3. Confirm identifier type and maximum JSON payload sizes under existing platform conventions.
 4. Define the volume threshold and approval gate for partitioning.
-

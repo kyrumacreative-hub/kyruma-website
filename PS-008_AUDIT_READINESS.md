@@ -65,4 +65,3 @@ The following are downstream gates and must not be mistaken for blockers to this
 **PS-008 Audit™ v0.2 — READY FOR ARCHITECTURE REVIEW.**
 
 Architecture should review RFC-015, RFC-016 and RFC-017 as one coherent decision set because storage immutability, transaction semantics and privacy lifecycle constrain one another.
-

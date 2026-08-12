@@ -133,4 +133,3 @@ Domains must classify auditable actions as transactional or asynchronous explici
 2. Confirm how the current transaction context reaches the Audit adapter without domain coupling.
 3. Approve duplicate semantics for same-key payload mismatches.
 4. Define operational retry, dead-letter and alert thresholds before production.
-
