@@ -1,22 +1,25 @@
 import type { Workspace } from "../../domain/workspace";
 import type { TransactionContext } from "../../../lead-lifecycle/ports/TransactionRunner";
-import type { ProvisionWorkspaceInput, ProvisionWorkspaceUseCase } from "../useCases";
+import type {
+  ProvisionWorkspaceInput,
+  ProvisionWorkspaceUseCase,
+} from "../useCases";
 
 export type WorkspaceProvisionerInput = ProvisionWorkspaceInput;
 
-export interface WorkspaceProvisioner {
+/** Cross-domain boundary used by Partner Creation to request provisioning. */
+export interface PartnerWorkspaceProvisioningPort {
   provision(
     input: WorkspaceProvisionerInput,
     transaction: TransactionContext,
   ): Promise<Workspace>;
 }
 
-export class DefaultWorkspaceProvisioner
-  implements WorkspaceProvisioner
-{
-  constructor(
-    private readonly useCase: ProvisionWorkspaceUseCase,
-  ) {}
+/** @deprecated Prefer PartnerWorkspaceProvisioningPort at cross-domain boundaries. */
+export type WorkspaceProvisioner = PartnerWorkspaceProvisioningPort;
+
+export class DefaultWorkspaceProvisioner implements PartnerWorkspaceProvisioningPort {
+  constructor(private readonly useCase: ProvisionWorkspaceUseCase) {}
 
   async provision(
     input: WorkspaceProvisionerInput,

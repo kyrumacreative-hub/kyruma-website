@@ -16,7 +16,6 @@ import {
   WorkspaceName,
   WorkspaceMemberId,
   MembershipId,
-  type WorkspaceStatusValue,
 } from "../../domain/valueObjects";
 
 import { PrismaWorkspaceRepository } from "./repositories/PrismaWorkspaceRepositories";
@@ -25,14 +24,10 @@ const client = new PrismaClient();
 
 const contexts = new PrismaTransactionContextStore();
 
-const transactions = new PrismaTransactionRunner(
-  client,
-  contexts,
-  {
-    transactionCompleted: () => {},
-    transactionFailed: () => {},
-  },
-);
+const transactions = new PrismaTransactionRunner(client, contexts, {
+  transactionCompleted: () => {},
+  transactionFailed: () => {},
+});
 
 const workspaces = new PrismaWorkspaceRepository(contexts);
 
@@ -53,7 +48,6 @@ function createWorkspace() {
     initialOwner: owner,
     settings: WorkspaceSettings.initial(),
     createdAt: new Date(),
-    status: "provisioning" as WorkspaceStatusValue,
   });
 }
 
