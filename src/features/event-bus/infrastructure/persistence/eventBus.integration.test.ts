@@ -41,8 +41,8 @@ test("keeps successful consumers independent from failed and recoverable dead le
   await repository.claimPendingEvents({ workerId: "dispatcher", now, staleBefore: new Date(0), limit: 10 });
   await repository.materializeDeliveries(value, [{ consumer: "audit", handler: "record", eventType: value.eventType, eventVersion: 1 }, { consumer: "analytics", handler: "project", eventType: value.eventType, eventVersion: 1 }], now);
   const deliveries = await repository.claimDeliveries({ workerId: "consumer", now, staleBefore: new Date(0), limit: 10 });
-  const success = deliveries.find((item) => item.consumer === "audit")!;
-  const failure = deliveries.find((item) => item.consumer === "analytics")!;
+  const success = deliveries.find((item) => item.eventId === value.eventId && item.consumer === "audit")!;
+  const failure = deliveries.find((item) => item.eventId === value.eventId && item.consumer === "analytics")!;
   await transactions.run((context) => repository.markProcessed(success.id, now, context));
   await transactions.run((context) => repository.markFailed(failure.id, { now, nextRetryAt: null, code: "NON_RETRYABLE", message: "safe" }, context));
   const status = await repository.getStatus(value.eventId, value.organizationId);
