@@ -1,9 +1,16 @@
 # PS-009 Event Bus™ — Engineering Final Review
 
-**Estado:** APPROVED FOR MERGE  
-**Fecha:** 2026-08-14  
-**Rama:** `feature/event-bus`  
-**Despliegue:** no realizado
+**Estado:** COMPLETE — ENGINEERING COMPLETE — INTEGRATED IN MAIN — VALIDATED BY CI
+
+**Fecha:** 2026-08-14
+
+**Rama:** `feature/event-bus`
+
+**Commit de integración:** `1d76a7f`
+
+**Tag:** `v0.4.0`
+
+**Despliegue:** NOT DEPLOYED TO PRODUCTION
 
 ## Alcance entregado
 
@@ -28,7 +35,12 @@ Migración `20260814090000_event_bus_init`:
 
 ## Validación
 
-GitHub Actions run `31802702366` sobre PostgreSQL 16: **SUCCESS**.
+GitHub Actions sobre PostgreSQL 16:
+
+- `175bae7` / run `31802702366`: **SUCCESS**.
+- `6c6491b` / run `31802956409`: **SUCCESS final**.
+
+Las ejecuciones fallidas anteriores (`af5b00f`, `d08a305`, `8b5c0db`) fueron iteraciones intermedias y quedan superseded por estas dos validaciones exitosas. No representan el estado actual de PS-009.
 
 - Migraciones Prisma: verde.
 - Foundation: 13 unit tests y persistencia verde.
@@ -56,4 +68,4 @@ El claiming usa actualización condicional; la unicidad impide materializar dos 
 
 ## Conclusión
 
-No quedan defectos ni bloqueos conocidos dentro del alcance. Engineering Final Review: **PASS**. PS-009 puede integrarse en `main`; no se autoriza despliegue de producción.
+No quedan defectos ni bloqueos conocidos dentro del alcance. Engineering Final Review: **PASS**. PS-009 está integrado en `main@1d76a7f`, etiquetado como `v0.4.0`, validado por CI y no desplegado a producción.

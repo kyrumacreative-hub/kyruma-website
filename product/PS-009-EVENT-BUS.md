@@ -1,9 +1,17 @@
 # PS-009 — Event Bus™
 
 **Versión:** 0.1  
-**Estado:** PRODUCT APPROVED  
-**Owner:** Product  
-**Architecture:** RFC-018, RFC-019 y RFC-020 requeridos
+**Estado:** COMPLETE — ENGINEERING COMPLETE — INTEGRATED IN MAIN
+
+**Owner:** Product
+
+**Architecture:** RFC-018, RFC-019 y RFC-020 APPROVED
+
+**Engineering baseline:** `main@1d76a7f` / `v0.4.0`
+
+**Validation:** CI SUCCESS (`175bae7`, `6c6491b`)
+
+**Production:** NOT DEPLOYED
 
 ## Objetivo y principios
 
@@ -115,4 +123,4 @@ Se reutilizan exclusivamente IDs compartidos, Organization context, `Transaction
 
 ## Gates
 
-Architecture debe resolver RFC-018 Event Envelope and Contract Versioning, RFC-019 Transactional Outbox and Delivery y RFC-020 Consumer Idempotency and Dead Letter. Engineering solo comienza con los tres aprobados y `READY FOR ENGINEERING` emitido.
+Architecture resolvió y aprobó RFC-018 Event Envelope and Contract Versioning, RFC-019 Transactional Outbox and Delivery y RFC-020 Consumer Idempotency and Dead Letter antes de Engineering. El gate `READY FOR ENGINEERING` quedó satisfecho; la implementación fue validada e integrada en `main@1d76a7f` sin despliegue a producción.
