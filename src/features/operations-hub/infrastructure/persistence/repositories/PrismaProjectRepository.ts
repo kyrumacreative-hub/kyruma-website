@@ -2,6 +2,8 @@ import type { Prisma } from "@prisma/client";
 import type { TransactionContext } from "../../../../lead-lifecycle/ports/TransactionRunner";
 import { PrismaTransactionContextStore } from "../../../../lead-lifecycle/infrastructure/persistence/PrismaTransactionContext";
 import type { Project } from "../../../domain/project";
+import { ProjectConcurrencyError } from "../../../domain/errors";
+import type { ProjectStatusValue } from "../../../domain/valueObjects";
 import type { ProjectRepository } from "../../../ports/ProjectRepository";
 import { ProjectMapper } from "../projectMapper";
 
@@ -10,6 +12,19 @@ export class PrismaProjectRepository implements ProjectRepository {
 
   async save(project: Project, context: TransactionContext): Promise<void> {
     await this.contexts.get(context).project.create({ data: toRecord(ProjectMapper.toPersistence(project)) });
+  }
+
+  async update(project: Project, expectedStatus: ProjectStatusValue, context: TransactionContext): Promise<void> {
+    const result = await this.contexts.get(context).project.updateMany({
+      where: {
+        id: project.id.value,
+        organizationId: project.organizationId.value,
+        workspaceId: project.workspaceId.value,
+        status: expectedStatus,
+      },
+      data: { status: project.status },
+    });
+    if (result.count !== 1) throw new ProjectConcurrencyError();
   }
 
   async findById(projectId: string, organizationId: string, context: TransactionContext): Promise<Project | null> {
