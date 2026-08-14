@@ -6,11 +6,9 @@ Este documento es la fuente única de prioridades del producto. Las ideas se reg
 
 Solo puede haber un objetivo activo.
 
-### Validación con el primer cliente
+### PS-009 Event Bus™
 
-- Enviar KYRUMA Discovery™ al primer cliente real.
-- Recoger observaciones en `KYR-DISCOVERY-FEEDBACK-001`.
-- Corregir únicamente incidencias demostradas por uso real.
+Implementar la infraestructura de eventos versionados con PostgreSQL Transactional Outbox, entrega at-least-once, consumidores idempotentes, reintentos y recuperación de dead letters conforme a `product/PS-009-EVENT-BUS.md`.
 
 ## NEXT
 
@@ -19,6 +17,12 @@ Solo puede haber un objetivo activo.
 Analizar cada KYRUMA Discovery™ para generar un resumen ejecutivo, objetivos, retos, oportunidades, recomendaciones de KYRUMA y preguntas sugeridas para la reunión.
 
 ## READY
+
+### Validación con el primer cliente
+
+- Enviar KYRUMA Discovery™ al primer cliente real.
+- Recoger observaciones en `KYR-DISCOVERY-FEEDBACK-001`.
+- Corregir únicamente incidencias demostradas por uso real.
 
 ### Operación — Activación de Marketing Foundation
 
