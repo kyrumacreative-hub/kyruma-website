@@ -16,6 +16,7 @@ import {
   WorkspaceName,
   WorkspaceMemberId,
   MembershipId,
+  type WorkspaceStatusValue,
 } from "../../domain/valueObjects";
 
 import { PrismaWorkspaceRepository } from "./repositories/PrismaWorkspaceRepositories";
@@ -52,7 +53,7 @@ function createWorkspace() {
     initialOwner: owner,
     settings: WorkspaceSettings.initial(),
     createdAt: new Date(),
-    status: "provisioning" as any, // 'as any' añadido por si la comprobación estricta de TypeScript exige el tipo WorkspaceStatusValue aquí
+    status: "provisioning" as WorkspaceStatusValue,
   });
 }
 

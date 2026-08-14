@@ -20,7 +20,7 @@ export class PartnerApplicationError extends Error {
   constructor(message: string, readonly code: PartnerApplicationErrorCode) { super(message); }
 }
 
-type Dependencies = {
+export type PartnerApplicationDependencies = {
   transactions: TransactionRunner;
   partners: PartnerRepository;
   codes: PartnerCodeSequenceRepository;
@@ -36,6 +36,7 @@ export interface CreatePartnerInput {
   partnerId: string;
   leadId: string;
   workspaceId: string;
+  workspaceMemberId: string;
   membershipId: string;
   correlationId: string;
   eventId: string;
@@ -58,7 +59,7 @@ function toOutput(partner: { id: { value: string }; code: { value: string }; lea
 }
 
 export class CreatePartnerUseCase {
-  constructor(private readonly deps: Dependencies) {}
+  constructor(private readonly deps: PartnerApplicationDependencies) {}
 
   async execute(input: CreatePartnerInput): Promise<PartnerOutput> {
     requireAccess(input.context, "partner.create");
@@ -97,32 +98,33 @@ export class CreatePartnerUseCase {
           correlationId: input.correlationId,
         });
 
-        const workspace = partner.createPrimaryWorkspace({
-          workspaceId: input.workspaceId,
-          membershipId: input.membershipId,
-          occurredAt: input.occurredAt,
-          correlationId: input.correlationId,
-        });
-
         partner.recordEvent(partnerEvent("PartnerCreationStarted", partner.id.value, `${input.eventId}:started`, input.occurredAt, input.correlationId));
         partner.recordEvent(partnerEvent("PartnerCodeAssigned", partner.id.value, `${input.eventId}:code`, input.occurredAt, input.correlationId));
         
         await this.deps.partners.save(partner, transaction);
+
+        await this.deps.memberships.saveOwner({
+          membershipId: partner.initialOwnerMembershipId.value,
+          partnerId: partner.id.value,
+        }, transaction);
+        partner.recordEvent(partnerEvent("InitialMembershipCreated", partner.id.value, `${input.eventId}:membership`, input.occurredAt, input.correlationId));
         
-        // === ELIMINADO EL SEGUNDO ARGUMENTO (transaction) ===
         await this.deps.workspaceProvisioner.provision({
-          workspace,
+          workspaceId: input.workspaceId,
+          workspaceMemberId: input.workspaceMemberId,
+          partnerId: partner.id.value,
+          organizationId: partner.organizationId.value,
+          initialOwnerMembershipId: partner.initialOwnerMembershipId.value,
+          name: partner.code.value,
           metadata: {
             eventId: `${input.eventId}:workspace`,
             occurredAt: input.occurredAt,
             correlationId: input.correlationId,
             actorId: input.context.actor.user.id,
           },
-        });
+        }, transaction);
 
         partner.recordEvent(partnerEvent("WorkspaceCreated", partner.id.value, `${input.eventId}:workspace`, input.occurredAt, input.correlationId));
-        await this.deps.memberships.saveOwner({ membershipId: partner.initialOwnerMembershipId.value, partnerId: partner.id.value }, transaction);
-        partner.recordEvent(partnerEvent("InitialMembershipCreated", partner.id.value, `${input.eventId}:membership`, input.occurredAt, input.correlationId));
         await this.deps.idempotency.save(input.correlationId, partner.id.value, transaction);
         partner.recordEvent(partnerEvent("PartnerCreated", partner.id.value, input.eventId, input.occurredAt, input.correlationId));
         partner.recordEvent(partnerEvent("PartnerCreationCompleted", partner.id.value, `${input.eventId}:completed`, input.occurredAt, input.correlationId));
@@ -143,7 +145,7 @@ export class CreatePartnerUseCase {
 }
 
 export class GetPartnerUseCase {
-  constructor(private readonly deps: Dependencies) {}
+  constructor(private readonly deps: PartnerApplicationDependencies) {}
   async execute(input: { context: ResolvedOrganizationContext; partnerId: string }): Promise<PartnerOutput> {
     requireAccess(input.context, "partner.read");
     const partner = await this.deps.transactions.run((transaction) => this.deps.partners.findById(input.partnerId, transaction));
@@ -153,7 +155,7 @@ export class GetPartnerUseCase {
 }
 
 export class GetPartnerByLeadUseCase {
-  constructor(private readonly deps: Dependencies) {}
+  constructor(private readonly deps: PartnerApplicationDependencies) {}
   async execute(input: { context: ResolvedOrganizationContext; leadId: string }): Promise<PartnerOutput> {
     requireAccess(input.context, "partner.read");
     const partner = await this.deps.transactions.run((transaction) => this.deps.partners.findByLeadId(input.leadId, transaction));
