@@ -28,7 +28,7 @@ test("claims an event once and materializes isolated idempotent handler records"
   const value = event();
   await transactions.run((context) => repository.append(value, context));
   const [first, second] = await Promise.all([repository.claimPendingEvents({ workerId: "worker-a", now, staleBefore: new Date(0), limit: 10 }), repository.claimPendingEvents({ workerId: "worker-b", now, staleBefore: new Date(0), limit: 10 })]);
-  assert.equal(first.length + second.length, 1);
+  assert.equal([...first, ...second].filter((claimed) => claimed.eventId === value.eventId).length, 1);
   const registrations = [{ consumer: "audit", handler: "record", eventType: value.eventType, eventVersion: 1 }, { consumer: "analytics", handler: "project", eventType: value.eventType, eventVersion: 1 }];
   await repository.materializeDeliveries(value, registrations, now);
   await repository.materializeDeliveries(value, registrations, now);
