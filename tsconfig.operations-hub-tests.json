@@ -1,0 +1,12 @@
+{
+  "extends": "./tsconfig.json",
+  "compilerOptions": {
+    "module": "commonjs",
+    "moduleResolution": "node",
+    "noEmit": false,
+    "outDir": ".operations-hub-test-build",
+    "rootDir": "src",
+    "incremental": false
+  },
+  "include": ["src/features/operations-hub/**/*.ts"]
+}
