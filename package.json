@@ -14,6 +14,8 @@
     "test:partner-creation": "tsc -p tsconfig.partner-creation-tests.json && node --test .partner-creation-test-build/features/partner-creation/domain/partner.test.js .partner-creation-test-build/features/partner-creation/application/useCases.test.js .partner-creation-test-build/features/partner-creation/infrastructure/persistence/partnerMapper.test.js",
     "test:partner-persistence": "set -a; . ./.env.local; set +a; DATABASE_URL=\"$TEST_DATABASE_URL\" tsc -p tsconfig.partner-persistence-tests.json && DATABASE_URL=\"$TEST_DATABASE_URL\" node --test .partner-persistence-test-build/features/partner-creation/infrastructure/persistence/prisma.integration.test.js",
     "test:discovery-intelligence": "tsc -p tsconfig.discovery-intelligence-tests.json && node --test .discovery-intelligence-test-build/features/discovery-intelligence/domain/*.test.js .discovery-intelligence-test-build/features/discovery-intelligence/application/*.test.js .discovery-intelligence-test-build/features/discovery-intelligence/infrastructure/persistence/persistence.test.js"
+    ,"test:event-bus": "tsc -p tsconfig.event-bus-tests.json && node --test .event-bus-test-build/features/event-bus/domain/*.test.js .event-bus-test-build/features/event-bus/application/*.test.js"
+    ,"test:event-bus-persistence": "set -a; . ./.env.local; set +a; DATABASE_URL=\"$TEST_DATABASE_URL\" tsc -p tsconfig.event-bus-persistence-tests.json && DATABASE_URL=\"$TEST_DATABASE_URL\" node --test .event-bus-persistence-test-build/features/event-bus/infrastructure/persistence/*.integration.test.js"
   },
   "dependencies": {
     "@calcom/embed-react": "^1.5.3",

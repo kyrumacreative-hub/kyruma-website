@@ -1,5 +1,9 @@
 # Changelog
 
+## [0.4.0] — 2026-08-14
+
+**PS-009 Event Bus™ v1.0 — Engineering Complete.** Added versioned immutable envelopes, PostgreSQL Transactional Outbox, internal dispatcher, at-least-once isolated delivery, idempotent processing, progressive retries, recoverable dead letters and transport contracts for a future external broker. No production deployment.
+
 ## [0.3.0] — 2026-08-05
 
 **PS-006 Partner Creation™ v1.0 — Engineering Complete.** Added the Partner domain, atomic PostgreSQL conversion persistence, concurrency-safe KYR identifier allocation, Organization-scoped application services and tests. API, UI, Event Bus and deployment remain excluded.

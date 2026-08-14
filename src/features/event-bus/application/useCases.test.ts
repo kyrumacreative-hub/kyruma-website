@@ -1,0 +1,33 @@
+import test from "node:test";
+import assert from "node:assert/strict";
+import type { TransactionContext, TransactionRunner } from "../../lead-lifecycle/ports/TransactionRunner";
+import type { EventDeliveryStatus, EventEnvelope, EventProcessingRecord } from "../domain/contracts";
+import { EventContractRegistry } from "../domain/validation";
+import type { AuditRecorder, ClaimedDelivery, EventBusRepository, RegisteredHandler } from "../ports/EventBusRepository";
+import { EventHandlerRegistry } from "./EventHandlerRegistry";
+import { DispatchPendingEventsUseCase, ProcessEventUseCase, PublishEventUseCase, ReprocessDeadLetterUseCase } from "./useCases";
+
+const context = {} as TransactionContext;
+const transactions: TransactionRunner = { run: async (operation) => operation(context) };
+const now = new Date("2026-08-14T09:00:00.000Z");
+const clock = { now: () => now };
+const baseEnvelope: EventEnvelope = { eventId: "evt-1", eventType: "workspace.activated.v1", eventVersion: 1, occurredAt: now.toISOString(), publishedAt: now.toISOString(), correlationId: "corr-1", causationId: null, organizationId: "org-1", source: "workspace", aggregateType: "Workspace", aggregateId: "ws-1", payload: { workspaceId: "ws-1" }, metadata: { pii: false, processingDepth: 0 } };
+
+class MemoryRepository implements EventBusRepository {
+  appended: EventEnvelope[] = []; pending: EventEnvelope[] = []; deliveries: ClaimedDelivery[] = []; processed: string[] = []; failures: { id: string; retry: Date | null }[] = []; requeued: string[] = [];
+  async append(value: EventEnvelope): Promise<void> { this.appended.push(value); }
+  async claimPendingEvents(): Promise<readonly EventEnvelope[]> { return this.pending; }
+  async materializeDeliveries(): Promise<void> {}
+  async claimDeliveries(): Promise<readonly ClaimedDelivery[]> { return this.deliveries; }
+  async markProcessed(id: string): Promise<void> { this.processed.push(id); }
+  async markFailed(id: string, input: { nextRetryAt: Date | null }): Promise<void> { this.failures.push({ id, retry: input.nextRetryAt }); }
+  async getStatus(): Promise<EventDeliveryStatus | null> { return null; }
+  async getDeadLetter(): Promise<ClaimedDelivery | null> { return this.deliveries[0] ?? null; }
+  async requeueDeadLetter(id: string): Promise<void> { this.requeued.push(id); }
+}
+const record = (overrides: Partial<EventProcessingRecord> = {}): ClaimedDelivery => ({ id: "delivery-1", eventId: "evt-1", consumer: "audit", handler: "record", status: "processing", attemptCount: 1, reprocessCount: 0, firstAttemptAt: now, lastAttemptAt: now, processedAt: null, nextRetryAt: null, errorCode: null, envelope: baseEnvelope, ...overrides });
+
+test("publishes a validated immutable envelope inside the supplied transaction", async () => { const repository = new MemoryRepository(); const contracts = new EventContractRegistry(); contracts.register({ eventType: baseEnvelope.eventType, eventVersion: 1, owner: "workspace", validate: (payload): payload is object => !!payload }); const result = await new PublishEventUseCase(repository, contracts, clock, () => "evt-1").execute({ ...baseEnvelope, eventId: undefined }, context); assert.equal(repository.appended.length, 1); assert.equal(result.eventId, "evt-1"); assert.equal(Object.isFrozen(result), true); });
+test("materializes handlers independently through the transport boundary", async () => { const repository = new MemoryRepository(); repository.pending = [baseEnvelope]; const handlers = new EventHandlerRegistry(); handlers.register({ consumer: "audit", handler: "record", eventType: baseEnvelope.eventType, eventVersion: 1, implementation: { handle: async () => undefined } }); const seen: RegisteredHandler[][] = []; const count = await new DispatchPendingEventsUseCase(repository, { materialize: async (_event, registrations) => { seen.push([...registrations]); } }, handlers, clock).execute({ workerId: "worker" }); assert.equal(count, 1); assert.equal(seen[0].length, 1); });
+test("processes each delivery transactionally and schedules the first retry at one minute", async () => { const repository = new MemoryRepository(); repository.deliveries = [record(), record({ id: "delivery-2", handler: "fails" })]; const handlers = new EventHandlerRegistry(); handlers.register({ consumer: "audit", handler: "record", eventType: baseEnvelope.eventType, eventVersion: 1, implementation: { handle: async () => undefined } }); handlers.register({ consumer: "audit", handler: "fails", eventType: baseEnvelope.eventType, eventVersion: 1, implementation: { handle: async () => { throw new Error("temporary"); } } }); await new ProcessEventUseCase(repository, handlers, transactions, clock).execute({ workerId: "worker" }); assert.deepEqual(repository.processed, ["delivery-1"]); assert.equal(repository.failures[0].retry?.toISOString(), "2026-08-14T09:01:00.000Z"); });
+test("requeues a dead letter and records the administrative action atomically", async () => { const repository = new MemoryRepository(); repository.deliveries = [record({ status: "dead_lettered", attemptCount: 6 })]; const audited: string[] = []; const audit: AuditRecorder = { recordDeadLetterReprocessed: async (input) => { audited.push(input.eventId); } }; await new ReprocessDeadLetterUseCase(repository, transactions, audit, clock).execute({ deliveryId: "delivery-1", organizationId: "org-1", actorId: "actor-1" }); assert.deepEqual(repository.requeued, ["delivery-1"]); assert.deepEqual(audited, ["evt-1"]); });

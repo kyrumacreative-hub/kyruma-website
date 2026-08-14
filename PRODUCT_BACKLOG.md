@@ -6,9 +6,11 @@ Este documento es la fuente única de prioridades del producto. Las ideas se reg
 
 Solo puede haber un objetivo activo.
 
-### PS-009 Event Bus™
+### Validación con el primer cliente
 
-Implementar la infraestructura de eventos versionados con PostgreSQL Transactional Outbox, entrega at-least-once, consumidores idempotentes, reintentos y recuperación de dead letters conforme a `product/PS-009-EVENT-BUS.md`.
+- Enviar KYRUMA Discovery™ al primer cliente real.
+- Recoger observaciones en `KYR-DISCOVERY-FEEDBACK-001`.
+- Corregir únicamente incidencias demostradas por uso real.
 
 ## NEXT
 
@@ -17,12 +19,6 @@ Implementar la infraestructura de eventos versionados con PostgreSQL Transaction
 Analizar cada KYRUMA Discovery™ para generar un resumen ejecutivo, objetivos, retos, oportunidades, recomendaciones de KYRUMA y preguntas sugeridas para la reunión.
 
 ## READY
-
-### Validación con el primer cliente
-
-- Enviar KYRUMA Discovery™ al primer cliente real.
-- Recoger observaciones en `KYR-DISCOVERY-FEEDBACK-001`.
-- Corregir únicamente incidencias demostradas por uso real.
 
 ### Operación — Activación de Marketing Foundation
 
@@ -53,6 +49,12 @@ Automatizar emails, recordatorios, seguimiento, estados, onboarding y entregas.
 - Panel de IA.
 - Dashboard CEO.
 - Benchmark automático.
+
+## COMPLETED
+
+### PS-009 Event Bus™
+
+Completado con especificación Product, RFC-018/019/020, PostgreSQL Transactional Outbox, dispatcher interno, entrega at-least-once, idempotencia, retries y recuperación de dead letters. Véase `ENGINEERING_FINAL_REPORT_PS-009.md`.
 
 ## Regla de trabajo
 
