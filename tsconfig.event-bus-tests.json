@@ -1,0 +1,1 @@
+{"extends":"./tsconfig.json","compilerOptions":{"module":"commonjs","moduleResolution":"node","noEmit":false,"outDir":".event-bus-test-build","rootDir":"src","incremental":false},"include":["src/features/event-bus/domain/**/*.ts","src/features/event-bus/application/**/*.ts","src/features/event-bus/ports/**/*.ts","src/features/lead-lifecycle/ports/TransactionRunner.ts"]}

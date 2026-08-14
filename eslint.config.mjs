@@ -18,8 +18,10 @@ const eslintConfig = defineConfig([
     ".intelligence-persistence-test-build/**",
       ".partner-creation-test-build/**",
       ".partner-persistence-test-build/**",
-      ".workspace-test-build/**",
-      ".workspace-persistence-contract-test-build/**",
+    ".workspace-test-build/**",
+    ".workspace-persistence-contract-test-build/**",
+    ".event-bus-test-build/**",
+    ".event-bus-persistence-test-build/**",
     "next-env.d.ts",
   ]),
 ]);

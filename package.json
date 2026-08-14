@@ -4,7 +4,7 @@
   "private": true,
   "scripts": {
     "dev": "next dev",
-    "build": "next build",
+    "build": "prisma generate && next build",
     "start": "next start",
     "lint": "eslint",
     "test:foundation": "tsc -p tsconfig.foundation-tests.json && node --test .foundation-test-build/features/identity/domain/authorization.test.js .foundation-test-build/features/partner-context/application/partnerContext.test.js .foundation-test-build/features/partner-context/application/organizationContext.test.js",
@@ -15,6 +15,8 @@
     "test:partner-persistence": "set -a; . ./.env.local; set +a; DATABASE_URL=\"$TEST_DATABASE_URL\" tsc -p tsconfig.partner-persistence-tests.json && DATABASE_URL=\"$TEST_DATABASE_URL\" node --test .partner-persistence-test-build/features/partner-creation/infrastructure/persistence/prisma.integration.test.js",
     "test:workspace": "tsc -p tsconfig.workspace-tests.json && node --test .workspace-test-build/features/workspace/domain/workspace.test.js && tsc -p tsconfig.workspace-persistence-contract-tests.json && node --test .workspace-persistence-contract-test-build/features/workspace/infrastructure/persistence/mappers.test.js",
     "test:discovery-intelligence": "tsc -p tsconfig.discovery-intelligence-tests.json && node --test .discovery-intelligence-test-build/features/discovery-intelligence/domain/*.test.js .discovery-intelligence-test-build/features/discovery-intelligence/application/*.test.js .discovery-intelligence-test-build/features/discovery-intelligence/infrastructure/persistence/persistence.test.js"
+    ,"test:event-bus": "tsc -p tsconfig.event-bus-tests.json && node --test .event-bus-test-build/features/event-bus/domain/*.test.js .event-bus-test-build/features/event-bus/application/*.test.js"
+    ,"test:event-bus-persistence": "set -a; . ./.env.local; set +a; DATABASE_URL=\"$TEST_DATABASE_URL\" tsc -p tsconfig.event-bus-persistence-tests.json && DATABASE_URL=\"$TEST_DATABASE_URL\" node --test .event-bus-persistence-test-build/features/event-bus/infrastructure/persistence/*.integration.test.js"
   },
   "dependencies": {
     "@calcom/embed-react": "^1.5.3",

@@ -191,3 +191,51 @@ model WorkspaceSettings {
   values      Json
   workspace   Workspace @relation(fields: [workspaceId], references: [id], onDelete: Restrict)
 }
+
+model EventOutbox {
+  eventId         String                  @id
+  eventType       String
+  eventVersion    Int
+  organizationId String
+  aggregateType   String
+  aggregateId     String
+  correlationId   String
+  causationId     String?
+  envelope        Json
+  status          String
+  availableAt     DateTime
+  createdAt       DateTime
+  dispatchedAt    DateTime?
+  lockedAt        DateTime?
+  lockOwner       String?
+  deliveries      EventProcessingRecord[]
+
+  @@index([status, availableAt, createdAt])
+  @@index([organizationId, createdAt])
+  @@index([correlationId])
+}
+
+model EventProcessingRecord {
+  id             String      @id
+  eventId        String
+  consumer       String
+  handler        String
+  status         String
+  attemptCount   Int         @default(0)
+  reprocessCount Int         @default(0)
+  firstAttemptAt DateTime?
+  lastAttemptAt  DateTime?
+  processedAt    DateTime?
+  nextRetryAt    DateTime?
+  errorCode      String?
+  errorMessage   String?
+  lockedAt       DateTime?
+  lockOwner      String?
+  createdAt      DateTime
+  updatedAt      DateTime
+  event          EventOutbox @relation(fields: [eventId], references: [eventId], onDelete: Restrict)
+
+  @@unique([eventId, consumer, handler])
+  @@index([status, nextRetryAt, createdAt])
+  @@index([eventId, status])
+}

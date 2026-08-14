@@ -50,6 +50,12 @@ Automatizar emails, recordatorios, seguimiento, estados, onboarding y entregas.
 - Dashboard CEO.
 - Benchmark automático.
 
+## COMPLETED
+
+### PS-009 Event Bus™
+
+Completado con especificación Product, RFC-018/019/020, PostgreSQL Transactional Outbox, dispatcher interno, entrega at-least-once, idempotencia, retries y recuperación de dead letters. Véase `ENGINEERING_FINAL_REPORT_PS-009.md`.
+
 ## Regla de trabajo
 
 Ninguna idea se desarrolla directamente. Toda idea pasa primero al Product Backlog con prioridad **NOW**, **NEXT**, **READY** o **IDEAS**. Solo se implementa el trabajo situado en **NOW**.
