@@ -1,12 +1,67 @@
-import type { Partner } from "../domain/partner";
 import type { TransactionContext } from "../../lead-lifecycle/ports/TransactionRunner";
+import type { Partner } from "../domain/partner";
+
 export interface PartnerRepository {
-  save(partner: Partner, context: TransactionContext): Promise<void>;
-  update(partner: Partner, context: TransactionContext): Promise<void>;
-  findById(partnerId: string, context: TransactionContext): Promise<Partner | null>;
-  findByLeadId(leadId: string, context: TransactionContext): Promise<Partner | null>;
+  save(
+    partner: Partner,
+    transaction: TransactionContext,
+  ): Promise<void>;
+
+  update(
+    partner: Partner,
+    transaction: TransactionContext,
+  ): Promise<void>;
+
+  findById(
+    id: string,
+    transaction: TransactionContext,
+  ): Promise<Partner | null>;
+
+  findByLeadId(
+    leadId: string,
+    transaction: TransactionContext,
+  ): Promise<Partner | null>;
 }
-export interface PartnerCodeSequenceRepository { allocate(context: TransactionContext): Promise<number>; }
-export interface WorkspaceProvisioningRepository { savePrimary(input: { workspaceId: string; partnerId: string }, context: TransactionContext): Promise<void>; }
-export interface InitialMembershipRepository { saveOwner(input: { membershipId: string; partnerId: string }, context: TransactionContext): Promise<void>; }
-export interface PartnerCreationIdempotencyRepository { find(correlationId: string, context: TransactionContext): Promise<string | null>; save(correlationId: string, partnerId: string, context: TransactionContext): Promise<void>; }
+
+
+export interface PartnerCodeSequenceRepository {
+  allocate(
+    transaction: TransactionContext,
+  ): Promise<number>;
+}
+
+
+export interface PartnerCreationIdempotencyRepository {
+  find(
+    correlationId: string,
+    transaction: TransactionContext,
+  ): Promise<string | null>;
+
+  save(
+    correlationId: string,
+    partnerId: string,
+    transaction: TransactionContext,
+  ): Promise<void>;
+}
+
+
+export interface InitialMembershipRepository {
+  saveOwner(
+    input: {
+      membershipId: string;
+      partnerId: string;
+    },
+    transaction: TransactionContext,
+  ): Promise<void>;
+}
+
+
+export interface WorkspaceProvisioningRepository {
+  savePrimary(
+    input: {
+      workspaceId: string;
+      partnerId: string;
+    },
+    transaction: TransactionContext,
+  ): Promise<void>;
+}

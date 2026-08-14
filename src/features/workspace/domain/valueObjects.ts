@@ -1,0 +1,24 @@
+import { InvalidWorkspaceStateError, InvalidWorkspaceValueError } from "./errors";
+
+const required = (value: string, field: string) => { if (!value.trim()) throw new InvalidWorkspaceValueError(`${field} is required.`); return value; };
+export class WorkspaceId { private constructor(readonly value: string) {} static create(value: string) { return new WorkspaceId(required(value, "Workspace id")); } }
+export class WorkspaceMemberId { private constructor(readonly value: string) {} static create(value: string) { return new WorkspaceMemberId(required(value, "Workspace member id")); } }
+export class WorkspaceInvitationId { private constructor(readonly value: string) {} static create(value: string) { return new WorkspaceInvitationId(required(value, "Workspace invitation id")); } }
+export class PartnerId { private constructor(readonly value: string) {} static create(value: string) { return new PartnerId(required(value, "Partner id")); } }
+export class OrganizationId { private constructor(readonly value: string) {} static create(value: string) { return new OrganizationId(required(value, "Organization id")); } }
+export class MembershipId { private constructor(readonly value: string) {} static create(value: string) { return new MembershipId(required(value, "Membership id")); } }
+export class CorrelationId { private constructor(readonly value: string) {} static create(value: string) { return new CorrelationId(required(value, "Correlation id")); } }
+export class WorkspaceName { private constructor(readonly value: string) {} static create(value: string) { const normalized = required(value, "Workspace name").trim(); if (normalized.length > 120) throw new InvalidWorkspaceValueError("Workspace name is too long."); return new WorkspaceName(normalized); } }
+export class TeamId { private constructor(readonly value: string) {} static create(value: string) { return new TeamId(required(value, "Team id")); } }
+export class TeamName { private constructor(readonly value: string) {} static create(value: string) { return new TeamName(required(value, "Team name").trim()); } }
+export class WorkspaceSettingsVersion { private constructor(readonly value: number) {} static initial() { return new WorkspaceSettingsVersion(1); } static create(value: number) { if (!Number.isInteger(value) || value < 1) throw new InvalidWorkspaceValueError("Workspace settings version must be a positive integer."); return new WorkspaceSettingsVersion(value); } next() { return new WorkspaceSettingsVersion(this.value + 1); } }
+export class InvitationTokenHash { private constructor(readonly value: string) {} static create(value: string) { if (!/^sha256:[a-f0-9]{64}$/.test(value)) throw new InvalidWorkspaceValueError("Invitation token must be a SHA-256 hash, never plaintext."); return new InvitationTokenHash(value); } }
+export class InvitationRecipientReference { private constructor(readonly value: string) {} static create(value: string) { return new InvitationRecipientReference(required(value, "Invitation recipient reference")); } }
+export class InvitationRole { private constructor(readonly value: string) {} static create(value: string) { return new InvitationRole(required(value, "Invitation role")); } }
+export class InvitationExpiry { private constructor(readonly value: Date) {} static create(value: Date, now = new Date()) { if (!(value instanceof Date) || Number.isNaN(value.getTime()) || value <= now) throw new InvalidWorkspaceValueError("Invitation expiry must be in the future."); return new InvitationExpiry(new Date(value)); } static restore(value: Date) { if (!(value instanceof Date) || Number.isNaN(value.getTime())) throw new InvalidWorkspaceValueError("Invitation expiry is invalid."); return new InvitationExpiry(new Date(value)); } isExpired(at: Date) { return at >= this.value; } }
+export const workspaceStatuses = ["provisioning", "onboarding", "active", "paused", "archived", "failed"] as const;
+export type WorkspaceStatusValue = (typeof workspaceStatuses)[number];
+export class WorkspaceStatus { private constructor(readonly value: WorkspaceStatusValue) {} static create(value: string) { if (!workspaceStatuses.includes(value as WorkspaceStatusValue)) throw new InvalidWorkspaceStateError(`Unsupported Workspace status: ${value}`); return new WorkspaceStatus(value as WorkspaceStatusValue); } static provisioning() { return new WorkspaceStatus("provisioning"); } }
+export const invitationStatuses = ["pending", "accepted", "revoked", "expired"] as const;
+export type InvitationStatusValue = (typeof invitationStatuses)[number];
+export class InvitationStatus { private constructor(readonly value: InvitationStatusValue) {} static create(value: string) { if (!invitationStatuses.includes(value as InvitationStatusValue)) throw new InvalidWorkspaceStateError(`Unsupported invitation status: ${value}`); return new InvitationStatus(value as InvitationStatusValue); } static pending() { return new InvitationStatus("pending"); } }

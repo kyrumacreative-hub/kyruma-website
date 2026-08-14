@@ -116,7 +116,6 @@ model PartnerWorkspace {
   partnerId String
   primary   Boolean
   partner   Partner @relation(fields: [partnerId], references: [id], onDelete: Restrict)
-
 }
 
 model PartnerMembership {
@@ -133,6 +132,64 @@ model PartnerCreationIdempotency {
   correlationId String   @id
   partnerId     String   @unique
   createdAt     DateTime
+}
+
+model Workspace {
+  id                       String                @id
+  partnerId                String
+  organizationId           String
+  name                     String
+  primary                  Boolean
+  status                   String
+  initialOwnerMemberId     String                @unique
+  initialOwnerMembershipId String                @unique
+  settingsVersion          Int
+  createdAt                DateTime
+  correlationId            String                @unique
+  members                  WorkspaceMember[]
+  invitations              WorkspaceInvitation[]
+  settings                 WorkspaceSettings?
+
+  @@index([partnerId])
+  @@index([organizationId])
+}
+
+model WorkspaceMember {
+  id           String    @id
+  workspaceId  String
+  membershipId String
+  owner        Boolean
+  status       String
+  joinedAt     DateTime
+  removedAt    DateTime?
+  workspace    Workspace @relation(fields: [workspaceId], references: [id], onDelete: Restrict)
+
+  @@unique([workspaceId, membershipId])
+  @@index([workspaceId])
+}
+
+model WorkspaceInvitation {
+  id                 String    @id
+  workspaceId        String
+  recipientReference String
+  intendedRole       String
+  tokenHash          String    @unique
+  expiresAt          DateTime
+  status             String
+  createdAt          DateTime
+  acceptedAt         DateTime?
+  revokedAt          DateTime?
+  correlationId      String    @unique
+  workspace          Workspace @relation(fields: [workspaceId], references: [id], onDelete: Restrict)
+
+  @@index([workspaceId, status])
+}
+
+model WorkspaceSettings {
+  workspaceId String    @id
+  version     Int
+  values      Json
+  workspace   Workspace @relation(fields: [workspaceId], references: [id], onDelete: Restrict)
 }
 
 model EventOutbox {

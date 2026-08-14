@@ -11,6 +11,9 @@ import { PrismaPartnerCodeSequenceRepository } from "./repositories/PrismaPartne
 import { PrismaPartnerCreationIdempotencyRepository } from "./repositories/PrismaPartnerCreationIdempotencyRepository";
 import { PrismaPartnerRepository } from "./repositories/PrismaPartnerRepository";
 import { PrismaWorkspaceProvisioningRepository } from "./repositories/PrismaWorkspaceProvisioningRepository";
+import { ProvisionWorkspaceUseCase } from "../../../workspace/application/useCases";
+import { DefaultWorkspaceProvisioner } from "../../../workspace/application/services/WorkspaceProvisioner";
+import { PrismaWorkspaceRepository } from "../../../workspace/infrastructure/persistence/repositories/PrismaWorkspaceRepositories";
 
 const client = new PrismaClient();
 const contexts = new PrismaTransactionContextStore();
@@ -20,6 +23,10 @@ const codes = new PrismaPartnerCodeSequenceRepository(contexts);
 const workspaces = new PrismaWorkspaceProvisioningRepository(contexts);
 const memberships = new PrismaInitialMembershipRepository(contexts);
 const idempotency = new PrismaPartnerCreationIdempotencyRepository(contexts);
+const workspaceRepository = new PrismaWorkspaceRepository(contexts);
+const workspaceProvisioner = new DefaultWorkspaceProvisioner(
+  new ProvisionWorkspaceUseCase({ transactions: runner, workspaces: workspaceRepository }),
+);
 let testCodeCounter = 0;
 
 function partner(suffix: string, code: string, organizationId = `org-${suffix}`) {
@@ -106,6 +113,40 @@ test("rolls back the Partner conversion while retaining no partial records", asy
   }));
   await runner.run(async (context) => assert.equal(await partners.findById(value.id.value, context), null));
   assert.equal(await client.partnerWorkspace.findUnique({ where: { id: value.primaryWorkspaceId.value } }), null);
+});
+
+test("rolls back Partner, Membership, Workspace, Settings and idempotency when Workspace provisioning fails", async () => {
+  const suffix = randomUUID();
+  const value = partner(suffix, "KYR-906");
+  const dispatched = false;
+  await assert.rejects(() => runner.run(async (context) => {
+    await partners.save(value, context);
+    await memberships.saveOwner({ membershipId: value.initialOwnerMembershipId.value, partnerId: value.id.value }, context);
+    await workspaceProvisioner.provision({
+      workspaceId: value.primaryWorkspaceId.value,
+      workspaceMemberId: `workspace-member-${suffix}`,
+      partnerId: value.id.value,
+      organizationId: value.organizationId.value,
+      initialOwnerMembershipId: value.initialOwnerMembershipId.value,
+      name: value.code.value,
+      metadata: { eventId: `event-${suffix}`, occurredAt: value.createdAt, correlationId: value.correlationId!, actorId: "test-actor" },
+    }, context);
+    await idempotency.save(value.correlationId!, value.id.value, context);
+    throw new Error("simulated workspace provisioning failure");
+  }));
+  const [persistedPartner, persistedWorkspace, persistedSettings, persistedMembership, persistedIdempotency] = await Promise.all([
+    client.partner.findUnique({ where: { id: value.id.value } }),
+    client.workspace.findUnique({ where: { id: value.primaryWorkspaceId.value } }),
+    client.workspaceSettings.findUnique({ where: { workspaceId: value.primaryWorkspaceId.value } }),
+    client.partnerMembership.findUnique({ where: { id: value.initialOwnerMembershipId.value } }),
+    client.partnerCreationIdempotency.findUnique({ where: { correlationId: value.correlationId! } }),
+  ]);
+  assert.equal(persistedPartner, null);
+  assert.equal(persistedWorkspace, null);
+  assert.equal(persistedSettings, null);
+  assert.equal(persistedMembership, null);
+  assert.equal(persistedIdempotency, null);
+  assert.equal(dispatched, false);
 });
 
 test.after(async () => { await client.$disconnect(); });

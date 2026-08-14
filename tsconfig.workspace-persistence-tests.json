@@ -1,0 +1,17 @@
+{
+  "compilerOptions": {
+    "outDir": ".workspace-persistence-test-build",
+    "rootDir": "src/features",
+    "noEmit": false,
+    "module": "Node16",
+    "moduleResolution": "Node16",
+    "target": "ES2022",
+    "esModuleInterop": true,
+    "skipLibCheck": true,
+    "strict": true
+  },
+  "include": [
+    "src/features/workspace/**/*.ts",
+    "src/features/lead-lifecycle/**/*.ts"
+  ]
+}
