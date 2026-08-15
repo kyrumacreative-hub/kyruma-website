@@ -1,7 +1,9 @@
 # KYRUMA Platform™ — Pre-PS010 Baseline Audit
 
-**Fecha:** 2026-08-15  
-**Baseline de código:** `main@0516703` más este cierre documental  
+**Fecha:** 2026-08-15
+
+**Baseline de código:** `main@0516703` más este cierre documental
+
 **Resultado:** BASELINE CLEAN
 
 | Componente | Estado canónico | Evidencia principal |
