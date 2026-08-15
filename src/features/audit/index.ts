@@ -7,5 +7,6 @@ export * from "./ports/AuditExportArtifactPort";
 export * from "./ports/AuditRepository";
 export * from "./ports/Clock";
 export * from "./application/useCases";
+export * from "./application/integrationAdapters";
 export * from "./infrastructure/persistence/AuditEventMapper";
 export * from "./infrastructure/persistence/PrismaAuditRepository";

@@ -41,3 +41,19 @@ test("rolls back Audit evidence with the shared transaction", async () => {
   await assert.rejects(() => transactions.run(async (tx) => { const event = await recorder.execute(request(organizationId, correlationId), tx); id = event.properties.id; throw new Error("force rollback"); }), /force rollback/);
   assert.equal(await repository.findById(id, organizationId), null);
 });
+
+test("persists privacy, retention and export evidence as append-only records", async () => {
+  const organizationId = `org-${randomUUID()}`; const correlationId = randomUUID();
+  const event = await transactions.run((tx) => recorder.execute(request(organizationId, correlationId), tx));
+  const overlayId = randomUUID(); const exportId = randomUUID(); const retentionId = randomUUID();
+  await transactions.run(async (tx) => {
+    await repository.appendPrivacyOverlay({ id: overlayId, auditEventId: event.properties.id, organizationId, actorId: "actor-privacy", policyVersion: "privacy-v1", reason: "approved anonymization", replacements: { actorId: "masked" }, createdAt: clock.now() }, tx);
+    await repository.saveExport({ id: exportId, organizationId, requestedBy: "actor-export", from: new Date("2026-08-01T00:00:00Z"), to: clock.now(), format: "json", profile: "security", rowCount: 1, artifactReference: "artifact://audit/test", expiresAt: new Date("2026-08-15T10:00:00Z"), createdAt: clock.now() }, tx);
+    await repository.saveRetentionExecution({ id: retentionId, organizationId, policyVersion: "retention-v1", category: "operational_activity", dryRun: true, affectedCount: 1, executedBy: "actor-retention", executedAt: clock.now() }, tx);
+  });
+  assert.equal((await prisma.auditPrivacyOverlay.findUnique({ where: { id: overlayId } }))?.policyVersion, "privacy-v1");
+  assert.equal((await prisma.auditExportEvidence.findUnique({ where: { id: exportId } }))?.rowCount, 1);
+  assert.equal((await prisma.auditRetentionExecution.findUnique({ where: { id: retentionId } }))?.dryRun, true);
+  assert.equal(await repository.countRetentionCandidates({ organizationId, category: "operational_activity", before: new Date("2026-08-16T00:00:00Z") }), 1);
+  await assert.rejects(() => prisma.auditPrivacyOverlay.update({ where: { id: overlayId }, data: { reason: "tamper" } }), /append-only/);
+});
