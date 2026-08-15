@@ -2,7 +2,7 @@
 
 ## Status
 
-**ARCHITECTURE APPROVED — READY FOR ENGINEERING**
+**ARCHITECTURE APPROVED — IMPLEMENTED**
 
 | RFC | Status | Decision |
 | --- | --- | --- |
@@ -29,3 +29,5 @@ Legal approval of definitive retention durations, operational export storage/enc
 ## Conclusion
 
 No real Architecture blocker remains. **READY FOR ENGINEERING.**
+
+Engineering subsequently completed and was integrated in `main@0516703`; this report remains the approved Architecture baseline.

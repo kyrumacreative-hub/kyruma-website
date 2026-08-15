@@ -2,7 +2,7 @@
 
 ## Status
 
-**ENGINEERING COMPLETE · READY FOR MERGE**
+**COMPLETE · INTEGRATED IN MAIN · VALIDATED BY CI**
 
 ## Scope reviewed
 
@@ -47,7 +47,7 @@ There are no blockers to Engineering.
 
 The following are downstream gates and must not be mistaken for blockers to this review:
 
-- RFC-015, RFC-016 and RFC-017 are approved and the final technical review records `READY FOR ENGINEERING`.
+- RFC-015, RFC-016 and RFC-017 are approved; the Architecture readiness decision is historical and the final Engineering review records `READY FOR MERGE`.
 - Production retention durations and legal-hold procedures require Legal approval.
 - Production export requires approved storage, encryption, expiry and revocation controls.
 
@@ -62,4 +62,4 @@ The following are downstream gates and must not be mistaken for blockers to this
 
 ## Recommendation
 
-**PS-008 Audit™ — ENGINEERING COMPLETE · READY FOR MERGE.**
+**PS-008 Audit™ — COMPLETE · INTEGRATED IN MAIN · NOT DEPLOYED TO PRODUCTION.**

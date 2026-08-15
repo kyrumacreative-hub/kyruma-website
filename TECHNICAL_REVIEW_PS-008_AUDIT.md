@@ -2,7 +2,9 @@
 
 ## Decision
 
-**READY FOR ENGINEERING**
+**SUPERSEDED BY ENGINEERING FINAL REVIEW — COMPLETE**
+
+This Architecture-gate decision remains historical evidence. Engineering completed successfully and `TECHNICAL_REVIEW_PS-008_FINAL.md` is the canonical final review.
 
 ## Review basis
 
@@ -84,4 +86,4 @@ None.
 
 ## Recommendation
 
-**PS-008 Audit™ v0.2 — READY FOR ENGINEERING.**
+**PS-008 Audit™ — ENGINEERING COMPLETE · INTEGRATED IN MAIN.**

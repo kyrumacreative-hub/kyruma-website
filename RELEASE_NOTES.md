@@ -1,5 +1,11 @@
 # KYRUMA OS™ Engineering Release v0.1.0
 
+## PS-008 Audit™ — Unreleased Engineering Baseline
+
+**Estado:** Complete · Integrated in `main@0516703` · CI Validated · Not Deployed
+
+Incluye evidencia inmutable versionada, persistencia PostgreSQL append-only, aislamiento por Organization, idempotencia, privacidad por allowlist/overlays, retención/exportación controladas y adaptadores transaccionales para Lead Lifecycle y Event Bus. La validación final es GitHub Actions `31883926330`. No se asignó versión ni tag nuevos; `v0.4.0` permanece sin cambios.
+
 ## PS-006 Partner Creation™ v1.0
 
 **Estado:** Engineering Complete

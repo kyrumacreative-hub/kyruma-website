@@ -2,7 +2,7 @@
 
 ## Decision
 
-**READY FOR MERGE**
+**COMPLETE · INTEGRATED IN MAIN**
 
 ## Compliance decision
 
@@ -25,6 +25,6 @@ Legal retention durations, legal-hold operation, export object storage/encryptio
 
 All required boundaries were implemented on `feature/audit`. PostgreSQL migration and integration tests prove append-only enforcement, rollback, idempotency, tenant isolation, retention/export evidence and shared transaction semantics. Critical Lead Lifecycle and Event Bus administration adapters use approved ports without coupling domain aggregates to Prisma.
 
-GitHub Actions run `31883790132` on `e325ff8` completed successfully, including every existing domain suite, all PostgreSQL suites, Audit, lint, TypeScript and build. The earlier run `31883589639` is intermediate and superseded; its only failure was generated-folder lint configuration, corrected by `b55f32e`.
+The Engineering review issued `READY FOR MERGE` after GitHub Actions run `31883790132` succeeded. Final run `31883926330` on `c82209d` also completed successfully, including every existing domain suite, all PostgreSQL suites, Audit, lint, TypeScript and build. The earlier run `31883589639` is intermediate and superseded; its only failure was generated-folder lint configuration, corrected by `b55f32e`.
 
-No Engineering blocker remains. Production legal-hold, retention values, privileged maintenance roles and export artifact infrastructure remain explicit non-blocking production gates.
+No Engineering blocker remains. The reviewed feature was integrated by `main@0516703`. Production legal-hold, retention values, privileged maintenance roles and export artifact infrastructure remain explicit non-blocking production gates.

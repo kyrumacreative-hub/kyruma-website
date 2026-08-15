@@ -2,7 +2,7 @@
 
 ## Decision
 
-**READY FOR MERGE**
+**COMPLETE · INTEGRATED IN MAIN**
 
 ## Delivered
 
@@ -28,7 +28,7 @@
 
 ## Verification
 
-GitHub Actions `31883790132` (`e325ff8`) is the final feature validation: **SUCCESS**. It applied every migration to PostgreSQL 16 and passed Foundation, Lead Lifecycle, Discovery Intelligence, Partner Creation, Workspace, Event Bus, Audit, all persistence suites, lint, TypeScript and production build.
+GitHub Actions `31883790132` (`e325ff8`) passed before the final review, and `31883926330` (`c82209d`) is the final feature validation: **SUCCESS**. It applied every migration to PostgreSQL 16 and passed Foundation, Lead Lifecycle, Discovery Intelligence, Partner Creation, Workspace, Event Bus, Audit, all persistence suites, lint, TypeScript and production build.
 
 Run `31883589639` is historical and superseded. All migrations and tests passed in that run; it failed later only because a generated Workspace persistence build folder was not yet excluded from lint. Commit `b55f32e` corrected that configuration and subsequent runs passed.
 
@@ -42,3 +42,7 @@ Run `31883589639` is historical and superseded. All migrations and tests passed 
 ## Deployment
 
 **NOT DEPLOYED TO PRODUCTION.** No deployment action was performed and `v0.4.0` was not modified.
+
+## Integration
+
+Feature head `c82209d` was integrated by merge commit `0516703`. The final documentation commit does not change Engineering behavior.

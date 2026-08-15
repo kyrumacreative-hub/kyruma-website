@@ -5,9 +5,9 @@
 | Field | Value |
 | --- | --- |
 | Version | 0.2 |
-| Status | Architecture Approved · Engineering Complete · Ready for Merge |
+| Status | Complete · Integrated in Main · CI Validated · Not Deployed |
 | Owner | Product |
-| Engineering | Complete · CI Validated |
+| Engineering | Complete · `main@0516703` |
 | Depends on | Foundation, shared TransactionRunner, Organization/Partner/Workspace context |
 
 ## 2. Executive Summary

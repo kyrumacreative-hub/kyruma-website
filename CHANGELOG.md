@@ -2,7 +2,7 @@
 
 ## [Unreleased] — PS-008 Audit™
 
-Engineering complete and ready for merge. Adds immutable versioned Audit evidence, PostgreSQL append-only protection, privacy overlays, retention/export evidence, authorized application services and shared-transaction integrations. Validated by GitHub Actions run `31883790132`. No release number or tag was inferred; `v0.4.0` remains unchanged and production remains undeployed.
+Engineering complete and integrated in `main@0516703`. Adds immutable versioned Audit evidence, PostgreSQL append-only protection, privacy overlays, retention/export evidence, authorized application services and shared-transaction integrations. Validated by final GitHub Actions run `31883926330`. No release number or tag was inferred; `v0.4.0` remains unchanged and PS-008 is not deployed to production.
 
 ## [0.4.0] — 2026-08-14
 
