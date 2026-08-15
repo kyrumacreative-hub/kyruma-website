@@ -207,6 +207,26 @@ model Project {
   @@index([workspaceId])
 }
 
+model ProjectDocumentReference {
+  id                String   @id
+  projectId         String   @unique
+  organizationId    String
+  partnerId         String
+  workspaceId       String
+  provider          String
+  externalReference String?  @unique
+  externalUrl       String?
+  idempotencyKey    String   @unique
+  status            String
+  lastError         String?
+  attemptCount      Int
+  createdAt         DateTime
+  updatedAt         DateTime
+
+  @@index([organizationId, workspaceId])
+  @@index([partnerId])
+}
+
 model EventOutbox {
   eventId        String                  @id
   eventType      String

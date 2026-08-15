@@ -19,3 +19,24 @@ export class ProjectConcurrencyError extends Error {
     this.name = "ProjectConcurrencyError";
   }
 }
+
+export class DriveReferenceSyncError extends Error {
+  constructor() {
+    super("The Project document reference could not be synchronized.");
+    this.name = "DriveReferenceSyncError";
+  }
+}
+
+export class DriveReferenceConfigurationError extends Error {
+  constructor() {
+    super("Drive integration is not configured.");
+    this.name = "DriveReferenceConfigurationError";
+  }
+}
+
+export class DriveReferenceConflictError extends Error {
+  constructor() {
+    super("Multiple external folders match the Project canonical reference.");
+    this.name = "DriveReferenceConflictError";
+  }
+}

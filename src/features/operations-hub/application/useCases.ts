@@ -17,7 +17,7 @@ import type { ProjectEventOutbox } from "../ports/ProjectEventOutbox";
 import type { ProjectRepository } from "../ports/ProjectRepository";
 
 export class OperationsHubApplicationError extends Error {
-  constructor(message: string, readonly code: "FORBIDDEN" | "NOT_FOUND" | "CONFLICT" | "PERSISTENCE") {
+  constructor(message: string, readonly code: "FORBIDDEN" | "NOT_FOUND" | "CONFLICT" | "PERSISTENCE" | "DRIVE_NOT_CONFIGURED" | "DRIVE_SYNC_FAILED") {
     super(message);
   }
 }
