@@ -1,4 +1,4 @@
-# KYRUMA Platform v1.0 — LIVE
+# KYRUMA Platform v1.0 — Technical Production Candidate
 
 **Fecha de publicación:** 5 de agosto de 2026  
 **Estado:** Producción activa en `https://www.kyruma.com`
@@ -6,7 +6,7 @@
 ## Incluye
 
 - KYRUMA Discovery™ con ocho conversaciones, progreso, guardado automático, resumen editable y envío.
-- Marketing Foundation instalada y condicionada al consentimiento, pero inactiva hasta que se configuren las variables de entorno de los proveedores externos.
+- Marketing Foundation condicionada al consentimiento. GTM y GA4 están activos; Meta y Clarity permanecen inactivos hasta completar sus gates externos.
 - Footer social y documentación de despliegue, eventos y analítica.
 
 ## Validación de release
@@ -15,8 +15,9 @@
 - `workspace-v2` fusionada mediante fast-forward en `main` y publicada en Vercel.
 - `/workspace` comprobada en producción: bienvenida, ocho conversaciones y navegación disponibles.
 - Sin errores de consola durante la comprobación.
-- Sin identificadores de analítica configurados, no se cargan scripts de GTM, Meta Pixel ni Microsoft Clarity.
+- El rechazo bloquea todos los scripts de marketing y la aceptación carga GTM/GA4 sin errores.
+- El consentimiento puede retirarse o modificarse desde `/cookies`.
 
-## Próximo paso
+## Gates para `v1.0.0`
 
-Enviar el Discovery al primer cliente y registrar el feedback real en `KYR-DISCOVERY-FEEDBACK-001`. La activación de analítica queda en el backlog de operaciones y puede realizarse posteriormente sin cambios de arquitectura.
+Completar Clarity, Meta Pixel+CAPI y el tramo comercial TEST de KYR-002. El contrato revisado jurídicamente sigue siendo obligatorio antes del primer cliente real. Véase `KYRUMA_PLATFORM_V1_FINAL_READINESS_REPORT.md`.

@@ -2,27 +2,24 @@
 
 Este documento es la fuente única de prioridades del producto. Las ideas se registran aquí antes de convertirse en desarrollo.
 
-## NOW — Sprint activo
+## NOW — Cierre v1.0
 
 Solo puede haber un objetivo activo.
 
-### Validación con el primer cliente
+### Gates externos de release
 
-- Enviar KYRUMA Discovery™ al primer cliente real.
-- Recoger observaciones en `KYR-DISCOVERY-FEEDBACK-001`.
-- Corregir únicamente incidencias demostradas por uso real.
+- Completar el alta de Microsoft Clarity aceptando sus Condiciones de Uso y publicar su identificador real.
+- Iniciar sesión en Meta Business Manager, crear o seleccionar el dataset/pixel de KYRUMA y emitir una credencial CAPI real.
+- Ejecutar el tramo comercial TEST de KYR-002 con contrato y cobro de prueba en los sistemas externos correspondientes.
+- Obtener la revisión jurídica del contrato antes de activar el primer cliente comercial real.
 
-## NEXT
+No hay desarrollo de producto autorizado en este bloque. Solo configuración real, validación y cierre.
 
-### Discovery Intelligence™
+## NEXT — Congelado hasta cerrar v1.0
 
-Analizar cada KYRUMA Discovery™ para generar un resumen ejecutivo, objetivos, retos, oportunidades, recomendaciones de KYRUMA y preguntas sugeridas para la reunión.
+No iniciar nuevas capacidades.
 
 ## READY
-
-### Operación — Activación de Marketing Foundation
-
-Configurar en una sesión específica los IDs y credenciales de GTM/GA4, Meta Pixel y Conversion API, Microsoft Clarity y Google Search Console. La infraestructura está instalada, permanece inactiva sin variables de entorno y no requiere cambiar la arquitectura.
 
 ### Lead Intake Flow
 
@@ -51,6 +48,14 @@ Automatizar emails, recordatorios, seguimiento, estados, onboarding y entregas.
 - Benchmark automático.
 
 ## COMPLETED
+
+### Operations Hub v1
+
+Integrado en `main` con referencia canónica Project → Drive, aislamiento por Organization/Partner/Workspace, idempotencia y retry seguro. Smoke real KYR-002 y regresión PostgreSQL completados.
+
+### Marketing Foundation — Google
+
+GTM y GA4 activados con identificadores reales. Google Search Console verificado. Consentimiento rechazado y aceptado comprobado en producción; el usuario puede retirar o modificar su elección desde la Política de Cookies.
 
 ### PS-009 Event Bus™
 
