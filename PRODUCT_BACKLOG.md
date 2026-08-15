@@ -6,18 +6,11 @@ Este documento es la fuente única de prioridades del producto. Las ideas se reg
 
 Solo puede haber un objetivo activo. La secuencia aprobada es PS-010 → PS-011 → PS-012; cada PS debe cerrar sus gates antes de activar el siguiente.
 
-### PS-010 — Identity / Access Experience — ACTIVE
+### Platform Experience activation gates — ACTIVE
 
-- Login, sesiones y recuperación mediante proveedor de identidad real.
-- Invitaciones, acceso de usuarios y enlace canónico con Foundation Membership.
-
-### PS-011 — Client / Partner Portal — QUEUED
-
-- Acceso Partner, Workspace visible, información compartida, actividad y entregables.
-
-### PS-012 — Automations / Intelligence Layer — QUEUED
-
-- Automatizaciones, triggers, acciones, Event Bus y frontera futura de KYRUMA Intelligence™.
+- Provisionar Clerk y sus variables seguras.
+- Aplicar la migración en staging y ejecutar la regresión PostgreSQL.
+- Completar smoke real de login, recuperación, invitación, aislamiento de Portal y logout.
 
 ### Gates externos de release
 
@@ -59,6 +52,18 @@ Automatizar emails, recordatorios, seguimiento, estados, onboarding y entregas.
 - Benchmark automático.
 
 ## COMPLETED
+
+### PS-010 — Identity / Access Experience
+
+Engineering completo con Clerk, sesiones, recuperación, invitaciones hash-only y Foundation Membership.
+
+### PS-011 — Client / Partner Portal
+
+Engineering completo con Portal protegido, Workspace visible, información compartida, actividad y entregables versionados.
+
+### PS-012 — Automations / Intelligence Layer
+
+Engineering completo con triggers Event Bus, runs idempotentes, acciones allowlisted y frontera Intelligence con revisión humana.
 
 ### Operations Hub v1
 
