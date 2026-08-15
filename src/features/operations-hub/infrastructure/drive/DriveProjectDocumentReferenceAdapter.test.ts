@@ -87,7 +87,7 @@ test("Google Drive adapter finds the existing folder before creating a duplicate
 });
 
 test("Google Drive adapter creates a folder with the immutable canonical reference key when absent", async () => {
-  const requests: { method?: string; body?: string }[] = [];
+  const requests: { method?: string; url: string; body?: string }[] = [];
   const responses = [
     new Response(JSON.stringify({ files: [] }), { status: 200 }),
     new Response(JSON.stringify({ id: "folder-created", webViewLink: "https://drive.google.test/folder-created" }), { status: 200 }),
@@ -95,8 +95,8 @@ test("Google Drive adapter creates a folder with the immutable canonical referen
   const gateway = new GoogleDriveFolderGateway({
     accessToken: "test-token",
     rootFolderId: "root-folder",
-    fetch: async (_url, init) => {
-      requests.push({ method: init?.method, body: typeof init?.body === "string" ? init.body : undefined });
+    fetch: async (url, init) => {
+      requests.push({ method: init?.method, url, body: typeof init?.body === "string" ? init.body : undefined });
       const response = responses.shift();
       if (!response) throw new Error("unexpected request");
       return response;
@@ -105,6 +105,9 @@ test("Google Drive adapter creates a folder with the immutable canonical referen
   const result = await gateway.ensureProjectFolder(request);
   assert.equal(result.folderId, "folder-created");
   assert.equal(requests.map((entry) => entry.method).join(","), "GET,POST");
+  assert.match(requests[0]?.url ?? "", /fields=files%28id%2CwebViewLink%29/);
+  assert.match(requests[1]?.url ?? "", /fields=id%2CwebViewLink/);
+  assert.doesNotMatch(requests[1]?.url ?? "", /includeItemsFromAllDrives/);
   assert.match(requests[1]?.body ?? "", /kyrumaReferenceKey/);
   assert.match(requests[1]?.body ?? "", /project-drive:project-1/);
 });

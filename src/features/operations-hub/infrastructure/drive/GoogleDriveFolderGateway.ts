@@ -48,7 +48,7 @@ export class GoogleDriveFolderGateway implements DriveFolderGateway {
     if (existing.length > 1) throw new DriveReferenceConflictError();
     if (existing.length === 1) return this.folder(existing[0]);
 
-    const response = await this.fetch(this.filesUrl(), {
+    const response = await this.fetch(this.createFileUrl(), {
       method: "POST",
       headers: this.headers(),
       body: JSON.stringify({
@@ -96,6 +96,14 @@ export class GoogleDriveFolderGateway implements DriveFolderGateway {
       params.set("corpora", "drive");
       params.set("driveId", this.options.sharedDriveId);
     }
+    return `https://www.googleapis.com/drive/v3/files?${params.toString()}`;
+  }
+
+  private createFileUrl(): string {
+    const params = new URLSearchParams({
+      fields: "id,webViewLink",
+      supportsAllDrives: "true",
+    });
     return `https://www.googleapis.com/drive/v3/files?${params.toString()}`;
   }
 
