@@ -42,6 +42,9 @@ export default function Footer() {
           >
             hello@kyruma.com <span>→</span>
           </a>
+          <a href="tel:+34614189346" className="text-link mt-3">
+            614 189 346 <span>→</span>
+          </a>
         </div>
 
         <div className="md:col-span-2">

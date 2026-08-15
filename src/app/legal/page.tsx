@@ -51,6 +51,11 @@ export default function LegalPage() {
                   >
                     hello@kyruma.com
                   </a>
+                  <br />
+                  <strong>Teléfono:</strong>{" "}
+                  <a href="tel:+34614189346" className="underline underline-offset-4">
+                    614 189 346
+                  </a>
                 </p>
               </LegalSection>
 

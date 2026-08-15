@@ -153,6 +153,12 @@ export default function Contact() {
               <p className="mt-6 text-sm font-light tracking-wide !text-black/50">
                 New business enquiries and collaborations.
               </p>
+              <a
+                href="tel:+34614189346"
+                className="mt-4 inline-block text-sm font-light tracking-wide !text-black/70 underline decoration-black/30 underline-offset-4 transition-colors hover:!text-black"
+              >
+                614 189 346
+              </a>
             </div>
           </div>
 

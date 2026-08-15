@@ -2,6 +2,7 @@
 
 | Versión | Nombre | Estado | Fecha | Rama | Commits principales | Referencia |
 | --- | --- | --- | --- | --- | --- | --- |
+| `v1.0.1` | KYRUMA Website Final | Production Verified | 2026-08-15 | `release/kyruma-website-final` → `main` | `9b0389c`, `84b9743` | `KYRUMA_WEBSITE_FINAL_CLOSURE_REPORT.md` |
 | `Unreleased` | Audit™ | Complete · CI Validated · Not Deployed | 2026-08-15 | `feature/audit` → `main@0516703` | `1ddb4bf`, `6105913`, `3d64919`, `cd8b744`, `c82209d` | PS-008 / RFC-015–017 |
 | `v0.4.0` | Event Bus™ | Complete · CI Validated · Not Deployed | 2026-08-14 | `feature/event-bus` → `main@1d76a7f` | `58ef6cd`, `caf6b28`, `79a44e1`, `e528954`, `6c6491b` | PS-009 / RFC-018–020 |
 | `v0.3.0` | Partner Creation™ | Engineering Complete | 2026-08-05 | `feature/partner-creation` → `main` | `f14b3ad`, `a6567a8`, `0428109` | PS-006 |

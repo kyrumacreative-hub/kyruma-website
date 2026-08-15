@@ -1,3 +1,5 @@
+import { redirect } from "next/navigation";
+
 export default function WebExperiencePage() {
-  return null;
+  redirect("/#capabilities");
 }

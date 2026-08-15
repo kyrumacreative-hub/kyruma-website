@@ -14,7 +14,7 @@ Solo puede haber un objetivo activo. La secuencia aprobada es PS-010 → PS-011 
 
 ### Gates externos de release
 
-- Ejecutar el tramo comercial TEST de KYR-002 con contrato y cobro de prueba en los sistemas externos correspondientes.
+- Aportar y ejecutar los artefactos comerciales externos de KYR-002 como `TEST ONLY — BANK TRANSFER`; no existe ni se autoriza una pasarela de pago.
 - Obtener la revisión jurídica del contrato antes de activar el primer cliente comercial real.
 
 No hay desarrollo de producto autorizado en este bloque. Solo configuración real, validación y cierre.
@@ -64,6 +64,10 @@ Engineering completo con Portal protegido, Workspace visible, información compa
 ### PS-012 — Automations / Intelligence Layer
 
 Engineering completo con triggers Event Bus, runs idempotentes, acciones allowlisted y frontera Intelligence con revisión humana.
+
+### KYRUMA Website — Final Production Closure
+
+Contacto oficial, metadata de Strategy, rutas públicas vacías, sitemap y dependencias cerrados en producción. Regresión técnica, visual ES/EN, consentimiento, Vercel y smoke real completados. El alcance Website queda congelado; los gates comercial TEST de KYR-002 y jurídico son externos y no constituyen trabajo técnico pendiente de Website.
 
 ### Operations Hub v1
 

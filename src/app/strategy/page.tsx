@@ -716,6 +716,12 @@ export default function StrategyPage() {
                   →
                 </span>
               </a>
+              <a
+                href="tel:+34614189346"
+                className="mt-6 inline-block text-base font-light text-neutral-600 underline decoration-neutral-300 underline-offset-4 transition-colors hover:text-[#FF5A00]"
+              >
+                614 189 346
+              </a>
             </div>
           </div>
         </section>

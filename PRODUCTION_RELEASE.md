@@ -1,7 +1,17 @@
-# KYRUMA Platform v1.0 — Technical Production Candidate
+# KYRUMA Website — Final Production Release
 
-**Fecha de publicación:** 5 de agosto de 2026  
-**Estado:** Producción activa en `https://www.kyruma.com`
+**Fecha de publicación:** 15 de agosto de 2026
+**Estado:** Website final verificada en `https://www.kyruma.com`
+
+## Cierre final
+
+- Deployment Vercel `7PEkxS2qhoysf5A9J3v9w7ymj3s9`: READY sobre `main@84b9743`.
+- Contacto oficial publicado: `hello@kyruma.com` y `614 189 346` (`tel:+34614189346`).
+- Audit completo de npm: 0 vulnerabilidades.
+- 152/152 pruebas, incluidas 30/30 PostgreSQL: PASS.
+- Prisma, TypeScript, lint y build de producción: PASS.
+- Regresión visual/funcional ES/EN y consentimiento rejected/accepted: PASS.
+- Sin pasarelas de pago; cualquier validación comercial utiliza exclusivamente `TEST ONLY — BANK TRANSFER`.
 
 ## Incluye
 
@@ -18,6 +28,6 @@
 - El rechazo bloquea todos los scripts de marketing y la aceptación carga GTM/GA4/Meta Pixel/Clarity sin errores.
 - El consentimiento puede retirarse o modificarse desde `/cookies`.
 
-## Gates para `v1.0.0`
+## Gates operativos externos
 
-Completar el tramo comercial TEST de KYR-002. El contrato revisado jurídicamente sigue siendo obligatorio antes del primer cliente real. Véase `KYRUMA_PLATFORM_V1_FINAL_READINESS_REPORT.md`.
+Los artefactos comerciales externos del dry run KYR-002 no están disponibles en el repositorio. El contrato revisado jurídicamente sigue siendo obligatorio antes del primer cliente real. Ninguno de estos puntos bloquea el cierre técnico de Website.
