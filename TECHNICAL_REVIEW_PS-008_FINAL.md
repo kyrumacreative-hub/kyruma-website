@@ -2,7 +2,7 @@
 
 ## Decision
 
-**READY FOR ENGINEERING**
+**READY FOR MERGE**
 
 ## Compliance decision
 
@@ -21,4 +21,10 @@ RFC-015, RFC-016 and RFC-017 form a coherent implementation boundary. The design
 
 Legal retention durations, legal-hold operation, export object storage/encryption and privileged maintenance runbooks remain outside this Engineering release and must be approved before production.
 
-No Architecture blocker remains. Engineering may begin on `feature/audit` from clean `main` after the Architecture documentation is integrated.
+## Engineering Final Review
+
+All required boundaries were implemented on `feature/audit`. PostgreSQL migration and integration tests prove append-only enforcement, rollback, idempotency, tenant isolation, retention/export evidence and shared transaction semantics. Critical Lead Lifecycle and Event Bus administration adapters use approved ports without coupling domain aggregates to Prisma.
+
+GitHub Actions run `31883790132` on `e325ff8` completed successfully, including every existing domain suite, all PostgreSQL suites, Audit, lint, TypeScript and build. The earlier run `31883589639` is intermediate and superseded; its only failure was generated-folder lint configuration, corrected by `b55f32e`.
+
+No Engineering blocker remains. Production legal-hold, retention values, privileged maintenance roles and export artifact infrastructure remain explicit non-blocking production gates.

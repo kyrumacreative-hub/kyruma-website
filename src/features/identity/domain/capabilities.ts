@@ -15,7 +15,7 @@ export const capabilityCatalog = [
   "note.internal.read", "note.internal.create",
   "insight.read", "insight.review", "insight.publish",
   "intelligence.request", "intelligence.read", "intelligence.review", "intelligence.archive",
-  "notification.read", "notification.manage", "audit.read", "admin.manage",
+  "notification.read", "notification.manage", "audit.read", "audit.read.security", "audit.export", "audit.retention.manage", "admin.manage",
 ] as const;
 
 export type Capability = (typeof capabilityCatalog)[number];
@@ -41,13 +41,13 @@ export const roleCapabilities: Record<Role, readonly Capability[]> = {
     "proposal.read", "proposal.create", "proposal.publish", "strategy.read", "strategy.create", "strategy.update", "strategy.publish",
     "project.read", "project.create", "project.update", "project.manage", "task.read", "task.create", "task.update", "task.assign",
     "document.read", "document.upload", "document.update", "document.publish", "document.archive", "deliverable.read", "deliverable.create", "deliverable.publish", "deliverable.approve",
-    "insight.read", "insight.review", "insight.publish", "notification.read", "notification.manage", "audit.read", "admin.manage",
+    "insight.read", "insight.review", "insight.publish", "notification.read", "notification.manage", "audit.read", "audit.export", "admin.manage",
   ],
   strategist: [
     "lead.create", "lead.read", "lead.update", "lead.discovery.start", "lead.qualification.start",
     "partner.read", "workspace.read", "discovery.read", "discovery.review", "discovery.export", "meeting.read", "meeting.create", "meeting.update",
     "proposal.read", "proposal.create", "proposal.publish", "strategy.read", "strategy.create", "strategy.update", "strategy.publish", "project.read",
-    "task.read", "task.create", "task.update", "document.read", "document.upload", "document.update", "deliverable.read", "insight.read", "insight.review", "intelligence.request", "intelligence.read", "intelligence.review", "note.internal.read", "note.internal.create",
+    "task.read", "task.create", "task.update", "document.read", "document.upload", "document.update", "deliverable.read", "insight.read", "insight.review", "intelligence.request", "intelligence.read", "intelligence.review", "note.internal.read", "note.internal.create", "audit.read",
   ],
   designer: ["lead.read", "workspace.read", "project.read", "project.update", "task.read", "task.create", "task.update", "document.read", "document.upload", "document.update", "deliverable.read", "deliverable.create", "intelligence.read"],
   developer: ["lead.read", "workspace.read", "project.read", "project.update", "task.read", "task.create", "task.update", "document.read", "document.upload", "document.update", "deliverable.read", "deliverable.create", "intelligence.read"],

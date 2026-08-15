@@ -2,6 +2,7 @@
 
 | Versión | Nombre | Estado | Fecha | Rama | Commits principales | Referencia |
 | --- | --- | --- | --- | --- | --- | --- |
+| `Unreleased` | Audit™ | Engineering Complete · CI Validated · Not Deployed | 2026-08-15 | `feature/audit` | `1ddb4bf`, `6105913`, `3d64919`, `cd8b744`, `e325ff8` | PS-008 / RFC-015–017 |
 | `v0.4.0` | Event Bus™ | Complete · CI Validated · Not Deployed | 2026-08-14 | `feature/event-bus` → `main@1d76a7f` | `58ef6cd`, `caf6b28`, `79a44e1`, `e528954`, `6c6491b` | PS-009 / RFC-018–020 |
 | `v0.3.0` | Partner Creation™ | Engineering Complete | 2026-08-05 | `feature/partner-creation` → `main` | `f14b3ad`, `a6567a8`, `0428109` | PS-006 |
 | `v0.2.0` | Discovery Intelligence™ | Engineering Complete | 2026-08-05 | `feature/discovery-intelligence` → `main` | `af3c8b0`, `67b4abb`, `48b47a4` | PS-005 |

@@ -1,5 +1,9 @@
 # Changelog
 
+## [Unreleased] — PS-008 Audit™
+
+Engineering complete and ready for merge. Adds immutable versioned Audit evidence, PostgreSQL append-only protection, privacy overlays, retention/export evidence, authorized application services and shared-transaction integrations. Validated by GitHub Actions run `31883790132`. No release number or tag was inferred; `v0.4.0` remains unchanged and production remains undeployed.
+
 ## [0.4.0] — 2026-08-14
 
 **PS-009 Event Bus™ v1.0 — Engineering Complete.** Added versioned immutable envelopes, PostgreSQL Transactional Outbox, internal dispatcher, at-least-once isolated delivery, idempotent processing, progressive retries, recoverable dead letters and transport contracts for a future external broker. Integrated in `main@1d76a7f`, tagged `v0.4.0` and validated by successful CI at `175bae7` and `6c6491b`. Earlier failed runs were intermediate and are superseded. No production deployment.
