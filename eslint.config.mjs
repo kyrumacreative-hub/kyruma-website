@@ -25,6 +25,8 @@ const eslintConfig = defineConfig([
     ".event-bus-persistence-test-build/**",
     ".audit-test-build/**",
     ".audit-persistence-test-build/**",
+    ".operations-hub-test-build/**",
+    ".operations-persistence-test-build/**",
     "next-env.d.ts",
   ]),
 ]);

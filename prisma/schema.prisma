@@ -192,23 +192,58 @@ model WorkspaceSettings {
   workspace   Workspace @relation(fields: [workspaceId], references: [id], onDelete: Restrict)
 }
 
-model EventOutbox {
-  eventId         String                  @id
-  eventType       String
-  eventVersion    Int
+model Project {
+  id             String   @id
   organizationId String
-  aggregateType   String
-  aggregateId     String
-  correlationId   String
-  causationId     String?
-  envelope        Json
-  status          String
-  availableAt     DateTime
-  createdAt       DateTime
-  dispatchedAt    DateTime?
-  lockedAt        DateTime?
-  lockOwner       String?
-  deliveries      EventProcessingRecord[]
+  partnerId      String
+  workspaceId    String
+  name           String
+  status         String
+  createdAt      DateTime
+  createdBy      String
+  correlationId  String   @unique
+
+  @@index([organizationId])
+  @@index([workspaceId])
+}
+
+model ProjectDocumentReference {
+  id                String   @id
+  projectId         String   @unique
+  organizationId    String
+  partnerId         String
+  workspaceId       String
+  provider          String
+  externalReference String?  @unique
+  externalUrl       String?
+  idempotencyKey    String   @unique
+  status            String
+  lastError         String?
+  attemptCount      Int
+  createdAt         DateTime
+  updatedAt         DateTime
+
+  @@index([organizationId, workspaceId])
+  @@index([partnerId])
+}
+
+model EventOutbox {
+  eventId        String                  @id
+  eventType      String
+  eventVersion   Int
+  organizationId String
+  aggregateType  String
+  aggregateId    String
+  correlationId  String
+  causationId    String?
+  envelope       Json
+  status         String
+  availableAt    DateTime
+  createdAt      DateTime
+  dispatchedAt   DateTime?
+  lockedAt       DateTime?
+  lockOwner      String?
+  deliveries     EventProcessingRecord[]
 
   @@index([status, availableAt, createdAt])
   @@index([organizationId, createdAt])
