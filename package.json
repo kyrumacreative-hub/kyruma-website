@@ -17,6 +17,8 @@
     "test:discovery-intelligence": "tsc -p tsconfig.discovery-intelligence-tests.json && node --test .discovery-intelligence-test-build/features/discovery-intelligence/domain/*.test.js .discovery-intelligence-test-build/features/discovery-intelligence/application/*.test.js .discovery-intelligence-test-build/features/discovery-intelligence/infrastructure/persistence/persistence.test.js"
     ,"test:event-bus": "tsc -p tsconfig.event-bus-tests.json && node --test .event-bus-test-build/features/event-bus/domain/*.test.js .event-bus-test-build/features/event-bus/application/*.test.js"
     ,"test:event-bus-persistence": "set -a; . ./.env.local; set +a; DATABASE_URL=\"$TEST_DATABASE_URL\" tsc -p tsconfig.event-bus-persistence-tests.json && DATABASE_URL=\"$TEST_DATABASE_URL\" node --test .event-bus-persistence-test-build/features/event-bus/infrastructure/persistence/*.integration.test.js"
+    ,"test:audit": "tsc -p tsconfig.audit-tests.json && node --test .audit-test-build/features/audit/domain/*.test.js .audit-test-build/features/audit/infrastructure/persistence/AuditEventMapper.test.js"
+    ,"test:audit-persistence": "set -a; . ./.env.local; set +a; DATABASE_URL=\"$TEST_DATABASE_URL\" tsc -p tsconfig.audit-persistence-tests.json && DATABASE_URL=\"$TEST_DATABASE_URL\" node --test .audit-persistence-test-build/features/audit/infrastructure/persistence/*.integration.test.js"
   },
   "dependencies": {
     "@calcom/embed-react": "^1.5.3",
