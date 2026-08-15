@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import ManageCookiePreferences from "@/components/consent/ManageCookiePreferences";
 
 export const metadata: Metadata = {
   title: "Política de Cookies",
@@ -124,6 +125,7 @@ export default function CookiesPage() {
                   o limitar determinadas cookies. La forma de hacerlo depende del
                   navegador y dispositivo utilizados.
                 </p>
+                <ManageCookiePreferences />
               </CookieSection>
 
               <CookieSection title="7. Transferencias internacionales">
