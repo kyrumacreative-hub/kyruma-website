@@ -1,0 +1,1 @@
+{"extends":"./tsconfig.json","compilerOptions":{"module":"commonjs","moduleResolution":"node","noEmit":false,"outDir":".partner-portal-test-build","rootDir":"src","incremental":false},"include":["src/features/partner-portal/domain/**/*.ts","src/features/partner-portal/application/**/*.ts","src/features/identity/domain/**/*.ts"]}
