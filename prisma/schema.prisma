@@ -310,15 +310,15 @@ model AuditEvent {
 }
 
 model AuditPrivacyOverlay {
-  id            String     @id
-  auditEventId  String
+  id             String     @id
+  auditEventId   String
   organizationId String
-  actorId       String
-  policyVersion String
-  reason        String
-  replacements  Json
-  createdAt     DateTime
-  auditEvent    AuditEvent @relation(fields: [auditEventId], references: [id], onDelete: Restrict)
+  actorId        String
+  policyVersion  String
+  reason         String
+  replacements   Json
+  createdAt      DateTime
+  auditEvent     AuditEvent @relation(fields: [auditEventId], references: [id], onDelete: Restrict)
 
   @@index([organizationId, auditEventId, createdAt])
 }
@@ -327,14 +327,14 @@ model AuditExportEvidence {
   id                String   @id
   organizationId    String
   requestedBy       String
-  from               DateTime
-  to                 DateTime
-  format             String
-  profile            String
-  rowCount           Int
-  artifactReference  String
-  expiresAt          DateTime
-  createdAt          DateTime
+  from              DateTime
+  to                DateTime
+  format            String
+  profile           String
+  rowCount          Int
+  artifactReference String
+  expiresAt         DateTime
+  createdAt         DateTime
 
   @@index([organizationId, createdAt])
 }
@@ -350,4 +350,148 @@ model AuditRetentionExecution {
   executedAt     DateTime
 
   @@index([organizationId, executedAt])
+}
+
+model IdentityUser {
+  id                String                 @id
+  externalSubjectId String                 @unique
+  email             String
+  normalizedEmail   String                 @unique
+  displayName       String?
+  status            String
+  createdAt         DateTime
+  lastSignedInAt    DateTime?
+  memberships       FoundationMembership[]
+
+  @@index([status, createdAt])
+}
+
+model FoundationMembership {
+  id             String       @id
+  userId         String
+  organizationId String
+  partnerId      String?
+  workspaceId    String?
+  role           String
+  status         String
+  grants         Json
+  revocations    Json
+  invitedAt      DateTime?
+  joinedAt       DateTime?
+  revokedAt      DateTime?
+  user           IdentityUser @relation(fields: [userId], references: [id], onDelete: Restrict)
+
+  @@index([userId, status])
+  @@index([organizationId, status])
+  @@index([partnerId, workspaceId, status])
+}
+
+model AccessInvitation {
+  id              String    @id
+  organizationId  String
+  partnerId       String?
+  workspaceId     String?
+  email           String
+  normalizedEmail String
+  role            String
+  tokenHash       String    @unique
+  status          String
+  expiresAt       DateTime
+  createdBy       String
+  createdAt       DateTime
+  acceptedBy      String?
+  acceptedAt      DateTime?
+  revokedAt       DateTime?
+  correlationId   String    @unique
+
+  @@index([organizationId, status, expiresAt])
+  @@index([normalizedEmail, status])
+}
+
+model PortalShare {
+  id             String   @id
+  organizationId String
+  partnerId      String
+  workspaceId    String
+  kind           String
+  title          String
+  summary        String?
+  externalUrl    String?
+  visibility     String
+  publishedAt    DateTime
+  publishedBy    String
+
+  @@index([workspaceId, visibility, publishedAt])
+  @@index([organizationId, partnerId])
+}
+
+model PortalActivity {
+  id             String   @id
+  organizationId String
+  partnerId      String
+  workspaceId    String
+  eventType      String
+  title          String
+  description    String?
+  occurredAt     DateTime
+  sourceId       String
+
+  @@unique([workspaceId, eventType, sourceId])
+  @@index([workspaceId, occurredAt])
+}
+
+model PortalDeliverable {
+  id             String    @id
+  deliverableId  String
+  organizationId String
+  partnerId      String
+  workspaceId    String
+  title          String
+  status         String
+  version        Int
+  externalUrl    String?
+  sharedAt       DateTime
+  approvedAt     DateTime?
+
+  @@unique([workspaceId, deliverableId, version])
+  @@index([workspaceId, status, sharedAt])
+}
+
+model AutomationDefinition {
+  id             String          @id
+  organizationId String
+  name           String
+  status         String
+  triggerType    String
+  triggerVersion Int
+  conditions     Json
+  actionType     String
+  actionConfig   Json
+  version        Int
+  createdBy      String
+  createdAt      DateTime
+  updatedAt      DateTime
+  runs           AutomationRun[]
+
+  @@unique([organizationId, name, version])
+  @@index([organizationId, status, triggerType, triggerVersion])
+}
+
+model AutomationRun {
+  id             String               @id
+  automationId   String
+  organizationId String
+  sourceEventId  String
+  correlationId  String
+  status         String
+  attemptCount   Int
+  result         Json?
+  errorCode      String?
+  startedAt      DateTime
+  completedAt    DateTime?
+  nextRetryAt    DateTime?
+  automation     AutomationDefinition @relation(fields: [automationId], references: [id], onDelete: Restrict)
+
+  @@unique([automationId, sourceEventId])
+  @@index([organizationId, status, nextRetryAt])
 }

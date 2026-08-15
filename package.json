@@ -21,17 +21,21 @@
     "test:event-bus": "tsc -p tsconfig.event-bus-tests.json && node --test .event-bus-test-build/features/event-bus/domain/*.test.js .event-bus-test-build/features/event-bus/application/*.test.js",
     "test:event-bus-persistence": "set -a; . ./.env.local; set +a; DATABASE_URL=\"$TEST_DATABASE_URL\" tsc -p tsconfig.event-bus-persistence-tests.json && DATABASE_URL=\"$TEST_DATABASE_URL\" node --test .event-bus-persistence-test-build/features/event-bus/infrastructure/persistence/*.integration.test.js",
     "test:audit": "tsc -p tsconfig.audit-tests.json && node --test .audit-test-build/features/audit/domain/*.test.js .audit-test-build/features/audit/infrastructure/persistence/AuditEventMapper.test.js",
-    "test:audit-persistence": "set -a; . ./.env.local; set +a; DATABASE_URL=\"$TEST_DATABASE_URL\" tsc -p tsconfig.audit-persistence-tests.json && DATABASE_URL=\"$TEST_DATABASE_URL\" node --test .audit-persistence-test-build/features/audit/infrastructure/persistence/*.integration.test.js"
+    "test:audit-persistence": "set -a; . ./.env.local; set +a; DATABASE_URL=\"$TEST_DATABASE_URL\" tsc -p tsconfig.audit-persistence-tests.json && DATABASE_URL=\"$TEST_DATABASE_URL\" node --test .audit-persistence-test-build/features/audit/infrastructure/persistence/*.integration.test.js",
+    "test:access": "tsc -p tsconfig.access-tests.json && node --test .access-test-build/features/access/domain/*.test.js",
+    "test:partner-portal": "tsc -p tsconfig.partner-portal-tests.json && node --test .partner-portal-test-build/features/partner-portal/application/*.test.js",
+    "test:automations": "tsc -p tsconfig.automations-tests.json && node --test .automations-test-build/features/automations/application/*.test.js"
   },
   "dependencies": {
     "@calcom/embed-react": "^1.5.3",
+    "@clerk/nextjs": "^7.7.6",
     "@next/third-parties": "16.2.11",
-    "@prisma/client": "^6.19.0",
+    "@prisma/client": "^6.19.3",
     "@react-three/drei": "^10.7.7",
     "@react-three/fiber": "^9.6.1",
     "framer-motion": "^12.43.0",
-    "next": "16.2.11",
-    "prisma": "^6.19.0",
+    "next": "^16.3.1",
+    "prisma": "^6.19.3",
     "react": "19.2.4",
     "react-dom": "19.2.4",
     "three": "^0.185.1"
@@ -42,14 +46,15 @@
     "@types/react": "^19",
     "@types/react-dom": "^19",
     "eslint": "^9",
-    "eslint-config-next": "16.2.10",
+    "eslint-config-next": "^16.3.1",
     "tailwindcss": "^4",
     "typescript": "^5"
   },
   "overrides": {
     "sharp": "0.35.3",
+    "nanoid": "3.3.18",
     "next": {
-      "postcss": "8.5.22"
+      "postcss": "8.5.24"
     }
   }
 }

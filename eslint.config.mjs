@@ -27,6 +27,9 @@ const eslintConfig = defineConfig([
     ".audit-persistence-test-build/**",
     ".operations-hub-test-build/**",
     ".operations-persistence-test-build/**",
+    ".access-test-build/**",
+    ".partner-portal-test-build/**",
+    ".automations-test-build/**",
     "next-env.d.ts",
   ]),
 ]);
