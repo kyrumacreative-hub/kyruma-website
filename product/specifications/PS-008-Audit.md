@@ -5,9 +5,9 @@
 | Field | Value |
 | --- | --- |
 | Version | 0.2 |
-| Status | Architecture Approved · Ready for Engineering |
+| Status | Architecture Approved · Engineering Complete · Ready for Merge |
 | Owner | Product |
-| Engineering | Ready for Engineering |
+| Engineering | Complete · CI Validated |
 | Depends on | Foundation, shared TransactionRunner, Organization/Partner/Workspace context |
 
 ## 2. Executive Summary

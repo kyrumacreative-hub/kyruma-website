@@ -2,7 +2,7 @@
 
 ## Status
 
-**READY FOR ENGINEERING**
+**ENGINEERING COMPLETE · READY FOR MERGE**
 
 ## Scope reviewed
 
@@ -53,7 +53,7 @@ The following are downstream gates and must not be mistaken for blockers to this
 
 ## Frozen scope verification
 
-- Foundation was not modified.
+- Foundation received only the approved additive Audit capabilities; authorization behavior outside Audit is unchanged.
 - PS-004 Lead Lifecycle™ was not modified.
 - PS-005 Discovery Intelligence™ was not modified.
 - PS-006 Partner Creation™ was not modified.
@@ -62,4 +62,4 @@ The following are downstream gates and must not be mistaken for blockers to this
 
 ## Recommendation
 
-**PS-008 Audit™ v0.2 — READY FOR ENGINEERING.**
+**PS-008 Audit™ — ENGINEERING COMPLETE · READY FOR MERGE.**
