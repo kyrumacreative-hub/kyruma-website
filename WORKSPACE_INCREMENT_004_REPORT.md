@@ -22,4 +22,4 @@ No blocking engineering risk remains for Workspace integration. Operations Hub/D
 
 ## Decision
 
-**WORKSPACE — INCREMENT 4 COMPLETE. READY TO MERGE.**
+**WORKSPACE — INCREMENT 4 COMPLETE. INTEGRATED IN `main@9b8b127`.**
