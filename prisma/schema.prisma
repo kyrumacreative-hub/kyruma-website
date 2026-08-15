@@ -239,3 +239,80 @@ model EventProcessingRecord {
   @@index([status, nextRetryAt, createdAt])
   @@index([eventId, status])
 }
+
+model AuditEvent {
+  id                String                @id
+  eventType         String
+  occurredAt        DateTime
+  recordedAt        DateTime              @default(now())
+  actorId           String
+  actorType         String
+  organizationId    String
+  partnerId         String?
+  workspaceId       String?
+  resourceType      String
+  resourceId        String
+  action            String
+  result            String
+  correlationId     String
+  causationId       String?
+  requestId         String?
+  source            String
+  metadata          Json
+  changes           Json
+  schemaVersion     Int
+  classification    String
+  retentionCategory String
+  policyVersion     String
+  privacyOverlays   AuditPrivacyOverlay[]
+
+  @@unique([organizationId, correlationId, eventType, resourceType, resourceId, schemaVersion])
+  @@index([organizationId, occurredAt, recordedAt, id])
+  @@index([organizationId, resourceType, resourceId, occurredAt])
+  @@index([organizationId, actorId, occurredAt])
+  @@index([organizationId, correlationId])
+  @@index([organizationId, retentionCategory, occurredAt])
+}
+
+model AuditPrivacyOverlay {
+  id            String     @id
+  auditEventId  String
+  organizationId String
+  actorId       String
+  policyVersion String
+  reason        String
+  replacements  Json
+  createdAt     DateTime
+  auditEvent    AuditEvent @relation(fields: [auditEventId], references: [id], onDelete: Restrict)
+
+  @@index([organizationId, auditEventId, createdAt])
+}
+
+model AuditExportEvidence {
+  id                String   @id
+  organizationId    String
+  requestedBy       String
+  from               DateTime
+  to                 DateTime
+  format             String
+  profile            String
+  rowCount           Int
+  artifactReference  String
+  expiresAt          DateTime
+  createdAt          DateTime
+
+  @@index([organizationId, createdAt])
+}
+
+model AuditRetentionExecution {
+  id             String   @id
+  organizationId String
+  policyVersion  String
+  category       String
+  dryRun         Boolean
+  affectedCount  Int
+  executedBy     String
+  executedAt     DateTime
+
+  @@index([organizationId, executedAt])
+}
