@@ -2,9 +2,22 @@
 
 Este documento es la fuente única de prioridades del producto. Las ideas se registran aquí antes de convertirse en desarrollo.
 
-## NOW — Cierre v1.0
+## NOW — Platform Experience Program
 
-Solo puede haber un objetivo activo.
+Solo puede haber un objetivo activo. La secuencia aprobada es PS-010 → PS-011 → PS-012; cada PS debe cerrar sus gates antes de activar el siguiente.
+
+### PS-010 — Identity / Access Experience — ACTIVE
+
+- Login, sesiones y recuperación mediante proveedor de identidad real.
+- Invitaciones, acceso de usuarios y enlace canónico con Foundation Membership.
+
+### PS-011 — Client / Partner Portal — QUEUED
+
+- Acceso Partner, Workspace visible, información compartida, actividad y entregables.
+
+### PS-012 — Automations / Intelligence Layer — QUEUED
+
+- Automatizaciones, triggers, acciones, Event Bus y frontera futura de KYRUMA Intelligence™.
 
 ### Gates externos de release
 
