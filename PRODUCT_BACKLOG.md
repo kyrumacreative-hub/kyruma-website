@@ -9,7 +9,6 @@ Solo puede haber un objetivo activo.
 ### Gates externos de release
 
 - Completar el alta de Microsoft Clarity aceptando sus Condiciones de Uso y publicar su identificador real.
-- Iniciar sesión en Meta Business Manager, crear o seleccionar el dataset/pixel de KYRUMA y emitir una credencial CAPI real.
 - Ejecutar el tramo comercial TEST de KYR-002 con contrato y cobro de prueba en los sistemas externos correspondientes.
 - Obtener la revisión jurídica del contrato antes de activar el primer cliente comercial real.
 
@@ -56,6 +55,10 @@ Integrado en `main` con referencia canónica Project → Drive, aislamiento por 
 ### Marketing Foundation — Google
 
 GTM y GA4 activados con identificadores reales. Google Search Console verificado. Consentimiento rechazado y aceptado comprobado en producción; el usuario puede retirar o modificar su elección desde la Política de Cookies.
+
+### Marketing Foundation — Meta
+
+Dataset `KYRUMA Website` y Pixel real `1358716683085197` configurados en `KYRUMA Creative Studio`. Pixel y CAPI activos mediante variables cifradas de Vercel. Evento CAPI de prueba recibido y procesado por Meta; coincidencias avanzadas automáticas permanecen desactivadas.
 
 ### PS-009 Event Bus™
 

@@ -10,10 +10,12 @@
 - Operations Hub v1 integrado en `main`.
 - Project → Drive validado contra Google Drive real con KYR-002: creación canónica, idempotencia, fallo seguro y retry.
 - GTM `GTM-WJQWDXNZ` y GA4 `G-XDB5TYYW0J` publicados.
+- Meta Dataset `KYRUMA Website`, Pixel `1358716683085197` y CAPI configurados con credencial cifrada en Vercel.
+- Meta CAPI smoke: un `TestEvent` sin datos personales fue recibido y procesado por servidor (`events_received: 1`).
 - Google Search Console verificado mediante propiedad de dominio.
 - Consentimiento en producción:
   - rechazado: no carga GTM, GA4, Meta ni Clarity;
-  - aceptado: carga GTM y GA4 sin errores de consola;
+  - aceptado: carga GTM, GA4 y Meta Pixel sin errores de consola;
   - retirada/modificación disponible desde `/cookies`.
 - Producción responde correctamente en `/`, `/workspace`, `/strategy`, `/cookies`, `/robots.txt` y `/sitemap.xml`.
 
@@ -29,9 +31,8 @@
 ## Gates externos pendientes
 
 1. Microsoft Clarity: la cuenta llega al alta real, pero exige aceptar las Condiciones de Uso de Clarity antes de crear el proyecto y obtener el ID.
-2. Meta Pixel + CAPI: Meta Business Manager no tiene una sesión autenticada disponible; no se pueden obtener Pixel ID ni token CAPI reales.
-3. KYR-002 comercial TEST: el tramo Contract TEST → Invoice/Payment TEST depende de los sistemas externos y credenciales comerciales que no están disponibles en esta ejecución.
-4. Contrato real: requiere revisión profesional antes del primer cliente comercial.
+2. KYR-002 comercial TEST: el tramo Contract TEST → Invoice/Payment TEST depende de los sistemas externos y credenciales comerciales que no están disponibles en esta ejecución.
+3. Contrato real: requiere revisión profesional antes del primer cliente comercial.
 
 ## Decisión de release
 
