@@ -1,0 +1,53 @@
+name: PS-008 Audit
+
+on:
+  pull_request:
+    branches: [main]
+  push:
+    branches: [feature/audit]
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    services:
+      postgres:
+        image: postgres:16
+        env:
+          POSTGRES_USER: kyruma
+          POSTGRES_PASSWORD: kyruma
+          POSTGRES_DB: kyruma_test
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd "pg_isready -U kyruma -d kyruma_test"
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+    env:
+      DATABASE_URL: postgresql://kyruma:kyruma@localhost:5432/kyruma_test
+      TEST_DATABASE_URL: postgresql://kyruma:kyruma@localhost:5432/kyruma_test
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v5
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci
+      - run: touch .env.local
+      - run: npx prisma migrate deploy
+      - run: npm run test:foundation
+      - run: npm run test:lead-lifecycle
+      - run: npm run test:lead-persistence
+      - run: npm run test:discovery-intelligence
+      - run: npm run test:intelligence-persistence
+      - run: npm run test:partner-creation
+      - run: npm run test:partner-persistence
+      - run: npm run test:workspace
+      - run: npm run test:workspace-persistence
+      - run: npm run test:event-bus
+      - run: npm run test:event-bus-persistence
+      - run: npm run test:audit
+      - run: npm run test:audit-persistence
+      - run: npm run lint
+      - run: npx tsc --noEmit
+      - run: npm run build
