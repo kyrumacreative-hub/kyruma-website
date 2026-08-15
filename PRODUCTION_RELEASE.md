@@ -6,7 +6,7 @@
 ## Incluye
 
 - KYRUMA Discovery™ con ocho conversaciones, progreso, guardado automático, resumen editable y envío.
-- Marketing Foundation condicionada al consentimiento. GTM, GA4, Meta Pixel y Meta CAPI están activos; Clarity permanece inactivo hasta completar su gate externo.
+- Marketing Foundation condicionada al consentimiento. GTM, GA4, Meta Pixel, Meta CAPI y Microsoft Clarity están activos.
 - Footer social y documentación de despliegue, eventos y analítica.
 
 ## Validación de release
@@ -15,9 +15,9 @@
 - `workspace-v2` fusionada mediante fast-forward en `main` y publicada en Vercel.
 - `/workspace` comprobada en producción: bienvenida, ocho conversaciones y navegación disponibles.
 - Sin errores de consola durante la comprobación.
-- El rechazo bloquea todos los scripts de marketing y la aceptación carga GTM/GA4/Meta Pixel sin errores.
+- El rechazo bloquea todos los scripts de marketing y la aceptación carga GTM/GA4/Meta Pixel/Clarity sin errores.
 - El consentimiento puede retirarse o modificarse desde `/cookies`.
 
 ## Gates para `v1.0.0`
 
-Completar Clarity y el tramo comercial TEST de KYR-002. El contrato revisado jurídicamente sigue siendo obligatorio antes del primer cliente real. Véase `KYRUMA_PLATFORM_V1_FINAL_READINESS_REPORT.md`.
+Completar el tramo comercial TEST de KYR-002. El contrato revisado jurídicamente sigue siendo obligatorio antes del primer cliente real. Véase `KYRUMA_PLATFORM_V1_FINAL_READINESS_REPORT.md`.

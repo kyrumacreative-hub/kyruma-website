@@ -12,10 +12,11 @@
 - GTM `GTM-WJQWDXNZ` y GA4 `G-XDB5TYYW0J` publicados.
 - Meta Dataset `KYRUMA Website`, Pixel `1358716683085197` y CAPI configurados con credencial cifrada en Vercel.
 - Meta CAPI smoke: un `TestEvent` sin datos personales fue recibido y procesado por servidor (`events_received: 1`).
+- Microsoft Clarity `y2t8lszmb3` creado para `www.kyruma.com` y desplegado mediante Vercel.
 - Google Search Console verificado mediante propiedad de dominio.
 - Consentimiento en producción:
   - rechazado: no carga GTM, GA4, Meta ni Clarity;
-  - aceptado: carga GTM, GA4 y Meta Pixel sin errores de consola;
+  - aceptado: carga GTM, GA4, Meta Pixel y Clarity sin errores de consola;
   - retirada/modificación disponible desde `/cookies`.
 - Producción responde correctamente en `/`, `/workspace`, `/strategy`, `/cookies`, `/robots.txt` y `/sitemap.xml`.
 
@@ -30,9 +31,8 @@
 
 ## Gates externos pendientes
 
-1. Microsoft Clarity: la cuenta llega al alta real, pero exige aceptar las Condiciones de Uso de Clarity antes de crear el proyecto y obtener el ID.
-2. KYR-002 comercial TEST: el tramo Contract TEST → Invoice/Payment TEST depende de los sistemas externos y credenciales comerciales que no están disponibles en esta ejecución.
-3. Contrato real: requiere revisión profesional antes del primer cliente comercial.
+1. KYR-002 comercial TEST: el tramo Contract TEST → Invoice/Payment TEST depende de los sistemas externos y credenciales comerciales que no están disponibles en esta ejecución.
+2. Contrato real: requiere revisión profesional antes del primer cliente comercial.
 
 ## Decisión de release
 

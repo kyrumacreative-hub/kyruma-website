@@ -8,7 +8,6 @@ Solo puede haber un objetivo activo.
 
 ### Gates externos de release
 
-- Completar el alta de Microsoft Clarity aceptando sus Condiciones de Uso y publicar su identificador real.
 - Ejecutar el tramo comercial TEST de KYR-002 con contrato y cobro de prueba en los sistemas externos correspondientes.
 - Obtener la revisión jurídica del contrato antes de activar el primer cliente comercial real.
 
@@ -59,6 +58,10 @@ GTM y GA4 activados con identificadores reales. Google Search Console verificado
 ### Marketing Foundation — Meta
 
 Dataset `KYRUMA Website` y Pixel real `1358716683085197` configurados en `KYRUMA Creative Studio`. Pixel y CAPI activos mediante variables cifradas de Vercel. Evento CAPI de prueba recibido y procesado por Meta; coincidencias avanzadas automáticas permanecen desactivadas.
+
+### Marketing Foundation — Microsoft Clarity
+
+Proyecto `KYRUMA Website` (`y2t8lszmb3`) creado para `www.kyruma.com`, activado en Vercel y validado en producción. Las comunicaciones promocionales opcionales permanecen desactivadas.
 
 ### PS-009 Event Bus™
 
