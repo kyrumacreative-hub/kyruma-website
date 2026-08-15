@@ -1,0 +1,1 @@
+{"extends":"./tsconfig.json","compilerOptions":{"module":"commonjs","moduleResolution":"node","noEmit":false,"outDir":".access-test-build","rootDir":"src","incremental":false},"include":["src/features/access/domain/**/*.ts","src/features/access/application/**/*.ts","src/features/identity/domain/**/*.ts"]}

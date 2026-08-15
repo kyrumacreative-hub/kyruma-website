@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
+import { ClerkProvider } from "@clerk/nextjs";
 import CookieConsent from "@/components/consent/CookieConsent";
 import { ThemeProvider } from "@/components/ThemeProvider";
 import { LanguageProvider } from "@/components/LanguageProvider";
@@ -73,9 +74,10 @@ export default function RootLayout({
   return (
     <html lang="es">
       <body className={`${inter.variable} antialiased`}>
-        <ThemeProvider>
-          <LanguageProvider>
-            <MotionProvider>
+        <ClerkProvider>
+          <ThemeProvider>
+            <LanguageProvider>
+              <MotionProvider>
               <script
                 type="application/ld+json"
                 dangerouslySetInnerHTML={{
@@ -147,9 +149,10 @@ export default function RootLayout({
               <Footer />
 
               <CookieConsent />
-            </MotionProvider>
-          </LanguageProvider>
-        </ThemeProvider>
+              </MotionProvider>
+            </LanguageProvider>
+          </ThemeProvider>
+        </ClerkProvider>
       </body>
     </html>
   );
