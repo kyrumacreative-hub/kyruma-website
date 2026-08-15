@@ -1,5 +1,9 @@
 # Changelog
 
+## [1.0.1] — 2026-08-15
+
+**KYRUMA Website — Final Production Closure.** Publicado el contacto oficial, corregidas metadata y rutas vacías, retiradas del sitemap las URLs sin contenido y resueltas todas las vulnerabilidades npm. Validación final: 152/152 pruebas, PostgreSQL, Prisma, TypeScript, lint, build, regresión ES/EN, consentimiento y Vercel READY. Sin pasarelas de pago; KYR-002 conserva únicamente gates comerciales TEST y jurídicos externos.
+
 ## [Unreleased] — PS-008 Audit™
 
 Engineering complete and integrated in `main@0516703`. Adds immutable versioned Audit evidence, PostgreSQL append-only protection, privacy overlays, retention/export evidence, authorized application services and shared-transaction integrations. Validated by final GitHub Actions run `31883926330`. No release number or tag was inferred; `v0.4.0` remains unchanged and PS-008 is not deployed to production.

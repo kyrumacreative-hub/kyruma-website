@@ -1,3 +1,16 @@
+# KYRUMA Website v1.0.1 — Final Production Closure
+
+**Fecha:** 2026-08-15
+**Estado:** Website Final · Production Verified
+
+- Publicados el teléfono oficial `614 189 346` y el email `hello@kyruma.com` en las superficies públicas pertinentes.
+- Corregidos canonical/metadata de Strategy, rutas públicas vacías y sitemap.
+- Actualizados Next.js a `16.3.1`, Prisma a `6.19.3` y dependencias transitivas vulnerables; audit completo a cero.
+- Superadas 152 pruebas, 30 de ellas contra PostgreSQL, además de Prisma, TypeScript, lint y build.
+- Vercel READY y smoke real ES/EN, responsive, SEO, Cal.com y consentimiento rejected/accepted.
+- Sin Stripe ni otra pasarela: el único flujo comercial autorizado es transferencia bancaria y siempre `TEST ONLY` durante KYR-002.
+- Los artefactos comerciales externos de KYR-002 y la revisión jurídica siguen siendo gates para operar con un cliente real, no defectos técnicos de Website.
+
 # KYRUMA OS™ Engineering Release v0.1.0
 
 ## PS-008 Audit™ — Unreleased Engineering Baseline
