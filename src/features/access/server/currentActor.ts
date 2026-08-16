@@ -9,7 +9,18 @@ export async function requireCurrentActor(): Promise<AuthenticatedActor> {
   const external = await currentUser();
   const email = external?.primaryEmailAddress?.emailAddress;
   if (!email) throw new Error("IDENTITY_EMAIL_REQUIRED");
-  const user = await prisma.identityUser.upsert({ where: { externalSubjectId: subjectId }, update: { email, normalizedEmail: email.toLowerCase(), displayName: external.fullName ?? undefined, lastSignedInAt: new Date() }, create: { id: crypto.randomUUID(), externalSubjectId: subjectId, email, normalizedEmail: email.toLowerCase(), displayName: external.fullName ?? undefined, status: "active", createdAt: new Date(), lastSignedInAt: new Date() }, include: { memberships: true } });
+  const normalizedEmail = email.toLowerCase();
+  const signedInAt = new Date();
+  const profile = { email, normalizedEmail, displayName: external.fullName ?? undefined, lastSignedInAt: signedInAt };
+  const user = await prisma.$transaction(async (transaction) => {
+    const existingSubject = await transaction.identityUser.findUnique({ where: { externalSubjectId: subjectId } });
+    if (existingSubject) return transaction.identityUser.update({ where: { id: existingSubject.id }, data: profile, include: { memberships: true } });
+
+    const existingEmail = await transaction.identityUser.findUnique({ where: { normalizedEmail } });
+    if (existingEmail) return transaction.identityUser.update({ where: { id: existingEmail.id }, data: { ...profile, externalSubjectId: subjectId }, include: { memberships: true } });
+
+    return transaction.identityUser.create({ data: { id: crypto.randomUUID(), externalSubjectId: subjectId, ...profile, status: "active", createdAt: signedInAt }, include: { memberships: true } });
+  });
   if (user.status !== "active") throw new Error("IDENTITY_SUSPENDED");
   const rows = user.memberships;
   return { user: { id: user.id, externalSubjectId: subjectId, email, displayName: user.displayName ?? undefined }, memberships: rows.map((membership) => {
