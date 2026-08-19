@@ -52,6 +52,23 @@ export default async function AccessAdminPage({
   const figmaUrlByWorkspace = new Map(
     figmaResources.map((resource) => [resource.workspaceId, resource.externalUrl]),
   );
+  const partnerOwners = await prisma.foundationMembership.findMany({
+    where: {
+      workspaceId: { in: workspaces.map((workspace) => workspace.id) },
+      role: "partner",
+      status: "active",
+    },
+    orderBy: { joinedAt: "asc" },
+    select: {
+      workspaceId: true,
+      user: { select: { email: true, displayName: true } },
+    },
+  });
+  const partnerOwnerByWorkspace = new Map(
+    partnerOwners
+      .filter((membership) => membership.workspaceId)
+      .map((membership) => [membership.workspaceId, membership.user]),
+  );
 
   return (
     <main className="min-h-screen bg-[var(--background)] px-6 pb-24 pt-32 text-[var(--foreground)]">
@@ -124,7 +141,12 @@ export default async function AccessAdminPage({
                     <div>
                       <h3>{workspace.name}</h3>
                       <p className="mt-2 text-sm text-[var(--muted)]">
-                        Partner {workspace.partnerId}
+                        {partnerOwnerByWorkspace.get(workspace.id)?.displayName ??
+                          "Partner"}
+                      </p>
+                      <p className="mt-1 text-sm text-[var(--muted)]">
+                        {partnerOwnerByWorkspace.get(workspace.id)?.email ??
+                          "Identidad pendiente"}
                       </p>
                       {figmaUrlByWorkspace.get(workspace.id) ? (
                         <a

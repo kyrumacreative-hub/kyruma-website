@@ -5,6 +5,7 @@ import { Prisma } from "@prisma/client";
 import { clerkClient } from "@clerk/nextjs/server";
 import { redirect } from "next/navigation";
 import { InviteUserUseCase } from "@/features/access/application/InviteUserUseCase";
+import { parseExternalResourceUrl } from "@/features/access/domain/externalResources";
 import { ClerkAccessInvitationDelivery } from "@/features/access/infrastructure/ClerkAccessInvitationDelivery";
 import { PrismaAccessInvitationRepository } from "@/features/access/infrastructure/PrismaAccessInvitationRepository";
 import { requireCurrentActor } from "@/features/access/server/currentActor";
@@ -16,21 +17,14 @@ import { prisma } from "@/lib/prisma";
 
 const INVITATION_LIFETIME_MS = 7 * 24 * 60 * 60 * 1000;
 
-function optionalExternalUrl(value: FormDataEntryValue | null, host: string): string | undefined {
-  const raw = String(value ?? "").trim();
-  if (!raw) return undefined;
-  const url = new URL(raw);
-  if (url.protocol !== "https:" || !url.hostname.endsWith(host)) {
-    throw new Error("ACCESS_EXTERNAL_URL_INVALID");
-  }
-  return url.toString();
-}
-
 export async function provisionPartnerWorkspace(formData: FormData): Promise<void> {
   const workspaceName = String(formData.get("workspaceName") ?? "").trim();
   const partnerEmail = String(formData.get("partnerEmail") ?? "").trim().toLowerCase();
-  const figmaUrl = optionalExternalUrl(formData.get("figmaUrl"), "figma.com");
-  const driveUrl = optionalExternalUrl(formData.get("driveUrl"), "drive.google.com");
+  const figmaUrl = parseExternalResourceUrl(formData.get("figmaUrl"), "figma");
+  const driveUrl = parseExternalResourceUrl(
+    formData.get("driveUrl"),
+    "google-drive",
+  );
 
   if (!workspaceName || workspaceName.length > 120 || !partnerEmail.includes("@")) {
     throw new Error("ACCESS_WORKSPACE_INPUT_INVALID");
@@ -207,7 +201,7 @@ export async function provisionPartnerWorkspace(formData: FormData): Promise<voi
 
 export async function linkWorkspaceFigmaResource(formData: FormData): Promise<void> {
   const workspaceId = String(formData.get("workspaceId") ?? "").trim();
-  const figmaUrl = optionalExternalUrl(formData.get("figmaUrl"), "figma.com");
+  const figmaUrl = parseExternalResourceUrl(formData.get("figmaUrl"), "figma");
 
   if (!workspaceId || !figmaUrl) {
     throw new Error("ACCESS_FIGMA_RESOURCE_INPUT_REQUIRED");
