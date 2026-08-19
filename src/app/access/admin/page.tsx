@@ -33,15 +33,15 @@ export default async function AccessAdminPage({
 
   return (
     <main className="min-h-screen bg-[var(--background)] px-6 pb-24 pt-32 text-[var(--foreground)]">
-      <div className="mx-auto max-w-3xl">
+      <div className="mx-auto max-w-5xl">
         <header className="flex items-start justify-between gap-8 border-b border-[var(--border)] pb-10">
           <div>
             <p className="text-xs uppercase tracking-[.28em] text-[var(--primary)]">
               KYRUMA Platform
             </p>
-            <h1 className="mt-4 text-4xl font-light">Invitar partner</h1>
+            <h1 className="mt-4 text-4xl font-light">Control de acceso</h1>
             <p className="mt-3 text-[var(--muted)]">
-              Emite una invitación segura para acceder a un Workspace.
+              Administra los Workspaces y el acceso de partners a KYRUMA.
             </p>
           </div>
           <UserButton />
@@ -56,10 +56,70 @@ export default async function AccessAdminPage({
           </div>
         ) : null}
 
+        <section className="mt-10 rounded-3xl border border-[var(--border)] bg-[var(--surface)] p-8">
+          <div className="flex flex-wrap items-end justify-between gap-4">
+            <div>
+              <p className="text-xs uppercase tracking-[.22em] text-[var(--primary)]">
+                Workspaces
+              </p>
+              <h2 className="mt-3 text-2xl font-light">
+                {workspaces.length
+                  ? `${workspaces.length} configurado${workspaces.length === 1 ? "" : "s"}`
+                  : "Sin Workspaces de cliente"}
+              </h2>
+            </div>
+            <span className="rounded-full border border-[var(--border)] px-4 py-2 text-sm text-[var(--muted)]">
+              PostgreSQL · fuente canónica
+            </span>
+          </div>
+
+          {workspaces.length ? (
+            <div className="mt-6 grid gap-3 sm:grid-cols-2">
+              {workspaces.map((workspace) => (
+                <article
+                  className="rounded-2xl bg-[var(--surface-soft)] p-5"
+                  key={workspace.id}
+                >
+                  <div className="flex items-start justify-between gap-4">
+                    <div>
+                      <h3>{workspace.name}</h3>
+                      <p className="mt-2 text-sm text-[var(--muted)]">
+                        Partner {workspace.partnerId}
+                      </p>
+                    </div>
+                    <span className="rounded-full border border-[var(--border)] px-3 py-1 text-xs uppercase tracking-[.16em]">
+                      {workspace.status}
+                    </span>
+                  </div>
+                </article>
+              ))}
+            </div>
+          ) : (
+            <div className="mt-6 rounded-2xl bg-[var(--surface-soft)] p-6">
+              <p className="font-medium">Platform está preparada.</p>
+              <p className="mt-2 max-w-2xl text-sm leading-6 text-[var(--muted)]">
+                El primer Workspace se crea cuando Operations convierte un Lead
+                aprobado en Partner. Clerk gestiona la identidad; PostgreSQL
+                conserva Organization, Partner, Workspace y permisos. No se
+                crean clientes ficticios para completar esta pantalla.
+              </p>
+            </div>
+          )}
+        </section>
+
         <form
           action={issuePartnerInvitation}
-          className="mt-10 space-y-6 rounded-3xl border border-[var(--border)] bg-[var(--surface)] p-8"
+          className="mt-8 space-y-6 rounded-3xl border border-[var(--border)] bg-[var(--surface)] p-8"
         >
+          <div>
+            <p className="text-xs uppercase tracking-[.22em] text-[var(--primary)]">
+              Invitaciones
+            </p>
+            <h2 className="mt-3 text-2xl font-light">Invitar partner</h2>
+            <p className="mt-2 text-sm text-[var(--muted)]">
+              Clerk enviará una invitación segura vinculada al Workspace seleccionado.
+            </p>
+          </div>
           <div>
             <label className="text-sm" htmlFor="email">
               Email del partner
@@ -70,6 +130,7 @@ export default async function AccessAdminPage({
               name="email"
               type="email"
               required
+              disabled={!workspaces.length}
             />
           </div>
 
@@ -82,6 +143,7 @@ export default async function AccessAdminPage({
               id="workspaceId"
               name="workspaceId"
               required
+              disabled={!workspaces.length}
             >
               <option value="">Selecciona un Workspace</option>
               {workspaces.map((workspace) => (
@@ -99,8 +161,9 @@ export default async function AccessAdminPage({
           <button
             className="rounded-full bg-[var(--foreground)] px-6 py-3 text-[var(--background)]"
             type="submit"
+            disabled={!workspaces.length}
           >
-            Enviar invitación
+            {workspaces.length ? "Enviar invitación" : "Esperando primer Workspace"}
           </button>
         </form>
       </div>
