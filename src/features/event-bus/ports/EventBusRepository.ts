@@ -2,17 +2,19 @@ import type { TransactionContext } from "../../lead-lifecycle/ports/TransactionR
 import type { EventDeliveryStatus, EventEnvelope, EventProcessingRecord } from "../domain/contracts";
 
 export interface RegisteredHandler { readonly consumer: string; readonly handler: string; readonly eventType: string; readonly eventVersion: number; }
-export interface ClaimedDelivery extends EventProcessingRecord { readonly envelope: EventEnvelope; }
+export interface ClaimedEvent { readonly envelope: EventEnvelope; readonly leaseToken: string; }
+export interface EventDelivery extends EventProcessingRecord { readonly envelope: EventEnvelope; }
+export interface ClaimedDelivery extends EventDelivery { readonly leaseToken: string; }
 
 export interface EventBusRepository {
   append(envelope: EventEnvelope, context: TransactionContext): Promise<void>;
-  claimPendingEvents(input: { workerId: string; now: Date; staleBefore: Date; limit: number }): Promise<readonly EventEnvelope[]>;
-  materializeDeliveries(envelope: EventEnvelope, handlers: readonly RegisteredHandler[], dispatchedAt: Date): Promise<void>;
+  claimPendingEvents(input: { workerId: string; now: Date; staleBefore: Date; limit: number }): Promise<readonly ClaimedEvent[]>;
+  materializeDeliveries(claim: ClaimedEvent, handlers: readonly RegisteredHandler[], dispatchedAt: Date): Promise<void>;
   claimDeliveries(input: { workerId: string; now: Date; staleBefore: Date; limit: number }): Promise<readonly ClaimedDelivery[]>;
-  markProcessed(id: string, now: Date, context: TransactionContext): Promise<void>;
-  markFailed(id: string, input: { now: Date; nextRetryAt: Date | null; code: string; message: string }, context: TransactionContext): Promise<void>;
+  markProcessed(id: string, leaseToken: string, now: Date, context: TransactionContext): Promise<void>;
+  markFailed(id: string, leaseToken: string, input: { now: Date; nextRetryAt: Date | null; code: string; message: string }, context: TransactionContext): Promise<void>;
   getStatus(eventId: string, organizationId: string): Promise<EventDeliveryStatus | null>;
-  getDeadLetter(id: string, organizationId: string): Promise<ClaimedDelivery | null>;
+  getDeadLetter(id: string, organizationId: string): Promise<EventDelivery | null>;
   requeueDeadLetter(id: string, now: Date, context: TransactionContext): Promise<void>;
 }
 

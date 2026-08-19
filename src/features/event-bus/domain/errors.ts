@@ -5,3 +5,4 @@ export class EventLoopDetectedError extends EventBusError { constructor() { supe
 export class EventNotFoundError extends EventBusError { constructor() { super("EVENT_NOT_FOUND", "The event is not available in this organization."); } }
 export class DeadLetterRequiredError extends EventBusError { constructor() { super("DEAD_LETTER_REQUIRED", "Only dead-lettered deliveries can be reprocessed."); } }
 export class NonRetryableEventError extends EventBusError { constructor(code: string, message: string) { super(code, message); } }
+export class LeaseOwnershipLostError extends EventBusError { constructor(resource: "event" | "delivery") { super("EVENT_BUS_LEASE_OWNERSHIP_LOST", `The ${resource} lease is no longer owned by this worker.`); } }

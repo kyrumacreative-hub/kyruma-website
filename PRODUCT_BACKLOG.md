@@ -8,6 +8,7 @@ Solo puede haber un objetivo activo. La secuencia aprobada es PS-010 → PS-011 
 
 ### Platform Experience activation gates — ACTIVE
 
+- Blindar los claims del Event Bus con `FOR UPDATE SKIP LOCKED`, leases con fencing y regresión PostgreSQL antes de conectar nuevos flujos de Platform.
 - Provisionar Clerk y sus variables seguras.
 - Aplicar la migración en staging y ejecutar la regresión PostgreSQL.
 - Completar smoke real de login, recuperación, invitación, aislamiento de Portal y logout.
