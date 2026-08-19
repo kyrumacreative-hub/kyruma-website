@@ -243,6 +243,7 @@ model EventOutbox {
   dispatchedAt   DateTime?
   lockedAt       DateTime?
   lockOwner      String?
+  leaseToken     String?
   deliveries     EventProcessingRecord[]
 
   @@index([status, availableAt, createdAt])
@@ -266,6 +267,7 @@ model EventProcessingRecord {
   errorMessage   String?
   lockedAt       DateTime?
   lockOwner      String?
+  leaseToken     String?
   createdAt      DateTime
   updatedAt      DateTime
   event          EventOutbox @relation(fields: [eventId], references: [eventId], onDelete: Restrict)

@@ -1,7 +1,7 @@
 import { randomUUID } from "node:crypto";
 import type { TransactionContext, TransactionRunner } from "../../lead-lifecycle/ports/TransactionRunner";
 import type { EventDeliveryStatus, EventEnvelope } from "../domain/contracts";
-import { DeadLetterRequiredError, EventNotFoundError, NonRetryableEventError, UnsupportedEventContractError } from "../domain/errors";
+import { DeadLetterRequiredError, EventNotFoundError, LeaseOwnershipLostError, NonRetryableEventError, UnsupportedEventContractError } from "../domain/errors";
 import { EventContractRegistry, validateEnvelope } from "../domain/validation";
 import type { Clock } from "../ports/Clock";
 import type { AuditRecorder, EventBusRepository } from "../ports/EventBusRepository";
@@ -29,7 +29,10 @@ export class DispatchPendingEventsUseCase {
   async execute(input: { workerId: string; limit?: number }): Promise<number> {
     const now = this.clock.now();
     const events = await this.repository.claimPendingEvents({ workerId: input.workerId, now, staleBefore: new Date(now.getTime() - 300_000), limit: input.limit ?? 100 });
-    for (const envelope of events) await this.transport.materialize(envelope, this.handlers.subscriptions(envelope.eventType, envelope.eventVersion), now);
+    for (const claim of events) {
+      try { await this.transport.materialize(claim, this.handlers.subscriptions(claim.envelope.eventType, claim.envelope.eventVersion), now); }
+      catch (error) { if (!(error instanceof LeaseOwnershipLostError)) throw error; }
+    }
     return events.length;
   }
 }
@@ -41,20 +44,28 @@ export class ProcessEventUseCase {
     const deliveries = await this.repository.claimDeliveries({ workerId: input.workerId, now, staleBefore: new Date(now.getTime() - 300_000), limit: input.limit ?? 100 });
     for (const delivery of deliveries) {
       const handler = this.handlers.resolve(delivery.consumer, delivery.handler, delivery.envelope.eventType, delivery.envelope.eventVersion);
-      if (!handler) { await this.fail(delivery.id, delivery.attemptCount, new NonRetryableEventError("EVENT_HANDLER_NOT_REGISTERED", "Registered handler is unavailable.")); continue; }
-      try { await this.transactions.run(async (context) => { await handler.handle(delivery.envelope, context); await this.repository.markProcessed(delivery.id, this.clock.now(), context); }); }
-      catch (error) { await this.fail(delivery.id, delivery.attemptCount - 1, error); }
+      if (!handler) {
+        try { await this.fail(delivery.id, delivery.leaseToken, delivery.attemptCount - 1, new NonRetryableEventError("EVENT_HANDLER_NOT_REGISTERED", "Registered handler is unavailable.")); }
+        catch (failure) { if (!(failure instanceof LeaseOwnershipLostError)) throw failure; }
+        continue;
+      }
+      try { await this.transactions.run(async (context) => { await handler.handle(delivery.envelope, context); await this.repository.markProcessed(delivery.id, delivery.leaseToken, this.clock.now(), context); }); }
+      catch (error) {
+        if (error instanceof LeaseOwnershipLostError) continue;
+        try { await this.fail(delivery.id, delivery.leaseToken, delivery.attemptCount - 1, error); }
+        catch (failure) { if (!(failure instanceof LeaseOwnershipLostError)) throw failure; }
+      }
     }
     return deliveries.length;
   }
-  private async fail(id: string, previousAttempts: number, error: unknown): Promise<void> {
+  private async fail(id: string, leaseToken: string, previousAttempts: number, error: unknown): Promise<void> {
     const now = this.clock.now();
     const nonRetryable = error instanceof NonRetryableEventError;
     const delay = RETRY_DELAYS_MS[previousAttempts];
     const nextRetryAt = nonRetryable || delay === undefined ? null : new Date(now.getTime() + delay);
     const code = error instanceof NonRetryableEventError ? error.code : "EVENT_HANDLER_FAILED";
     const message = sanitize(error instanceof Error ? error.message : "Unexpected handler failure.");
-    await this.transactions.run((context) => this.repository.markFailed(id, { now, nextRetryAt, code, message }, context));
+    await this.transactions.run((context) => this.repository.markFailed(id, leaseToken, { now, nextRetryAt, code, message }, context));
   }
 }
 
