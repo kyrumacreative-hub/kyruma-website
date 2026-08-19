@@ -1,6 +1,10 @@
 import { UserButton } from "@clerk/nextjs";
 import { redirect } from "next/navigation";
-import { issuePartnerInvitation, provisionPartnerWorkspace } from "./actions";
+import {
+  issuePartnerInvitation,
+  linkWorkspaceFigmaResource,
+  provisionPartnerWorkspace,
+} from "./actions";
 import { requireCurrentActor } from "@/features/access/server/currentActor";
 import { isInternalAdminEmail } from "@/features/access/server/internalAdmin";
 import { prisma } from "@/lib/prisma";
@@ -10,7 +14,12 @@ export const dynamic = "force-dynamic";
 export default async function AccessAdminPage({
   searchParams,
 }: {
-  searchParams: Promise<{ sent?: string; created?: string; workspaceCode?: string }>;
+  searchParams: Promise<{
+    sent?: string;
+    created?: string;
+    workspaceCode?: string;
+    linked?: string;
+  }>;
 }) {
   const actor = await requireCurrentActor();
 
@@ -30,6 +39,19 @@ export default async function AccessAdminPage({
       status: true,
     },
   });
+  const figmaResources = await prisma.portalShare.findMany({
+    where: {
+      workspaceId: { in: workspaces.map((workspace) => workspace.id) },
+      kind: "link",
+      title: "Figma",
+      visibility: "shared",
+    },
+    orderBy: { publishedAt: "desc" },
+    select: { workspaceId: true, externalUrl: true },
+  });
+  const figmaUrlByWorkspace = new Map(
+    figmaResources.map((resource) => [resource.workspaceId, resource.externalUrl]),
+  );
 
   return (
     <main className="min-h-screen bg-[var(--background)] px-6 pb-24 pt-32 text-[var(--foreground)]">
@@ -65,6 +87,15 @@ export default async function AccessAdminPage({
           </div>
         ) : null}
 
+        {params.linked === "figma" ? (
+          <div className="mt-8 rounded-2xl border border-[var(--border)] bg-[var(--surface)] p-5">
+            <p>Figma vinculado correctamente.</p>
+            <p className="mt-2 text-sm text-[var(--muted)]">
+              El recurso oficial ya está disponible para el Workspace seleccionado.
+            </p>
+          </div>
+        ) : null}
+
         <section className="mt-10 rounded-3xl border border-[var(--border)] bg-[var(--surface)] p-8">
           <div className="flex flex-wrap items-end justify-between gap-4">
             <div>
@@ -95,6 +126,16 @@ export default async function AccessAdminPage({
                       <p className="mt-2 text-sm text-[var(--muted)]">
                         Partner {workspace.partnerId}
                       </p>
+                      {figmaUrlByWorkspace.get(workspace.id) ? (
+                        <a
+                          className="mt-3 inline-block text-sm text-[var(--primary)] underline underline-offset-4"
+                          href={figmaUrlByWorkspace.get(workspace.id) ?? undefined}
+                          rel="noreferrer"
+                          target="_blank"
+                        >
+                          Abrir Figma ↗
+                        </a>
+                      ) : null}
                     </div>
                     <span className="rounded-full border border-[var(--border)] px-3 py-1 text-xs uppercase tracking-[.16em]">
                       {workspace.status}
@@ -115,6 +156,66 @@ export default async function AccessAdminPage({
             </div>
           )}
         </section>
+
+        <form
+          action={linkWorkspaceFigmaResource}
+          className="mt-8 space-y-6 rounded-3xl border border-[var(--border)] bg-[var(--surface)] p-8"
+        >
+          <div>
+            <p className="text-xs uppercase tracking-[.22em] text-[var(--primary)]">
+              Recursos externos
+            </p>
+            <h2 className="mt-3 text-2xl font-light">Vincular Figma</h2>
+            <p className="mt-2 text-sm text-[var(--muted)]">
+              Añade o actualiza el recurso oficial de Figma sin duplicar enlaces.
+            </p>
+          </div>
+          <div className="grid gap-5 sm:grid-cols-2">
+            <div>
+              <label className="text-sm" htmlFor="figmaWorkspaceId">
+                Workspace
+              </label>
+              <select
+                className="mt-2 w-full rounded-xl border border-[var(--border)] bg-[var(--background)] px-4 py-3"
+                disabled={!workspaces.length}
+                id="figmaWorkspaceId"
+                name="workspaceId"
+                required
+              >
+                <option value="">Selecciona un Workspace</option>
+                {workspaces.map((workspace) => (
+                  <option
+                    disabled={workspace.status !== "active"}
+                    key={workspace.id}
+                    value={workspace.id}
+                  >
+                    {workspace.name} · {workspace.status}
+                  </option>
+                ))}
+              </select>
+            </div>
+            <div>
+              <label className="text-sm" htmlFor="workspaceFigmaUrl">
+                Archivo o proyecto de Figma
+              </label>
+              <input
+                className="mt-2 w-full rounded-xl border border-[var(--border)] bg-[var(--background)] px-4 py-3"
+                id="workspaceFigmaUrl"
+                name="figmaUrl"
+                placeholder="https://www.figma.com/..."
+                required
+                type="url"
+              />
+            </div>
+          </div>
+          <button
+            className="rounded-full bg-[var(--foreground)] px-6 py-3 text-[var(--background)]"
+            disabled={!workspaces.length}
+            type="submit"
+          >
+            Guardar recurso de Figma
+          </button>
+        </form>
 
         <form
           action={provisionPartnerWorkspace}

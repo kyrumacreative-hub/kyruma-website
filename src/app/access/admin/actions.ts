@@ -205,6 +205,104 @@ export async function provisionPartnerWorkspace(formData: FormData): Promise<voi
   redirect(`/access/admin?created=1&workspaceCode=${encodeURIComponent(result.code)}`);
 }
 
+export async function linkWorkspaceFigmaResource(formData: FormData): Promise<void> {
+  const workspaceId = String(formData.get("workspaceId") ?? "").trim();
+  const figmaUrl = optionalExternalUrl(formData.get("figmaUrl"), "figma.com");
+
+  if (!workspaceId || !figmaUrl) {
+    throw new Error("ACCESS_FIGMA_RESOURCE_INPUT_REQUIRED");
+  }
+
+  const actor = await requireCurrentActor();
+  requireInternalAdmin(actor);
+
+  const workspace = await prisma.workspace.findUnique({
+    where: { id: workspaceId },
+    select: {
+      id: true,
+      name: true,
+      organizationId: true,
+      partnerId: true,
+      status: true,
+    },
+  });
+
+  if (!workspace) throw new Error("ACCESS_WORKSPACE_NOT_FOUND");
+  if (workspace.status !== "active") throw new Error("ACCESS_WORKSPACE_NOT_ACTIVE");
+
+  await prisma.$transaction(async (db) => {
+    const settings = await db.workspaceSettings.findUnique({
+      where: { workspaceId },
+      select: { values: true, version: true },
+    });
+    const currentValues =
+      settings?.values &&
+      typeof settings.values === "object" &&
+      !Array.isArray(settings.values)
+        ? (settings.values as Prisma.JsonObject)
+        : {};
+    const currentExternalResources =
+      currentValues.externalResources &&
+      typeof currentValues.externalResources === "object" &&
+      !Array.isArray(currentValues.externalResources)
+        ? (currentValues.externalResources as Prisma.JsonObject)
+        : {};
+
+    await db.workspaceSettings.upsert({
+      where: { workspaceId },
+      create: {
+        workspaceId,
+        version: 1,
+        values: { locale: "es", externalResources: { figmaUrl } },
+      },
+      update: {
+        version: (settings?.version ?? 0) + 1,
+        values: {
+          ...currentValues,
+          externalResources: {
+            ...currentExternalResources,
+            figmaUrl,
+          },
+        },
+      },
+    });
+
+    const existingFigmaShare = await db.portalShare.findFirst({
+      where: { workspaceId, kind: "link", title: "Figma" },
+      orderBy: { publishedAt: "desc" },
+      select: { id: true },
+    });
+    const shareData = {
+      externalUrl: figmaUrl,
+      summary: `Recurso oficial de ${workspace.name}`,
+      visibility: "shared",
+      publishedAt: new Date(),
+      publishedBy: actor.user.id,
+    };
+
+    if (existingFigmaShare) {
+      await db.portalShare.update({
+        where: { id: existingFigmaShare.id },
+        data: shareData,
+      });
+    } else {
+      await db.portalShare.create({
+        data: {
+          id: randomUUID(),
+          organizationId: workspace.organizationId,
+          partnerId: workspace.partnerId,
+          workspaceId,
+          kind: "link",
+          title: "Figma",
+          ...shareData,
+        },
+      });
+    }
+  });
+
+  redirect(`/access/admin?linked=figma&workspaceId=${encodeURIComponent(workspaceId)}`);
+}
+
 export async function issuePartnerInvitation(formData: FormData): Promise<void> {
   const email = String(formData.get("email") ?? "").trim();
   const workspaceId = String(formData.get("workspaceId") ?? "").trim();
