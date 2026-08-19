@@ -1,6 +1,6 @@
 import { UserButton } from "@clerk/nextjs";
 import { redirect } from "next/navigation";
-import { issuePartnerInvitation } from "./actions";
+import { issuePartnerInvitation, provisionPartnerWorkspace } from "./actions";
 import { requireCurrentActor } from "@/features/access/server/currentActor";
 import { isInternalAdminEmail } from "@/features/access/server/internalAdmin";
 import { prisma } from "@/lib/prisma";
@@ -10,7 +10,7 @@ export const dynamic = "force-dynamic";
 export default async function AccessAdminPage({
   searchParams,
 }: {
-  searchParams: Promise<{ sent?: string }>;
+  searchParams: Promise<{ sent?: string; created?: string; workspaceCode?: string }>;
 }) {
   const actor = await requireCurrentActor();
 
@@ -52,6 +52,15 @@ export default async function AccessAdminPage({
             <p>Invitación emitida correctamente.</p>
             <p className="mt-2 text-sm text-[var(--muted)]">
               Clerk enviará el enlace de acceso al email indicado.
+            </p>
+          </div>
+        ) : null}
+
+        {params.created === "1" ? (
+          <div className="mt-8 rounded-2xl border border-[var(--border)] bg-[var(--surface)] p-5">
+            <p>Workspace {params.workspaceCode} activado correctamente.</p>
+            <p className="mt-2 text-sm text-[var(--muted)]">
+              El partner ya puede entrar en KYRUMA Platform con su identidad de Clerk.
             </p>
           </div>
         ) : null}
@@ -106,6 +115,81 @@ export default async function AccessAdminPage({
             </div>
           )}
         </section>
+
+        <form
+          action={provisionPartnerWorkspace}
+          className="mt-8 space-y-6 rounded-3xl border border-[var(--border)] bg-[var(--surface)] p-8"
+        >
+          <div>
+            <p className="text-xs uppercase tracking-[.22em] text-[var(--primary)]">
+              Aprovisionamiento
+            </p>
+            <h2 className="mt-3 text-2xl font-light">Crear Partner Workspace</h2>
+            <p className="mt-2 max-w-2xl text-sm leading-6 text-[var(--muted)]">
+              Utiliza una identidad que ya haya iniciado sesión con Clerk. Platform
+              creará de forma atómica Lead importado, Partner, Workspace, owner y
+              permisos. Los enlaces externos son opcionales.
+            </p>
+          </div>
+
+          <div className="grid gap-5 sm:grid-cols-2">
+            <div>
+              <label className="text-sm" htmlFor="workspaceName">
+                Nombre del Workspace
+              </label>
+              <input
+                className="mt-2 w-full rounded-xl border border-[var(--border)] bg-[var(--background)] px-4 py-3"
+                id="workspaceName"
+                name="workspaceName"
+                placeholder="KYR-001 · Nombre del partner"
+                required
+              />
+            </div>
+            <div>
+              <label className="text-sm" htmlFor="partnerEmail">
+                Identidad Clerk del partner
+              </label>
+              <input
+                className="mt-2 w-full rounded-xl border border-[var(--border)] bg-[var(--background)] px-4 py-3"
+                id="partnerEmail"
+                name="partnerEmail"
+                type="email"
+                required
+              />
+            </div>
+            <div>
+              <label className="text-sm" htmlFor="figmaUrl">
+                Archivo o proyecto de Figma · opcional
+              </label>
+              <input
+                className="mt-2 w-full rounded-xl border border-[var(--border)] bg-[var(--background)] px-4 py-3"
+                id="figmaUrl"
+                name="figmaUrl"
+                placeholder="https://www.figma.com/..."
+                type="url"
+              />
+            </div>
+            <div>
+              <label className="text-sm" htmlFor="driveUrl">
+                Carpeta de Google Drive · opcional
+              </label>
+              <input
+                className="mt-2 w-full rounded-xl border border-[var(--border)] bg-[var(--background)] px-4 py-3"
+                id="driveUrl"
+                name="driveUrl"
+                placeholder="https://drive.google.com/..."
+                type="url"
+              />
+            </div>
+          </div>
+
+          <button
+            className="rounded-full bg-[var(--foreground)] px-6 py-3 text-[var(--background)]"
+            type="submit"
+          >
+            Crear Workspace y activar partner
+          </button>
+        </form>
 
         <form
           action={issuePartnerInvitation}

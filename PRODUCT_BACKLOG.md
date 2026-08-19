@@ -11,6 +11,8 @@ Solo puede haber un objetivo activo. La secuencia aprobada es PS-010 → PS-011 
 - Provisionar Clerk y sus variables seguras.
 - Aplicar la migración en staging y ejecutar la regresión PostgreSQL.
 - Completar smoke real de login, recuperación, invitación, aislamiento de Portal y logout.
+- Reparar la entrada de administradores internos y habilitar el aprovisionamiento
+  controlado del primer Partner/Workspace real desde Platform.
 
 ### Gates externos de release
 
