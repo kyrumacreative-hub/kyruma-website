@@ -40,7 +40,8 @@ test("claims an event once and materializes isolated idempotent handler records"
 test("keeps successful consumers independent from failed and recoverable dead letters", async () => {
   const value = event();
   await transactions.run((context) => repository.append(value, context));
-  const [claim] = await repository.claimPendingEvents({ workerId: "dispatcher", now, staleBefore: new Date(0), limit: 10 });
+  const claim = (await repository.claimPendingEvents({ workerId: "dispatcher", now, staleBefore: new Date(0), limit: 100 }))
+    .find((item) => item.envelope.eventId === value.eventId)!;
   await repository.materializeDeliveries(claim, [{ consumer: "audit", handler: "record", eventType: value.eventType, eventVersion: 1 }, { consumer: "analytics", handler: "project", eventType: value.eventType, eventVersion: 1 }], now);
   const deliveries = await repository.claimDeliveries({ workerId: "consumer", now, staleBefore: new Date(0), limit: 10 });
   const success = deliveries.find((item) => item.eventId === value.eventId && item.consumer === "audit")!;
@@ -57,9 +58,13 @@ test("keeps successful consumers independent from failed and recoverable dead le
 test("fences a dispatcher after its stale event lease is reassigned", async () => {
   const value = event();
   await transactions.run((context) => repository.append(value, context));
-  const [first] = await repository.claimPendingEvents({ workerId: "dispatcher-a", now, staleBefore: new Date(0), limit: 1 });
+  const first = (await repository.claimPendingEvents({ workerId: "dispatcher-a", now, staleBefore: new Date(0), limit: 100 }))
+    .find((item) => item.envelope.eventId === value.eventId)!;
   const later = new Date(now.getTime() + 600_000);
-  const [replacement] = await repository.claimPendingEvents({ workerId: "dispatcher-b", now: later, staleBefore: new Date(now.getTime() + 300_000), limit: 1 });
+  const replacement = (await repository.claimPendingEvents({ workerId: "dispatcher-b", now: later, staleBefore: new Date(now.getTime() + 300_000), limit: 100 }))
+    .find((item) => item.envelope.eventId === value.eventId)!;
+  assert.ok(first);
+  assert.ok(replacement);
   const registrations = [{ consumer: "audit", handler: "record", eventType: value.eventType, eventVersion: 1 }];
   await assert.rejects(() => repository.materializeDeliveries(first, registrations, later), LeaseOwnershipLostError);
   await repository.materializeDeliveries(replacement, registrations, later);
@@ -69,18 +74,23 @@ test("fences a dispatcher after its stale event lease is reassigned", async () =
 test("claims a delivery once and fences a stale consumer after reassignment", async () => {
   const value = event();
   await transactions.run((context) => repository.append(value, context));
-  const [eventClaim] = await repository.claimPendingEvents({ workerId: "dispatcher", now, staleBefore: new Date(0), limit: 1 });
+  const eventClaim = (await repository.claimPendingEvents({ workerId: "dispatcher", now, staleBefore: new Date(0), limit: 100 }))
+    .find((item) => item.envelope.eventId === value.eventId)!;
+  assert.ok(eventClaim);
   await repository.materializeDeliveries(eventClaim, [{ consumer: "audit", handler: "record", eventType: value.eventType, eventVersion: 1 }], now);
 
   const [firstBatch, secondBatch] = await Promise.all([
-    repository.claimDeliveries({ workerId: "consumer-a", now, staleBefore: new Date(0), limit: 1 }),
-    repository.claimDeliveries({ workerId: "consumer-b", now, staleBefore: new Date(0), limit: 1 }),
+    repository.claimDeliveries({ workerId: "consumer-a", now, staleBefore: new Date(0), limit: 100 }),
+    repository.claimDeliveries({ workerId: "consumer-b", now, staleBefore: new Date(0), limit: 100 }),
   ]);
   const [first] = [...firstBatch, ...secondBatch].filter((delivery) => delivery.eventId === value.eventId);
   assert.equal([...firstBatch, ...secondBatch].filter((delivery) => delivery.eventId === value.eventId).length, 1);
 
   const later = new Date(now.getTime() + 600_000);
-  const [replacement] = await repository.claimDeliveries({ workerId: "consumer-c", now: later, staleBefore: new Date(now.getTime() + 300_000), limit: 1 });
+  const replacement = (await repository.claimDeliveries({ workerId: "consumer-c", now: later, staleBefore: new Date(now.getTime() + 300_000), limit: 100 }))
+    .find((delivery) => delivery.eventId === value.eventId)!;
+  assert.ok(first);
+  assert.ok(replacement);
   await assert.rejects(() => transactions.run((context) => repository.markProcessed(first.id, first.leaseToken, later, context)), LeaseOwnershipLostError);
   await transactions.run((context) => repository.markProcessed(replacement.id, replacement.leaseToken, later, context));
   assert.equal((await repository.getStatus(value.eventId, value.organizationId))?.deliveries[0].status, "processed");
