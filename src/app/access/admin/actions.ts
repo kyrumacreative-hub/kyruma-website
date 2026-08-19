@@ -2,6 +2,7 @@
 
 import { randomUUID } from "node:crypto";
 import { Prisma } from "@prisma/client";
+import { clerkClient } from "@clerk/nextjs/server";
 import { redirect } from "next/navigation";
 import { InviteUserUseCase } from "@/features/access/application/InviteUserUseCase";
 import { ClerkAccessInvitationDelivery } from "@/features/access/infrastructure/ClerkAccessInvitationDelivery";
@@ -38,13 +39,38 @@ export async function provisionPartnerWorkspace(formData: FormData): Promise<voi
   const actor = await requireCurrentActor();
   requireInternalAdmin(actor);
 
+  const clerk = await clerkClient();
+  const clerkUsers = await clerk.users.getUserList({
+    emailAddress: [partnerEmail],
+    limit: 2,
+  });
+  const clerkUser = clerkUsers.data.find((user) =>
+    user.emailAddresses.some(
+      (address) => address.emailAddress.toLowerCase() === partnerEmail,
+    ),
+  );
+  if (!clerkUser) throw new Error("ACCESS_PARTNER_CLERK_IDENTITY_NOT_FOUND");
+
   const result = await prisma.$transaction(async (db) => {
-    const partnerUser = await db.identityUser.findUnique({
+    let partnerUser = await db.identityUser.findUnique({
       where: { normalizedEmail: partnerEmail },
     });
-    if (!partnerUser || partnerUser.status !== "active") {
-      throw new Error("ACCESS_PARTNER_IDENTITY_NOT_FOUND");
+    if (!partnerUser) {
+      partnerUser = await db.identityUser.create({
+        data: {
+          id: randomUUID(),
+          externalSubjectId: clerkUser.id,
+          email: partnerEmail,
+          normalizedEmail: partnerEmail,
+          displayName:
+            [clerkUser.firstName, clerkUser.lastName].filter(Boolean).join(" ") ||
+            undefined,
+          status: "active",
+          createdAt: new Date(),
+        },
+      });
     }
+    if (partnerUser.status !== "active") throw new Error("ACCESS_PARTNER_IDENTITY_INACTIVE");
 
     const existingMembership = await db.foundationMembership.findFirst({
       where: { userId: partnerUser.id, status: "active", role: "partner" },
