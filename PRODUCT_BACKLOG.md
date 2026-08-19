@@ -15,6 +15,8 @@ Solo puede haber un objetivo activo. La secuencia aprobada es PS-010 → PS-011 
   controlado del primer Partner/Workspace real desde Platform.
 - Endurecer la validación de recursos externos contra dominios impostores y
   mostrar la identidad operativa del owner en la administración de Workspaces.
+- Permitir que Operations añada o actualice los recursos oficiales de Figma y
+  Google Drive en Workspaces existentes sin generar enlaces duplicados.
 
 ### Gates externos de release
 

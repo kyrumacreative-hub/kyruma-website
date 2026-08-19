@@ -2,7 +2,7 @@ import { UserButton } from "@clerk/nextjs";
 import { redirect } from "next/navigation";
 import {
   issuePartnerInvitation,
-  linkWorkspaceFigmaResource,
+  linkWorkspaceExternalResource,
   provisionPartnerWorkspace,
 } from "./actions";
 import { requireCurrentActor } from "@/features/access/server/currentActor";
@@ -39,19 +39,28 @@ export default async function AccessAdminPage({
       status: true,
     },
   });
-  const figmaResources = await prisma.portalShare.findMany({
+  const externalResources = await prisma.portalShare.findMany({
     where: {
       workspaceId: { in: workspaces.map((workspace) => workspace.id) },
       kind: "link",
-      title: "Figma",
+      title: { in: ["Figma", "Google Drive"] },
       visibility: "shared",
     },
     orderBy: { publishedAt: "desc" },
-    select: { workspaceId: true, externalUrl: true },
+    select: { workspaceId: true, title: true, externalUrl: true },
   });
-  const figmaUrlByWorkspace = new Map(
-    figmaResources.map((resource) => [resource.workspaceId, resource.externalUrl]),
-  );
+  const resourcesByWorkspace = new Map<
+    string,
+    { title: string; externalUrl: string }[]
+  >();
+  for (const resource of externalResources) {
+    if (!resource.externalUrl) continue;
+    const resources = resourcesByWorkspace.get(resource.workspaceId) ?? [];
+    if (!resources.some((item) => item.title === resource.title)) {
+      resources.push({ title: resource.title, externalUrl: resource.externalUrl });
+      resourcesByWorkspace.set(resource.workspaceId, resources);
+    }
+  }
   const partnerOwners = await prisma.foundationMembership.findMany({
     where: {
       workspaceId: { in: workspaces.map((workspace) => workspace.id) },
@@ -104,9 +113,9 @@ export default async function AccessAdminPage({
           </div>
         ) : null}
 
-        {params.linked === "figma" ? (
+        {params.linked ? (
           <div className="mt-8 rounded-2xl border border-[var(--border)] bg-[var(--surface)] p-5">
-            <p>Figma vinculado correctamente.</p>
+            <p>Recurso externo vinculado correctamente.</p>
             <p className="mt-2 text-sm text-[var(--muted)]">
               El recurso oficial ya está disponible para el Workspace seleccionado.
             </p>
@@ -148,16 +157,21 @@ export default async function AccessAdminPage({
                         {partnerOwnerByWorkspace.get(workspace.id)?.email ??
                           "Identidad pendiente"}
                       </p>
-                      {figmaUrlByWorkspace.get(workspace.id) ? (
-                        <a
-                          className="mt-3 inline-block text-sm text-[var(--primary)] underline underline-offset-4"
-                          href={figmaUrlByWorkspace.get(workspace.id) ?? undefined}
-                          rel="noreferrer"
-                          target="_blank"
-                        >
-                          Abrir Figma ↗
-                        </a>
-                      ) : null}
+                      <div className="mt-3 flex flex-wrap gap-3">
+                        {(resourcesByWorkspace.get(workspace.id) ?? []).map(
+                          (resource) => (
+                            <a
+                              className="text-sm text-[var(--primary)] underline underline-offset-4"
+                              href={resource.externalUrl}
+                              key={resource.title}
+                              rel="noreferrer"
+                              target="_blank"
+                            >
+                              Abrir {resource.title} ↗
+                            </a>
+                          ),
+                        )}
+                      </div>
                     </div>
                     <span className="rounded-full border border-[var(--border)] px-3 py-1 text-xs uppercase tracking-[.16em]">
                       {workspace.status}
@@ -180,19 +194,19 @@ export default async function AccessAdminPage({
         </section>
 
         <form
-          action={linkWorkspaceFigmaResource}
+          action={linkWorkspaceExternalResource}
           className="mt-8 space-y-6 rounded-3xl border border-[var(--border)] bg-[var(--surface)] p-8"
         >
           <div>
             <p className="text-xs uppercase tracking-[.22em] text-[var(--primary)]">
               Recursos externos
             </p>
-            <h2 className="mt-3 text-2xl font-light">Vincular Figma</h2>
+            <h2 className="mt-3 text-2xl font-light">Vincular recurso</h2>
             <p className="mt-2 text-sm text-[var(--muted)]">
-              Añade o actualiza el recurso oficial de Figma sin duplicar enlaces.
+              Añade o actualiza Figma o Google Drive sin duplicar enlaces.
             </p>
           </div>
-          <div className="grid gap-5 sm:grid-cols-2">
+          <div className="grid gap-5 sm:grid-cols-3">
             <div>
               <label className="text-sm" htmlFor="figmaWorkspaceId">
                 Workspace
@@ -217,14 +231,28 @@ export default async function AccessAdminPage({
               </select>
             </div>
             <div>
-              <label className="text-sm" htmlFor="workspaceFigmaUrl">
-                Archivo o proyecto de Figma
+              <label className="text-sm" htmlFor="externalResourceProvider">
+                Tipo de recurso
+              </label>
+              <select
+                className="mt-2 w-full rounded-xl border border-[var(--border)] bg-[var(--background)] px-4 py-3"
+                id="externalResourceProvider"
+                name="provider"
+                required
+              >
+                <option value="figma">Figma</option>
+                <option value="google-drive">Google Drive</option>
+              </select>
+            </div>
+            <div>
+              <label className="text-sm" htmlFor="workspaceExternalUrl">
+                Enlace oficial
               </label>
               <input
                 className="mt-2 w-full rounded-xl border border-[var(--border)] bg-[var(--background)] px-4 py-3"
-                id="workspaceFigmaUrl"
-                name="figmaUrl"
-                placeholder="https://www.figma.com/..."
+                id="workspaceExternalUrl"
+                name="externalUrl"
+                placeholder="https://..."
                 required
                 type="url"
               />
@@ -235,7 +263,7 @@ export default async function AccessAdminPage({
             disabled={!workspaces.length}
             type="submit"
           >
-            Guardar recurso de Figma
+            Guardar recurso
           </button>
         </form>
 

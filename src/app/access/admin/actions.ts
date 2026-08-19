@@ -5,7 +5,10 @@ import { Prisma } from "@prisma/client";
 import { clerkClient } from "@clerk/nextjs/server";
 import { redirect } from "next/navigation";
 import { InviteUserUseCase } from "@/features/access/application/InviteUserUseCase";
-import { parseExternalResourceUrl } from "@/features/access/domain/externalResources";
+import {
+  parseExternalResourceUrl,
+  type ExternalResourceProvider,
+} from "@/features/access/domain/externalResources";
 import { ClerkAccessInvitationDelivery } from "@/features/access/infrastructure/ClerkAccessInvitationDelivery";
 import { PrismaAccessInvitationRepository } from "@/features/access/infrastructure/PrismaAccessInvitationRepository";
 import { requireCurrentActor } from "@/features/access/server/currentActor";
@@ -199,12 +202,21 @@ export async function provisionPartnerWorkspace(formData: FormData): Promise<voi
   redirect(`/access/admin?created=1&workspaceCode=${encodeURIComponent(result.code)}`);
 }
 
-export async function linkWorkspaceFigmaResource(formData: FormData): Promise<void> {
+export async function linkWorkspaceExternalResource(formData: FormData): Promise<void> {
   const workspaceId = String(formData.get("workspaceId") ?? "").trim();
-  const figmaUrl = parseExternalResourceUrl(formData.get("figmaUrl"), "figma");
+  const provider = String(formData.get("provider") ?? "") as ExternalResourceProvider;
+  if (!(["figma", "google-drive"] as const).includes(provider)) {
+    throw new Error("ACCESS_EXTERNAL_RESOURCE_PROVIDER_INVALID");
+  }
+  const externalUrl = parseExternalResourceUrl(
+    formData.get("externalUrl"),
+    provider,
+  );
+  const title = provider === "figma" ? "Figma" : "Google Drive";
+  const settingsKey = provider === "figma" ? "figmaUrl" : "driveUrl";
 
-  if (!workspaceId || !figmaUrl) {
-    throw new Error("ACCESS_FIGMA_RESOURCE_INPUT_REQUIRED");
+  if (!workspaceId || !externalUrl) {
+    throw new Error("ACCESS_EXTERNAL_RESOURCE_INPUT_REQUIRED");
   }
 
   const actor = await requireCurrentActor();
@@ -247,7 +259,10 @@ export async function linkWorkspaceFigmaResource(formData: FormData): Promise<vo
       create: {
         workspaceId,
         version: 1,
-        values: { locale: "es", externalResources: { figmaUrl } },
+        values: {
+          locale: "es",
+          externalResources: { [settingsKey]: externalUrl },
+        },
       },
       update: {
         version: (settings?.version ?? 0) + 1,
@@ -255,28 +270,28 @@ export async function linkWorkspaceFigmaResource(formData: FormData): Promise<vo
           ...currentValues,
           externalResources: {
             ...currentExternalResources,
-            figmaUrl,
+            [settingsKey]: externalUrl,
           },
         },
       },
     });
 
-    const existingFigmaShare = await db.portalShare.findFirst({
-      where: { workspaceId, kind: "link", title: "Figma" },
+    const existingShare = await db.portalShare.findFirst({
+      where: { workspaceId, kind: "link", title },
       orderBy: { publishedAt: "desc" },
       select: { id: true },
     });
     const shareData = {
-      externalUrl: figmaUrl,
+      externalUrl,
       summary: `Recurso oficial de ${workspace.name}`,
       visibility: "shared",
       publishedAt: new Date(),
       publishedBy: actor.user.id,
     };
 
-    if (existingFigmaShare) {
+    if (existingShare) {
       await db.portalShare.update({
-        where: { id: existingFigmaShare.id },
+        where: { id: existingShare.id },
         data: shareData,
       });
     } else {
@@ -287,14 +302,16 @@ export async function linkWorkspaceFigmaResource(formData: FormData): Promise<vo
           partnerId: workspace.partnerId,
           workspaceId,
           kind: "link",
-          title: "Figma",
+          title,
           ...shareData,
         },
       });
     }
   });
 
-  redirect(`/access/admin?linked=figma&workspaceId=${encodeURIComponent(workspaceId)}`);
+  redirect(
+    `/access/admin?linked=${encodeURIComponent(provider)}&workspaceId=${encodeURIComponent(workspaceId)}`,
+  );
 }
 
 export async function issuePartnerInvitation(formData: FormData): Promise<void> {
