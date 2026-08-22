@@ -49,7 +49,10 @@ export class ProcessEventUseCase {
         catch (failure) { if (!(failure instanceof LeaseOwnershipLostError)) throw failure; }
         continue;
       }
-      try { await this.transactions.run(async (context) => { await handler.handle(delivery.envelope, context); await this.repository.markProcessed(delivery.id, delivery.leaseToken, this.clock.now(), context); }); }
+      try {
+        await handler.handle(delivery.envelope);
+        await this.transactions.run((context) => this.repository.markProcessed(delivery.id, delivery.leaseToken, this.clock.now(), context));
+      }
       catch (error) {
         if (error instanceof LeaseOwnershipLostError) continue;
         try { await this.fail(delivery.id, delivery.leaseToken, delivery.attemptCount - 1, error); }

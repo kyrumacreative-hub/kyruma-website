@@ -6,12 +6,14 @@ import type { Role } from "../../identity/domain/capabilities";
 export const normalizeEmail = (email: string) => email.trim().toLowerCase();
 export const hashAccessToken = (token: string) => createHash("sha256").update(token, "utf8").digest("hex");
 
-export function issueAccessInvitation(input: { id: string; email: string; role: Role; scope: AccessScope; createdBy: string; correlationId: string; now: Date; expiresAt: Date; token?: string }): { invitation: AccessInvitation; token: string } {
+export function issueAccessInvitation(input: { id: string; email: string; role: Role; scope: AccessScope; createdBy: string; correlationId: string; now: Date; expiresAt: Date; token?: string; tokenVersion?: number }): { invitation: AccessInvitation; token: string } {
   if (!input.scope.organizationId || input.expiresAt <= input.now) throw new AccessInvitationError("Invitation scope and future expiry are required.");
   const email = normalizeEmail(input.email);
   if (!email.includes("@")) throw new AccessInvitationError("A valid email is required.");
   const token = input.token ?? randomBytes(32).toString("base64url");
-  return { token, invitation: { id: input.id, email, role: input.role, scope: input.scope, tokenHash: hashAccessToken(token), status: "pending", expiresAt: input.expiresAt, createdBy: input.createdBy, createdAt: input.now, correlationId: input.correlationId } };
+  const tokenVersion = input.tokenVersion ?? 1;
+  if (!Number.isInteger(tokenVersion) || tokenVersion < 1) throw new AccessInvitationError("A positive token version is required.");
+  return { token, invitation: { id: input.id, email, role: input.role, scope: input.scope, tokenHash: hashAccessToken(token), tokenVersion, status: "pending", expiresAt: input.expiresAt, createdBy: input.createdBy, createdAt: input.now, correlationId: input.correlationId } };
 }
 
 export function acceptAccessInvitation(input: { invitation: AccessInvitation; token: string; identity: ExternalIdentity; userId: string; membershipId: string; now: Date }): MembershipProvision {
@@ -20,4 +22,3 @@ export function acceptAccessInvitation(input: { invitation: AccessInvitation; to
   if (normalizeEmail(input.identity.email) !== invitation.email) throw new AccessIdentityMismatchError("Sign in with the invited email address.");
   return { id: input.membershipId, userId: input.userId, role: invitation.role, scope: invitation.scope, status: "active", grants: [], revocations: [], joinedAt: now };
 }
-

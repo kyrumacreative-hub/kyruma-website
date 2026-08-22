@@ -397,7 +397,11 @@ model AccessInvitation {
   normalizedEmail String
   role            String
   tokenHash       String    @unique
+  tokenVersion    Int       @default(1)
   status          String
+  deliveryStatus  String    @default("pending")
+  providerId      String?
+  deliveredAt     DateTime?
   expiresAt       DateTime
   createdBy       String
   createdAt       DateTime

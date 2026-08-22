@@ -18,5 +18,5 @@ export interface EventBusRepository {
   requeueDeadLetter(id: string, now: Date, context: TransactionContext): Promise<void>;
 }
 
-export interface EventHandler { handle(envelope: EventEnvelope, context: TransactionContext): Promise<void>; }
+export interface EventHandler { handle(envelope: EventEnvelope): Promise<void>; }
 export interface AuditRecorder { recordDeadLetterReprocessed(input: { organizationId: string; eventId: string; deliveryId: string; actorId: string; occurredAt: Date }, context: TransactionContext): Promise<void>; }

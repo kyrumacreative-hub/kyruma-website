@@ -4,13 +4,11 @@ import { randomUUID } from "node:crypto";
 import { Prisma } from "@prisma/client";
 import { clerkClient } from "@clerk/nextjs/server";
 import { redirect } from "next/navigation";
-import { InviteUserUseCase } from "@/features/access/application/InviteUserUseCase";
 import {
   parseExternalResourceUrl,
   type ExternalResourceProvider,
 } from "@/features/access/domain/externalResources";
-import { ClerkAccessInvitationDelivery } from "@/features/access/infrastructure/ClerkAccessInvitationDelivery";
-import { PrismaAccessInvitationRepository } from "@/features/access/infrastructure/PrismaAccessInvitationRepository";
+import { createInvitationWorker, createInvitePartnerUseCase } from "@/features/access/server/invitationComposition";
 import { requireCurrentActor } from "@/features/access/server/currentActor";
 import {
   ensureOrganizationAdminMembership,
@@ -347,11 +345,7 @@ export async function issuePartnerInvitation(formData: FormData): Promise<void> 
 
   actor = await requireCurrentActor();
 
-  const inviteUser = new InviteUserUseCase(
-    new PrismaAccessInvitationRepository(prisma),
-    new ClerkAccessInvitationDelivery(),
-    "https://www.kyruma.com",
-  );
+  const inviteUser = createInvitePartnerUseCase();
 
   const result = await inviteUser.execute(actor, {
     email,
@@ -364,6 +358,10 @@ export async function issuePartnerInvitation(formData: FormData): Promise<void> 
     correlationId: randomUUID(),
     expiresAt: new Date(Date.now() + INVITATION_LIFETIME_MS),
   });
+
+  const worker = createInvitationWorker();
+  await worker.dispatch.execute({ workerId: `access-action:${result.eventId}`, limit: 25 });
+  await worker.process.execute({ workerId: `access-action:${result.eventId}`, limit: 25 });
 
   redirect(
     `/access/admin?sent=1&invitationId=${encodeURIComponent(result.invitationId)}`,
