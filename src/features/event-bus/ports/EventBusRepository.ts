@@ -8,9 +8,9 @@ export interface ClaimedDelivery extends EventDelivery { readonly leaseToken: st
 
 export interface EventBusRepository {
   append(envelope: EventEnvelope, context: TransactionContext): Promise<void>;
-  claimPendingEvents(input: { workerId: string; now: Date; staleBefore: Date; limit: number }): Promise<readonly ClaimedEvent[]>;
+  claimPendingEvents(input: { workerId: string; now: Date; staleBefore: Date; limit: number; handlers?: readonly RegisteredHandler[] }): Promise<readonly ClaimedEvent[]>;
   materializeDeliveries(claim: ClaimedEvent, handlers: readonly RegisteredHandler[], dispatchedAt: Date): Promise<void>;
-  claimDeliveries(input: { workerId: string; now: Date; staleBefore: Date; limit: number }): Promise<readonly ClaimedDelivery[]>;
+  claimDeliveries(input: { workerId: string; now: Date; staleBefore: Date; limit: number; handlers?: readonly RegisteredHandler[] }): Promise<readonly ClaimedDelivery[]>;
   markProcessed(id: string, leaseToken: string, now: Date, context: TransactionContext): Promise<void>;
   markFailed(id: string, leaseToken: string, input: { now: Date; nextRetryAt: Date | null; code: string; message: string }, context: TransactionContext): Promise<void>;
   getStatus(eventId: string, organizationId: string): Promise<EventDeliveryStatus | null>;

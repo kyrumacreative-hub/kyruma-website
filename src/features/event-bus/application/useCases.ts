@@ -28,7 +28,7 @@ export class DispatchPendingEventsUseCase {
   constructor(private readonly repository: EventBusRepository, private readonly transport: EventTransport, private readonly handlers: EventHandlerRegistry, private readonly clock: Clock) {}
   async execute(input: { workerId: string; limit?: number }): Promise<number> {
     const now = this.clock.now();
-    const events = await this.repository.claimPendingEvents({ workerId: input.workerId, now, staleBefore: new Date(now.getTime() - 300_000), limit: input.limit ?? 100 });
+    const events = await this.repository.claimPendingEvents({ workerId: input.workerId, now, staleBefore: new Date(now.getTime() - 300_000), limit: input.limit ?? 100, handlers: this.handlers.registrations() });
     for (const claim of events) {
       try { await this.transport.materialize(claim, this.handlers.subscriptions(claim.envelope.eventType, claim.envelope.eventVersion), now); }
       catch (error) { if (!(error instanceof LeaseOwnershipLostError)) throw error; }
@@ -41,7 +41,7 @@ export class ProcessEventUseCase {
   constructor(private readonly repository: EventBusRepository, private readonly handlers: EventHandlerRegistry, private readonly transactions: TransactionRunner, private readonly clock: Clock) {}
   async execute(input: { workerId: string; limit?: number }): Promise<number> {
     const now = this.clock.now();
-    const deliveries = await this.repository.claimDeliveries({ workerId: input.workerId, now, staleBefore: new Date(now.getTime() - 300_000), limit: input.limit ?? 100 });
+    const deliveries = await this.repository.claimDeliveries({ workerId: input.workerId, now, staleBefore: new Date(now.getTime() - 300_000), limit: input.limit ?? 100, handlers: this.handlers.registrations() });
     for (const delivery of deliveries) {
       const handler = this.handlers.resolve(delivery.consumer, delivery.handler, delivery.envelope.eventType, delivery.envelope.eventVersion);
       if (!handler) {

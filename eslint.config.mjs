@@ -28,6 +28,7 @@ const eslintConfig = defineConfig([
     ".operations-hub-test-build/**",
     ".operations-persistence-test-build/**",
     ".access-test-build/**",
+    ".access-persistence-test-build/**",
     ".partner-portal-test-build/**",
     ".automations-test-build/**",
     "next-env.d.ts",

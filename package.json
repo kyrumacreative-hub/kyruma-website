@@ -23,6 +23,7 @@
     "test:audit": "tsc -p tsconfig.audit-tests.json && node --test .audit-test-build/features/audit/domain/*.test.js .audit-test-build/features/audit/infrastructure/persistence/AuditEventMapper.test.js",
     "test:audit-persistence": "set -a; . ./.env.local; set +a; DATABASE_URL=\"$TEST_DATABASE_URL\" tsc -p tsconfig.audit-persistence-tests.json && DATABASE_URL=\"$TEST_DATABASE_URL\" node --test .audit-persistence-test-build/features/audit/infrastructure/persistence/*.integration.test.js",
     "test:access": "tsc -p tsconfig.access-tests.json && node --test .access-test-build/features/access/domain/*.test.js .access-test-build/features/access/application/*.test.js .access-test-build/features/access/infrastructure/*.test.js",
+    "test:access-persistence": "set -a; . ./.env.local; set +a; DATABASE_URL=\"$TEST_DATABASE_URL\" tsc -p tsconfig.access-persistence-tests.json && DATABASE_URL=\"$TEST_DATABASE_URL\" node --test .access-persistence-test-build/features/access/infrastructure/*.integration.test.js",
     "test:partner-portal": "tsc -p tsconfig.partner-portal-tests.json && node --test .partner-portal-test-build/features/partner-portal/application/*.test.js",
     "test:automations": "tsc -p tsconfig.automations-tests.json && node --test .automations-test-build/features/automations/application/*.test.js"
   },

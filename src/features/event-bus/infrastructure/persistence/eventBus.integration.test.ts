@@ -96,4 +96,32 @@ test("claims a delivery once and fences a stale consumer after reassignment", as
   assert.equal((await repository.getStatus(value.eventId, value.organizationId))?.deliveries[0].status, "processed");
 });
 
+test("scopes outbox and delivery claims to the worker's registered handlers", async () => {
+  const workspaceEvent = event();
+  const accessEvent: EventEnvelope = { ...event(), eventType: "partner.invitation.requested.v1", source: "access", aggregateType: "AccessInvitation" };
+  await transactions.run(async (context) => {
+    await repository.append(workspaceEvent, context);
+    await repository.append(accessEvent, context);
+  });
+  const workspaceHandler = { consumer: "workspace", handler: "activate", eventType: workspaceEvent.eventType, eventVersion: 1 };
+  const accessHandler = { consumer: "access", handler: "deliver-partner-invitation", eventType: accessEvent.eventType, eventVersion: 1 };
+
+  const accessClaims = await repository.claimPendingEvents({ workerId: "access-dispatcher", now, staleBefore: new Date(0), limit: 100, handlers: [accessHandler] });
+  assert.equal(accessClaims.some((claim) => claim.envelope.eventId === workspaceEvent.eventId), false);
+  const claimedAccess = accessClaims.find((claim) => claim.envelope.eventId === accessEvent.eventId)!;
+  assert.ok(claimedAccess);
+  await repository.materializeDeliveries(claimedAccess, [accessHandler], now);
+
+  const workspaceClaims = await repository.claimPendingEvents({ workerId: "workspace-dispatcher", now, staleBefore: new Date(0), limit: 100, handlers: [workspaceHandler] });
+  assert.equal(workspaceClaims.some((claim) => claim.envelope.eventId === accessEvent.eventId), false);
+  const claimedWorkspace = workspaceClaims.find((claim) => claim.envelope.eventId === workspaceEvent.eventId)!;
+  assert.ok(claimedWorkspace);
+  await repository.materializeDeliveries(claimedWorkspace, [workspaceHandler], now);
+
+  const deliveries = await repository.claimDeliveries({ workerId: "access-consumer", now, staleBefore: new Date(0), limit: 100, handlers: [accessHandler] });
+  assert.equal(deliveries.some((delivery) => delivery.eventId === workspaceEvent.eventId), false);
+  assert.ok(deliveries.some((delivery) => delivery.eventId === accessEvent.eventId));
+  assert.equal((await repository.getStatus(workspaceEvent.eventId, workspaceEvent.organizationId))?.deliveries[0].status, "pending");
+});
+
 test.after(async () => { await client.$disconnect(); });
