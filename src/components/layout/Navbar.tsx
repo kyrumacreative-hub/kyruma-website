@@ -8,8 +8,8 @@ import { useLanguage } from "@/components/LanguageProvider";
 import { trackMarketingEvent } from "@/features/marketing/MarketingScripts";
 
 const copy = {
-  es: { approach: "Enfoque", services: "Qué hacemos", method: "Método", work: "Trabajo", cta: "Iniciar conversación" },
-  en: { approach: "Approach", services: "What we do", method: "Method", work: "Work", cta: "Start conversation" },
+  es: { approach: "Enfoque", services: "Qué hacemos", method: "Método", work: "Trabajo", clientAccess: "Acceso clientes", cta: "Iniciar conversación" },
+  en: { approach: "Approach", services: "What we do", method: "Method", work: "Work", clientAccess: "Client access", cta: "Start conversation" },
 } as const;
 
 export default function Navbar() {
@@ -41,7 +41,7 @@ export default function Navbar() {
           <Image src="/kyruma-isotipo.png" alt="" width={24} height={24} className="h-5 w-5 object-contain" priority />
           <span className="text-[13px] font-medium tracking-[0.22em]">KYRUMA</span>
         </Link>
-        <nav className="hidden items-center gap-8 lg:flex" aria-label="Main navigation">
+        <nav className="hidden items-center gap-8 xl:flex" aria-label="Main navigation">
           {links.map(([label, href]) => <Link key={href} href={href} className="nav-link">{label}</Link>)}
         </nav>
         <div className="flex items-center gap-3">
@@ -51,11 +51,12 @@ export default function Navbar() {
             <button className="control" aria-pressed={language === "en"} onClick={() => setLanguage("en")}>EN</button>
           </div>
           <button className="control hidden sm:block" onClick={() => setTheme(theme === "system" ? "light" : theme === "light" ? "dark" : "system")} aria-label={`Theme: ${theme}`}>{theme === "light" ? "○" : theme === "dark" ? "●" : "◐"}</button>
+          <Link href="/sign-in" className="hidden items-center gap-2 rounded-full border border-[var(--border-strong)] px-4 py-3 text-[10px] uppercase tracking-[.14em] text-[var(--muted)] transition-colors hover:border-[var(--foreground)] hover:text-[var(--foreground)] lg:inline-flex">{t.clientAccess}<span aria-hidden="true">→</span></Link>
           <Link href="/#contact" className="button-primary hidden md:inline-flex" onClick={() => trackMarketingEvent("hero_cta", { placement: "navbar" })}>{t.cta}<span>→</span></Link>
-          <button className="control lg:hidden" aria-expanded={menu} aria-label="Menu" onClick={() => setMenu(!menu)}>{menu ? "×" : "Menu"}</button>
+          <button className="control xl:hidden" aria-expanded={menu} aria-label="Menu" onClick={() => setMenu(!menu)}>{menu ? "×" : "Menu"}</button>
         </div>
       </div>
-      {menu && <div className="border-t border-[var(--border)] bg-[var(--background)] lg:hidden"><nav className="site-container flex flex-col py-5">{links.map(([label, href]) => <Link key={href} href={href} onClick={() => setMenu(false)} className="border-b border-[var(--border)] py-4 text-lg font-light">{label}</Link>)}<Link href="/#contact" onClick={() => setMenu(false)} className="mt-5 text-link">{t.cta}<span>→</span></Link><div className="mt-6 flex gap-4"><button className="control" onClick={() => setLanguage("es")}>ES</button><button className="control" onClick={() => setLanguage("en")}>EN</button><button className="control" onClick={() => setTheme(theme === "system" ? "light" : theme === "light" ? "dark" : "system")}>Theme · {theme}</button></div></nav></div>}
+      {menu && <div className="border-t border-[var(--border)] bg-[var(--background)] xl:hidden"><nav className="site-container flex flex-col py-5">{links.map(([label, href]) => <Link key={href} href={href} onClick={() => setMenu(false)} className="border-b border-[var(--border)] py-4 text-lg font-light">{label}</Link>)}<Link href="/sign-in" onClick={() => setMenu(false)} className="border-b border-[var(--border)] py-4 text-lg font-light text-[var(--primary)]">{t.clientAccess}<span className="ml-2" aria-hidden="true">→</span></Link><Link href="/#contact" onClick={() => setMenu(false)} className="mt-5 text-link">{t.cta}<span>→</span></Link><div className="mt-6 flex gap-4"><button className="control" onClick={() => setLanguage("es")}>ES</button><button className="control" onClick={() => setLanguage("en")}>EN</button><button className="control" onClick={() => setTheme(theme === "system" ? "light" : theme === "light" ? "dark" : "system")}>Theme · {theme}</button></div></nav></div>}
     </header>
   );
 }

@@ -45,6 +45,9 @@ export default function Footer() {
           <a href="tel:+34614189346" className="text-link mt-3">
             614 189 346 <span>→</span>
           </a>
+          <Link href="/sign-in" className="text-link mt-3">
+            {language === "es" ? "Acceso clientes" : "Client access"} <span>→</span>
+          </Link>
         </div>
 
         <div className="md:col-span-2">
