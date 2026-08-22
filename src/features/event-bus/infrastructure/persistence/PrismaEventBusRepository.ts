@@ -34,18 +34,25 @@ export class PrismaEventBusRepository implements EventBusRepository {
     await db.eventOutbox.create({ data: { eventId: envelope.eventId, eventType: envelope.eventType, eventVersion: envelope.eventVersion, organizationId: envelope.organizationId, aggregateType: envelope.aggregateType, aggregateId: envelope.aggregateId, correlationId: envelope.correlationId, causationId: envelope.causationId, envelope: envelope as unknown as Prisma.InputJsonValue, status: "pending", availableAt: new Date(envelope.publishedAt), createdAt: new Date(envelope.publishedAt) } });
   }
 
-  async claimPendingEvents(input: { workerId: string; now: Date; staleBefore: Date; limit: number }): Promise<readonly ClaimedEvent[]> {
+  async claimPendingEvents(input: { workerId: string; now: Date; staleBefore: Date; limit: number; handlers?: readonly RegisteredHandler[] }): Promise<readonly ClaimedEvent[]> {
     const leaseToken = this.newId();
+    const registrations = input.handlers;
+    const registrationFilter = registrations === undefined
+      ? Prisma.sql`TRUE`
+      : registrations.length === 0
+        ? Prisma.sql`FALSE`
+        : Prisma.join(registrations.map((item) => Prisma.sql`(event."eventType" = ${item.eventType} AND event."eventVersion" = ${item.eventVersion})`), " OR ");
     const rows = await this.client.$queryRaw<ClaimedEventRow[]>(Prisma.sql`
       WITH candidates AS (
-        SELECT "eventId"
-        FROM "EventOutbox"
-        WHERE "availableAt" <= ${input.now}
+        SELECT event."eventId"
+        FROM "EventOutbox" AS event
+        WHERE event."availableAt" <= ${input.now}
+          AND (${registrationFilter})
           AND (
-            "status" = 'pending'
-            OR ("status" = 'dispatching' AND "lockedAt" < ${input.staleBefore})
+            event."status" = 'pending'
+            OR (event."status" = 'dispatching' AND event."lockedAt" < ${input.staleBefore})
           )
-        ORDER BY "createdAt" ASC
+        ORDER BY event."createdAt" ASC
         FOR UPDATE SKIP LOCKED
         LIMIT ${input.limit}
       )
@@ -69,16 +76,26 @@ export class PrismaEventBusRepository implements EventBusRepository {
     });
   }
 
-  async claimDeliveries(input: { workerId: string; now: Date; staleBefore: Date; limit: number }): Promise<readonly ClaimedDelivery[]> {
+  async claimDeliveries(input: { workerId: string; now: Date; staleBefore: Date; limit: number; handlers?: readonly RegisteredHandler[] }): Promise<readonly ClaimedDelivery[]> {
     const leaseToken = this.newId();
+    const registrations = input.handlers;
+    const registrationFilter = registrations === undefined
+      ? Prisma.sql`TRUE`
+      : registrations.length === 0
+        ? Prisma.sql`FALSE`
+        : Prisma.join(registrations.map((item) => Prisma.sql`(delivery."consumer" = ${item.consumer} AND delivery."handler" = ${item.handler} AND event."eventType" = ${item.eventType} AND event."eventVersion" = ${item.eventVersion})`), " OR ");
     const rows = await this.client.$queryRaw<ClaimedDeliveryRow[]>(Prisma.sql`
       WITH candidates AS (
-        SELECT "id"
-        FROM "EventProcessingRecord"
-        WHERE "status" = 'pending'
-          OR ("status" = 'retrying' AND "nextRetryAt" <= ${input.now})
-          OR ("status" = 'processing' AND "lockedAt" < ${input.staleBefore})
-        ORDER BY "createdAt" ASC
+        SELECT delivery."id"
+        FROM "EventProcessingRecord" AS delivery
+        INNER JOIN "EventOutbox" AS event ON event."eventId" = delivery."eventId"
+        WHERE (${registrationFilter})
+          AND (
+            delivery."status" = 'pending'
+            OR (delivery."status" = 'retrying' AND delivery."nextRetryAt" <= ${input.now})
+            OR (delivery."status" = 'processing' AND delivery."lockedAt" < ${input.staleBefore})
+          )
+        ORDER BY delivery."createdAt" ASC
         FOR UPDATE SKIP LOCKED
         LIMIT ${input.limit}
       ), claimed AS (

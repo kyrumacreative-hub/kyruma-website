@@ -44,6 +44,8 @@ jobs:
       - run: npm run test:partner-persistence
       - run: npm run test:event-bus
       - run: npm run test:event-bus-persistence
+      - run: npm run test:access
+      - run: npm run test:access-persistence
       - run: npm run lint
       - run: npx tsc --noEmit
       - run: npm run build

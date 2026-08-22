@@ -48,6 +48,8 @@ jobs:
       - run: npm run test:event-bus-persistence
       - run: npm run test:audit
       - run: npm run test:audit-persistence
+      - run: npm run test:access
+      - run: npm run test:access-persistence
       - run: npm run lint
       - run: npx tsc --noEmit
       - run: npm run build
