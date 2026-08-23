@@ -1,12 +1,12 @@
 {
   "functions": {
-    "src/app/api/cron/access-invitations/route.ts": {
+    "src/app/api/cron/operations/route.ts": {
       "maxDuration": 60
     }
   },
   "crons": [
     {
-      "path": "/api/cron/access-invitations",
+      "path": "/api/cron/operations",
       "schedule": "0 3 * * *"
     }
   ]

@@ -37,6 +37,7 @@ export default function BriefRenderer({ brief }: BriefRendererProps) {
   const hasStarted = useRef(false);
   const hasTrackedStart = useRef(false);
   const hasTrackedResume = useRef(false);
+  const submissionId = useRef<string | null>(null);
 
   const totalConversations = brief.sections.length;
   const isFirstConversation = currentSection === 0;
@@ -115,10 +116,12 @@ export default function BriefRenderer({ brief }: BriefRendererProps) {
     setError(null);
 
     try {
+      submissionId.current ??= crypto.randomUUID();
       const response = await fetch("/api/brief", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
+          submissionId: submissionId.current,
           brief: brief.id,
           submittedAt: new Date().toISOString(),
           answers,
@@ -131,6 +134,7 @@ export default function BriefRenderer({ brief }: BriefRendererProps) {
 
       clearWorkspace();
       trackMarketingEvent("complete_discovery");
+      submissionId.current = null;
       setIsSubmitted(true);
     } catch {
       setError("No se ha podido compartir vuestro Discovery. Por favor, intentadlo de nuevo.");

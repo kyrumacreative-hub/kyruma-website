@@ -21,6 +21,27 @@ model Lead {
   archiveReason    String?
   ownerships       Ownership[]
   qualifications   Qualification[]
+  intake           LeadIntake?
+}
+
+model LeadIntake {
+  id                   String   @id
+  leadId               String   @unique
+  organizationId       String
+  normalizedEmail      String
+  contactName          String
+  company              String
+  serviceInterest      String
+  collaboration        String
+  source               String
+  createdAt            DateTime
+  updatedAt            DateTime
+  discoveryStartedAt   DateTime?
+  discoveryCompletedAt DateTime?
+  lead                 Lead     @relation(fields: [leadId], references: [id], onDelete: Restrict)
+
+  @@index([normalizedEmail, createdAt])
+  @@index([organizationId, createdAt])
 }
 
 model Ownership {
@@ -500,4 +521,25 @@ model AutomationRun {
 
   @@unique([automationId, sourceEventId])
   @@index([organizationId, status, nextRetryAt])
+}
+
+model OperationalTask {
+  id             String    @id
+  organizationId String
+  sourceEventId  String
+  taskType       String
+  title          String
+  status         String
+  leadId         String?
+  partnerId      String?
+  workspaceId    String?
+  assigneeId     String?
+  dueAt          DateTime?
+  createdAt      DateTime
+  completedAt    DateTime?
+
+  @@unique([organizationId, sourceEventId, taskType])
+  @@index([organizationId, status, dueAt])
+  @@index([leadId, status])
+  @@index([workspaceId, status])
 }

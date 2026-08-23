@@ -65,6 +65,8 @@ jobs:
       - run: npm run test:access-persistence
       - run: npm run test:partner-portal
       - run: npm run test:automations
+      - run: npm run test:operating-layer
+      - run: npm run test:operating-layer-persistence
       - run: npm run lint
       - run: npx tsc --noEmit
       - run: npm run build

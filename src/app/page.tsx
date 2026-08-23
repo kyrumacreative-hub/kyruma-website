@@ -154,6 +154,7 @@ export default function Home() {
 
   const [formState, setFormState] = useState<"idle" | "sending" | "success" | "error">("idle");
   const startedAt = useRef(0);
+  const submissionId = useRef<string | null>(null);
 
   useEffect(() => {
     startedAt.current = Date.now();
@@ -168,10 +169,12 @@ export default function Home() {
     setFormState("sending");
 
     try {
+      submissionId.current ??= crypto.randomUUID();
       const response = await fetch("/api/contact", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
+          submissionId: submissionId.current,
           name: data.get("name"),
           company: data.get("company"),
           email: data.get("email"),
@@ -194,6 +197,7 @@ export default function Home() {
       trackMarketingEvent("contact_submitted", { collaboration: data.get("collaboration"), help: data.get("help"), newsletter_opt_in: data.get("newsletter") === "on" });
       trackMarketingEvent("lead");
       form.reset();
+      submissionId.current = null;
       setFormState("success");
     } catch {
       setFormState("error");

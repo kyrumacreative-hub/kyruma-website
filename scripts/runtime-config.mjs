@@ -6,6 +6,7 @@ const requiredProductionValues = [
   "APP_URL",
   "CRON_SECRET",
   "KYRUMA_INTERNAL_ADMIN_EMAILS",
+  "KYRUMA_DEFAULT_LEAD_OWNER_ID",
   "RESEND_API_KEY",
 ];
 
@@ -36,4 +37,3 @@ export function validateProductionEnvironment(environment) {
 }
 
 export { requiredProductionValues };
-

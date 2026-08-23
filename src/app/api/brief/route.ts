@@ -3,6 +3,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { websiteBrief } from "@/features/workspace/data/website-brief";
 import { AnswerValue } from "@/features/workspace/engine/answers";
 import { sendMetaConversion } from "@/features/marketing/metaCapi";
+import { capturePublicLead, completeDiscoveryForEmail } from "@/features/operating-layer/server/leadFunnel";
 
 export const runtime = "nodejs";
 
@@ -105,15 +106,31 @@ export async function POST(req: NextRequest) {
       ? answers.company_name.replace(/[\r\n]/g, " ")
       : "Nuevo";
 
+    const discoveryEmail = typeof answers.email === "string" ? answers.email : undefined;
+    const submissionId = isRecord(body) && typeof body.submissionId === "string" ? body.submissionId : "";
+    if (!discoveryEmail || !submissionId) return NextResponse.json({ ok: false, error: "Invalid brief" }, { status: 400 });
+    const existingLead = await completeDiscoveryForEmail(discoveryEmail);
+    if (!existingLead.matched) {
+      await capturePublicLead({
+        submissionId,
+        email: discoveryEmail,
+        contactName: typeof answers.contact_name === "string" ? answers.contact_name : "Discovery contact",
+        company: companyName,
+        serviceInterest: "KYRUMA Discovery",
+        collaboration: "Direct Discovery",
+      });
+      await completeDiscoveryForEmail(discoveryEmail);
+    }
+
     await sendEmail(apiKey, {
       from: "KYRUMA <hello@kyruma.com>",
       to: ["hello@kyruma.com"],
-      reply_to: typeof answers.email === "string" ? answers.email : undefined,
+      reply_to: discoveryEmail,
       subject: `Nuevo KYRUMA Discovery — ${companyName}`,
       html: `<h1>Nuevo KYRUMA Discovery recibido</h1><table width="100%" cellpadding="0" cellspacing="0" style="border-collapse:collapse">${rows}</table>`,
     });
 
-    await sendMetaConversion({ eventName: "CompleteDiscovery", email: typeof answers.email === "string" ? answers.email : undefined, eventSourceUrl: isRecord(body) && typeof body.landingPage === "string" ? body.landingPage : undefined, consent: isRecord(body) && body.marketingConsent === true }).catch((error) => console.error("Meta CAPI Discovery event failed", error));
+    await sendMetaConversion({ eventName: "CompleteDiscovery", email: discoveryEmail, eventSourceUrl: isRecord(body) && typeof body.landingPage === "string" ? body.landingPage : undefined, consent: isRecord(body) && body.marketingConsent === true }).catch((error) => console.error("Meta CAPI Discovery event failed", error));
 
     return NextResponse.json({ ok: true });
   } catch (error) {

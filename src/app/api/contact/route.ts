@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { sendMetaConversion } from "@/features/marketing/metaCapi";
+import { capturePublicLead } from "@/features/operating-layer/server/leadFunnel";
 
 export const runtime = "nodejs";
 
@@ -7,6 +8,7 @@ const RESEND_ENDPOINT = "https://api.resend.com/emails";
 const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
 type ContactPayload = {
+  submissionId?: unknown;
   name?: unknown;
   company?: unknown;
   email?: unknown;
@@ -56,6 +58,7 @@ export async function POST(request: NextRequest) {
     if (!apiKey) return NextResponse.json({ ok: false }, { status: 500 });
 
     const body = (await request.json()) as ContactPayload;
+    const submissionId = text(body.submissionId, 80);
     const name = text(body.name, 100);
     const company = text(body.company, 140);
     const email = text(body.email, 180).toLowerCase();
@@ -75,9 +78,11 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ ok: true });
     }
 
-    if (!name || !company || !EMAIL_RE.test(email) || !help || !collaboration || need.length < 20 || !privacy) {
+    if (!submissionId || !name || !company || !EMAIL_RE.test(email) || !help || !collaboration || need.length < 20 || !privacy) {
       return NextResponse.json({ ok: false, code: "INVALID" }, { status: 400 });
     }
+
+    await capturePublicLead({ submissionId, email, contactName: name, company, serviceInterest: help, collaboration });
 
     const safe = {
       name: escapeHtml(name), company: escapeHtml(company), email: escapeHtml(email),
