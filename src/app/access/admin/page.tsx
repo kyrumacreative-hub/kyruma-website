@@ -16,6 +16,8 @@ export default async function AccessAdminPage({
 }: {
   searchParams: Promise<{
     sent?: string;
+    delivery?: "sent" | "queued" | "failed";
+    error?: string;
     created?: string;
     workspaceCode?: string;
     linked?: string;
@@ -28,6 +30,9 @@ export default async function AccessAdminPage({
   }
 
   const params = await searchParams;
+  const deliveryError = params.error && /^[A-Z0-9_]{1,100}$/.test(params.error)
+    ? params.error
+    : "ACCESS_INVITATION_DELIVERY_FAILED";
 
   const workspaces = await prisma.workspace.findMany({
     orderBy: [{ createdAt: "desc" }],
@@ -95,11 +100,29 @@ export default async function AccessAdminPage({
           <UserButton />
         </header>
 
-        {params.sent === "1" ? (
+        {params.delivery === "sent" || params.sent === "1" ? (
           <div className="mt-8 rounded-2xl border border-[var(--border)] bg-[var(--surface)] p-5">
-            <p>Invitación emitida correctamente.</p>
+            <p>Invitación enviada correctamente.</p>
             <p className="mt-2 text-sm text-[var(--muted)]">
-              Clerk enviará el enlace de acceso al email indicado.
+              Clerk ha aceptado la entrega del email de acceso.
+            </p>
+          </div>
+        ) : null}
+
+        {params.delivery === "queued" ? (
+          <div className="mt-8 rounded-2xl border border-[var(--border)] bg-[var(--surface)] p-5">
+            <p>Invitación en cola de entrega.</p>
+            <p className="mt-2 text-sm text-[var(--muted)]">
+              El Event Bus volverá a procesarla de forma segura sin crear duplicados.
+            </p>
+          </div>
+        ) : null}
+
+        {params.delivery === "failed" ? (
+          <div className="mt-8 rounded-2xl border border-red-300 bg-[var(--surface)] p-5">
+            <p>No se ha podido entregar la invitación.</p>
+            <p className="mt-2 text-sm text-[var(--muted)]">
+              Revisa la configuración de Clerk y vuelve a emitirla. Código: {deliveryError}.
             </p>
           </div>
         ) : null}

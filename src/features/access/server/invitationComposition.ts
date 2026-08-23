@@ -12,19 +12,10 @@ import { AccessInvitationAuditAdapter, AccessInvitationEventAdapter, PARTNER_INV
 import { ClerkAccessInvitationDelivery } from "../infrastructure/ClerkAccessInvitationDelivery";
 import { HmacInvitationTokenFactory } from "../infrastructure/HmacInvitationTokenFactory";
 import { PrismaAccessInvitationRepository } from "../infrastructure/PrismaAccessInvitationRepository";
+import { resolvePublicOrigin } from "./publicOrigin";
 
 function tokenFactory(): HmacInvitationTokenFactory {
   return new HmacInvitationTokenFactory({ 1: process.env.ACCESS_INVITATION_TOKEN_SECRET ?? "" });
-}
-
-function publicOrigin(): string {
-  const configured = process.env.APP_URL
-    ?? process.env.NEXT_PUBLIC_APP_URL
-    ?? (process.env.NODE_ENV === "production" ? "https://www.kyruma.com" : "http://localhost:3000");
-  const origin = new URL(configured);
-  if (origin.protocol !== "http:" && origin.protocol !== "https:") throw new Error("APP_URL must use http or https.");
-  if (process.env.NODE_ENV === "production" && origin.protocol !== "https:") throw new Error("APP_URL must use https in production.");
-  return origin.origin;
 }
 
 function foundation() {
@@ -40,10 +31,18 @@ export function createInvitePartnerUseCase(): InviteUserUseCase {
   return new InviteUserUseCase({ transactions: value.transactions, repository: value.invitations, audit: new AccessInvitationAuditAdapter(new PrismaAuditRepository(prisma, value.contexts)), events: new AccessInvitationEventAdapter(value.events), tokens: tokenFactory() });
 }
 
-export function createInvitationWorker(): { dispatch: DispatchPendingEventsUseCase; process: ProcessEventUseCase } {
+export function createInvitationWorker(): {
+  dispatch: DispatchPendingEventsUseCase;
+  process: ProcessEventUseCase;
+  status: (eventId: string, organizationId: string) => ReturnType<PrismaEventBusRepository["getStatus"]>;
+} {
   const value = foundation(); const handlers = new EventHandlerRegistry();
   const audit = new AccessInvitationAuditAdapter(new PrismaAuditRepository(prisma, value.contexts));
-  handlers.register({ consumer: "access", handler: "deliver-partner-invitation", eventType: PARTNER_INVITATION_REQUESTED, eventVersion: 1, implementation: new DeliverPartnerInvitationHandler(value.invitations, new ClerkAccessInvitationDelivery(), tokenFactory(), value.transactions, audit, publicOrigin()) });
+  handlers.register({ consumer: "access", handler: "deliver-partner-invitation", eventType: PARTNER_INVITATION_REQUESTED, eventVersion: 1, implementation: new DeliverPartnerInvitationHandler(value.invitations, new ClerkAccessInvitationDelivery(), tokenFactory(), value.transactions, audit, resolvePublicOrigin(process.env)) });
   const clock = { now: () => new Date() };
-  return { dispatch: new DispatchPendingEventsUseCase(value.events, new PostgresEventTransport(value.events), handlers, clock), process: new ProcessEventUseCase(value.events, handlers, value.transactions, clock) };
+  return {
+    dispatch: new DispatchPendingEventsUseCase(value.events, new PostgresEventTransport(value.events), handlers, clock),
+    process: new ProcessEventUseCase(value.events, handlers, value.transactions, clock),
+    status: (eventId, organizationId) => value.events.getStatus(eventId, organizationId),
+  };
 }
