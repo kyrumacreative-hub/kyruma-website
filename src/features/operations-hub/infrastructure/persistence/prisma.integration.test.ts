@@ -158,10 +158,19 @@ test("keeps a committed Project when asynchronous Event Bus delivery fails", asy
   await new CreateProjectUseCase(useCases).execute(input);
   await new ActivateProjectUseCase(useCases).execute({ ...input, eventId: `${input.eventId}:activate`, correlationId: `${input.correlationId}:activate` });
 
+  const handlers = new EventHandlerRegistry();
+  handlers.register({
+    consumer: "operations-test",
+    handler: "observe-project-created",
+    eventType: "operations.project-created.v1",
+    eventVersion: 1,
+    implementation: { handle: async () => undefined },
+  });
+
   await assert.rejects(() => new DispatchPendingEventsUseCase(
     eventRepository,
     { materialize: async () => { throw new Error("transport unavailable"); } },
-    new EventHandlerRegistry(),
+    handlers,
     { now: () => new Date("2026-08-14T10:10:00.000Z") },
   ).execute({ workerId: "operations-test-worker" }));
 
