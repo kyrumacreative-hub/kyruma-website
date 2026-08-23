@@ -1,0 +1,17 @@
+{
+  "extends": "./tsconfig.json",
+  "compilerOptions": {
+    "module": "commonjs",
+    "moduleResolution": "node",
+    "noEmit": false,
+    "outDir": ".operating-layer-test-build",
+    "rootDir": "src",
+    "incremental": false
+  },
+  "include": [
+    "src/features/operating-layer/domain/**/*.ts",
+    "src/features/event-bus/domain/contracts.ts",
+    "src/features/event-bus/domain/validation.ts",
+    "src/features/event-bus/domain/errors.ts"
+  ]
+}

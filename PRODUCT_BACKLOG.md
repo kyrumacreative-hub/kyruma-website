@@ -4,9 +4,16 @@ Este documento es la fuente única de prioridades del producto. Las ideas se reg
 
 ## NOW — Platform Experience Program
 
-Solo puede haber un objetivo activo. La secuencia aprobada es PS-010 → PS-011 → PS-012; cada PS debe cerrar sus gates antes de activar el siguiente.
+### Cierre integral técnico — ACTIVE
 
-### Platform Experience activation gates — ACTIVE
+- Conectar el formulario público con el ciclo operativo Lead → Discovery → Qualification.
+- Materializar tareas idempotentes desde Event Bus y operar el pilotaje de KYR-001 desde una vista interna.
+- Exponer la cola de KYRUMA AI con revisión humana obligatoria; ningún output de IA se activa automáticamente.
+- Mantener Legal y Commercial Dry Run como gates externos explícitos, nunca inferidos desde evidencia técnica.
+
+El cierre integral es el único objetivo activo y reutiliza los gates de Platform ya aprobados.
+
+### Platform Experience activation gates — SUBGATE
 
 - Blindar los claims del Event Bus con `FOR UPDATE SKIP LOCKED`, leases con fencing y regresión PostgreSQL antes de conectar nuevos flujos de Platform.
 - Provisionar Clerk y sus variables seguras.

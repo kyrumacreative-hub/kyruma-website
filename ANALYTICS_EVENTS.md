@@ -20,3 +20,15 @@ Todos los eventos se envían al `dataLayer` con el prefijo `kyruma_`. En GTM, cr
 | `scroll_50` / `scroll_90` | `kyruma_scroll_50` / `kyruma_scroll_90` | GA4 | Profundidad de página |
 
 Cada evento incorpora, cuando existe consentimiento, `utm_source`, `utm_medium`, `utm_campaign`, `referrer` y `landing_page`.
+
+## Funnel operativo server-side
+
+Los eventos de marketing anteriores dependen del consentimiento y no son la fuente de verdad operativa. El funnel interno persiste y publica, sin PII en el payload, estos contratos del Event Bus:
+
+| Contrato | Cambio de estado | Automatización inicial |
+| --- | --- | --- |
+| `lead.created.v1` | Contacto válido → `identified` | Crear tarea `lead.follow-up`, vencimiento 24 h |
+| `lead.discovery-completed.v1` | Discovery enviado → `discovery_completed` | Crear tarea `lead.qualify`, vencimiento 24 h |
+| `lead.qualified.v1` | Decisión humana documentada → `qualified` | Evidencia de funnel; no crea Partner automáticamente |
+
+El identificador de envío del navegador hace idempotente la captura del Lead. La calificación exige un administrador interno autenticado; no existe calificación automática por IA.

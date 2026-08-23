@@ -1,0 +1,23 @@
+{
+  "extends": "./tsconfig.json",
+  "compilerOptions": {
+    "module": "commonjs",
+    "moduleResolution": "node",
+    "noEmit": false,
+    "outDir": ".operating-layer-persistence-test-build",
+    "rootDir": "src",
+    "incremental": false
+  },
+  "include": [
+    "src/features/operating-layer/infrastructure/**/*.ts",
+    "src/features/operating-layer/domain/**/*.ts",
+    "src/features/automations/application/**/*.ts",
+    "src/features/automations/domain/**/*.ts",
+    "src/features/automations/ports/**/*.ts",
+    "src/features/automations/infrastructure/PrismaAutomationRepository.ts",
+    "src/features/event-bus/domain/contracts.ts",
+    "src/features/lead-lifecycle/ports/TransactionRunner.ts",
+    "src/features/lead-lifecycle/infrastructure/persistence/PrismaTransactionContext.ts",
+    "src/features/lead-lifecycle/infrastructure/persistence/PrismaTransactionRunner.ts"
+  ]
+}

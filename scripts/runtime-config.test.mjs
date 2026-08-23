@@ -10,6 +10,7 @@ const valid = {
   APP_URL: "https://www.kyruma.com",
   CRON_SECRET: "b".repeat(32),
   KYRUMA_INTERNAL_ADMIN_EMAILS: "operations@example.com",
+  KYRUMA_DEFAULT_LEAD_OWNER_ID: "internal-owner-id",
   RESEND_API_KEY: "configured-by-vercel",
 };
 
@@ -23,4 +24,3 @@ test("reports names and reasons without exposing secret values", () => {
   assert.deepEqual(result.failures, ["CRON_SECRET:too_short", "APP_URL:https_required", "APP_URL:credentials_forbidden", "APP_URL:origin_only"]);
   assert.equal(JSON.stringify(result).includes("user:secret"), false);
 });
-

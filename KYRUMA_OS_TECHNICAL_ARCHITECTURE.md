@@ -1,7 +1,7 @@
 # KYRUMA OS™ — Technical Architecture
 
-**Estado:** Arquitectura aprobada; proveedores e infraestructura operativa siguen pendientes.
-**Alcance:** arquitectura; no implementa funcionalidad operativa.
+**Estado:** Arquitectura aprobada; primera capa operativa interna implementada en rama de cierre integral.
+**Alcance:** arquitectura y activación interna progresiva; no implica readiness comercial.
 
 ## Resumen ejecutivo
 
@@ -102,4 +102,4 @@ Los componentes de plataforma viven en `components/platform` y reciben view mode
 4. Límites operativos de archivos: tamaño, formatos, coste y escaneo.
 5. Namespace final de la superficie interna y estrategia de migración de `/workspace`, si alguna vez fuera necesaria.
 
-Las definiciones de Partner, Workspace, Lead Lifecycle, visibilidad y orden funcional están aprobadas en `BUSINESS_DECISION_ALIGNMENT.md`. Las decisiones pendientes bloquean implementación, no esta propuesta.
+Las definiciones de Partner, Workspace, Lead Lifecycle, visibilidad y orden funcional están aprobadas en `BUSINESS_DECISION_ALIGNMENT.md`. La capa operativa inicial conecta intake, Discovery, calificación humana, tareas Event Bus, KYR-001 y cola de revisión de Intelligence bajo `/access/operations`. Las decisiones jurídicas y comerciales siguen bloqueando el uso comercial, no la validación interna.
