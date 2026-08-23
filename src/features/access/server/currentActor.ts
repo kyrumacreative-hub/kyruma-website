@@ -4,8 +4,7 @@ import type { AuthenticatedActor } from "../../identity/domain/types";
 import { prisma } from "../../../lib/prisma";
 
 export async function requireCurrentActor(): Promise<AuthenticatedActor> {
-  const { userId: subjectId } = await auth();
-  if (!subjectId) throw new Error("UNAUTHENTICATED");
+  const { userId: subjectId } = await auth.protect();
   const external = await currentUser();
   const email = external?.primaryEmailAddress?.emailAddress;
   if (!email) throw new Error("IDENTITY_EMAIL_REQUIRED");

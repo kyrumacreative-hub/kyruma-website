@@ -6,6 +6,20 @@ export interface AccessInvitationGateway {
   create(input: { email: string; invitationId: string; workspaceId?: string; acceptanceUrl: string; expiresInDays: number }): Promise<DeliveredInvitation>;
 }
 
+interface ClerkInvitationClient {
+  invitations: {
+    getInvitationList(input: { query: string; status: "pending"; limit: number }): Promise<{ data: Array<{ id: string; emailAddress: string; publicMetadata?: Record<string, unknown> | null }> }>;
+    createInvitation(input: {
+      emailAddress: string;
+      expiresInDays: number;
+      redirectUrl: string;
+      notify: boolean;
+      ignoreExisting: boolean;
+      publicMetadata: Record<string, string>;
+    }): Promise<{ id: string }>;
+  };
+}
+
 export class AccessInvitationDeliveryError extends Error {
   constructor(
     readonly code: string,
@@ -53,9 +67,11 @@ export function toAccessInvitationDeliveryError(error: unknown): AccessInvitatio
 }
 
 export class ClerkAccessInvitationDelivery implements AccessInvitationGateway {
+  constructor(private readonly clientFactory: () => Promise<ClerkInvitationClient> = async () => clerkClient()) {}
+
   async findPending(input: { email: string; invitationId: string }): Promise<DeliveredInvitation | null> {
     try {
-      const client = await clerkClient();
+      const client = await this.clientFactory();
       const result = await client.invitations.getInvitationList({ query: input.email, status: "pending", limit: 100 });
       const invitation = result.data.find((item) => item.emailAddress.toLowerCase() === input.email.toLowerCase() && item.publicMetadata?.invitationId === input.invitationId);
       return invitation ? { id: invitation.id } : null;
@@ -65,7 +81,7 @@ export class ClerkAccessInvitationDelivery implements AccessInvitationGateway {
   }
   async create(input: { email: string; invitationId: string; workspaceId?: string; acceptanceUrl: string; expiresInDays: number }): Promise<DeliveredInvitation> {
     try {
-      const client = await clerkClient();
+      const client = await this.clientFactory();
       const invitation = await client.invitations.createInvitation({
         emailAddress: input.email,
         expiresInDays: input.expiresInDays,

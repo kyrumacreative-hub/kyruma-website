@@ -362,8 +362,20 @@ export async function issuePartnerInvitation(formData: FormData): Promise<void> 
   const worker = createInvitationWorker();
   await worker.dispatch.execute({ workerId: `access-action:${result.eventId}`, limit: 25 });
   await worker.process.execute({ workerId: `access-action:${result.eventId}`, limit: 25 });
+  const eventStatus = await worker.status(result.eventId, workspace.organizationId);
+  const delivery = eventStatus?.deliveries.find(
+    (item) => item.consumer === "access" && item.handler === "deliver-partner-invitation",
+  );
+  const deliveryState = delivery?.status === "processed"
+    ? "sent"
+    : delivery?.status === "dead_lettered"
+      ? "failed"
+      : "queued";
+  const error = deliveryState === "failed" && delivery?.errorCode
+    ? `&error=${encodeURIComponent(delivery.errorCode)}`
+    : "";
 
   redirect(
-    `/access/admin?sent=1&invitationId=${encodeURIComponent(result.invitationId)}`,
+    `/access/admin?delivery=${deliveryState}&invitationId=${encodeURIComponent(result.invitationId)}${error}`,
   );
 }

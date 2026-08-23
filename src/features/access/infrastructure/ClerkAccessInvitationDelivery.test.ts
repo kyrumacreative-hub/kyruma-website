@@ -1,6 +1,37 @@
 import assert from "node:assert/strict";
 import test from "node:test";
-import { toAccessInvitationDeliveryError } from "./ClerkAccessInvitationDelivery";
+import { ClerkAccessInvitationDelivery, toAccessInvitationDeliveryError } from "./ClerkAccessInvitationDelivery";
+
+test("creates a custom-flow invitation for an existing Clerk identity", async () => {
+  let request: Record<string, unknown> | undefined;
+  const delivery = new ClerkAccessInvitationDelivery(async () => ({
+    invitations: {
+      getInvitationList: async () => ({ data: [] }),
+      createInvitation: async (input) => {
+        request = input;
+        return { id: "invitation_1" };
+      },
+    },
+  }));
+
+  const result = await delivery.create({
+    email: "partner@example.com",
+    invitationId: "access-invitation-1",
+    workspaceId: "workspace-1",
+    acceptanceUrl: "https://www.kyruma.com/access/accept?token=safe-token",
+    expiresInDays: 7,
+  });
+
+  assert.equal(result.id, "invitation_1");
+  assert.deepEqual(request, {
+    emailAddress: "partner@example.com",
+    expiresInDays: 7,
+    redirectUrl: "https://www.kyruma.com/access/accept?token=safe-token",
+    notify: true,
+    ignoreExisting: true,
+    publicMetadata: { invitationId: "access-invitation-1", workspaceId: "workspace-1" },
+  });
+});
 
 test("classifies Clerk failures without persisting provider details or PII", () => {
   const rejected = toAccessInvitationDeliveryError({

@@ -1,6 +1,6 @@
 import { SignOutButton } from "@clerk/nextjs";
-import { currentUser } from "@clerk/nextjs/server";
 import { hashAccessToken, normalizeEmail } from "@/features/access/domain/invitations";
+import { requireCurrentActor } from "@/features/access/server/currentActor";
 import { prisma } from "@/lib/prisma";
 import { acceptInvitation } from "./actions";
 
@@ -8,8 +8,8 @@ export const dynamic = "force-dynamic";
 
 export default async function AcceptAccessPage({ searchParams }: { searchParams: Promise<{ token?: string }> }) {
   const { token = "" } = await searchParams;
-  const [identity, invitation] = await Promise.all([
-    currentUser(),
+  const [actor, invitation] = await Promise.all([
+    requireCurrentActor(),
     token.length >= 20
       ? prisma.accessInvitation.findUnique({
           where: { tokenHash: hashAccessToken(token) },
@@ -17,7 +17,7 @@ export default async function AcceptAccessPage({ searchParams }: { searchParams:
         })
       : null,
   ]);
-  const signedInEmail = identity?.primaryEmailAddress?.emailAddress ?? "";
+  const signedInEmail = actor.user.email;
   const available = invitation?.status === "pending" && invitation.expiresAt > new Date();
   const identityMismatch = available && signedInEmail && normalizeEmail(signedInEmail) !== invitation.normalizedEmail;
   const returnUrl = `/access/accept?token=${encodeURIComponent(token)}`;
