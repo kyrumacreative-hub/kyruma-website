@@ -2,7 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { sendMetaConversion } from "@/features/marketing/metaCapi";
 import { capturePublicLead } from "@/features/operating-layer/server/leadFunnel";
 import { enforcePublicRequestGuard, PublicRateLimitError } from "@/features/security/server/publicRequestGuard";
-import { PublicRequestError, readLimitedJson } from "@/features/security/server/publicRequestPolicy";
+import { PublicRequestError, assertPublicMutationEnvironment, readLimitedJson } from "@/features/security/server/publicRequestPolicy";
 
 export const runtime = "nodejs";
 
@@ -56,6 +56,7 @@ async function sendEmail(apiKey: string, payload: Record<string, unknown>) {
 
 export async function POST(request: NextRequest) {
   try {
+    assertPublicMutationEnvironment(process.env);
     await enforcePublicRequestGuard(request, { route: "contact", limit: 5, windowMs: 15 * 60 * 1000 });
     const apiKey = process.env.RESEND_API_KEY;
     if (!apiKey) return NextResponse.json({ ok: false }, { status: 500 });
@@ -129,7 +130,7 @@ export async function POST(request: NextRequest) {
       html: internalHtml,
     });
 
-    await sendMetaConversion({ eventName: "Lead", email, eventSourceUrl: landingPage, consent: marketingConsent }).catch((error) => console.error("Meta CAPI contact event failed", error));
+    await sendMetaConversion({ eventName: "Lead", email, eventSourceUrl: landingPage, consent: marketingConsent }).catch((error) => console.error("META_CAPI_CONTACT_FAILED", error instanceof Error ? error.name : "UNKNOWN"));
 
     await sendEmail(apiKey, {
       from: "KYRUMA <hello@kyruma.com>",
@@ -150,7 +151,7 @@ export async function POST(request: NextRequest) {
     if (error instanceof PublicRequestError) {
       return NextResponse.json({ ok: false, code: error.code }, { status: error.status, headers: { "Cache-Control": "no-store" } });
     }
-    console.error("Contact submission failed", error);
+    console.error("CONTACT_SUBMISSION_FAILED", error instanceof Error ? error.name : "UNKNOWN");
     return NextResponse.json({ ok: false }, { status: 500, headers: { "Cache-Control": "no-store" } });
   }
 }

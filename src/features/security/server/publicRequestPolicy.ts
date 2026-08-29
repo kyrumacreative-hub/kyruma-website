@@ -1,12 +1,19 @@
 export type PublicRequestErrorCode =
   | "BODY_INVALID"
   | "BODY_TOO_LARGE"
+  | "EXTERNAL_DELIVERY_DISABLED"
   | "ORIGIN_FORBIDDEN"
   | "SECURITY_CONFIGURATION_REQUIRED";
 
 export class PublicRequestError extends Error {
   constructor(readonly code: PublicRequestErrorCode, readonly status: 400 | 403 | 413 | 503) {
     super(code);
+  }
+}
+
+export function assertPublicMutationEnvironment(environment: NodeJS.ProcessEnv): void {
+  if (environment.VERCEL_ENV === "preview") {
+    throw new PublicRequestError("EXTERNAL_DELIVERY_DISABLED", 503);
   }
 }
 
