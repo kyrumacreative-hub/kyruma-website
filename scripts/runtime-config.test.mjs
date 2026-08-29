@@ -7,6 +7,7 @@ const valid = {
   NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY: "pk_live_example",
   CLERK_SECRET_KEY: "configured-by-vercel",
   ACCESS_INVITATION_TOKEN_SECRET: "a".repeat(32),
+  FORM_RATE_LIMIT_SECRET: "c".repeat(32),
   APP_URL: "https://www.kyruma.com",
   CRON_SECRET: "b".repeat(32),
   KYRUMA_INTERNAL_ADMIN_EMAILS: "operations@example.com",

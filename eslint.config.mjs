@@ -33,6 +33,8 @@ const eslintConfig = defineConfig([
     ".automations-test-build/**",
     ".operating-layer-test-build/**",
     ".operating-layer-persistence-test-build/**",
+    ".security-test-build/**",
+    ".security-persistence-test-build/**",
     "next-env.d.ts",
   ]),
 ]);

@@ -1,6 +1,8 @@
 import { NextRequest, NextResponse } from "next/server";
 import { sendMetaConversion } from "@/features/marketing/metaCapi";
 import { capturePublicLead } from "@/features/operating-layer/server/leadFunnel";
+import { enforcePublicRequestGuard, PublicRateLimitError } from "@/features/security/server/publicRequestGuard";
+import { PublicRequestError, readLimitedJson } from "@/features/security/server/publicRequestPolicy";
 
 export const runtime = "nodejs";
 
@@ -54,10 +56,11 @@ async function sendEmail(apiKey: string, payload: Record<string, unknown>) {
 
 export async function POST(request: NextRequest) {
   try {
+    await enforcePublicRequestGuard(request, { route: "contact", limit: 5, windowMs: 15 * 60 * 1000 });
     const apiKey = process.env.RESEND_API_KEY;
     if (!apiKey) return NextResponse.json({ ok: false }, { status: 500 });
 
-    const body = (await request.json()) as ContactPayload;
+    const body = (await readLimitedJson(request, 16 * 1024)) as ContactPayload;
     const submissionId = text(body.submissionId, 80);
     const name = text(body.name, 100);
     const company = text(body.company, 140);
@@ -138,7 +141,16 @@ export async function POST(request: NextRequest) {
 
     return NextResponse.json({ ok: true });
   } catch (error) {
+    if (error instanceof PublicRateLimitError) {
+      return NextResponse.json({ ok: false, code: "RATE_LIMITED" }, {
+        status: error.status,
+        headers: { "Cache-Control": "no-store", "Retry-After": String(error.retryAfterSeconds) },
+      });
+    }
+    if (error instanceof PublicRequestError) {
+      return NextResponse.json({ ok: false, code: error.code }, { status: error.status, headers: { "Cache-Control": "no-store" } });
+    }
     console.error("Contact submission failed", error);
-    return NextResponse.json({ ok: false }, { status: 500 });
+    return NextResponse.json({ ok: false }, { status: 500, headers: { "Cache-Control": "no-store" } });
   }
 }

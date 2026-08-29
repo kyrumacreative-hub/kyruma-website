@@ -3,6 +3,7 @@ const requiredProductionValues = [
   "NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY",
   "CLERK_SECRET_KEY",
   "ACCESS_INVITATION_TOKEN_SECRET",
+  "FORM_RATE_LIMIT_SECRET",
   "APP_URL",
   "CRON_SECRET",
   "KYRUMA_INTERNAL_ADMIN_EMAILS",
@@ -18,6 +19,9 @@ export function validateProductionEnvironment(environment) {
 
   if (environment.ACCESS_INVITATION_TOKEN_SECRET && environment.ACCESS_INVITATION_TOKEN_SECRET.length < 32) {
     failures.push("ACCESS_INVITATION_TOKEN_SECRET:too_short");
+  }
+  if (environment.FORM_RATE_LIMIT_SECRET && environment.FORM_RATE_LIMIT_SECRET.length < 32) {
+    failures.push("FORM_RATE_LIMIT_SECRET:too_short");
   }
   if (environment.CRON_SECRET && environment.CRON_SECRET.length < 32) failures.push("CRON_SECRET:too_short");
   if (environment.APP_URL) {

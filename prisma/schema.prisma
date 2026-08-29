@@ -543,3 +543,17 @@ model OperationalTask {
   @@index([leadId, status])
   @@index([workspaceId, status])
 }
+
+model PublicRequestRateLimit {
+  id              String   @id
+  route           String
+  subjectHash     String
+  windowStartedAt DateTime
+  requestCount    Int
+  expiresAt       DateTime
+  createdAt       DateTime
+  updatedAt       DateTime
+
+  @@index([route, subjectHash, windowStartedAt])
+  @@index([expiresAt])
+}

@@ -1,0 +1,17 @@
+{
+  "extends": "./tsconfig.json",
+  "compilerOptions": {
+    "noEmit": false,
+    "outDir": ".security-persistence-test-build",
+    "rootDir": "src",
+    "module": "NodeNext",
+    "moduleResolution": "NodeNext",
+    "verbatimModuleSyntax": false
+  },
+  "include": [
+    "src/lib/prisma.ts",
+    "src/features/security/server/publicRequestPolicy.ts",
+    "src/features/security/server/publicRequestGuard.ts",
+    "src/features/security/server/publicRequestGuard.integration.test.ts"
+  ]
+}

@@ -1,0 +1,4 @@
+Contact: mailto:hello@kyruma.com
+Expires: 2027-08-29T23:59:59Z
+Canonical: https://www.kyruma.com/.well-known/security.txt
+Preferred-Languages: es, en
