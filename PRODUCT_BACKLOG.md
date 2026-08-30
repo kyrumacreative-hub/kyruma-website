@@ -10,6 +10,8 @@ Este documento es la fuente única de prioridades del producto. Las ideas se reg
 - Materializar tareas idempotentes desde Event Bus y operar el pilotaje de KYR-001 desde una vista interna.
 - Exponer la cola de KYRUMA AI con revisión humana obligatoria; ningún output de IA se activa automáticamente.
 - Mantener Legal y Commercial Dry Run como gates externos explícitos, nunca inferidos desde evidencia técnica.
+- Operar KYR-002 — Magic By Whyso como cliente real activo con Partner, Workspace y proyecto principal; los datos de validación técnica permanecen aislados en TEST y sin PII inventada.
+- Mostrar salud del Event Bus y clientes KYR-001/KYR-002 desde Operations Hub.
 
 El cierre integral es el único objetivo activo y reutiliza los gates de Platform ya aprobados.
 

@@ -33,7 +33,7 @@ export default async function OperationsPage() {
           <div>
             <p className="text-xs uppercase tracking-[.28em] text-[var(--primary)]">KYRUMA OS + AI</p>
             <h1 className="mt-4 text-4xl font-light">Centro de operación interno</h1>
-            <p className="mt-3 max-w-2xl text-[var(--muted)]">Funnel, tareas automáticas, pilotaje KYR-001 y cola de revisión humana en una sola vista.</p>
+            <p className="mt-3 max-w-2xl text-[var(--muted)]">Funnel, clientes activos, Event Bus, tareas automáticas y revisión humana en una sola vista.</p>
           </div>
           <UserButton />
         </header>
@@ -59,10 +59,28 @@ export default async function OperationsPage() {
             <p className="mt-3 text-sm text-[var(--muted)]">Ningún output se vuelve operativo sin aprobación humana.</p>
           </article>
           <article className="rounded-3xl border border-[var(--border)] bg-[var(--surface)] p-7">
-            <p className="text-xs uppercase tracking-[.22em] text-[var(--primary)]">Piloto real</p>
-            <h2 className="mt-3 text-2xl font-light">KYR-001 · {dashboard.kyr001.present ? "conectado" : "pendiente"}</h2>
-            <p className="mt-3 text-sm text-[var(--muted)]">{dashboard.kyr001.workspaceName ?? "Workspace no localizado"} · {dashboard.kyr001.activeProjectCount}/{dashboard.kyr001.projectCount} proyectos activos</p>
+            <p className="text-xs uppercase tracking-[.22em] text-[var(--primary)]">Event Bus</p>
+            <h2 className="mt-3 text-2xl font-light">{count(dashboard.eventBus.deliveries, "dead_letter")} dead letters</h2>
+            <p className="mt-3 text-sm text-[var(--muted)]">{count(dashboard.eventBus.outbox, "pending")} eventos pendientes · {dashboard.eventBus.retryAttempts} reprocesos</p>
           </article>
+        </section>
+
+        <section className="mt-8 rounded-3xl border border-[var(--border)] bg-[var(--surface)] p-7">
+          <div className="flex flex-wrap items-end justify-between gap-4">
+            <div><p className="text-xs uppercase tracking-[.22em] text-[var(--primary)]">Clientes operativos</p><h2 className="mt-3 text-2xl font-light">Workspaces y proyectos</h2></div>
+            <span className="text-sm text-[var(--muted)]">KYRUMA OS</span>
+          </div>
+          <div className="mt-6 grid gap-4 md:grid-cols-2">
+            {dashboard.clients.map((client) => (
+              <article key={client.code} className="rounded-2xl bg-[var(--surface-soft)] p-5">
+                <div className="flex items-start justify-between gap-4">
+                  <div><h3 className="text-xl font-light">{client.code}</h3><p className="mt-1 text-sm text-[var(--muted)]">{client.workspaceName ?? "Workspace pendiente"}</p></div>
+                  <span className="rounded-full border border-[var(--border)] px-3 py-1 text-xs">{client.present ? client.status ?? "activo" : "pendiente"}</span>
+                </div>
+                <p className="mt-4 text-sm text-[var(--muted)]">{client.activeProjectCount}/{client.projectCount} proyectos activos</p>
+              </article>
+            ))}
+          </div>
         </section>
 
         <section className="mt-8 grid gap-6 lg:grid-cols-[1.15fr_.85fr]">
@@ -112,4 +130,3 @@ export default async function OperationsPage() {
     </main>
   );
 }
-
