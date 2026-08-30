@@ -15,6 +15,16 @@ Este documento es la fuente única de prioridades del producto. Las ideas se reg
 
 El cierre integral es el único objetivo activo y reutiliza los gates de Platform ya aprobados.
 
+### KYR-002 · Magic By Whyso — ACTIVE
+
+- Registrar a Magic By Whyso como cliente real activo en el flujo Lead → Discovery → Qualification → Partner `KYR-002` → Workspace → Project.
+- Ejecutar el aprovisionamiento únicamente contra la base TEST protegida hasta que exista una ventana de producción autorizada.
+- Mostrar KYR-002 en el Centro de Operación y mantener separados los estados técnicos, Commercial y Legal.
+- Publicar un caso ligero y bilingüe basado solo en hechos disponibles: Discovery recibido, materiales de identidad y referencias, dirección creativa y experiencia web en curso.
+- Mantener una fuente de datos escalable para futuros casos `KYR-003+` y no publicar métricas ni resultados todavía no verificados.
+
+Este bloque queda autorizado explícitamente como parte del objetivo activo de cierre operativo de KYR-002.
+
 ### Platform Experience activation gates — SUBGATE
 
 - Blindar los claims del Event Bus con `FOR UPDATE SKIP LOCKED`, leases con fencing y regresión PostgreSQL antes de conectar nuevos flujos de Platform.
@@ -30,7 +40,7 @@ El cierre integral es el único objetivo activo y reutiliza los gates de Platfor
 
 ### Gates externos de release
 
-- Aportar y ejecutar los artefactos comerciales externos de KYR-002 como `TEST ONLY — BANK TRANSFER`; no existe ni se autoriza una pasarela de pago.
+- Validar por separado los artefactos comerciales de KYR-002; no existe ni se autoriza una pasarela de pago.
 - Obtener la revisión jurídica del contrato antes de activar el primer cliente comercial real.
 
 No hay desarrollo de producto autorizado en este bloque. Solo configuración real, validación y cierre.

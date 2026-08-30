@@ -4,6 +4,8 @@ import { FormEvent, useEffect, useRef, useState } from "react";
 import { getAttribution, hasMarketingConsent, trackMarketingEvent } from "@/features/marketing/MarketingScripts";
 import { useLanguage } from "@/components/LanguageProvider";
 import KyrumaBooker from "@/components/booking/KyrumaBooker";
+import WorkCaseCard from "@/components/work/WorkCaseCard";
+import { workCases } from "@/data/work";
 
 const copy = {
   es: {
@@ -43,7 +45,7 @@ const copy = {
     work: {
       label: "CASE STUDIES — 04",
       title: "El trabajo debe demostrar lo que las palabras prometen.",
-      body: "Nuestros casos se documentan como contexto → intervención → resultado. Solo publicamos resultados que podamos verificar. Los primeros case studies de KYRUMA se incorporarán aquí cuando su documentación esté cerrada.",
+      body: "Documentamos cada colaboración desde su contexto real. Magic By Whyso abre esta colección como proyecto activo: mostramos el proceso disponible hoy y reservamos los resultados para cuando puedan verificarse.",
       note: "Sin métricas inventadas. Sin resultados inflados. La evidencia también construye confianza.",
     },
     systems: {
@@ -111,7 +113,7 @@ const copy = {
     work: {
       label: "CASE STUDIES — 04",
       title: "The work should prove what the words promise.",
-      body: "Our cases are documented as context → intervention → result. We only publish results we can verify. KYRUMA's first case studies will appear here once their documentation is complete.",
+      body: "We document every collaboration from its real context. Magic By Whyso opens this collection as an active project: we show the process available today and reserve outcomes until they can be verified.",
       note: "No invented metrics. No inflated outcomes. Evidence builds trust too.",
     },
     systems: {
@@ -280,6 +282,7 @@ export default function Home() {
               <p className="mt-8 border-l border-[var(--primary)] pl-5 text-sm font-light leading-relaxed text-[var(--muted)]">{t.work.note}</p>
             </div>
           </div>
+          {workCases.map((workCase) => <WorkCaseCard key={workCase.slug} workCase={workCase} language={language} />)}
         </div>
       </section>
 
