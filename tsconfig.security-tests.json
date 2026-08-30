@@ -1,0 +1,11 @@
+{
+  "extends": "./tsconfig.json",
+  "compilerOptions": {
+    "noEmit": false,
+    "outDir": ".security-test-build",
+    "module": "NodeNext",
+    "moduleResolution": "NodeNext",
+    "verbatimModuleSyntax": false
+  },
+  "include": ["src/features/security/server/publicRequestPolicy.ts", "src/features/security/server/publicRequestPolicy.test.ts"]
+}

@@ -2,21 +2,32 @@ import { auth, currentUser } from "@clerk/nextjs/server";
 import { capabilityCatalog, roles, type Capability, type Role } from "../../identity/domain/capabilities";
 import type { AuthenticatedActor } from "../../identity/domain/types";
 import { prisma } from "../../../lib/prisma";
+import {
+  requireStableSubjectBinding,
+  requireVerifiedPrimaryEmail,
+} from "./identityClaim";
 
 export async function requireCurrentActor(): Promise<AuthenticatedActor> {
   const { userId: subjectId } = await auth.protect();
   const external = await currentUser();
-  const email = external?.primaryEmailAddress?.emailAddress;
+  const primaryEmail = external?.primaryEmailAddress;
+  const normalizedEmail = requireVerifiedPrimaryEmail(
+    primaryEmail?.emailAddress,
+    primaryEmail?.verification?.status,
+  );
+  const email = primaryEmail?.emailAddress.trim();
   if (!email) throw new Error("IDENTITY_EMAIL_REQUIRED");
-  const normalizedEmail = email.toLowerCase();
   const signedInAt = new Date();
-  const profile = { email, normalizedEmail, displayName: external.fullName ?? undefined, lastSignedInAt: signedInAt };
+  const profile = { email, normalizedEmail, displayName: external?.fullName ?? undefined, lastSignedInAt: signedInAt };
   const user = await prisma.$transaction(async (transaction) => {
     const existingSubject = await transaction.identityUser.findUnique({ where: { externalSubjectId: subjectId } });
     if (existingSubject) return transaction.identityUser.update({ where: { id: existingSubject.id }, data: profile, include: { memberships: true } });
 
     const existingEmail = await transaction.identityUser.findUnique({ where: { normalizedEmail } });
-    if (existingEmail) return transaction.identityUser.update({ where: { id: existingEmail.id }, data: { ...profile, externalSubjectId: subjectId }, include: { memberships: true } });
+    if (existingEmail) {
+      requireStableSubjectBinding(existingEmail.externalSubjectId, subjectId);
+      return transaction.identityUser.update({ where: { id: existingEmail.id }, data: profile, include: { memberships: true } });
+    }
 
     return transaction.identityUser.create({ data: { id: crypto.randomUUID(), externalSubjectId: subjectId, ...profile, status: "active", createdAt: signedInAt }, include: { memberships: true } });
   });

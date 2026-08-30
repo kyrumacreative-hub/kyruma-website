@@ -44,6 +44,7 @@ jobs:
       - run: touch .env.local
       - run: npm run verify:repo-hygiene
       - run: npm run test:config-safety
+      - run: npm run test:security
       - run: DATABASE_URL="$TEST_DATABASE_URL" npx prisma migrate deploy
       - run: npm run test:foundation
       - run: npm run test:lead-lifecycle
@@ -66,6 +67,7 @@ jobs:
       - run: npm run test:automations
       - run: npm run test:operating-layer
       - run: npm run test:operating-layer-persistence
+      - run: npm run test:security-persistence
       - run: npm run lint
       - run: npx tsc --noEmit
       - run: npm run build

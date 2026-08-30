@@ -4,6 +4,8 @@ import { websiteBrief } from "@/features/workspace/data/website-brief";
 import { AnswerValue } from "@/features/workspace/engine/answers";
 import { sendMetaConversion } from "@/features/marketing/metaCapi";
 import { capturePublicLead, completeDiscoveryForEmail } from "@/features/operating-layer/server/leadFunnel";
+import { enforcePublicRequestGuard, PublicRateLimitError } from "@/features/security/server/publicRequestGuard";
+import { PublicRequestError, assertPublicMutationEnvironment, readLimitedJson } from "@/features/security/server/publicRequestPolicy";
 
 export const runtime = "nodejs";
 
@@ -86,10 +88,12 @@ function formatAnswer(value: AnswerValue, options?: { label: string; value: stri
 
 export async function POST(req: NextRequest) {
   try {
+    assertPublicMutationEnvironment(process.env);
+    await enforcePublicRequestGuard(req, { route: "discovery", limit: 3, windowMs: 60 * 60 * 1000 });
     const apiKey = process.env.RESEND_API_KEY;
     if (!apiKey) return NextResponse.json({ ok: false }, { status: 500 });
 
-    const body = await req.json();
+    const body = await readLimitedJson(req, 512 * 1024);
     const answers = parseAnswers(body);
     if (!answers) return NextResponse.json({ ok: false, error: "Invalid brief" }, { status: 400 });
 
@@ -130,11 +134,20 @@ export async function POST(req: NextRequest) {
       html: `<h1>Nuevo KYRUMA Discovery recibido</h1><table width="100%" cellpadding="0" cellspacing="0" style="border-collapse:collapse">${rows}</table>`,
     });
 
-    await sendMetaConversion({ eventName: "CompleteDiscovery", email: discoveryEmail, eventSourceUrl: isRecord(body) && typeof body.landingPage === "string" ? body.landingPage : undefined, consent: isRecord(body) && body.marketingConsent === true }).catch((error) => console.error("Meta CAPI Discovery event failed", error));
+    await sendMetaConversion({ eventName: "CompleteDiscovery", email: discoveryEmail, eventSourceUrl: isRecord(body) && typeof body.landingPage === "string" ? body.landingPage : undefined, consent: isRecord(body) && body.marketingConsent === true }).catch((error) => console.error("META_CAPI_DISCOVERY_FAILED", error instanceof Error ? error.name : "UNKNOWN"));
 
     return NextResponse.json({ ok: true });
   } catch (error) {
-    console.error("Unable to process project brief", error);
-    return NextResponse.json({ ok: false }, { status: 500 });
+    if (error instanceof PublicRateLimitError) {
+      return NextResponse.json({ ok: false, code: "RATE_LIMITED" }, {
+        status: error.status,
+        headers: { "Cache-Control": "no-store", "Retry-After": String(error.retryAfterSeconds) },
+      });
+    }
+    if (error instanceof PublicRequestError) {
+      return NextResponse.json({ ok: false, code: error.code }, { status: error.status, headers: { "Cache-Control": "no-store" } });
+    }
+    console.error("DISCOVERY_SUBMISSION_FAILED", error instanceof Error ? error.name : "UNKNOWN");
+    return NextResponse.json({ ok: false }, { status: 500, headers: { "Cache-Control": "no-store" } });
   }
 }
