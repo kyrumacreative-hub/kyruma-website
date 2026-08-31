@@ -17,6 +17,7 @@
     "verify:production-config": "node scripts/verify-production-config.mjs",
     "verify:repo-hygiene": "node scripts/check-repository-hygiene.mjs",
     "ops:provision-kyr002:test": "node scripts/provision-kyr002-test.mjs",
+    "ops:provision-kyr003:test": "node scripts/provision-kyr003-test.mjs",
     "test:foundation": "tsc -p tsconfig.foundation-tests.json && node --test .foundation-test-build/features/identity/domain/authorization.test.js .foundation-test-build/features/partner-context/application/partnerContext.test.js .foundation-test-build/features/partner-context/application/organizationContext.test.js",
     "test:lead-lifecycle": "tsc -p tsconfig.lead-lifecycle-tests.json && node --test .lead-lifecycle-test-build/features/lead-lifecycle/domain/lead.test.js .lead-lifecycle-test-build/features/lead-lifecycle/application/useCases.test.js .lead-lifecycle-test-build/features/lead-lifecycle/application/completionUseCases.test.js .lead-lifecycle-test-build/features/lead-lifecycle/api/controller.test.js",
     "test:lead-persistence": "node scripts/assert-safe-test-database.mjs && set -a && . ./.env.local && set +a && DATABASE_URL=\"$TEST_DATABASE_URL\" tsc -p tsconfig.lead-persistence-tests.json && DATABASE_URL=\"$TEST_DATABASE_URL\" node --test .lead-persistence-test-build/features/lead-lifecycle/infrastructure/persistence/prisma.integration.test.js",

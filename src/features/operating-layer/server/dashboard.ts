@@ -29,6 +29,8 @@ function counts(rows: readonly { status: string; _count: { _all: number } }[]): 
   return Object.fromEntries(rows.map((row) => [row.status, row._count._all]));
 }
 
+const operationalClientCodes = ["KYR-001", "KYR-002", "KYR-003"] as const;
+
 export async function getOperatingDashboard(): Promise<OperatingDashboard> {
   const actor = await requireCurrentActor();
   requireInternalAdmin(actor);
@@ -39,7 +41,7 @@ export async function getOperatingDashboard(): Promise<OperatingDashboard> {
     prisma.intelligenceAnalysis.groupBy({ by: ["status"], _count: { _all: true } }),
     prisma.lead.findMany({ orderBy: { createdAt: "desc" }, take: 50, include: { intake: true } }),
     prisma.operationalTask.findMany({ where: { status: "open" }, orderBy: [{ dueAt: "asc" }, { createdAt: "asc" }], take: 50 }),
-    prisma.partner.findMany({ where: { code: { in: ["KYR-001", "KYR-002"] } }, orderBy: { code: "asc" } }),
+    prisma.partner.findMany({ where: { code: { in: [...operationalClientCodes] } }, orderBy: { code: "asc" } }),
     prisma.eventOutbox.groupBy({ by: ["status"], _count: { _all: true } }),
     prisma.eventProcessingRecord.groupBy({ by: ["status"], _count: { _all: true } }),
     prisma.eventProcessingRecord.aggregate({ _sum: { reprocessCount: true } }),
@@ -49,7 +51,7 @@ export async function getOperatingDashboard(): Promise<OperatingDashboard> {
     }),
   ]);
 
-  const clientRows = await Promise.all(["KYR-001", "KYR-002"].map(async (code) => {
+  const clientRows = await Promise.all(operationalClientCodes.map(async (code) => {
     const partner = partners.find((candidate) => candidate.code === code);
     if (!partner) return { code, present: false, projectCount: 0, activeProjectCount: 0 };
     const [workspace, projectCounts] = await Promise.all([

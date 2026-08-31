@@ -12,6 +12,7 @@ Este documento es la fuente única de prioridades del producto. Las ideas se reg
 - Mantener Legal y Commercial Dry Run como gates externos explícitos, nunca inferidos desde evidencia técnica.
 - Operar KYR-002 — Magic By Whyso como cliente real activo con Partner, Workspace y proyecto principal; los datos de validación técnica permanecen aislados en TEST y sin PII inventada.
 - Mostrar salud del Event Bus y clientes KYR-001/KYR-002 desde Operations Hub.
+- Operar KYR-003 — Raúl Marqués de la Torre como cliente real activo para web, marca y RRSS, con representación técnica segura en TEST y caso público basado solo en evidencia verificable.
 
 El cierre integral es el único objetivo activo y reutiliza los gates de Platform ya aprobados.
 
@@ -24,6 +25,16 @@ El cierre integral es el único objetivo activo y reutiliza los gates de Platfor
 - Mantener una fuente de datos escalable para futuros casos `KYR-003+` y no publicar métricas ni resultados todavía no verificados.
 
 Este bloque queda autorizado explícitamente como parte del objetivo activo de cierre operativo de KYR-002.
+
+### KYR-003 · Raúl Marqués de la Torre — ACTIVE
+
+- Registrar el flujo Lead → Discovery → Qualification → Partner `KYR-003` → Workspace → Project principal para web, marca y redes sociales.
+- Ejecutar el aprovisionamiento únicamente contra la base TEST protegida y sin persistir PII en la representación técnica.
+- Mostrar KYR-003 en el Centro de Operación y conectar el Workspace con el slug público `raul-marques-de-la-torre`.
+- Publicar un caso bilingüe basado en hechos verificables: identidad RMT activa, web editorial publicada y canales sociales conectados.
+- Mantener separados los gates Commercial y Legal y no publicar métricas, testimonios o impacto todavía no verificados.
+
+Este bloque queda autorizado explícitamente como cliente activo y parte del objetivo operativo actual.
 
 ### Platform Experience activation gates — SUBGATE
 
