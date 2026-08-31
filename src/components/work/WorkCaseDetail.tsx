@@ -7,19 +7,17 @@ import type { WorkCase } from "@/data/work";
 const copy = {
   es: {
     back: "Todos los trabajos", status: "Proyecto activo",
-    intro: "Una marca de experiencias de viaje construyendo una expresión propia y una forma más clara de convertir interés en reserva.",
     context: "Contexto", direction: "Dirección", verified: "Evidencia disponible", scope: "Alcance",
+    channels: "Canales activos",
     note: "Este caso documenta trabajo real en curso. No publicamos resultados, métricas o impacto hasta poder verificarlos.",
-    next: "Siguiente capítulo", nextBody: "La dirección creativa y el diseño web avanzan en paralelo. El caso se ampliará con entregables aprobados y evidencia de lanzamiento.",
-    visit: "Visitar Magic By Whyso", cta: "Hablar de un proyecto",
+    next: "Siguiente capítulo", visit: "Visitar", cta: "Hablar de un proyecto",
   },
   en: {
     back: "All work", status: "Active project",
-    intro: "A travel experiences brand building a distinctive expression and a clearer path from interest to booking.",
     context: "Context", direction: "Direction", verified: "Available evidence", scope: "Scope",
+    channels: "Active channels",
     note: "This case documents real work in progress. We do not publish outcomes, metrics or impact until they can be verified.",
-    next: "Next chapter", nextBody: "Creative direction and web design are progressing together. The case will expand with approved deliverables and launch evidence.",
-    visit: "Visit Magic By Whyso", cta: "Discuss a project",
+    next: "Next chapter", visit: "Visit", cta: "Discuss a project",
   },
 } as const;
 
@@ -34,8 +32,8 @@ export default function WorkCaseDetail({ workCase }: { workCase: WorkCase }) {
             <Link className="text-link" href="/trabajos"><span>←</span>{t.back}</Link>
             <div className="flex items-center gap-4"><span className="micro">{workCase.publicId}</span><span className="rounded-full border border-[var(--primary)] px-3 py-1 text-[10px] uppercase tracking-[.16em] text-[var(--primary)]">{t.status}</span></div>
           </div>
-          <div className="py-16 md:py-24"><p className="micro">{workCase.sector[language]} · {workCase.project[language]}</p><h1 className="mt-8 text-[clamp(4.25rem,13vw,11rem)] font-light leading-[.82] tracking-[-.08em]">Magic<br /><span className="text-[var(--muted-soft)]">By Whyso</span></h1></div>
-          <div className="grid gap-8 border-t border-[var(--border)] pt-8 lg:grid-cols-12"><p className="text-xl font-light leading-[1.45] tracking-[-.02em] md:text-2xl lg:col-span-7">{t.intro}</p><p className="body-copy lg:col-span-4 lg:col-start-9">{workCase.summary[language]}</p></div>
+          <div className="py-16 md:py-24"><p className="micro">{workCase.sector[language]} · {workCase.project[language]}</p><h1 className="mt-8 max-w-[12ch] text-[clamp(4rem,11vw,10rem)] font-light leading-[.84] tracking-[-.075em]">{workCase.headline[language]}</h1></div>
+          <div className="grid gap-8 border-t border-[var(--border)] pt-8 lg:grid-cols-12"><p className="text-xl font-light leading-[1.45] tracking-[-.02em] md:text-2xl lg:col-span-7">{workCase.intro[language]}</p><p className="body-copy lg:col-span-4 lg:col-start-9">{workCase.summary[language]}</p></div>
         </div>
       </section>
 
@@ -46,10 +44,10 @@ export default function WorkCaseDetail({ workCase }: { workCase: WorkCase }) {
 
       <section className="section surface-section"><div className="site-container grid gap-16 lg:grid-cols-12">
         <div className="lg:col-span-5"><p className="section-label">{t.verified}<span className="accent-dot" /></p><div className="mt-10 border-t border-[var(--border)]">{workCase.evidence[language].map((item, index) => <p key={item} className="flex gap-5 border-b border-[var(--border)] py-5 text-sm"><span className="micro">0{index + 1}</span><span>{item}</span></p>)}</div></div>
-        <div className="lg:col-span-5 lg:col-start-8"><p className="section-label">{t.scope}<span className="accent-dot" /></p><div className="mt-10 flex flex-wrap gap-3">{workCase.services[language].map((item) => <span key={item} className="rounded-full border border-[var(--border-strong)] px-4 py-3 text-sm">{item}</span>)}</div><p className="mt-10 border-l border-[var(--primary)] pl-5 text-sm leading-relaxed text-[var(--muted)]">{t.note}</p></div>
+        <div className="lg:col-span-5 lg:col-start-8"><p className="section-label">{t.scope}<span className="accent-dot" /></p><div className="mt-10 flex flex-wrap gap-3">{workCase.services[language].map((item) => <span key={item} className="rounded-full border border-[var(--border-strong)] px-4 py-3 text-sm">{item}</span>)}</div>{workCase.socialLinks?.length ? <div className="mt-10"><p className="micro">{t.channels}</p><div className="mt-4 flex flex-wrap gap-x-5 gap-y-3">{workCase.socialLinks.map((item) => <a key={item.url} href={item.url} target="_blank" rel="noopener noreferrer" className="text-link">{item.label}<span>↗</span></a>)}</div></div> : null}<p className="mt-10 border-l border-[var(--primary)] pl-5 text-sm leading-relaxed text-[var(--muted)]">{t.note}</p></div>
       </div></section>
 
-      <section className="section border-t border-[var(--border)]"><div className="site-container grid gap-12 lg:grid-cols-12"><p className="section-label lg:col-span-3">{t.next}<span className="accent-dot" /></p><div className="lg:col-span-8 lg:col-start-5"><h2 className="section-title">{t.nextBody}</h2><div className="mt-10 flex flex-wrap items-center gap-6"><a href={workCase.publicUrl} target="_blank" rel="noopener noreferrer" className="button-primary">{t.visit}<span>↗</span></a><Link href="/#contact" className="text-link rounded-full border border-[var(--border-strong)] px-6 py-4">{t.cta}<span>→</span></Link></div></div></div></section>
+      <section className="section border-t border-[var(--border)]"><div className="site-container grid gap-12 lg:grid-cols-12"><p className="section-label lg:col-span-3">{t.next}<span className="accent-dot" /></p><div className="lg:col-span-8 lg:col-start-5"><h2 className="section-title">{workCase.next[language]}</h2><div className="mt-10 flex flex-wrap items-center gap-6"><a href={workCase.publicUrl} target="_blank" rel="noopener noreferrer" className="button-primary">{t.visit} {workCase.client}<span>↗</span></a><Link href="/#contact" className="text-link rounded-full border border-[var(--border-strong)] px-6 py-4">{t.cta}<span>→</span></Link></div></div></div></section>
     </main>
   );
 }

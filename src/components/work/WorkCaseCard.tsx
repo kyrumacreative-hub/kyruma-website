@@ -15,7 +15,7 @@ export default function WorkCaseCard({ workCase, language }: { workCase: WorkCas
             <span>{workCase.publicId}</span><span>{workCase.sector[language]}</span>
           </div>
           <div className="relative">
-            <p className="max-w-xl text-[clamp(3.5rem,8vw,7rem)] font-light leading-[.83] tracking-[-.075em]">Magic<br /><span className="text-white/32">By Whyso</span></p>
+            <p className="max-w-2xl text-[clamp(3.15rem,7vw,7rem)] font-light leading-[.86] tracking-[-.07em] text-white/92">{workCase.headline[language]}</p>
             <div className="mt-8 h-px w-full bg-white/12"><div className="h-px w-1/3 bg-[#ff5a00]" /></div>
           </div>
         </div>
