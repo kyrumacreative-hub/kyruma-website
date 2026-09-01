@@ -4,6 +4,18 @@ Este documento es la fuente única de prioridades del producto. Las ideas se reg
 
 ## NOW — Platform Experience Program
 
+### KYRUMA RADAR / OS / AI — INTERNAL VALIDATION
+
+- Consolidar RADAR como registro operativo con estados e historial de decisiones.
+- Añadir Brain global, Client Brain y Project Context con Strategy, Brand y Content DNA aislados por Workspace/Project.
+- Exponer una sola interfaz KYRUMA AI que prepare contexto y workflows con revisión humana obligatoria.
+- Preparar Hook Library, performance sin datos inventados, siete Content Workflows y Opportunity Calendar.
+- Registrar seis Visual Recipes sin exponer ni inventar prompts maestros.
+- Medir fricciones operativas antes de construir nuevas features.
+- Mantener solo integraciones verificadas; no simular Gmail, Calendar, Metricool, WhatsApp o n8n.
+
+Productized Services permanece como experimento WATCH. Video Agent, SEO Engine, Omnichannel Messaging, orchestration avanzada, Parallel Agents, Async Jobs, AI Control Center, creator campaigns, social commerce, SaaS comercial y portal complejo permanecen en BACKLOG.
+
 ### Cierre integral técnico — ACTIVE
 
 - Conectar el formulario público con el ciclo operativo Lead → Discovery → Qualification.

@@ -38,6 +38,8 @@
     "test:partner-portal": "tsc -p tsconfig.partner-portal-tests.json && node --test .partner-portal-test-build/features/partner-portal/application/*.test.js",
     "test:automations": "tsc -p tsconfig.automations-tests.json && node --test .automations-test-build/features/automations/application/*.test.js",
     "test:operating-layer": "tsc -p tsconfig.operating-layer-tests.json && node --test .operating-layer-test-build/features/operating-layer/domain/*.test.js",
+    "test:operating-intelligence": "tsc -p tsconfig.operating-intelligence-tests.json && node --test .operating-intelligence-test-build/features/operating-intelligence/domain/*.test.js",
+    "verify:operating-intelligence:test": "node scripts/verify-operating-intelligence-test.mjs",
     "test:operating-layer-persistence": "node scripts/assert-safe-test-database.mjs && set -a && . ./.env.local && set +a && DATABASE_URL=\"$TEST_DATABASE_URL\" tsc -p tsconfig.operating-layer-persistence-tests.json && DATABASE_URL=\"$TEST_DATABASE_URL\" node --test .operating-layer-persistence-test-build/features/operating-layer/infrastructure/*.integration.test.js"
   },
   "dependencies": {

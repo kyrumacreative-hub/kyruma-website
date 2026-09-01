@@ -32,6 +32,7 @@ const eslintConfig = defineConfig([
     ".partner-portal-test-build/**",
     ".automations-test-build/**",
     ".operating-layer-test-build/**",
+    ".operating-intelligence-test-build/**",
     ".operating-layer-persistence-test-build/**",
     ".security-test-build/**",
     ".security-persistence-test-build/**",
