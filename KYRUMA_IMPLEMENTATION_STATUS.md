@@ -1,6 +1,6 @@
 # KYRUMA implementation status — RADAR / OS / AI
 
-Last verified: 2026-09-01. Status: **APPROVED — INTERNAL VALIDATION FIRST**.
+Last verified: 2026-09-02. Status: **APPROVED — INTERNAL VALIDATION FIRST**.
 
 ## Implemented
 
@@ -16,6 +16,7 @@ Last verified: 2026-09-01. Status: **APPROVED — INTERNAL VALIDATION FIRST**.
 | Operational Friction | Structured friction capture with time/error/process/business metrics and client/project scope. | Record friction for a real internal process and review it in the unified page. | Outcome measurement requires real follow-up data. |
 | KYRUMA AI intake | One internal entry point routes a request to scoped Brain/RADAR context and an optional approved workflow, then logs a review-required work request/run. | Submit a request and confirm its scope and selected workflow in TEST. | Model/tool execution, generated result and memory promotion are not connected yet. |
 | Audit and navigation | Writes emit existing `AuditEvent` records. Operations links to one simple Operating Intelligence page. | Inspect audit entries after mutations and navigate from `/access/operations`. | None for the internal validation scope. |
+| KYRUMA Experiences strategy | RADAR 022/023, a Global Strategy Brain record, roadmap priority, stack assessment, Experience Library contract and an isolated prototype placeholder are registered. See `KYRUMA_EXPERIENCES.md`. | Run the TEST verification and review RADAR/Brain from the internal intelligence page. | Prototype 001 remains deliberately unbuilt until its product gate is approved. |
 
 ## Partially implemented
 
@@ -36,6 +37,7 @@ Last verified: 2026-09-01. Status: **APPROVED — INTERNAL VALIDATION FIRST**.
 - Productized Services experiments: Landing Express, Brand Starter, Social Kickstart and Content Sprint.
 - Video Agent, SEO Engine, omnichannel messaging, Klaviyo-style orchestration, parallel agents, async jobs and an advanced AI control center.
 - Advanced creator/influencer campaigns, social commerce, commercial SaaS and a complex external client portal.
+- KYRUMA Experience Lab — Prototype 001; no runtime code or heavy dependency is authorized yet.
 
 ## Blocked
 

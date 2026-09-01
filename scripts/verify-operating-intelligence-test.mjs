@@ -9,9 +9,18 @@ const { PrismaClient } = await import("@prisma/client");
 const prisma = new PrismaClient();
 
 try {
-  const [radar, radarHistory, workflows, recipes, hooks, opportunities, frictions, aiRequests, clients] = await Promise.all([
-    prisma.radarEntry.findMany({ where: { organizationId: "kyruma-global" }, orderBy: { radarId: "asc" } }),
-    prisma.radarHistory.count({ where: { organizationId: "kyruma-global" } }),
+  const [radar, radarHistory, experiencesBrain, workflows, recipes, hooks, opportunities, frictions, aiRequests, clients] = await Promise.all([
+    prisma.radarEntry.findMany({
+      where: { organizationId: "kyruma-global", radarId: { in: ["020", "021", "022", "023"] } },
+      orderBy: { radarId: "asc" },
+    }),
+    prisma.radarHistory.count({
+      where: {
+        organizationId: "kyruma-global",
+        entry: { radarId: { in: ["020", "021", "022", "023"] } },
+      },
+    }),
+    prisma.brainRecord.findUnique({ where: { id: "brain-global-kyruma-experiences-strategy-v1" } }),
     prisma.contentWorkflowDefinition.findMany({ where: { organizationId: "kyruma-global", status: "active" } }),
     prisma.visualRecipe.findMany({ orderBy: { key: "asc" } }),
     prisma.contentHook.count(),
@@ -30,8 +39,11 @@ try {
     }),
   ]);
 
-  assert.deepEqual(radar.map((entry) => entry.radarId), ["020", "021"]);
-  assert.equal(radarHistory, 2);
+  assert.deepEqual(radar.map((entry) => entry.radarId), ["020", "021", "022", "023"]);
+  assert.equal(radarHistory, 4);
+  assert.equal(experiencesBrain?.organizationId, "kyruma-global");
+  assert.equal(experiencesBrain?.scopeType, "GLOBAL");
+  assert.equal(experiencesBrain?.dnaType, "STRATEGY");
   assert.equal(workflows.length, 7);
   assert.ok(workflows.every((workflow) => workflow.humanReviewRequired));
   assert.equal(recipes.length, 6);
@@ -64,6 +76,7 @@ try {
     database: safeTarget.database,
     radar: radar.map(({ radarId, title, status }) => ({ radarId, title, status })),
     radarHistory,
+    experiencesBrain: experiencesBrain ? { title: experiencesBrain.title, scopeType: experiencesBrain.scopeType, dnaType: experiencesBrain.dnaType } : null,
     workflows: workflows.map(({ key }) => key).sort(),
     visualRecipes: recipes.map(({ key, status }) => ({ key, status })),
     emptyStates: { hooks, opportunities, frictions, aiRequests },

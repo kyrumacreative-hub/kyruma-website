@@ -16,6 +16,17 @@ Este documento es la fuente única de prioridades del producto. Las ideas se reg
 
 Productized Services permanece como experimento WATCH. Video Agent, SEO Engine, Omnichannel Messaging, orchestration avanzada, Parallel Agents, Async Jobs, AI Control Center, creator campaigns, social commerce, SaaS comercial y portal complejo permanecen en BACKLOG.
 
+### P2 — KYRUMA Experiences™ — STRATEGIC R&D
+
+- Desarrollar progresivamente la capacidad “Beautiful outside. Intelligent inside.” sin contaminar el core de KYRUMA OS / AI.
+- Mantener tres niveles de oferta: Standard Web, Premium Web y KYRUMA Experience.
+- Consolidar RADAR 022 — Spatial UI Track Effect y RADAR 023 — Immersive Product Websites / Cinematic Scroll dentro de una futura Experience Library.
+- Reutilizar Framer Motion, tokens y accesibilidad existentes; Three.js/R3F/Drei permanecen disponibles pero fuera del runtime productivo hasta existir un caso validado.
+- No instalar GSAP/ScrollTrigger ni nuevas dependencias pesadas por anticipación.
+- Mantener `KYRUMA EXPERIENCE LAB — PROTOTYPE 001` en BACKLOG hasta definir problema real, owner, métrica, asset pipeline y presupuestos de performance/accesibilidad.
+
+Prioridad: P2. Nunca desplaza P0 Client Delivery ni P1 Sales/Growth. La documentación y el registro estratégico están autorizados; el prototipo todavía no.
+
 ### Cierre integral técnico — ACTIVE
 
 - Conectar el formulario público con el ciclo operativo Lead → Discovery → Qualification.
