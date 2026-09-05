@@ -1,4 +1,5 @@
 import { UserButton } from "@clerk/nextjs";
+import Link from "next/link";
 import { getOperatingDashboard } from "@/features/operating-layer/server/dashboard";
 import { completeOperationalTaskAction, qualifyLeadAction } from "./actions";
 
@@ -53,11 +54,11 @@ export default async function OperationsPage() {
             <h2 className="mt-3 text-2xl font-light">{count(dashboard.automationCounts, "completed")} completadas</h2>
             <p className="mt-3 text-sm text-[var(--muted)]">{count(dashboard.automationCounts, "failed")} fallidas · {count(dashboard.taskCounts, "open")} tareas abiertas</p>
           </article>
-          <article className="rounded-3xl border border-[var(--border)] bg-[var(--surface)] p-7">
+          <Link href="/access/operations/intelligence" className="rounded-3xl border border-[var(--border)] bg-[var(--surface)] p-7 transition hover:border-[var(--primary)]">
             <p className="text-xs uppercase tracking-[.22em] text-[var(--primary)]">KYRUMA AI</p>
             <h2 className="mt-3 text-2xl font-light">{awaitingHumanReview} pendientes de revisión</h2>
-            <p className="mt-3 text-sm text-[var(--muted)]">Ningún output se vuelve operativo sin aprobación humana.</p>
-          </article>
+            <p className="mt-3 text-sm text-[var(--muted)]">Ask KYRUMA, RADAR, Brain, Content y fricciones →</p>
+          </Link>
           <article className="rounded-3xl border border-[var(--border)] bg-[var(--surface)] p-7">
             <p className="text-xs uppercase tracking-[.22em] text-[var(--primary)]">Event Bus</p>
             <h2 className="mt-3 text-2xl font-light">{count(dashboard.eventBus.deliveries, "dead_letter")} dead letters</h2>

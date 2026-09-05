@@ -67,6 +67,7 @@ jobs:
       - run: npm run test:automations
       - run: npm run test:operating-layer
       - run: npm run test:operating-layer-persistence
+      - run: npm run test:operating-intelligence
       - run: npm run test:security-persistence
       - run: npm run lint
       - run: npx tsc --noEmit

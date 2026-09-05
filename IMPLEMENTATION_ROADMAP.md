@@ -14,6 +14,14 @@
 | EP-010 — Intelligence | Planned | Insights en borrador, trazabilidad a sources y revisión humana. | Criterios de IA, proveedor aprobado y evaluación de privacidad. | Nunca publica ni modifica datos automáticamente. | Agente autónomo o scoring. |
 | EP-011 — Automations | Planned | Notificaciones, recordatorios y efectos de eventos aprobados. | Outbox, políticas de comunicación y dueños operativos. | Idempotencia, opt-out, observabilidad y rollback. | Flujos autónomos no auditables. |
 
+## Strategic capability track
+
+| Capability | Priority | Current state | Next gate |
+| --- | --- | --- | --- |
+| KYRUMA Experiences™ | P2 — Strategic R&D | RADAR 022/023, Global Brain context, stack assessment and Experience Library contract documented. No production implementation. | Approve a real problem and the bounded scope, metric, assets, performance and accessibility budgets for Experience Lab — Prototype 001. |
+
+KYRUMA Experiences is a creative/productive capability, not a KYRUMA OS domain. It can use OS / AI context later without becoming part of the operating core.
+
 ## Gates obligatorios
 
 - Cada fase requiere definición de negocio, RFC aprobado, criterios de aceptación y autorización expresa.
