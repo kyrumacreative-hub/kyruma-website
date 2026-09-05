@@ -4,6 +4,14 @@ Este documento es la fuente única de prioridades del producto. Las ideas se reg
 
 ## NOW — Platform Experience Program
 
+### Portfolio público — solicitud del usuario
+
+- Mantener la landing sin listado de clientes y enlazar Trabajo con /trabajos.
+- Mostrar Magic By Whyso, Raúl Marqués de la Torre y PEQUEÑAS LUCES en /trabajos.
+- Pequeñas Luces: preparar presentación sin ficha individual hasta disponer de descripción, alcance/servicios, materiales aprobados y evidencias; confirmar ID interno (KYR-003 ya corresponde a RMT).
+- Verificar lint, TypeScript, build y rutas públicas afectadas.
+
+
 ### KYRUMA RADAR / OS / AI — INTERNAL VALIDATION
 
 - Consolidar RADAR como registro operativo con estados e historial de decisiones.
