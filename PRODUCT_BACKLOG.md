@@ -113,6 +113,13 @@ Automatizar emails, recordatorios, seguimiento, estados, onboarding y entregas.
 
 ## COMPLETED
 
+### KYRUMA Brand Search Reinforcement
+
+Entidad de marca reforzada para búsquedas nominales con nombre de sitio,
+Organization/Brand structured data, logo oficial rastreable, manifiesto web,
+página pública de identidad y sitemap. No se utilizan páginas doorway, texto
+oculto ni promesas artificiales de posición.
+
 ### PS-010 — Identity / Access Experience
 
 Engineering completo con Clerk, sesiones, recuperación, invitaciones hash-only y Foundation Membership.

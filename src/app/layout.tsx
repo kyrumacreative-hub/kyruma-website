@@ -17,6 +17,10 @@ const inter = Inter({
 
 export const metadata: Metadata = {
   metadataBase: new URL("https://www.kyruma.com"),
+  applicationName: "KYRUMA",
+  creator: "KYRUMA",
+  publisher: "KYRUMA",
+  category: "Creative business and strategy studio",
 
   title: {
     default: "KYRUMA | Estrategia, Identidad y Experiencia Digital",
@@ -26,9 +30,24 @@ export const metadata: Metadata = {
   description:
     "Alineamos estrategia, identidad y experiencia digital para que la percepción de tu marca esté a la altura del negocio que has construido.",
 
+  keywords: [
+    "KYRUMA",
+    "KYRUMA Creative",
+    "estrategia de marca",
+    "identidad de marca",
+    "experiencia digital",
+    "creative partner",
+  ],
+
   alternates: {
     canonical: "/",
   },
+
+  icons: {
+    icon: [{ url: "/icon.png", type: "image/png", sizes: "1254x1254" }],
+    apple: [{ url: "/icon.png", sizes: "1254x1254" }],
+  },
+  manifest: "/manifest.webmanifest",
 
   openGraph: {
     title: "KYRUMA | Estrategia, Identidad y Experiencia Digital",
@@ -88,15 +107,26 @@ export default function RootLayout({
                         "@type": "Organization",
                         "@id": "https://www.kyruma.com/#organization",
                         name: "KYRUMA",
+                        alternateName: "KYRUMA Creative",
                         url: "https://www.kyruma.com/",
                         logo: {
                           "@type": "ImageObject",
-                          url: "https://www.kyruma.com/og-image.jpg",
+                          url: "https://www.kyruma.com/icon.png",
+                          contentUrl: "https://www.kyruma.com/icon.png",
+                          width: 1254,
+                          height: 1254,
                         },
                         description:
                           "Independent Creative Business & Strategy Studio. Strategy, identity, digital experiences and systems for ambitious businesses.",
                         email: "hello@kyruma.com",
                         telephone: "+34614189346",
+                        contactPoint: {
+                          "@type": "ContactPoint",
+                          contactType: "customer service",
+                          email: "hello@kyruma.com",
+                          telephone: "+34614189346",
+                          availableLanguage: ["Spanish", "English"],
+                        },
                         sameAs: [
                           "https://www.linkedin.com/company/kyruma/",
                           "https://www.instagram.com/kyrumacreative/",
@@ -115,28 +145,22 @@ export default function RootLayout({
                         "@id": "https://www.kyruma.com/#website",
                         url: "https://www.kyruma.com/",
                         name: "KYRUMA",
+                        alternateName: "KYRUMA Creative",
                         publisher: {
                           "@id": "https://www.kyruma.com/#organization",
                         },
                         inLanguage: ["es", "en"],
                       },
                       {
-                        "@type": "ProfessionalService",
-                        "@id": "https://www.kyruma.com/#service",
+                        "@type": "Brand",
+                        "@id": "https://www.kyruma.com/#brand",
                         name: "KYRUMA",
+                        alternateName: "KYRUMA Creative",
                         url: "https://www.kyruma.com/",
-                        image: "https://www.kyruma.com/og-image.jpg",
-                        provider: {
+                        logo: "https://www.kyruma.com/icon.png",
+                        owner: {
                           "@id": "https://www.kyruma.com/#organization",
                         },
-                        serviceType: [
-                          "Business Strategy",
-                          "Brand Strategy",
-                          "Brand Identity",
-                          "Digital Experiences",
-                          "Business Systems",
-                          "Artificial Intelligence Systems",
-                        ],
                       },
                     ],
                   }),

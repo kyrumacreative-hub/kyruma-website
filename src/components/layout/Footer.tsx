@@ -78,6 +78,13 @@ export default function Footer() {
             className="flex flex-wrap items-center gap-x-4 gap-y-2"
           >
             <Link
+              href="/about"
+              className="transition-colors duration-200 hover:text-[var(--foreground)]"
+            >
+              {language === "es" ? "Sobre KYRUMA" : "About KYRUMA"}
+            </Link>
+
+            <Link
               href="/legal"
               className="transition-colors duration-200 hover:text-[var(--foreground)]"
             >
