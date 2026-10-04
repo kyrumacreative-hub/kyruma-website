@@ -6,7 +6,7 @@ export interface WorkCase {
   readonly slug: string;
   readonly publicId: string;
   readonly client: string;
-  readonly publicUrl: string;
+  readonly publicUrl?: string;
   readonly updatedAt: string;
   readonly status: "active" | "completed";
   readonly headline: LocalizedText;
@@ -23,6 +23,88 @@ export interface WorkCase {
 }
 
 export const workCases: readonly WorkCase[] = [
+  {
+    slug: "pequenas-luces",
+    publicId: "WORK-004",
+    client: "Pequeñas Luces",
+    publicUrl: "https://open.spotify.com/show/48FjmoOG82T6G9jsloYyFC",
+    updatedAt: "2026-10-04",
+    status: "active",
+    headline: { es: "Pequeñas Luces", en: "Pequeñas Luces" },
+    intro: {
+      es: "Un podcast infantil que cuenta la fe con la espontaneidad, la alegría y la mirada de sus jóvenes protagonistas.",
+      en: "A children's podcast sharing faith through the spontaneity, joy and perspective of its young hosts.",
+    },
+    sector: { es: "Podcast y comunidad", en: "Podcast and community" },
+    project: { es: "Experiencia web editorial", en: "Editorial web experience" },
+    summary: {
+      es: "Una casa digital en desarrollo para reunir episodios, historias y comunidad alrededor del podcast Pequeñas Luces.",
+      en: "A digital home in development to bring together episodes, stories and community around the Pequeñas Luces podcast.",
+    },
+    context: {
+      es: "Pequeñas Luces nace del grupo de postcomunión de la Parroquia Nuestra Señora de la Concepción de Morata de Tajuña. Hoy vive principalmente en el podcast y en redes sociales.",
+      en: "Pequeñas Luces grew from the post-communion group at Nuestra Señora de la Concepción parish in Morata de Tajuña. Today it lives primarily through its podcast and social channels.",
+    },
+    direction: {
+      es: "La dirección aprobada convierte el proyecto en un pequeño magazine vivo: podcast, blog, comunidad y newsletter, respetando su identidad alegre y evitando una expresión institucional.",
+      en: "The approved direction turns the project into a lively small magazine: podcast, blog, community and newsletter, preserving its joyful identity and avoiding an institutional tone.",
+    },
+    services: {
+      es: ["Arquitectura de contenidos", "Experiencia web", "Podcast", "Blog editorial", "Comunidad y newsletter"],
+      en: ["Content architecture", "Web experience", "Podcast", "Editorial blog", "Community and newsletter"],
+    },
+    evidence: {
+      es: ["Podcast oficial activo en Spotify", "Identidad y dirección digital aprobadas", "Arquitectura V1 definida", "Experiencia web en desarrollo"],
+      en: ["Official podcast active on Spotify", "Approved identity and digital direction", "Defined V1 architecture", "Web experience in development"],
+    },
+    next: {
+      es: "La siguiente fase convierte el material aprobado en una web editorial responsive y preparada para publicar nuevos episodios y contenidos.",
+      en: "The next phase turns the approved material into a responsive editorial website ready for new episodes and stories.",
+    },
+    socialLinks: [
+      { label: "Spotify", url: "https://open.spotify.com/show/48FjmoOG82T6G9jsloYyFC" },
+      { label: "Canales oficiales", url: "https://linktr.ee/peque.luces" },
+    ],
+  },
+  {
+    slug: "rihat-sax-quartet",
+    publicId: "WORK-005",
+    client: "Rihat Sax Quartet",
+    publicUrl: "https://museosanjuandedios.es/index.php?id=345&seccion=actividades",
+    updatedAt: "2026-10-04",
+    status: "active",
+    headline: { es: "Rihat Sax Quartet", en: "Rihat Sax Quartet" },
+    intro: {
+      es: "Cuatro saxofones, una formación común y una presencia musical que encuentra su fuerza en el conjunto.",
+      en: "Four saxophones, a shared musical background and a stage presence shaped by the strength of the ensemble.",
+    },
+    sector: { es: "Música y cultura", en: "Music and culture" },
+    project: { es: "Proyecto en documentación", en: "Project being documented" },
+    summary: {
+      es: "Incorporamos Rihat Sax Quartet al archivo de KYRUMA con una primera ficha basada únicamente en evidencia pública verificable.",
+      en: "Rihat Sax Quartet joins the KYRUMA archive with an initial case page based only on verifiable public evidence.",
+    },
+    context: {
+      es: "Rihat Sax Quartet es una agrupación formada en el Real Conservatorio Superior de Música Victoria Eugenia de Granada, con actividad concertística documentada en la ciudad.",
+      en: "Rihat Sax Quartet is an ensemble formed at Granada's Real Conservatorio Superior de Música Victoria Eugenia, with documented concert activity in the city.",
+    },
+    direction: {
+      es: "La ficha se publica como capítulo abierto. El alcance creativo de KYRUMA, los materiales visuales y los entregables se incorporarán cuando exista evidencia aprobada para mostrarlos.",
+      en: "This case is published as an open chapter. KYRUMA's creative scope, visual materials and deliverables will be added once approved evidence is available.",
+    },
+    services: {
+      es: ["Documentación de proyecto", "Dirección pendiente de publicación"],
+      en: ["Project documentation", "Direction pending publication"],
+    },
+    evidence: {
+      es: ["Agrupación vinculada al RCSM Victoria Eugenia", "Actividad concertística pública documentada", "Proyecto incorporado al archivo KYRUMA"],
+      en: ["Ensemble linked to RCSM Victoria Eugenia", "Documented public concert activity", "Project added to the KYRUMA archive"],
+    },
+    next: {
+      es: "Completaremos este caso con el alcance, la dirección visual y los entregables aprobados del proyecto, sin adelantar información no verificada.",
+      en: "We will complete this case with the project's approved scope, visual direction and deliverables, without anticipating unverified information.",
+    },
+  },
   {
     slug: "magic-by-whyso",
     publicId: "KYR-002",

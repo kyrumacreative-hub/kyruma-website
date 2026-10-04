@@ -4,8 +4,7 @@ import { FormEvent, useEffect, useRef, useState } from "react";
 import { getAttribution, hasMarketingConsent, trackMarketingEvent } from "@/features/marketing/MarketingScripts";
 import { useLanguage } from "@/components/LanguageProvider";
 import KyrumaBooker from "@/components/booking/KyrumaBooker";
-import WorkCaseCard from "@/components/work/WorkCaseCard";
-import { workCases } from "@/data/work";
+import Link from "next/link";
 
 const copy = {
   es: {
@@ -43,10 +42,12 @@ const copy = {
       ],
     },
     work: {
-      label: "CASE STUDIES — 04",
-      title: "El trabajo debe demostrar lo que las palabras prometen.",
-      body: "Documentamos cada colaboración desde su contexto real. Magic By Whyso abre esta colección como proyecto activo: mostramos el proceso disponible hoy y reservamos los resultados para cuando puedan verificarse.",
+      label: "PROYECTOS — 04",
+      title: "Cada proyecto merece su propio espacio.",
+      body: "La colección de KYRUMA reúne identidad, cultura, música y experiencias digitales en una página dedicada, con una ficha propia para cada colaboración.",
       note: "Sin métricas inventadas. Sin resultados inflados. La evidencia también construye confianza.",
+      cta: "Explorar todos los proyectos",
+      count: "Cuatro proyectos documentados",
     },
     systems: {
       label: "SYSTEMS & AI",
@@ -111,10 +112,12 @@ const copy = {
       ],
     },
     work: {
-      label: "CASE STUDIES — 04",
-      title: "The work should prove what the words promise.",
-      body: "We document every collaboration from its real context. Magic By Whyso opens this collection as an active project: we show the process available today and reserve outcomes until they can be verified.",
+      label: "PROJECTS — 04",
+      title: "Every project deserves a space of its own.",
+      body: "KYRUMA's collection brings together identity, culture, music and digital experiences on a dedicated page, with an individual story for every collaboration.",
       note: "No invented metrics. No inflated outcomes. Evidence builds trust too.",
+      cta: "Explore all projects",
+      count: "Four documented projects",
     },
     systems: {
       label: "SYSTEMS & AI",
@@ -282,7 +285,16 @@ export default function Home() {
               <p className="mt-8 border-l border-[var(--primary)] pl-5 text-sm font-light leading-relaxed text-[var(--muted)]">{t.work.note}</p>
             </div>
           </div>
-          {workCases.map((workCase) => <WorkCaseCard key={workCase.slug} workCase={workCase} language={language} />)}
+          <div className="mt-14 grid gap-px overflow-hidden rounded-[2rem] border border-[var(--border)] bg-[var(--border)] md:mt-20 md:grid-cols-2">
+            <div className="flex min-h-[300px] flex-col justify-between bg-[#111] p-8 text-white md:p-12">
+              <p className="text-[10px] uppercase tracking-[.22em] text-white/50">{t.work.count}</p>
+              <p className="max-w-[8ch] text-[clamp(3.4rem,8vw,6.8rem)] font-light leading-[.86] tracking-[-.07em]">Selected work</p>
+            </div>
+            <div className="flex min-h-[300px] flex-col justify-between bg-[var(--surface)] p-8 md:p-12">
+              <p className="body-copy max-w-md">{t.work.body}</p>
+              <Link href="/trabajos" className="button-primary self-start">{t.work.cta}<span>→</span></Link>
+            </div>
+          </div>
         </div>
       </section>
 

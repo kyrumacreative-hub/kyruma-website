@@ -4,6 +4,13 @@ Este documento es la fuente única de prioridades del producto. Las ideas se reg
 
 ## NOW — Platform Experience Program
 
+### KYRUMA Website · Multipage Projects — ACTIVE
+
+- Convertir la portada en una entrada editorial más enfocada, sin duplicar el archivo completo de proyectos.
+- Consolidar `/trabajos` como página canónica del portfolio y mantener una URL propia por proyecto.
+- Incorporar Pequeñas Luces y Rihat Sax Quartet con información verificable, sin inventar alcance, resultados ni métricas.
+- Actualizar navegación, metadata y sitemap conservando el sistema visual y bilingüe existente.
+
 ### KYRUMA Revenue System v1 — ACTIVE
 
 - Lanzar KYRUMA EXPRESS™ como línea accesible sin degradar el posicionamiento premium.

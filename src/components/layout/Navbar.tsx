@@ -32,7 +32,7 @@ export default function Navbar() {
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
 
-  const links = [[t.approach, "#perspective"], [t.services, "#capabilities"], [t.method, "#method"], [t.work, "#work"]];
+  const links = [[t.approach, "/#perspective"], [t.services, "/#capabilities"], [t.method, "/#method"], [t.work, "/trabajos"]];
 
   return (
     <header className={`fixed inset-x-0 top-0 z-50 border-b transition-[transform,background-color,border-color] duration-300 ${visible ? "translate-y-0" : "-translate-y-full"} ${scrolled ? "border-[var(--border)] bg-[var(--background)]/88 backdrop-blur-xl" : "border-transparent bg-transparent"}`}>
