@@ -41,6 +41,7 @@ export default async function InsightPage({ params }: Props) {
   const { slug } = await params;
   const insight = getInsight(slug);
   if (!insight) notFound();
+  const isInstagramInsight = insight.slug === "errores-instagram-negocios";
 
   const structuredData = {
     "@context": "https://schema.org",
@@ -98,6 +99,18 @@ export default async function InsightPage({ params }: Props) {
                 </section>
               ))}
             </div>
+
+            {isInstagramInsight && (
+              <section className="mt-20 bg-[var(--foreground)] p-8 text-[var(--background)] md:p-12">
+                <p className="text-xs uppercase tracking-[.2em] text-[var(--primary)]">QUIERES QUE LO HAGAMOS CONTIGO</p>
+                <h2 className="mt-6 text-[clamp(2.5rem,5vw,4.5rem)] font-light leading-[1.02] tracking-[-.045em]">Instagram Reset.</h2>
+                <p className="mt-5 max-w-xl text-lg leading-8 opacity-70">Revisamos tu perfil, reescribimos la bio, definimos CTA, destacados y dirección visual, y te damos tres ideas de contenido adaptadas a tu negocio.</p>
+                <div className="mt-8 flex flex-wrap items-center gap-5">
+                  <a href="https://shop.kyruma.com/products/instagram-reset?utm_source=kyruma_insights&utm_medium=organic&utm_campaign=instagram_errors" className="inline-flex rounded-full bg-[var(--background)] px-6 py-4 text-sm font-medium text-[var(--foreground)]">Comprar Instagram Reset — 29 € <span className="ml-2">→</span></a>
+                  <span className="text-xs uppercase tracking-[.14em] opacity-60">Entrega ≤ 48 h laborables</span>
+                </div>
+              </section>
+            )}
 
             <section className="mt-20 border-y border-[var(--border)] py-12">
               <p className="section-label">SIGUIENTE PASO<span className="accent-dot" /></p>
