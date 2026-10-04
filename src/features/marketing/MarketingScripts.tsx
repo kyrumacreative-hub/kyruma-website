@@ -11,7 +11,8 @@ export type MarketingEvent =
   | "hero_cta" | "contact" | "lead" | "contact_submitted" | "meeting_scheduled"
   | "start_discovery" | "conversation_started" | "conversation_completed"
   | "complete_discovery" | "discovery_opened" | "resume_discovery" | "exit_before_finish"
-  | "scroll_50" | "scroll_90" | "view_content";
+  | "scroll_50" | "scroll_90" | "view_content"
+  | "express_view" | "express_checkout" | "express_brief_completed";
 
 type Attribution = Record<"utm_source" | "utm_medium" | "utm_campaign" | "referrer" | "landing_page", string>;
 
