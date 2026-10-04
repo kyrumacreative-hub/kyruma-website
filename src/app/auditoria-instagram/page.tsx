@@ -4,7 +4,7 @@ import TrackedShopLink from "@/components/express/TrackedShopLink";
 import { expressProduct } from "@/data/express";
 
 export const metadata: Metadata = {
-  title: "Auditoría de Instagram para negocios | 29 € | KYRUMA",
+  title: "Auditoría de Instagram para negocios | 29 €",
   description: "Auditoría profesional de Instagram para negocios: bio, SEO, CTA, destacados, dirección visual y contenido. Precio cerrado de 29 € y entrega en hasta 48 h laborables.",
   keywords: [
     "auditoría Instagram",
@@ -19,6 +19,12 @@ export const metadata: Metadata = {
     description: "Descubre qué está frenando tu perfil y recibe cambios concretos de bio, CTA, destacados, SEO y dirección visual.",
     url: "/auditoria-instagram",
     type: "website",
+    images: ["/og-image.jpg"],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Auditoría de Instagram para negocios — 29 € | KYRUMA",
+    description: "Bio, CTA, destacados, SEO y dirección visual con cambios concretos para tu negocio.",
     images: ["/og-image.jpg"],
   },
 };
