@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import Link from "next/link";
 
 export const metadata: Metadata = {
   title: "KYRUMA MATCH | Descubre qué mejorar primero en tu negocio",
@@ -50,6 +51,21 @@ export default function MatchPage() {
             <ol className="grid gap-0 border-t border-[var(--border)]">
               {["Nos cuentas qué tienes y qué te preocupa", "Identificamos la categoría principal del problema", "Te mostramos la solución que encaja mejor", "Si el problema es mayor, te enviamos directamente a KYRUMA"].map((step, index) => <li key={step} className="grid grid-cols-[44px_1fr] gap-4 border-b border-[var(--border)] py-6"><span className="text-xs text-[var(--primary)]">0{index + 1}</span><span className="leading-7 text-[var(--muted)]">{step}</span></li>)}
             </ol>
+          </div>
+        </div>
+      </section>
+
+      <section className="section surface-section">
+        <div className="site-container grid gap-10 md:grid-cols-12 md:items-end">
+          <div className="md:col-span-7">
+            <p className="section-label">¿YA SABES QUÉ FALLA?<span className="accent-dot" /></p>
+            <h2 className="mt-8 text-[clamp(2.6rem,5vw,5rem)] font-light leading-[1.03] tracking-[-.045em]">Si el problema es Instagram, no necesitas hacer el diagnóstico.</h2>
+            <p className="mt-6 max-w-2xl text-lg leading-8 text-[var(--muted)]">Instagram Reset revisa bio, CTA, nombre y búsqueda, destacados, dirección visual y el arranque de contenido. Precio cerrado y entrega en hasta 48 horas laborables.</p>
+          </div>
+          <div className="md:col-span-5 md:text-right">
+            <p className="text-4xl font-light">29 €</p>
+            <a href="https://shop.kyruma.com/products/instagram-reset?utm_source=kyruma_match&utm_medium=website&utm_campaign=kx001_sales" className="button-primary mt-6 inline-flex">Comprar Instagram Reset <span>→</span></a>
+            <div className="mt-4"><Link href="/express/instagram-reset" className="text-link">Ver qué incluye <span>→</span></Link></div>
           </div>
         </div>
       </section>
