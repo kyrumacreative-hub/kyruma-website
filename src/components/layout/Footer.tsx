@@ -52,12 +52,14 @@ export default function Footer() {
 
         <div className="md:col-span-2">
           <p className="micro">
-            {language === "es" ? "IDIOMA" : "LANGUAGE"}
+            {language === "es" ? "DESCUBRIR" : "DISCOVER"}
           </p>
-
-          <p className="mt-4 text-sm text-[var(--muted)]">
-            ES / EN
-          </p>
+          <div className="mt-4 flex flex-col gap-3 text-sm text-[var(--muted)]">
+            <Link href="/insights" className="transition-colors hover:text-[var(--foreground)]">Insights</Link>
+            <Link href="/match" className="transition-colors hover:text-[var(--foreground)]">KYRUMA Match</Link>
+            <Link href="/express" className="transition-colors hover:text-[var(--foreground)]">KYRUMA Express</Link>
+            <Link href="/granada" className="transition-colors hover:text-[var(--foreground)]">Granada</Link>
+          </div>
         </div>
 
         <div className="md:col-span-12 border-t border-[var(--border)] pt-8">
