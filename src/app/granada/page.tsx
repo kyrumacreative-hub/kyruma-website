@@ -106,6 +106,20 @@ export default function GranadaPage() {
       <section className="section">
         <div className="site-container grid gap-12 md:grid-cols-12 md:items-end">
           <div className="md:col-span-7">
+            <p className="section-label">UNA NECESIDAD CONCRETA<span className="accent-dot" /></p>
+            <h2 className="mt-8 text-[clamp(2.5rem,5vw,5rem)] font-light tracking-[-.045em]">¿Tu negocio está bien, pero Instagram no lo parece?</h2>
+            <p className="mt-6 max-w-2xl text-lg leading-8 text-[var(--muted)]">Empieza por una auditoría concreta: bio, CTA, destacados, SEO, dirección visual y prioridades. Precio cerrado, sin reunión y sin gestión mensual.</p>
+          </div>
+          <div className="md:col-span-5 md:text-right">
+            <Link href="/auditoria-instagram" className="button-primary inline-flex">Auditoría Instagram — 29 € <span>→</span></Link>
+            <p className="mt-4 text-xs uppercase tracking-[.14em] text-[var(--muted)]">Entrega ≤ 48 h laborables</p>
+          </div>
+        </div>
+      </section>
+
+      <section className="section surface-section">
+        <div className="site-container grid gap-12 md:grid-cols-12 md:items-end">
+          <div className="md:col-span-7">
             <p className="section-label">EMPEZAR<span className="accent-dot" /></p>
             <h2 className="mt-8 text-[clamp(2.5rem,5vw,5rem)] font-light tracking-[-.045em]">¿No sabes si el problema es tu web, tu marca o tu contenido?</h2>
             <p className="mt-6 max-w-2xl text-lg leading-8 text-[var(--muted)]">Haz KYRUMA MATCH. Es un diagnóstico breve y gratuito que te ayuda a identificar qué arreglar primero antes de invertir en algo más grande.</p>
