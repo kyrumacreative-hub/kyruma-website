@@ -36,6 +36,7 @@ const eslintConfig = defineConfig([
     ".operating-layer-persistence-test-build/**",
     ".security-test-build/**",
     ".security-persistence-test-build/**",
+    ".telegram-test-build/**",
     "next-env.d.ts",
   ]),
 ]);

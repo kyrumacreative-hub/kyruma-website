@@ -4,6 +4,22 @@ Este documento es la fuente única de prioridades del producto. Las ideas se reg
 
 ## NOW — Platform Experience Program
 
+### KYRUMA Website · Multipage Projects — ACTIVE
+
+- Convertir la portada en una entrada editorial más enfocada, sin duplicar el archivo completo de proyectos.
+- Consolidar `/trabajos` como página canónica del portfolio y mantener una URL propia por proyecto.
+- Incorporar Pequeñas Luces y Rihat Sax Quartet con información verificable, sin inventar alcance, resultados ni métricas.
+- Actualizar navegación, metadata y sitemap conservando el sistema visual y bilingüe existente.
+
+### KYRUMA Revenue System v1 — ACTIVE
+
+- Lanzar KYRUMA EXPRESS™ como línea accesible sin degradar el posicionamiento premium.
+- Publicar únicamente KX-001 — Instagram Reset como producto disponible a 29 €.
+- Conectar la capa editorial de `kyruma.com` con el checkout existente de Shopify.
+- Reutilizar consentimiento, analítica, email y seguridad existentes para el brief poscompra.
+- Preparar KYRUMA MATCH™ sin bloquear el Revenue MVP cuando falten secretos de Telegram.
+- No publicar KX-002–KX-005 hasta que KX-001 esté estable y exista evidencia operativa.
+
 ### KYRUMA RADAR / OS / AI — INTERNAL VALIDATION
 
 - Consolidar RADAR como registro operativo con estados e historial de decisiones.

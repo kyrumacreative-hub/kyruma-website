@@ -1,0 +1,66 @@
+import type { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: "KYRUMA MATCH | Descubre qué mejorar primero en tu negocio",
+  description: "Un diagnóstico gratuito y rápido para saber si deberías empezar por tu Instagram, web, contenido o marca.",
+  alternates: { canonical: "/match" },
+  openGraph: {
+    title: "KYRUMA MATCH | Descubre qué mejorar primero",
+    description: "Instagram, web, contenido o marca. Responde unas preguntas y encuentra tu siguiente paso.",
+    url: "/match",
+    type: "website",
+  },
+};
+
+const areas = ["Instagram", "Web", "Contenido", "Marca"];
+
+export default function MatchPage() {
+  return (
+    <main className="bg-[var(--background)] text-[var(--foreground)]">
+      <section className="flex min-h-[92svh] items-end border-b border-[var(--border)] pt-36">
+        <div className="site-container pb-20 md:pb-28">
+          <p className="section-label">KYRUMA MATCH™<span className="accent-dot" /></p>
+          <h1 className="mt-8 max-w-[1100px] text-[clamp(3.4rem,8vw,7.2rem)] font-light leading-[.95] tracking-[-.055em]">
+            No sabes qué está fallando. <span className="text-[var(--muted)]">Empieza por descubrirlo.</span>
+          </h1>
+          <p className="mt-10 max-w-2xl text-lg font-light leading-[1.8] text-[var(--muted)]">Responde unas preguntas sobre tu negocio y KYRUMA te dirá qué arreglaría primero. Sin llamada, sin presupuesto y sin obligación de comprar nada.</p>
+          <div className="mt-10 flex flex-wrap items-center gap-5">
+            <a href="https://t.me/kyrumabot?start=kyruma_match_web" target="_blank" rel="noreferrer" className="button-primary inline-flex">Hacer KYRUMA MATCH <span>↗</span></a>
+            <span className="text-xs uppercase tracking-[.16em] text-[var(--muted)]">Gratis · ~2 minutos</span>
+          </div>
+        </div>
+      </section>
+
+      <section className="section surface-section">
+        <div className="site-container">
+          <p className="section-label">QUÉ REVISA<span className="accent-dot" /></p>
+          <div className="mt-12 grid border-t border-[var(--border)] md:grid-cols-4">
+            {areas.map((area, index) => <div key={area} className="border-b border-[var(--border)] py-10 md:border-r md:px-8"><span className="text-xs text-[var(--primary)]">0{index + 1}</span><p className="mt-12 text-2xl font-light">{area}</p></div>)}
+          </div>
+        </div>
+      </section>
+
+      <section className="section">
+        <div className="site-container grid gap-12 md:grid-cols-12">
+          <div className="md:col-span-5">
+            <p className="section-label">CÓMO FUNCIONA<span className="accent-dot" /></p>
+            <h2 className="mt-8 text-[clamp(2.6rem,5vw,5rem)] font-light leading-[1.03] tracking-[-.045em]">No te recomendamos lo más caro. Te recomendamos por dónde empezar.</h2>
+          </div>
+          <div className="md:col-span-6 md:col-start-7">
+            <ol className="grid gap-0 border-t border-[var(--border)]">
+              {["Nos cuentas qué tienes y qué te preocupa", "Identificamos la categoría principal del problema", "Te mostramos la solución que encaja mejor", "Si el problema es mayor, te enviamos directamente a KYRUMA"].map((step, index) => <li key={step} className="grid grid-cols-[44px_1fr] gap-4 border-b border-[var(--border)] py-6"><span className="text-xs text-[var(--primary)]">0{index + 1}</span><span className="leading-7 text-[var(--muted)]">{step}</span></li>)}
+            </ol>
+          </div>
+        </div>
+      </section>
+
+      <section className="section bg-[var(--foreground)] text-[var(--background)]">
+        <div className="site-container text-center">
+          <p className="text-xs uppercase tracking-[.2em] text-[var(--primary)]">TU SIGUIENTE PASO</p>
+          <h2 className="mx-auto mt-7 max-w-4xl text-[clamp(3rem,6vw,6rem)] font-light leading-[.98] tracking-[-.055em]">Dos minutos pueden ahorrarte meses arreglando lo equivocado.</h2>
+          <a href="https://t.me/kyrumabot?start=kyruma_match_web_final" target="_blank" rel="noreferrer" className="mt-10 inline-flex border border-white/30 px-6 py-4 text-sm uppercase tracking-[.14em] transition-colors hover:border-[var(--primary)] hover:text-[var(--primary)]">Empezar en Telegram ↗</a>
+        </div>
+      </section>
+    </main>
+  );
+}

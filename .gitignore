@@ -63,6 +63,7 @@ yarn-error.log*
 .operating-intelligence-test-build/
 .security-test-build/
 .security-persistence-test-build/
+.telegram-test-build/
 next-env.d.ts
 .workspace-persistence-test-build/
 
