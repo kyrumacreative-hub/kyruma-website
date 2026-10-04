@@ -1,0 +1,6 @@
+{
+  "extends": "./tsconfig.json",
+  "compilerOptions": { "noEmit": false, "outDir": ".telegram-test-build", "module": "CommonJS", "moduleResolution": "Node", "isolatedModules": false },
+  "include": ["src/features/telegram/**/*.ts"],
+  "exclude": ["node_modules"]
+}
