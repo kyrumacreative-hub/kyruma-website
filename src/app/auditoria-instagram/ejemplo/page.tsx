@@ -42,6 +42,10 @@ export default function InstagramResetSamplePage() {
             <div className="md:col-span-7">
               <p className="max-w-2xl text-lg font-light leading-[1.75] text-[var(--muted)]">Este caso es completamente ficticio. No es un cliente ni pretende mostrar resultados obtenidos. Lo usamos para enseñar de forma transparente la profundidad y estructura de una entrega de Instagram Reset.</p>
               <p className="mt-5 text-xs uppercase tracking-[.16em] text-[var(--primary)]">EJEMPLO FICTICIO · SIN TESTIMONIOS NI MÉTRICAS INVENTADAS</p>
+              <div className="mt-8 flex flex-wrap items-center gap-5">
+                <TrackedShopLink href={expressProduct.shopUrl} placement="sample_page_hero" className="button-primary inline-flex">Quiero mi Instagram Reset — 29 € <span>→</span></TrackedShopLink>
+                <Link href="/auditoria-instagram" className="text-sm underline underline-offset-4">Ver todos los detalles</Link>
+              </div>
             </div>
             <div className="md:col-span-5 md:text-right">
               <p className="text-5xl font-light">29 €</p>
@@ -85,6 +89,10 @@ export default function InstagramResetSamplePage() {
                 <p className="leading-7 text-[var(--muted)] md:col-span-6 md:col-start-7">{body}</p>
               </article>
             ))}
+          </div>
+          <div className="mt-8 flex flex-col gap-5 border-t border-[var(--border)] pt-7 md:flex-row md:items-center md:justify-between">
+            <p className="max-w-2xl text-sm leading-7 text-[var(--muted)]">¿Te basta con ver cómo diagnosticamos el perfil? Tu revisión se construye sobre tu negocio real, no sobre este ejemplo.</p>
+            <TrackedShopLink href={expressProduct.shopUrl} placement="sample_page_after_score" className="button-primary inline-flex shrink-0">Empezar mi auditoría — 29 € <span>→</span></TrackedShopLink>
           </div>
           <p className="mt-5 text-xs leading-6 text-[var(--muted)]">La puntuación de este ejemplo es inventada únicamente para enseñar cómo estructuramos el diagnóstico. En una compra real, cada puntuación debe estar razonada a partir del perfil analizado.</p>
         </div>
