@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 
 export const metadata: Metadata = {
-  title: "Diseño web y branding en Granada | KYRUMA",
+  title: "Diseño web y branding en Granada",
   description: "Estudio de estrategia, branding, identidad visual y diseño web en Granada para empresas y negocios que necesitan una presencia más clara, coherente y eficaz.",
   keywords: ["diseño web Granada", "branding Granada", "agencia creativa Granada", "identidad visual Granada", "estrategia de marca Granada", "estudio diseño Granada"],
   alternates: { canonical: "/granada" },
@@ -11,6 +11,12 @@ export const metadata: Metadata = {
     description: "Estrategia, identidad y experiencia digital para empresas y negocios en Granada.",
     url: "/granada",
     type: "website",
+    images: ["/og-image.jpg"],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Diseño web y branding en Granada | KYRUMA",
+    description: "Estrategia, identidad y experiencia digital para empresas y negocios en Granada.",
     images: ["/og-image.jpg"],
   },
 };
