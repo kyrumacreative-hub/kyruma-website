@@ -1,5 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import TrackedShopLink from "@/components/express/TrackedShopLink";
+import { expressProduct } from "@/data/express";
 
 export const metadata: Metadata = {
   title: "KYRUMA MATCH | Descubre qué mejorar primero en tu negocio",
@@ -14,6 +16,7 @@ export const metadata: Metadata = {
 };
 
 const areas = ["Instagram", "Web", "Contenido", "Marca"];
+const whatsappOrderUrl = "https://wa.me/34614189346?text=Hola%2C%20he%20hecho%20o%20estoy%20viendo%20KYRUMA%20MATCH%20y%20quiero%20saber%20si%20Instagram%20Reset%20por%2029%20%E2%82%AC%20encaja%20con%20mi%20negocio.";
 
 export default function MatchPage() {
   return (
@@ -61,11 +64,15 @@ export default function MatchPage() {
             <p className="section-label">¿YA SABES QUÉ FALLA?<span className="accent-dot" /></p>
             <h2 className="mt-8 text-[clamp(2.6rem,5vw,5rem)] font-light leading-[1.03] tracking-[-.045em]">Si el problema es Instagram, no necesitas hacer el diagnóstico.</h2>
             <p className="mt-6 max-w-2xl text-lg leading-8 text-[var(--muted)]">Instagram Reset revisa bio, CTA, nombre y búsqueda, destacados, dirección visual y el arranque de contenido. Precio cerrado y entrega en hasta 48 horas laborables.</p>
+            <div className="mt-6 flex flex-wrap gap-x-7 gap-y-3 text-xs uppercase tracking-[.13em] text-[var(--muted)]">
+              <span>Pago único</span><span>Sin contraseña</span><span>Sin reunión</span><span>Segunda revisión incluida</span>
+            </div>
           </div>
           <div className="md:col-span-5 md:text-right">
             <p className="text-4xl font-light">29 €</p>
-            <a href="https://shop.kyruma.com/products/instagram-reset?utm_source=kyruma_match&utm_medium=website&utm_campaign=kx001_sales" className="button-primary mt-6 inline-flex">Comprar Instagram Reset <span>→</span></a>
-            <div className="mt-4"><Link href="/express/instagram-reset" className="text-link">Ver qué incluye <span>→</span></Link></div>
+            <TrackedShopLink href={expressProduct.shopUrl} placement="match_paid_recommendation" className="button-primary mt-6 inline-flex">Comprar Instagram Reset <span>→</span></TrackedShopLink>
+            <p className="mt-4 text-sm leading-6 text-[var(--muted)]">¿Quieres confirmar antes de pagar? <a href={whatsappOrderUrl} target="_blank" rel="noreferrer" className="underline underline-offset-4">Pregúntanos por WhatsApp</a>.</p>
+            <div className="mt-4"><Link href="/auditoria-instagram" className="text-link">Ver qué incluye <span>→</span></Link></div>
           </div>
         </div>
       </section>
