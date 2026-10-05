@@ -53,6 +53,8 @@ const process = [
   ["03", "Recibes el reset", "Te enviamos por email una entrega digital con diagnóstico, cambios concretos y prioridades."],
 ] as const;
 
+const whatsappOrderUrl = "https://wa.me/34614189346?text=Hola%2C%20quiero%20contratar%20Instagram%20Reset%20de%20KYRUMA%20por%2029%20%E2%82%AC%20y%20necesito%20ayuda%20con%20la%20compra.";
+
 const faqs = [
   ["¿Necesitáis acceso a mi cuenta?", "No. Analizamos el perfil públicamente y nunca necesitamos tu contraseña."],
   ["¿Es una plantilla?", "No. La revisión se prepara para tu negocio, tu oferta, tu público y el objetivo que indiques en el brief."],
@@ -60,6 +62,7 @@ const faqs = [
   ["¿Cuándo recibo la auditoría?", "En hasta 48 horas laborables desde que recibimos correctamente tu brief."],
   ["¿Tengo que hacer una reunión?", "No. Está diseñado para resolverse de forma asíncrona. Compras, completas el brief y recibes la revisión por email."],
   ["¿Qué incluye el lanzamiento?", "Incluye una segunda revisión sin coste adicional durante los 7 días posteriores a la entrega."],
+  ["¿Y si tengo algún problema al comprar?", "Puedes escribirnos por WhatsApp o a hello@kyruma.com. Te ayudamos a completar el pedido sin hacerte repetir todo el proceso."],
 ] as const;
 
 function BuyButton({ placement, label = "Comprar auditoría — 29 €" }: { placement: string; label?: string }) {
@@ -111,6 +114,7 @@ export default function AuditoriaInstagramPage() {
                 <span className="text-xs uppercase tracking-[.14em] text-[var(--muted)]">Entrega ≤ 48 h laborables</span>
               </div>
               <p className="mt-4 text-xs leading-6 text-[var(--muted)]">Después de comprar completas un brief breve. El plazo empieza cuando lo recibimos correctamente.</p>
+              <p className="mt-3 text-xs leading-6 text-[var(--muted)]">¿Tienes una duda antes de pagar o algo falla en la compra? <a href={whatsappOrderUrl} target="_blank" rel="noreferrer" className="underline underline-offset-4">Escríbenos por WhatsApp</a>.</p>
             </div>
             <div className="md:col-span-5 md:text-right">
               <p className="text-5xl font-light">29 €</p>
@@ -230,7 +234,8 @@ export default function AuditoriaInstagramPage() {
           </div>
           <div className="md:col-span-5 md:text-right">
             <BuyButton placement="auditoria_instagram_final" label="Comprar ahora — 29 €" />
-            <p className="mt-5 text-sm leading-6 opacity-65">¿No tienes claro si Instagram es realmente el problema? <a href="https://t.me/kyrumabot?start=seo_auditoria_instagram" target="_blank" rel="noreferrer" className="underline underline-offset-4">Haz KYRUMA MATCH gratis</a>.</p>
+            <p className="mt-5 text-sm leading-6 opacity-65">¿Alguna duda o problema al completar la compra? <a href={whatsappOrderUrl} target="_blank" rel="noreferrer" className="underline underline-offset-4">Habla con KYRUMA por WhatsApp</a>.</p>
+            <p className="mt-3 text-sm leading-6 opacity-65">¿No tienes claro si Instagram es realmente el problema? <a href="https://t.me/kyrumabot?start=seo_auditoria_instagram" target="_blank" rel="noreferrer" className="underline underline-offset-4">Haz KYRUMA MATCH gratis</a>.</p>
             <div className="mt-4"><Link href="/express/instagram-reset" className="text-sm underline underline-offset-4 opacity-65">Ver todos los detalles del servicio</Link></div>
           </div>
         </div>
