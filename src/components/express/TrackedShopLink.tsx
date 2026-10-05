@@ -10,7 +10,12 @@ export default function TrackedShopLink({ href, placement, className, children }
   children: ReactNode;
 }) {
   function handleClick(event: MouseEvent<HTMLAnchorElement>) {
-    trackMarketingEvent("express_checkout", { product: "KX-001", placement });
+    trackMarketingEvent("express_checkout", {
+      product: "KX-001",
+      placement,
+      value: 29,
+      currency: "EUR",
+    });
 
     event.preventDefault();
     const attribution = getAttribution();
