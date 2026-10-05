@@ -111,6 +111,7 @@ export default function AuditoriaInstagramPage() {
               </p>
               <div className="mt-8 flex flex-wrap items-center gap-5">
                 <BuyButton placement="auditoria_instagram_hero" />
+                <Link href="/auditoria-instagram/ejemplo" className="text-sm underline underline-offset-4">Ver una entrega de ejemplo</Link>
                 <span className="text-xs uppercase tracking-[.14em] text-[var(--muted)]">Entrega ≤ 48 h laborables</span>
               </div>
               <p className="mt-4 text-xs leading-6 text-[var(--muted)]">Después de comprar completas un brief breve. El plazo empieza cuando lo recibimos correctamente.</p>
@@ -179,6 +180,7 @@ export default function AuditoriaInstagramPage() {
             <p className="section-label">EJEMPLO ILUSTRATIVO<span className="accent-dot" /></p>
             <h2 className="mt-8 text-[clamp(2.5rem,5vw,4.8rem)] font-light leading-[1.03] tracking-[-.045em]">De enumerar servicios a explicar por qué elegirte.</h2>
             <p className="mt-5 text-sm leading-7 text-[var(--muted)]">Este ejemplo no corresponde a un cliente real. Sirve para mostrar el tipo de cambio que proponemos.</p>
+            <Link href="/auditoria-instagram/ejemplo" className="mt-6 inline-flex text-sm underline underline-offset-4">Ver la entrega completa de ejemplo →</Link>
           </div>
           <div className="grid gap-px border border-[var(--border)] bg-[var(--border)] md:col-span-7 md:col-start-6 md:grid-cols-2">
             <div className="bg-[var(--background)] p-8">
@@ -234,6 +236,7 @@ export default function AuditoriaInstagramPage() {
           </div>
           <div className="md:col-span-5 md:text-right">
             <BuyButton placement="auditoria_instagram_final" label="Comprar ahora — 29 €" />
+            <div className="mt-4"><Link href="/auditoria-instagram/ejemplo" className="text-sm underline underline-offset-4 opacity-70">Ver una entrega de ejemplo antes de comprar</Link></div>
             <p className="mt-5 text-sm leading-6 opacity-65">¿Alguna duda o problema al completar la compra? <a href={whatsappOrderUrl} target="_blank" rel="noreferrer" className="underline underline-offset-4">Habla con KYRUMA por WhatsApp</a>.</p>
             <p className="mt-3 text-sm leading-6 opacity-65">¿No tienes claro si Instagram es realmente el problema? <a href="https://t.me/kyrumabot?start=seo_auditoria_instagram" target="_blank" rel="noreferrer" className="underline underline-offset-4">Haz KYRUMA MATCH gratis</a>.</p>
             <div className="mt-4"><Link href="/express/instagram-reset" className="text-sm underline underline-offset-4 opacity-65">Ver todos los detalles del servicio</Link></div>
