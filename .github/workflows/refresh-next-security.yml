@@ -27,11 +27,11 @@ jobs:
       - name: Update Next runtime packages
         run: npm install --save-exact next@16.3.8 @next/third-parties@16.3.8
 
+      - name: Pin patched Sharp runtime
+        run: npm install --save-optional --save-exact sharp@0.35.4
+
       - name: Update Next lint config
         run: npm install --save-dev --save-exact eslint-config-next@16.3.8
-
-      - name: Apply non-breaking production audit fixes
-        run: npm audit fix --omit=dev
 
       - name: Verify high and critical production vulnerabilities are cleared
         run: npm audit --omit=dev --audit-level=high
@@ -42,5 +42,5 @@ jobs:
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git add package.json package-lock.json
           git diff --cached --quiet && exit 0
-          git commit -m "chore(security): update Next.js and production dependency fixes"
+          git commit -m "chore(security): update Next.js and Sharp runtime"
           git push origin HEAD:growth/organic-instagram-cluster-v1
