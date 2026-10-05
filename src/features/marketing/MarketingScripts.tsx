@@ -52,6 +52,11 @@ export function trackMarketingEvent(event: MarketingEvent, payload: Record<strin
 
 function persistAttribution() {
   const params = new URLSearchParams(window.location.search);
+  const hasCampaignParams = params.has("utm_source") || params.has("utm_medium") || params.has("utm_campaign");
+  const existing = window.localStorage.getItem("kyruma-attribution");
+
+  if (existing && !hasCampaignParams) return;
+
   const source = params.get("utm_source") ?? (document.referrer ? "referral" : "direct");
   const medium = params.get("utm_medium") ?? (document.referrer ? "referral" : "none");
   const attribution: Attribution = {
