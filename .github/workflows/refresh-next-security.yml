@@ -24,11 +24,11 @@ jobs:
           node-version: 24
           cache: npm
 
+      - name: Patch Sharp override
+        run: npm pkg set overrides.sharp=0.35.4
+
       - name: Update Next runtime packages
         run: npm install --save-exact next@16.3.8 @next/third-parties@16.3.8
-
-      - name: Pin patched Sharp runtime
-        run: npm install --save-optional --save-exact sharp@0.35.4
 
       - name: Update Next lint config
         run: npm install --save-dev --save-exact eslint-config-next@16.3.8
