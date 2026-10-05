@@ -1,5 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import TrackedShopLink from "@/components/express/TrackedShopLink";
+import { expressProduct } from "@/data/express";
 import { insights } from "@/data/insights";
 
 export const metadata: Metadata = {
@@ -50,6 +52,25 @@ export default function InsightsPage() {
                 </div>
               </article>
             ))}
+          </div>
+        </div>
+      </section>
+
+      <section className="section bg-[var(--foreground)] text-[var(--background)]">
+        <div className="site-container grid gap-10 md:grid-cols-12 md:items-end">
+          <div className="md:col-span-7">
+            <p className="text-xs uppercase tracking-[.2em] text-[var(--primary)]">DE LEER A ARREGLAR</p>
+            <h2 className="mt-8 text-[clamp(2.5rem,5vw,5rem)] font-light tracking-[-.045em]">Si ya sabes que el problema es Instagram, no necesitas otro artículo.</h2>
+            <p className="mt-5 max-w-2xl text-lg leading-8 opacity-70">KYRUMA revisa tu perfil y te entrega cambios concretos de bio, SEO, CTA, destacados, dirección visual y contenido.</p>
+            <div className="mt-7 flex flex-wrap gap-x-6 gap-y-3 text-xs uppercase tracking-[.13em] opacity-65">
+              <span>29 €</span><span>Pago único</span><span>≤ 48 h laborables</span><span>Sin contraseña</span>
+            </div>
+          </div>
+          <div className="md:col-span-5 md:text-right">
+            <TrackedShopLink href={expressProduct.shopUrl} placement="insights_hub_paid_cta" className="inline-flex rounded-full bg-[var(--background)] px-6 py-4 text-sm font-medium text-[var(--foreground)]">
+              Comprar Instagram Reset — 29 € <span className="ml-2">→</span>
+            </TrackedShopLink>
+            <div className="mt-5"><Link href="/auditoria-instagram" className="text-sm underline underline-offset-4 opacity-70">Ver qué incluye</Link></div>
           </div>
         </div>
       </section>
