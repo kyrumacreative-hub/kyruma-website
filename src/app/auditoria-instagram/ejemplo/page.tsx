@@ -38,7 +38,7 @@ const priorities = [
 
 export default function InstagramResetSamplePage() {
   return (
-    <main className="bg-[var(--background)] text-[var(--foreground)]">
+    <main className="bg-[var(--background)] pb-24 text-[var(--foreground)] md:pb-0">
       <section className="flex min-h-[88svh] items-end border-b border-[var(--border)] pt-36">
         <div className="site-container pb-20 md:pb-28">
           <p className="section-label">INSTAGRAM RESET / EJEMPLO DE ENTREGA<span className="accent-dot" /></p>
@@ -182,6 +182,13 @@ export default function InstagramResetSamplePage() {
           </div>
         </div>
       </section>
+
+      <div className="fixed inset-x-0 bottom-0 z-40 border-t border-[var(--border)] bg-[var(--background)]/95 px-4 py-3 backdrop-blur md:hidden">
+        <div className="mx-auto flex max-w-xl items-center justify-between gap-4">
+          <div><p className="text-lg font-medium">29 €</p><p className="text-[10px] uppercase tracking-[.12em] text-[var(--muted)]">Pago único · ≤ 48 h</p></div>
+          <TrackedShopLink href={expressProduct.shopUrl} placement="sample_page_mobile_sticky" className="button-primary inline-flex">Comprar <span>→</span></TrackedShopLink>
+        </div>
+      </div>
     </main>
   );
 }
