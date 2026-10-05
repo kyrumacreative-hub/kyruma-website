@@ -39,6 +39,8 @@ export function trackMarketingEvent(event: MarketingEvent, payload: Record<strin
   const metaEvents: Partial<Record<MarketingEvent, { name: string; custom?: boolean }>> = {
     contact: { name: "Contact" },
     lead: { name: "Lead" },
+    conversation_started: { name: "Contact" },
+    express_checkout: { name: "InitiateCheckout" },
     meeting_scheduled: { name: "ScheduleMeeting", custom: true },
     start_discovery: { name: "StartDiscovery", custom: true },
     complete_discovery: { name: "CompleteDiscovery", custom: true },
@@ -50,6 +52,11 @@ export function trackMarketingEvent(event: MarketingEvent, payload: Record<strin
 
 function persistAttribution() {
   const params = new URLSearchParams(window.location.search);
+  const hasCampaignParams = params.has("utm_source") || params.has("utm_medium") || params.has("utm_campaign");
+  const existing = window.localStorage.getItem("kyruma-attribution");
+
+  if (existing && !hasCampaignParams) return;
+
   const source = params.get("utm_source") ?? (document.referrer ? "referral" : "direct");
   const medium = params.get("utm_medium") ?? (document.referrer ? "referral" : "none");
   const attribution: Attribution = {
@@ -88,6 +95,22 @@ export default function MarketingScripts() {
     window.addEventListener("scroll", onScroll, { passive: true });
     onScroll();
     return () => window.removeEventListener("scroll", onScroll);
+  }, [pathname]);
+
+  useEffect(() => {
+    const onClick = (event: MouseEvent) => {
+      const anchor = (event.target as Element | null)?.closest("a[href]") as HTMLAnchorElement | null;
+      if (!anchor || !anchor.href.includes("wa.me/")) return;
+
+      trackMarketingEvent("conversation_started", {
+        channel: "whatsapp",
+        page_path: pathname,
+        placement: anchor.textContent?.trim().slice(0, 80) || "whatsapp_link",
+      });
+    };
+
+    document.addEventListener("click", onClick);
+    return () => document.removeEventListener("click", onClick);
   }, [pathname]);
 
   return <>
