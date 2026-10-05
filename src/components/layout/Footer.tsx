@@ -6,10 +6,15 @@ import { useLanguage } from "@/components/LanguageProvider";
 export default function Footer() {
   const { language } = useLanguage();
   const year = new Date().getFullYear();
+  const whatsappMessage = language === "es"
+    ? "Hola, he visto KYRUMA y quiero información para empezar."
+    : "Hi, I found KYRUMA and I would like information to get started.";
+  const whatsappUrl = `https://wa.me/34614189346?text=${encodeURIComponent(whatsappMessage)}`;
   const socialLinks = [
     { label: "Instagram", href: process.env.NEXT_PUBLIC_INSTAGRAM_URL || "https://www.instagram.com/kyrumacreative/" },
     { label: "LinkedIn", href: process.env.NEXT_PUBLIC_LINKEDIN_URL || "https://www.linkedin.com/company/kyruma/" },
     { label: "TikTok", href: process.env.NEXT_PUBLIC_TIKTOK_URL },
+    { label: "WhatsApp", href: whatsappUrl },
     { label: "Email", href: "mailto:hello@kyruma.com" },
   ].filter((link): link is { label: string; href: string } => Boolean(link.href));
 
@@ -41,6 +46,9 @@ export default function Footer() {
             className="text-link mt-4"
           >
             hello@kyruma.com <span>→</span>
+          </a>
+          <a href={whatsappUrl} target="_blank" rel="noreferrer" className="text-link mt-3">
+            {language === "es" ? "WhatsApp · hablar ahora" : "WhatsApp · talk now"} <span>↗</span>
           </a>
           <a href="tel:+34614189346" className="text-link mt-3">
             614 189 346 <span>→</span>
