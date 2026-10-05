@@ -13,15 +13,10 @@ export default function HomepageExpressPrompt() {
   const [visible, setVisible] = useState(false);
 
   useEffect(() => {
-    if (pathname !== "/") {
-      setVisible(false);
-      return;
-    }
-
+    if (pathname !== "/") return;
     if (window.sessionStorage.getItem(DISMISS_KEY) === "1") return;
 
     const updateVisibility = () => setVisible(window.scrollY > 520);
-    updateVisibility();
     window.addEventListener("scroll", updateVisibility, { passive: true });
     return () => window.removeEventListener("scroll", updateVisibility);
   }, [pathname]);
