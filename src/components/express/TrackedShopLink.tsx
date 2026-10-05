@@ -11,13 +11,16 @@ export default function TrackedShopLink({ href, placement, className, children }
 }) {
   function handleClick(event: MouseEvent<HTMLAnchorElement>) {
     trackMarketingEvent("express_checkout", { product: "KX-001", placement });
-    const attribution = getAttribution();
-    if (!attribution) return;
+
     event.preventDefault();
+    const attribution = getAttribution();
     const url = new URL(href);
-    url.searchParams.set("utm_source", attribution.utm_source || "kyruma_web");
-    url.searchParams.set("utm_medium", attribution.utm_medium || "website");
-    url.searchParams.set("utm_campaign", attribution.utm_campaign || "kyruma_express_launch");
+
+    url.searchParams.set("utm_source", attribution?.utm_source || "kyruma_web");
+    url.searchParams.set("utm_medium", attribution?.utm_medium || "website");
+    url.searchParams.set("utm_campaign", attribution?.utm_campaign || "instagram_reset");
+    url.searchParams.set("utm_content", placement);
+
     window.location.assign(url.toString());
   }
 
