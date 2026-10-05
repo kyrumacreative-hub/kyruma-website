@@ -109,10 +109,12 @@ export default function GranadaPage() {
             <p className="section-label">UNA NECESIDAD CONCRETA<span className="accent-dot" /></p>
             <h2 className="mt-8 text-[clamp(2.5rem,5vw,5rem)] font-light tracking-[-.045em]">¿Tu negocio está bien, pero Instagram no lo parece?</h2>
             <p className="mt-6 max-w-2xl text-lg leading-8 text-[var(--muted)]">Empieza por una auditoría concreta: bio, CTA, destacados, SEO, dirección visual y prioridades. Precio cerrado, sin reunión y sin gestión mensual.</p>
+            <Link href="/insights/auditoria-instagram-que-revisar" className="text-link mt-7 inline-flex">Qué revisar antes de cambiar tu perfil <span>→</span></Link>
           </div>
           <div className="md:col-span-5 md:text-right">
             <Link href="/auditoria-instagram" className="button-primary inline-flex">Auditoría Instagram — 29 € <span>→</span></Link>
             <p className="mt-4 text-xs uppercase tracking-[.14em] text-[var(--muted)]">Entrega ≤ 48 h laborables</p>
+            <div className="mt-5"><Link href="/auditoria-instagram/ejemplo" className="text-link">Ver ejemplo de entrega <span>→</span></Link></div>
           </div>
         </div>
       </section>
