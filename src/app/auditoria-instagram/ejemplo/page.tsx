@@ -4,7 +4,7 @@ import TrackedShopLink from "@/components/express/TrackedShopLink";
 import { expressProduct } from "@/data/express";
 
 export const metadata: Metadata = {
-  title: "Ejemplo de Instagram Reset | KYRUMA",
+  title: "Ejemplo de Instagram Reset",
   description: "Mira un ejemplo ilustrativo de la entrega de Instagram Reset: diagnóstico, bio, CTA, destacados, dirección visual, contenido y prioridades.",
   alternates: { canonical: "/auditoria-instagram/ejemplo" },
   openGraph: {
@@ -12,6 +12,13 @@ export const metadata: Metadata = {
     description: "Un ejemplo transparente de lo que puedes recibir con Instagram Reset. Caso ficticio, estructura real del servicio.",
     url: "/auditoria-instagram/ejemplo",
     type: "website",
+    images: ["/og-image.jpg"],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Ejemplo de entrega · Instagram Reset — 29 € | KYRUMA",
+    description: "Un ejemplo transparente de lo que puedes recibir con Instagram Reset. Caso ficticio, estructura real del servicio.",
+    images: ["/og-image.jpg"],
   },
 };
 
