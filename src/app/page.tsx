@@ -144,7 +144,7 @@ const copy = {
       successBody: "Thank you for trusting KYRUMA. Check your inbox: we have just sent you a confirmation.",
       error: "We could not send your enquiry. Please try again or email us at hello@kyruma.com.",
       privacy: "I agree that KYRUMA may use this information to respond to my enquiry.",
-      newsletter: "I would like to occasionally receive perspectives and news from KYRUMA by email. I can unsubscribe at any time.",
+      newsletter: "I want to receive KYRUMA / SIGNAL by email. I will receive a separate email to confirm my subscription and can unsubscribe at any time.",
     },
   },
 } as const;
