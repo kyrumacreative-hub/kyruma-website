@@ -22,6 +22,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     description: insight.description,
     keywords: insight.keywords,
     alternates: { canonical: url },
+    robots: insight.channel === "segmented" ? { index: false, follow: false } : undefined,
     openGraph: {
       title: `${insight.title} | KYRUMA`,
       description: insight.description,
@@ -43,7 +44,7 @@ export default async function InsightPage({ params }: Props) {
   const { slug } = await params;
   const insight = getInsight(slug);
   if (!insight) notFound();
-  const isInstagramInsight = insight.eyebrow.startsWith("INSTAGRAM");
+  const isSegmentedInsight = insight.channel === "segmented";
 
   const structuredData = {
     "@context": "https://schema.org",
@@ -102,7 +103,7 @@ export default async function InsightPage({ params }: Props) {
               ))}
             </div>
 
-            {isInstagramInsight && (
+            {isSegmentedInsight && (
               <section className="mt-20 bg-[var(--foreground)] p-8 text-[var(--background)] md:p-12">
                 <p className="text-xs uppercase tracking-[.2em] text-[var(--primary)]">DE LA GUÍA A TU PERFIL</p>
                 <h2 className="mt-6 text-[clamp(2.5rem,5vw,4.5rem)] font-light leading-[1.02] tracking-[-.045em]">Instagram Reset.</h2>
@@ -120,17 +121,33 @@ export default async function InsightPage({ params }: Props) {
               </section>
             )}
 
-            <section className="mt-20 border-y border-[var(--border)] py-12">
-              <p className="section-label">SIGUIENTE PASO<span className="accent-dot" /></p>
-              <h2 className="mt-7 text-4xl font-light tracking-[-.04em]">¿No sabes qué deberías arreglar primero?</h2>
-              <p className="mt-5 max-w-xl leading-7 text-[var(--muted)]">KYRUMA MATCH te hace unas preguntas y te recomienda el siguiente paso según tu situación. Es gratuito y no requiere una llamada.</p>
-              <a href={`https://t.me/kyrumabot?start=${insight.matchStart}`} target="_blank" rel="noreferrer" className="button-primary mt-8 inline-flex">Hacer KYRUMA MATCH <span>↗</span></a>
-            </section>
-
-            <div className="mt-12 flex flex-wrap gap-4">
-              <Link href="/express" className="text-link">Explorar KYRUMA EXPRESS <span>→</span></Link>
-              <Link href="/#contact" className="text-link">Trabajar con KYRUMA <span>→</span></Link>
-            </div>
+            {isSegmentedInsight ? (
+              <>
+                <section className="mt-20 border-y border-[var(--border)] py-12">
+                  <p className="section-label">SIGUIENTE PASO<span className="accent-dot" /></p>
+                  <h2 className="mt-7 text-4xl font-light tracking-[-.04em]">¿No sabes qué deberías arreglar primero?</h2>
+                  <p className="mt-5 max-w-xl leading-7 text-[var(--muted)]">KYRUMA MATCH te hace unas preguntas y te recomienda el siguiente paso según tu situación. Es gratuito y no requiere una llamada.</p>
+                  <a href={`https://t.me/kyrumabot?start=${insight.matchStart}`} target="_blank" rel="noreferrer" className="button-primary mt-8 inline-flex">Hacer KYRUMA MATCH <span>↗</span></a>
+                </section>
+                <div className="mt-12 flex flex-wrap gap-4">
+                  <Link href="/express" className="text-link">Explorar KYRUMA EXPRESS <span>→</span></Link>
+                  <Link href="/#contact" className="text-link">Trabajar con KYRUMA <span>→</span></Link>
+                </div>
+              </>
+            ) : (
+              <>
+                <section className="mt-20 border-y border-[var(--border)] py-12">
+                  <p className="section-label">SIGUIENTE PASO<span className="accent-dot" /></p>
+                  <h2 className="mt-7 text-4xl font-light tracking-[-.04em]">Si el problema es estructural, el siguiente paso no es producir más.</h2>
+                  <p className="mt-5 max-w-xl leading-7 text-[var(--muted)]">Podemos revisar qué ha cambiado en tu negocio, qué parte ya no está siendo bien percibida y qué debería resolverse primero antes de decidir un proyecto.</p>
+                  <Link href="/#contact" className="button-primary mt-8 inline-flex">Iniciar una conversación <span>→</span></Link>
+                </section>
+                <div className="mt-12 flex flex-wrap gap-4">
+                  <Link href="/signal" className="text-link">Conocer KYRUMA / SIGNAL <span>→</span></Link>
+                  <Link href="/#contact" className="text-link">Trabajar con KYRUMA <span>→</span></Link>
+                </div>
+              </>
+            )}
           </div>
         </div>
       </article>
