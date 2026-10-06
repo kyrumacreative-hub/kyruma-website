@@ -113,9 +113,9 @@ const allWorkCases: readonly WorkCase[] = [
     publicId: "KYR-002",
     client: "Magic By Whyso",
     publicUrl: "https://magicbywhyso.kyruma.com",
-    updatedAt: "2026-08-30",
+    updatedAt: "2026-10-07",
     status: "completed",
-    publication: "hold",
+    publication: "public",
     headline: { es: "Magic By Whyso", en: "Magic By Whyso" },
     intro: {
       es: "Una marca de experiencias de viaje construyendo una expresión propia y una forma más clara de convertir interés en reserva.",
@@ -138,8 +138,8 @@ const allWorkCases: readonly WorkCase[] = [
       en: "Magic By Whyso brings together an evolving identity, brand materials, visual references and a booking flow that need to work as one experience.",
     },
     direction: {
-      es: "KYRUMA conectó Discovery, dirección creativa y diseño web alrededor de una identidad y materiales de marca preexistentes del cliente. El proyecto está entregado; el caso permanece en HOLD hasta registrar permiso de portfolio y claims aprobados.",
-      en: "KYRUMA connected Discovery, creative direction and web design around the client’s pre-existing identity and brand materials. The project is delivered; the case remains on HOLD until portfolio permission and approved claims are recorded.",
+      es: "KYRUMA conectó Discovery, dirección creativa y diseño web alrededor de una identidad y materiales de marca preexistentes del cliente. El caso se publica únicamente dentro de ese alcance documentado: no atribuimos a KYRUMA el logo ni la identidad original.",
+      en: "KYRUMA connected Discovery, creative direction and web design around the client’s pre-existing identity and brand materials. This case is published only within that documented scope: KYRUMA does not claim authorship of the original logo or identity.",
     },
     services: {
       es: ["Discovery", "Dirección creativa", "Experiencia web", "Flujo de reservas"],
@@ -150,8 +150,8 @@ const allWorkCases: readonly WorkCase[] = [
       en: ["Discovery received", "Client-provided identity materials reviewed", "Creative direction defined", "Web and digital assets delivered"],
     },
     next: {
-      es: "El siguiente paso no es ampliar el alcance: es registrar permiso de portfolio y definir exactamente qué claims pueden publicarse.",
-      en: "The next step is not broader scope: it is to record portfolio permission and define exactly which claims may be published.",
+      es: "El proyecto está entregado. Este caso permanece deliberadamente limitado a trabajo y entregables verificables; no publicamos métricas de rendimiento que no estén documentadas.",
+      en: "The project is delivered. This case is deliberately limited to verifiable work and deliverables; no undocumented performance metrics are published.",
     },
   },
   {
