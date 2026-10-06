@@ -84,8 +84,8 @@ const allWorkCases: readonly WorkCase[] = [
     sector: { es: "Música y cultura", en: "Music and culture" },
     project: { es: "Proyecto en documentación", en: "Project being documented" },
     summary: {
-      es: "Incorporamos Rihat Sax Quartet al archivo de KYRUMA con una primera ficha basada únicamente en evidencia pública verificable.",
-      en: "Rihat Sax Quartet joins the KYRUMA archive with an initial case page based only on verifiable public evidence.",
+      es: "Rihat Sax Quartet está incorporado al archivo interno de KYRUMA con una ficha de trabajo basada únicamente en evidencia verificable y todavía no publicada.",
+      en: "Rihat Sax Quartet is included in KYRUMA’s internal archive with a working record based only on verifiable evidence and not yet published.",
     },
     context: {
       es: "Rihat Sax Quartet es una agrupación formada en el Real Conservatorio Superior de Música Victoria Eugenia de Granada, con actividad concertística documentada en la ciudad.",
@@ -114,7 +114,7 @@ const allWorkCases: readonly WorkCase[] = [
     client: "Magic By Whyso",
     publicUrl: "https://magicbywhyso.kyruma.com",
     updatedAt: "2026-08-30",
-    status: "active",
+    status: "completed",
     publication: "hold",
     headline: { es: "Magic By Whyso", en: "Magic By Whyso" },
     intro: {
@@ -130,28 +130,28 @@ const allWorkCases: readonly WorkCase[] = [
       en: "Digital direction and web experience",
     },
     summary: {
-      es: "Una colaboración activa para ordenar materiales de marca existentes y convertirlos en una experiencia digital clara, reconocible y preparada para reservas.",
-      en: "An active collaboration to organise existing brand materials and turn them into a clear, recognizable digital experience built around bookings.",
+      es: "Un proyecto entregado para ordenar materiales de marca existentes y convertirlos en una experiencia digital clara, reconocible y preparada para reservas.",
+      en: "A delivered project that organised existing brand materials into a clear, recognizable digital experience built around bookings.",
     },
     context: {
       es: "Magic By Whyso llega con una identidad en desarrollo, materiales de marca, referencias visuales y un flujo de reservas que deben convivir dentro de una misma experiencia.",
       en: "Magic By Whyso brings together an evolving identity, brand materials, visual references and a booking flow that need to work as one experience.",
     },
     direction: {
-      es: "KYRUMA está conectando Discovery, dirección creativa y diseño web alrededor de una identidad y materiales de marca preexistentes del cliente. La web continúa en desarrollo y el caso solo crecerá con entregables y resultados verificables.",
-      en: "KYRUMA is connecting Discovery, creative direction and web design around the client’s pre-existing identity and brand materials. The website remains in progress and the case will only grow with verified deliverables and outcomes.",
+      es: "KYRUMA conectó Discovery, dirección creativa y diseño web alrededor de una identidad y materiales de marca preexistentes del cliente. El proyecto está entregado; el caso permanece en HOLD hasta registrar permiso de portfolio y claims aprobados.",
+      en: "KYRUMA connected Discovery, creative direction and web design around the client’s pre-existing identity and brand materials. The project is delivered; the case remains on HOLD until portfolio permission and approved claims are recorded.",
     },
     services: {
       es: ["Discovery", "Dirección creativa", "Experiencia web", "Flujo de reservas"],
       en: ["Discovery", "Creative direction", "Web experience", "Booking flow"],
     },
     evidence: {
-      es: ["Discovery recibido", "Materiales de identidad aportados por el cliente revisados", "Dirección creativa definida", "Diseño web en curso"],
-      en: ["Discovery received", "Client-provided identity materials reviewed", "Creative direction defined", "Web design in progress"],
+      es: ["Discovery recibido", "Materiales de identidad aportados por el cliente revisados", "Dirección creativa definida", "Web y activos digitales entregados"],
+      en: ["Discovery received", "Client-provided identity materials reviewed", "Creative direction defined", "Web and digital assets delivered"],
     },
     next: {
-      es: "La dirección creativa y el diseño web avanzan en paralelo. El caso se ampliará con entregables aprobados y evidencia de lanzamiento.",
-      en: "Creative direction and web design are progressing together. The case will expand with approved deliverables and launch evidence.",
+      es: "El siguiente paso no es ampliar el alcance: es registrar permiso de portfolio y definir exactamente qué claims pueden publicarse.",
+      en: "The next step is not broader scope: it is to record portfolio permission and define exactly which claims may be published.",
     },
   },
   {
