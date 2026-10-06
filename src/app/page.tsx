@@ -74,7 +74,7 @@ const copy = {
       successBody: "Gracias por confiar en KYRUMA. Revisa tu bandeja de entrada: acabamos de enviarte una confirmación.",
       error: "No hemos podido enviar tu consulta. Inténtalo de nuevo o escríbenos a hello@kyruma.com.",
       privacy: "Acepto que KYRUMA utilice estos datos para responder a mi consulta.",
-      newsletter: "Quiero recibir ocasionalmente perspectivas y novedades de KYRUMA por email. Puedo darme de baja en cualquier momento.",
+      newsletter: "Quiero recibir KYRUMA / SIGNAL por email. Recibiré un correo independiente para confirmar la suscripción y podré darme de baja en cualquier momento.",
     },
   },
   en: {
