@@ -40,28 +40,28 @@ const allWorkCases: readonly WorkCase[] = [
     sector: { es: "Podcast y comunidad", en: "Podcast and community" },
     project: { es: "Experiencia web editorial", en: "Editorial web experience" },
     summary: {
-      es: "Una dirección de trabajo en fase pre-cliente para reunir episodios, historias y comunidad alrededor del podcast Pequeñas Luces. No existe activación de cliente documentada.",
-      en: "A pre-client working direction for bringing together episodes, stories and community around the Pequeñas Luces podcast. No client activation is documented.",
+      es: "Un proyecto cliente en fase de Discovery para reunir episodios, historias y comunidad alrededor del podcast Pequeñas Luces. La fase actual está a la espera de continuación.",
+      en: "A client project in Discovery focused on bringing together episodes, stories and community around the Pequeñas Luces podcast. The current phase is awaiting continuation.",
     },
     context: {
       es: "Pequeñas Luces nace del grupo de postcomunión de la Parroquia Nuestra Señora de la Concepción de Morata de Tajuña. Hoy vive principalmente en el podcast y en redes sociales.",
       en: "Pequeñas Luces grew from the post-communion group at Nuestra Señora de la Concepción parish in Morata de Tajuña. Today it lives primarily through its podcast and social channels.",
     },
     direction: {
-      es: "La dirección explorada por KYRUMA plantea un pequeño magazine vivo —podcast, blog, comunidad y newsletter— respetando su identidad alegre y evitando una expresión institucional. No debe presentarse como una solución contratada o implantada.",
-      en: "KYRUMA’s explored direction proposes a lively small magazine — podcast, blog, community and newsletter — preserving its joyful identity and avoiding an institutional tone. It must not be presented as a commissioned or implemented solution.",
+      es: "La dirección de trabajo desarrollada por KYRUMA plantea un pequeño magazine vivo —podcast, blog, comunidad y newsletter— respetando su identidad alegre y evitando una expresión institucional. El alcance publicado seguirá condicionado por evidencia y permiso.",
+      en: "KYRUMA’s working direction proposes a lively small magazine — podcast, blog, community and newsletter — preserving its joyful identity and avoiding an institutional tone. Any published scope remains subject to evidence and permission.",
     },
     services: {
       es: ["Arquitectura de contenidos", "Experiencia web", "Podcast", "Blog editorial", "Comunidad y newsletter"],
       en: ["Content architecture", "Web experience", "Podcast", "Editorial blog", "Community and newsletter"],
     },
     evidence: {
-      es: ["Discovery recibido", "Podcast oficial activo en Spotify", "Dirección interna de identidad/web documentada", "Sin contrato, pago ni activación de cliente documentados"],
-      en: ["Discovery received", "Official podcast active on Spotify", "Internal identity/web direction documented", "No contract, payment or client activation documented"],
+      es: ["Cliente KYR-003 confirmado", "Discovery recibido", "Podcast oficial activo en Spotify", "Dirección de identidad/web documentada"],
+      en: ["KYR-003 client status confirmed", "Discovery received", "Official podcast active on Spotify", "Identity/web direction documented"],
     },
     next: {
-      es: "La siguiente fase solo debe comenzar si Pequeñas Luces confirma que quiere continuar. Hasta entonces, el registro permanece en HOLD y no es proof comercial.",
-      en: "The next phase should only begin if Pequeñas Luces confirms it wants to continue. Until then, the record remains on HOLD and is not commercial proof.",
+      es: "La siguiente fase se reanudará cuando Pequeñas Luces confirme la continuación. El caso permanece en HOLD para portfolio hasta registrar permiso y evidencia suficiente.",
+      en: "The next phase will resume when Pequeñas Luces confirms continuation. The case remains on HOLD for portfolio use until permission and sufficient evidence are recorded.",
     },
     socialLinks: [
       { label: "Spotify", url: "https://open.spotify.com/show/48FjmoOG82T6G9jsloYyFC" },
@@ -92,8 +92,8 @@ const allWorkCases: readonly WorkCase[] = [
       en: "Rihat Sax Quartet is an ensemble formed at Granada's Real Conservatorio Superior de Música Victoria Eugenia, with documented concert activity in the city.",
     },
     direction: {
-      es: "La ficha se publica como capítulo abierto. El alcance creativo de KYRUMA, los materiales visuales y los entregables se incorporarán cuando exista evidencia aprobada para mostrarlos.",
-      en: "This case is published as an open chapter. KYRUMA's creative scope, visual materials and deliverables will be added once approved evidence is available.",
+      es: "La ficha permanece en preparación y en HOLD. El alcance creativo de KYRUMA, los materiales visuales y los entregables solo se incorporarán cuando exista evidencia y permiso aprobados.",
+      en: "The record remains in preparation and on HOLD. KYRUMA's creative scope, visual materials and deliverables will only be added once evidence and permission are approved.",
     },
     services: {
       es: ["Documentación de proyecto", "Dirección pendiente de publicación"],
@@ -167,8 +167,8 @@ const allWorkCases: readonly WorkCase[] = [
       en: "Raúl Marqués de la Torre",
     },
     intro: {
-      es: "Un proyecto propio, impulsado por el fundador de KYRUMA, donde música, estilo y cultura se articulan como una identidad editorial reconocible.",
-      en: "A founder-led internal project where music, style and culture are shaped into a recognizable editorial identity.",
+      es: "Un proyecto cliente founder-controlled, impulsado por el fundador de KYRUMA, donde música, estilo y cultura se articulan como una identidad editorial reconocible.",
+      en: "A founder-controlled client project where music, style and culture are shaped into a recognizable editorial identity.",
     },
     sector: {
       es: "Marca personal y cultura",
@@ -179,12 +179,12 @@ const allWorkCases: readonly WorkCase[] = [
       en: "Web, brand and social media",
     },
     summary: {
-      es: "Un proyecto interno y founder-controlled que sirve para desarrollar RMT como sistema de marca, experiencia web y presencia social conectada.",
-      en: "An internal, founder-controlled project developing RMT as a connected brand system, web experience and social presence.",
+      es: "Un proyecto cliente founder-controlled que desarrolla RMT como sistema de marca, experiencia web y presencia social conectada.",
+      en: "A founder-controlled client project developing RMT as a connected brand system, web experience and social presence.",
     },
     context: {
-      es: "RMT reúne una práctica personal en torno a la música, el estilo, los viajes y la cultura. Como proyecto propio, permite demostrar proceso, criterio y sistema, pero no se presenta como validación de un cliente externo independiente.",
-      en: "RMT brings together a personal practice around music, style, travel and culture. As an internal project, it demonstrates process, judgement and system thinking, but is not presented as independent external-client validation.",
+      es: "RMT reúne una práctica personal en torno a la música, el estilo, los viajes y la cultura. Es un cliente founder-controlled de KYRUMA y permite demostrar proceso, criterio y sistema, pero no se presenta como validación de un cliente externo independiente.",
+      en: "RMT brings together a personal practice around music, style, travel and culture. It is a founder-controlled KYRUMA client and demonstrates process, judgement and system thinking, but is not presented as independent external-client validation.",
     },
     direction: {
       es: "KYRUMA está desarrollando una expresión editorial coherente bajo la idea «Process. Passion. Purpose.», con una web-archivo activa y un sistema de contenidos para Instagram, TikTok, YouTube y Facebook.",
