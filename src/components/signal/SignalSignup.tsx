@@ -1,21 +1,18 @@
 "use client";
 
-import { FormEvent, useEffect, useRef, useState } from "react";
+import { FormEvent, useRef, useState } from "react";
 
 type Status = "idle" | "sending" | "sent" | "active" | "confirmed" | "unsubscribed" | "invalid" | "error";
 
-export default function SignalSignup() {
+export default function SignalSignup({ initialStatus = "idle" }: { initialStatus?: Status }) {
   const [email, setEmail] = useState("");
   const [privacy, setPrivacy] = useState(false);
-  const [status, setStatus] = useState<Status>("idle");
-  const startedAt = useRef(Date.now());
+  const [status, setStatus] = useState<Status>(initialStatus);
+  const startedAt = useRef<number | null>(null);
 
-  useEffect(() => {
-    const value = new URLSearchParams(window.location.search).get("status");
-    if (value === "confirmed" || value === "unsubscribed" || value === "invalid" || value === "error") {
-      setStatus(value);
-    }
-  }, []);
+  function markStarted() {
+    if (startedAt.current === null) startedAt.current = Date.now();
+  }
 
   async function submit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
@@ -29,7 +26,7 @@ export default function SignalSignup() {
           language: "es",
           privacy,
           website: "",
-          startedAt: startedAt.current,
+          startedAt: startedAt.current ?? 0,
           source: "signal_page",
         }),
       });
@@ -50,7 +47,7 @@ export default function SignalSignup() {
   }
 
   return (
-    <form onSubmit={submit} className="border-t border-[var(--border)] pt-8">
+    <form onSubmit={submit} onFocusCapture={markStarted} onPointerDown={markStarted} className="border-t border-[var(--border)] pt-8">
       <div className="grid gap-5 md:grid-cols-[1fr_auto] md:items-end">
         <label className="block">
           <span className="mb-3 block text-xs uppercase tracking-[.14em] text-[var(--muted)]">Email profesional</span>
