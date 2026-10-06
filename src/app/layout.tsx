@@ -6,7 +6,6 @@ import { ThemeProvider } from "@/components/ThemeProvider";
 import { LanguageProvider } from "@/components/LanguageProvider";
 import Navbar from "@/components/layout/Navbar";
 import Footer from "@/components/layout/Footer";
-import HomepageExpressPrompt from "@/components/express/HomepageExpressPrompt";
 import { MotionProvider } from "@/motion";
 import "./globals.css";
 
@@ -172,7 +171,6 @@ export default function RootLayout({
               />
 
               <Navbar />
-              <HomepageExpressPrompt />
 
               {children}
 
