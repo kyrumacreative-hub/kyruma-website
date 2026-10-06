@@ -8,8 +8,8 @@ import { useLanguage } from "@/components/LanguageProvider";
 import { trackMarketingEvent } from "@/features/marketing/MarketingScripts";
 
 const copy = {
-  es: { approach: "Enfoque", services: "Qué hacemos", method: "Método", work: "Trabajo", express: "Auditoría IG · 29 €", shop: "Tienda", clientAccess: "Acceso clientes", cta: "Iniciar conversación" },
-  en: { approach: "Approach", services: "What we do", method: "Method", work: "Work", express: "Instagram Audit · €29", shop: "Shop", clientAccess: "Client access", cta: "Start conversation" },
+  es: { approach: "Enfoque", services: "Qué hacemos", method: "Método", work: "Trabajo", insights: "Insights", clientAccess: "Acceso clientes", cta: "Iniciar conversación" },
+  en: { approach: "Approach", services: "What we do", method: "Method", work: "Work", insights: "Insights", clientAccess: "Client access", cta: "Start conversation" },
 } as const;
 
 export default function Navbar() {
@@ -20,7 +20,6 @@ export default function Navbar() {
   const { theme, setTheme } = useTheme();
   const { language, setLanguage } = useLanguage();
   const t = copy[language];
-  const expressHref = language === "es" ? "/auditoria-instagram" : "/express";
 
   useEffect(() => {
     const onScroll = () => {
@@ -33,7 +32,7 @@ export default function Navbar() {
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
 
-  const links = [[t.approach, "/#perspective"], [t.services, "/#capabilities"], [t.method, "/#method"], [t.work, "/trabajos"]];
+  const links = [[t.approach, "/#perspective"], [t.services, "/#capabilities"], [t.method, "/#method"], [t.work, "/trabajos"], [t.insights, "/insights"]];
 
   return (
     <header className={`fixed inset-x-0 top-0 z-50 border-b transition-[transform,background-color,border-color] duration-300 ${visible ? "translate-y-0" : "-translate-y-full"} ${scrolled ? "border-[var(--border)] bg-[var(--background)]/88 backdrop-blur-xl" : "border-transparent bg-transparent"}`}>
@@ -44,8 +43,6 @@ export default function Navbar() {
         </Link>
         <nav className="hidden items-center gap-8 xl:flex" aria-label="Main navigation">
           {links.map(([label, href]) => <Link key={href} href={href} className="nav-link">{label}</Link>)}
-          <Link href={expressHref} className="nav-link text-[var(--primary)]" onClick={() => trackMarketingEvent("express_view", { placement: "navbar_direct_offer" })}>{t.express}</Link>
-          <a href="https://shop.kyruma.com" className="nav-link">{t.shop}</a>
         </nav>
         <div className="flex items-center gap-3">
           <div className="hidden items-center gap-2 sm:flex">
@@ -59,7 +56,7 @@ export default function Navbar() {
           <button className="control xl:hidden" aria-expanded={menu} aria-label="Menu" onClick={() => setMenu(!menu)}>{menu ? "×" : "Menu"}</button>
         </div>
       </div>
-      {menu && <div className="border-t border-[var(--border)] bg-[var(--background)] xl:hidden"><nav className="site-container flex flex-col py-5">{links.map(([label, href]) => <Link key={href} href={href} onClick={() => setMenu(false)} className="border-b border-[var(--border)] py-4 text-lg font-light">{label}</Link>)}<Link href={expressHref} onClick={() => { setMenu(false); trackMarketingEvent("express_view", { placement: "mobile_nav_direct_offer" }); }} className="border-b border-[var(--border)] py-4 text-lg font-light text-[var(--primary)]">{t.express}</Link><a href="https://shop.kyruma.com" onClick={() => setMenu(false)} className="border-b border-[var(--border)] py-4 text-lg font-light">{t.shop}</a><Link href="/portal" onClick={() => setMenu(false)} className="border-b border-[var(--border)] py-4 text-lg font-light text-[var(--primary)]">{t.clientAccess}<span className="ml-2" aria-hidden="true">→</span></Link><Link href="/#contact" onClick={() => setMenu(false)} className="mt-5 text-link">{t.cta}<span>→</span></Link><div className="mt-6 flex gap-4"><button className="control" onClick={() => setLanguage("es")}>ES</button><button className="control" onClick={() => setLanguage("en")}>EN</button><button className="control" onClick={() => setTheme(theme === "system" ? "light" : theme === "light" ? "dark" : "system")}>Theme · {theme}</button></div></nav></div>}
+      {menu && <div className="border-t border-[var(--border)] bg-[var(--background)] xl:hidden"><nav className="site-container flex flex-col py-5">{links.map(([label, href]) => <Link key={href} href={href} onClick={() => setMenu(false)} className="border-b border-[var(--border)] py-4 text-lg font-light">{label}</Link>)}<Link href="/portal" onClick={() => setMenu(false)} className="border-b border-[var(--border)] py-4 text-lg font-light text-[var(--primary)]">{t.clientAccess}<span className="ml-2" aria-hidden="true">→</span></Link><Link href="/#contact" onClick={() => setMenu(false)} className="mt-5 text-link">{t.cta}<span>→</span></Link><div className="mt-6 flex gap-4"><button className="control" onClick={() => setLanguage("es")}>ES</button><button className="control" onClick={() => setLanguage("en")}>EN</button><button className="control" onClick={() => setTheme(theme === "system" ? "light" : theme === "light" ? "dark" : "system")}>Theme · {theme}</button></div></nav></div>}
     </header>
   );
 }
