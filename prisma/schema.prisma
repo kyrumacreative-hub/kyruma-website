@@ -34,6 +34,9 @@ model LeadIntake {
   serviceInterest      String
   collaboration        String
   source               String
+  privacyAcceptedAt    DateTime?
+  newsletterOptIn      Boolean   @default(false)
+  newsletterConsentAt  DateTime?
   createdAt            DateTime
   updatedAt            DateTime
   discoveryStartedAt   DateTime?

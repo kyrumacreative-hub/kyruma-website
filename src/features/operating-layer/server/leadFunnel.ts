@@ -20,6 +20,8 @@ export interface PublicLeadIntakeInput {
   readonly company: string;
   readonly serviceInterest: string;
   readonly collaboration: string;
+  readonly privacyAccepted?: boolean;
+  readonly newsletterOptIn?: boolean;
 }
 
 function foundation() {
@@ -93,7 +95,11 @@ export async function capturePublicLead(input: PublicLeadIntakeInput): Promise<{
     } });
     await db.leadIntake.create({ data: {
       id: submissionId, leadId, organizationId, normalizedEmail, contactName, company,
-      serviceInterest, collaboration, source: "website_contact", createdAt: now, updatedAt: now,
+      serviceInterest, collaboration, source: "website_contact",
+      privacyAcceptedAt: input.privacyAccepted ? now : null,
+      newsletterOptIn: input.newsletterOptIn === true,
+      newsletterConsentAt: input.newsletterOptIn === true ? now : null,
+      createdAt: now, updatedAt: now,
     } });
     await db.automationDefinition.createMany({ data: [
       {
