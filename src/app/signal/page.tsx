@@ -13,7 +13,21 @@ export const metadata: Metadata = {
   },
 };
 
-export default function SignalPage() {
+type SignalStatus = "idle" | "confirmed" | "unsubscribed" | "invalid" | "error";
+
+export default async function SignalPage({
+  searchParams,
+}: {
+  searchParams: Promise<{ status?: string }>;
+}) {
+  const params = await searchParams;
+  const initialStatus: SignalStatus =
+    params.status === "confirmed" ||
+    params.status === "unsubscribed" ||
+    params.status === "invalid" ||
+    params.status === "error"
+      ? params.status
+      : "idle";
   return (
     <main className="bg-[var(--background)] text-[var(--foreground)]">
       <section className="border-b border-[var(--border)] pt-36">
@@ -61,7 +75,7 @@ export default function SignalPage() {
             <p className="mt-5 max-w-lg leading-7 text-[var(--muted)]">Tu contacto con KYRUMA, ser cliente o trabajar con nosotros no te suscribe automáticamente. SIGNAL tiene un consentimiento independiente.</p>
           </div>
           <div className="md:col-span-7">
-            <SignalSignup />
+            <SignalSignup initialStatus={initialStatus} />
           </div>
         </div>
       </section>
