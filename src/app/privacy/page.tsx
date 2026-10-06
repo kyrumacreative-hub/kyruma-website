@@ -89,9 +89,14 @@ export default function PrivacyPage() {
                     corresponda.
                   </li>
                   <li>
-                    Enviar comunicaciones comerciales o novedades de KYRUMA
-                    únicamente cuando hayas prestado tu consentimiento para
-                    ello.
+                    Gestionar la suscripción a KYRUMA / SIGNAL cuando la
+                    solicites expresamente y confirmes el alta por correo
+                    electrónico.
+                  </li>
+                  <li>
+                    Enviar otras comunicaciones comerciales o novedades de
+                    KYRUMA únicamente cuando exista una base jurídica válida
+                    para ello.
                   </li>
                 </ul>
               </PrivacySection>
@@ -108,10 +113,12 @@ export default function PrivacyPage() {
                   cumplimiento de las obligaciones legales aplicables.
                 </p>
                 <p className="mt-4">
-                  El envío de comunicaciones comerciales por correo electrónico
-                  cuando no exista otra base jurídica aplicable se realizará
-                  únicamente con tu consentimiento, que podrás retirar en
-                  cualquier momento.
+                  KYRUMA / SIGNAL utiliza un consentimiento independiente del
+                  formulario de contacto, de una relación comercial o de una
+                  relación contractual. La solicitud de alta se confirma por
+                  correo electrónico y podrás retirar el consentimiento en
+                  cualquier momento mediante el mecanismo de baja incluido en
+                  las comunicaciones o escribiendo a hello@kyruma.com.
                 </p>
               </PrivacySection>
 
@@ -123,9 +130,11 @@ export default function PrivacyPage() {
                   aplicable cuando exista una obligación legal.
                 </p>
                 <p className="mt-4">
-                  Los datos utilizados para comunicaciones basadas en
-                  consentimiento se conservarán hasta que retires dicho
-                  consentimiento o solicites su supresión.
+                  Los datos utilizados para KYRUMA / SIGNAL se conservarán
+                  mientras la suscripción permanezca activa y, tras la baja,
+                  durante el tiempo estrictamente necesario para mantener
+                  evidencia del consentimiento y de su retirada conforme a las
+                  obligaciones aplicables.
                 </p>
               </PrivacySection>
 
@@ -219,7 +228,7 @@ export default function PrivacyPage() {
               </PrivacySection>
 
               <p className="border-t border-[var(--border)] pt-8 text-sm text-[var(--muted)]">
-                Última actualización: julio de 2026.
+                Última actualización: octubre de 2026.
               </p>
             </div>
           </div>
