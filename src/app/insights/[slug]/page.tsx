@@ -1,8 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import TrackedShopLink from "@/components/express/TrackedShopLink";
-import { expressProduct } from "@/data/express";
 import { getInsight, insights } from "@/data/insights";
 
 type Props = { params: Promise<{ slug: string }> };
@@ -19,6 +17,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 
   return {
     title: insight.title,
+    robots: insight.authorityStatus === "legacy" ? { index: false, follow: true } : undefined,
     description: insight.description,
     keywords: insight.keywords,
     alternates: { canonical: url },
@@ -43,7 +42,6 @@ export default async function InsightPage({ params }: Props) {
   const { slug } = await params;
   const insight = getInsight(slug);
   if (!insight) notFound();
-  const isInstagramInsight = insight.eyebrow.startsWith("INSTAGRAM");
 
   const structuredData = {
     "@context": "https://schema.org",
@@ -102,35 +100,15 @@ export default async function InsightPage({ params }: Props) {
               ))}
             </div>
 
-            {isInstagramInsight && (
-              <section className="mt-20 bg-[var(--foreground)] p-8 text-[var(--background)] md:p-12">
-                <p className="text-xs uppercase tracking-[.2em] text-[var(--primary)]">DE LA GUÍA A TU PERFIL</p>
-                <h2 className="mt-6 text-[clamp(2.5rem,5vw,4.5rem)] font-light leading-[1.02] tracking-[-.045em]">Instagram Reset.</h2>
-                <p className="mt-5 max-w-xl text-lg leading-8 opacity-70">Revisamos tu perfil, reescribimos la bio, definimos CTA, destacados y dirección visual, y te damos tres ideas de contenido adaptadas a tu negocio.</p>
-                <div className="mt-8 flex flex-wrap items-center gap-5">
-                  <TrackedShopLink href={expressProduct.shopUrl} placement={`insight_${insight.slug}`} className="inline-flex rounded-full bg-[var(--background)] px-6 py-4 text-sm font-medium text-[var(--foreground)]">
-                    Comprar Instagram Reset — 29 € <span className="ml-2">→</span>
-                  </TrackedShopLink>
-                  <span className="text-xs uppercase tracking-[.14em] opacity-60">Pago único · ≤ 48 h laborables</span>
-                </div>
-                <div className="mt-6 flex flex-wrap gap-x-6 gap-y-3 text-sm opacity-70">
-                  <Link href="/auditoria-instagram" className="underline underline-offset-4">Ver qué incluye</Link>
-                  <Link href="/auditoria-instagram/ejemplo" className="underline underline-offset-4">Ver ejemplo de entrega</Link>
-                </div>
-              </section>
-            )}
-
             <section className="mt-20 border-y border-[var(--border)] py-12">
-              <p className="section-label">SIGUIENTE PASO<span className="accent-dot" /></p>
-              <h2 className="mt-7 text-4xl font-light tracking-[-.04em]">¿No sabes qué deberías arreglar primero?</h2>
-              <p className="mt-5 max-w-xl leading-7 text-[var(--muted)]">KYRUMA MATCH te hace unas preguntas y te recomienda el siguiente paso según tu situación. Es gratuito y no requiere una llamada.</p>
-              <a href={`https://t.me/kyrumabot?start=${insight.matchStart}`} target="_blank" rel="noreferrer" className="button-primary mt-8 inline-flex">Hacer KYRUMA MATCH <span>↗</span></a>
+              <p className="section-label">CONTINUAR<span className="accent-dot" /></p>
+              <h2 className="mt-7 text-4xl font-light tracking-[-.04em]">Una señal útil cada semana.</h2>
+              <p className="mt-5 max-w-xl leading-7 text-[var(--muted)]">KYRUMA / SIGNAL reúne análisis breves sobre estrategia, identidad y experiencia digital. Sin secuencias comerciales automáticas.</p>
+              <div className="mt-8 flex flex-wrap gap-4">
+                <Link href="/signal" className="button-primary inline-flex">Conocer SIGNAL <span>→</span></Link>
+                <Link href="/#contact" className="text-link">Iniciar una conversación <span>→</span></Link>
+              </div>
             </section>
-
-            <div className="mt-12 flex flex-wrap gap-4">
-              <Link href="/express" className="text-link">Explorar KYRUMA EXPRESS <span>→</span></Link>
-              <Link href="/#contact" className="text-link">Trabajar con KYRUMA <span>→</span></Link>
-            </div>
           </div>
         </div>
       </article>

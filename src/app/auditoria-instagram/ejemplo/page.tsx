@@ -4,6 +4,7 @@ import TrackedShopLink from "@/components/express/TrackedShopLink";
 import { expressProduct } from "@/data/express";
 
 export const metadata: Metadata = {
+  robots: { index: false, follow: true },
   title: "Ejemplo de Instagram Reset",
   description: "Mira un ejemplo ilustrativo de la entrega de Instagram Reset: diagnóstico, bio, CTA, destacados, dirección visual, contenido y prioridades.",
   alternates: { canonical: "/auditoria-instagram/ejemplo" },

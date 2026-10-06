@@ -2,21 +2,21 @@ import type { Metadata } from "next";
 import Link from "next/link";
 
 export const metadata: Metadata = {
-  title: "Diseño web y branding en Granada",
-  description: "Estudio de estrategia, branding, identidad visual y diseño web en Granada para empresas y negocios que necesitan una presencia más clara, coherente y eficaz.",
+  title: "Creative Partner en Granada | Estrategia, identidad y experiencia digital",
+  description: "Creative Partner B2B con base en Granada. Estrategia, identidad y experiencia digital para empresas cuyo negocio ha evolucionado más rápido que su percepción.",
   keywords: ["diseño web Granada", "branding Granada", "agencia creativa Granada", "identidad visual Granada", "estrategia de marca Granada", "estudio diseño Granada"],
   alternates: { canonical: "/granada" },
   openGraph: {
-    title: "Diseño web y branding en Granada | KYRUMA",
-    description: "Estrategia, identidad y experiencia digital para empresas y negocios en Granada.",
+    title: "Creative Partner en Granada | KYRUMA",
+    description: "Estrategia, identidad y experiencia digital para empresas cuyo negocio ha evolucionado más rápido que su percepción.",
     url: "/granada",
     type: "website",
     images: ["/og-image.jpg"],
   },
   twitter: {
     card: "summary_large_image",
-    title: "Diseño web y branding en Granada | KYRUMA",
-    description: "Estrategia, identidad y experiencia digital para empresas y negocios en Granada.",
+    title: "Creative Partner en Granada | KYRUMA",
+    description: "Estrategia, identidad y experiencia digital para empresas cuyo negocio ha evolucionado más rápido que su percepción.",
     images: ["/og-image.jpg"],
   },
 };
@@ -24,8 +24,7 @@ export const metadata: Metadata = {
 const capabilities = [
   ["01", "Estrategia de marca", "Posicionamiento, propuesta, arquitectura de marca y dirección antes de diseñar."],
   ["02", "Identidad visual", "Sistemas visuales claros y consistentes para que la percepción esté al nivel del negocio."],
-  ["03", "Diseño web", "Experiencias digitales pensadas para explicar mejor, generar confianza y facilitar la siguiente acción."],
-  ["04", "Contenido y sistemas", "Dirección de contenido y sistemas digitales que ayudan a mantener coherencia cuando el negocio crece."],
+  ["03", "Experiencia digital", "Arquitectura, UX, dirección de interfaz y experiencias digitales pensadas para explicar mejor, generar confianza y facilitar la siguiente acción."],
 ];
 
 export default function GranadaPage() {
@@ -34,9 +33,9 @@ export default function GranadaPage() {
     "@type": "ProfessionalService",
     name: "KYRUMA",
     url: "https://www.kyruma.com/granada",
-    description: "Estudio de estrategia, branding, identidad visual y diseño web para empresas y negocios en Granada.",
+    description: "Creative Partner B2B de estrategia, identidad y experiencia digital con base en Granada.",
     areaServed: { "@type": "City", name: "Granada" },
-    knowsAbout: ["Brand Strategy", "Visual Identity", "Web Design", "Digital Experience", "Content Strategy"],
+    knowsAbout: ["Brand Strategy", "Positioning", "Visual Identity", "Digital Experience", "UX"],
   };
 
   return (
@@ -47,7 +46,7 @@ export default function GranadaPage() {
         <div className="site-container pb-20 md:pb-28">
           <p className="section-label">KYRUMA / GRANADA<span className="accent-dot" /></p>
           <h1 className="mt-8 max-w-[1120px] text-[clamp(3.2rem,8vw,7rem)] font-light leading-[.96] tracking-[-.055em]">
-            Diseño web y branding en Granada para negocios que necesitan <span className="text-[var(--muted)]">ser entendidos mejor.</span>
+            Creative Partner en Granada para empresas cuyo negocio ha evolucionado <span className="text-[var(--muted)]">más rápido que su percepción.</span>
           </h1>
           <div className="mt-12 grid gap-8 border-t border-[var(--border)] pt-8 md:grid-cols-12">
             <p className="max-w-2xl text-lg font-light leading-[1.75] text-[var(--muted)] md:col-span-7">
@@ -96,11 +95,11 @@ export default function GranadaPage() {
       <section className="section surface-section">
         <div className="site-container grid gap-12 md:grid-cols-12 md:items-start">
           <div className="md:col-span-4">
-            <p className="section-label">DISEÑO WEB EN GRANADA<span className="accent-dot" /></p>
+            <p className="section-label">EXPERIENCIA DIGITAL<span className="accent-dot" /></p>
           </div>
           <div className="md:col-span-7 md:col-start-6">
-            <h2 className="text-[clamp(2.4rem,5vw,4.6rem)] font-light tracking-[-.045em]">Una web profesional no empieza por el número de páginas.</h2>
-            <p className="mt-6 text-lg font-light leading-[1.8] text-[var(--muted)]">Empieza por entender qué necesita conseguir el negocio: captar contactos, vender, generar reservas, explicar un servicio o elevar percepción. A partir de ahí definimos arquitectura, mensaje, jerarquía, interacción y tecnología.</p>
+            <h2 className="text-[clamp(2.4rem,5vw,4.6rem)] font-light tracking-[-.045em]">La experiencia digital empieza por el negocio, no por el número de páginas.</h2>
+            <p className="mt-6 text-lg font-light leading-[1.8] text-[var(--muted)]">Primero entendemos qué debe conseguir y comunicar el negocio. A partir de ahí definimos arquitectura, mensaje, jerarquía, interacción y tecnología como una misma experiencia.</p>
             <ul className="mt-8 grid gap-4 border-t border-[var(--border)] pt-6 text-[var(--muted)]">
               {["Mensaje y propuesta claros", "Arquitectura orientada a negocio", "Diseño responsive", "SEO técnico esencial", "Analítica y medición", "Experiencia coherente con la marca"].map((item) => <li key={item} className="flex gap-4"><span className="text-[var(--primary)]">→</span>{item}</li>)}
             </ul>
@@ -113,11 +112,11 @@ export default function GranadaPage() {
         <div className="site-container grid gap-12 md:grid-cols-12 md:items-end">
           <div className="md:col-span-7">
             <p className="section-label">EMPEZAR<span className="accent-dot" /></p>
-            <h2 className="mt-8 text-[clamp(2.5rem,5vw,5rem)] font-light tracking-[-.045em]">¿No sabes si el problema es tu web, tu marca o tu contenido?</h2>
-            <p className="mt-6 max-w-2xl text-lg leading-8 text-[var(--muted)]">Haz KYRUMA MATCH. Es un diagnóstico breve y gratuito que te ayuda a identificar qué arreglar primero antes de invertir en algo más grande.</p>
+            <h2 className="mt-8 text-[clamp(2.5rem,5vw,5rem)] font-light tracking-[-.045em]">Si algo ha cambiado en el negocio, empecemos por entender qué debería cambiar fuera.</h2>
+            <p className="mt-6 max-w-2xl text-lg leading-8 text-[var(--muted)]">No partimos de la suposición de que necesitas una nueva marca o una nueva web. Primero identificamos la brecha y decidimos qué merece cambiar.</p>
           </div>
           <div className="md:col-span-5 md:text-right">
-            <a href="https://t.me/kyrumabot?start=granada_page" target="_blank" rel="noreferrer" className="button-primary inline-flex">Hacer KYRUMA MATCH <span>↗</span></a>
+            <Link href="/#contact" className="button-primary inline-flex">Iniciar una conversación <span>→</span></Link>
           </div>
         </div>
       </section>

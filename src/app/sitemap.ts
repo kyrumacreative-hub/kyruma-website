@@ -1,6 +1,6 @@
 import type { MetadataRoute } from "next";
 import { workCases } from "@/data/work";
-import { insights } from "@/data/insights";
+import { primaryInsights } from "@/data/insights";
 
 export default function sitemap(): MetadataRoute.Sitemap {
   const baseUrl = "https://www.kyruma.com";
@@ -54,18 +54,12 @@ export default function sitemap(): MetadataRoute.Sitemap {
       changeFrequency: "weekly",
       priority: 0.9,
     },
-    ...insights.map((insight) => ({
+    ...primaryInsights.map((insight) => ({
       url: `${baseUrl}/insights/${insight.slug}`,
       lastModified: new Date(insight.publishedAt),
       changeFrequency: "monthly" as const,
       priority: 0.8,
     })),
-    {
-      url: `${baseUrl}/match`,
-      lastModified: new Date(),
-      changeFrequency: "monthly",
-      priority: 0.9,
-    },
     {
       url: `${baseUrl}/trabajos`,
       lastModified: new Date(),
