@@ -30,6 +30,9 @@ if (!fs.existsSync(productionMigrationGate)) {
   if (!migrationGateContent.includes('"prisma", "migrate", "deploy"')) {
     findings.push(`${productionMigrationGate}:prisma_migrate_deploy_missing`);
   }
+  if (!migrationGateContent.includes("validateProductionEnvironment")) {
+    findings.push(`${productionMigrationGate}:production_config_validation_missing`);
+  }
 }
 
 
