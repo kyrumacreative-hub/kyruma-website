@@ -2,7 +2,7 @@
 
 import { FormEvent, useEffect, useRef, useState } from "react";
 
-type Status = "idle" | "sending" | "sent" | "confirmed" | "unsubscribed" | "invalid" | "error";
+type Status = "idle" | "sending" | "sent" | "active" | "confirmed" | "unsubscribed" | "invalid" | "error";
 
 export default function SignalSignup() {
   const [email, setEmail] = useState("");
@@ -34,13 +34,14 @@ export default function SignalSignup() {
         }),
       });
       if (!response.ok) throw new Error("SIGNAL_SUBSCRIBE_FAILED");
-      setStatus("sent");
+      const payload = (await response.json()) as { status?: string };
+      setStatus(payload.status === "active" ? "active" : "sent");
     } catch {
       setStatus("error");
     }
   }
 
-  if (status === "confirmed") {
+  if (status === "confirmed" || status === "active") {
     return <div className="border-t border-[var(--border)] pt-8"><p className="section-label">SUSCRIPCIÓN CONFIRMADA<span className="accent-dot" /></p><p className="mt-5 max-w-xl text-lg leading-8 text-[var(--muted)]">Ya formas parte de KYRUMA / SIGNAL. Recibirás únicamente las ediciones que publiquemos; no te hemos añadido a ninguna otra comunicación.</p></div>;
   }
 
