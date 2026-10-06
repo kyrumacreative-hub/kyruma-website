@@ -48,8 +48,8 @@ const allWorkCases: readonly WorkCase[] = [
       en: "Pequeñas Luces grew from the post-communion group at Nuestra Señora de la Concepción parish in Morata de Tajuña. Today it lives primarily through its podcast and social channels.",
     },
     direction: {
-      es: "La dirección de trabajo desarrollada por KYRUMA plantea un pequeño magazine vivo —podcast, blog, comunidad y newsletter— respetando su identidad alegre y evitando una expresión institucional. El alcance publicado seguirá condicionado por evidencia y permiso.",
-      en: "KYRUMA’s working direction proposes a lively small magazine — podcast, blog, community and newsletter — preserving its joyful identity and avoiding an institutional tone. Any published scope remains subject to evidence and permission.",
+      es: "La dirección de trabajo desarrollada por KYRUMA plantea un pequeño magazine vivo —podcast, blog, comunidad y newsletter— respetando su identidad alegre y evitando una expresión institucional. El permiso de portfolio está aprobado; cualquier publicación futura seguirá limitada por la evidencia disponible y el estado real del proyecto.",
+      en: "KYRUMA’s working direction proposes a lively small magazine — podcast, blog, community and newsletter — preserving its joyful identity and avoiding an institutional tone. Portfolio permission is approved; any future publication remains limited by available evidence and the project's actual state.",
     },
     services: {
       es: ["Arquitectura de contenidos", "Experiencia web", "Podcast", "Blog editorial", "Comunidad y newsletter"],
@@ -60,8 +60,8 @@ const allWorkCases: readonly WorkCase[] = [
       en: ["KYR-003 client status confirmed", "Discovery received", "Official podcast active on Spotify", "Identity/web direction documented"],
     },
     next: {
-      es: "La siguiente fase se reanudará cuando Pequeñas Luces confirme la continuación. El caso permanece en HOLD para portfolio hasta registrar permiso y evidencia suficiente.",
-      en: "The next phase will resume when Pequeñas Luces confirms continuation. The case remains on HOLD for portfolio use until permission and sufficient evidence are recorded.",
+      es: "La siguiente fase se reanudará cuando Pequeñas Luces confirme la continuación. El permiso de portfolio ya está aprobado; el caso permanece en HOLD hasta disponer de evidencia suficiente para representar el trabajo con rigor.",
+      en: "The next phase will resume when Pequeñas Luces confirms continuation. Portfolio permission is already approved; the case remains on HOLD until there is enough evidence to represent the work accurately.",
     },
     socialLinks: [
       { label: "Spotify", url: "https://open.spotify.com/show/48FjmoOG82T6G9jsloYyFC" },
@@ -92,8 +92,8 @@ const allWorkCases: readonly WorkCase[] = [
       en: "Rihat Sax Quartet is an ensemble formed at Granada's Real Conservatorio Superior de Música Victoria Eugenia, with documented concert activity in the city.",
     },
     direction: {
-      es: "La ficha permanece en preparación y en HOLD. El alcance creativo de KYRUMA, los materiales visuales y los entregables solo se incorporarán cuando exista evidencia y permiso aprobados.",
-      en: "The record remains in preparation and on HOLD. KYRUMA's creative scope, visual materials and deliverables will only be added once evidence and permission are approved.",
+      es: "La ficha permanece en preparación y en HOLD para un caso completo. El permiso de portfolio está aprobado; los materiales visuales y los entregables solo se mostrarán cuando su autoría, derechos y evidencia estén verificados.",
+      en: "The record remains in preparation and on HOLD for a full case. Portfolio permission is approved; visual materials and deliverables will only be shown once authorship, rights and evidence are verified.",
     },
     services: {
       es: ["Documentación de proyecto", "Dirección pendiente de publicación"],
