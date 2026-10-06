@@ -361,7 +361,7 @@ export default async function AccessAdminPage({
             className="rounded-full bg-[var(--foreground)] px-6 py-3 text-[var(--background)]"
             type="submit"
           >
-            Crear Workspace y activar partner
+            Importar Partner y crear Workspace
           </button>
         </form>
 
