@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { insights } from "@/data/insights";
+import { authorityInsights } from "@/data/insights";
 
 export const metadata: Metadata = {
   title: "KYRUMA Insights | Estrategia, marca y experiencia digital",
@@ -32,7 +32,7 @@ export default function InsightsPage() {
       <section className="section">
         <div className="site-container">
           <div className="grid gap-0 border-t border-[var(--border)]">
-            {insights.map((insight, index) => (
+            {authorityInsights.map((insight, index) => (
               <article key={insight.slug} className="grid gap-6 border-b border-[var(--border)] py-10 md:grid-cols-12 md:items-start">
                 <div className="md:col-span-2">
                   <p className="text-xs tracking-[.2em] text-[var(--primary)]">0{index + 1}</p>
