@@ -86,7 +86,16 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ ok: false, code: "INVALID" }, { status: 400 });
     }
 
-    await capturePublicLead({ submissionId, email, contactName: name, company, serviceInterest: help, collaboration });
+    const intake = await capturePublicLead({
+      submissionId,
+      email,
+      contactName: name,
+      company,
+      serviceInterest: help,
+      collaboration,
+      privacyAccepted: privacy,
+      newsletterOptIn: newsletter,
+    });
 
     const safe = {
       name: escapeHtml(name), company: escapeHtml(company), email: escapeHtml(email),
@@ -101,8 +110,11 @@ export async function POST(request: NextRequest) {
         <tr><td style="padding:10px 0;color:#737373">Email</td><td>${safe.email}</td></tr>
         <tr><td style="padding:10px 0;color:#737373">Necesidad</td><td>${safe.help}</td></tr>
         <tr><td style="padding:10px 0;color:#737373">Colaboración</td><td>${safe.collaboration}</td></tr>
-        <tr><td style="padding:10px 0;color:#737373">Newsletter</td><td>${newsletter ? "Sí, consentimiento indicado" : "No"}</td></tr>
+        <tr><td style="padding:10px 0;color:#737373">Newsletter</td><td>${newsletter ? "Sí · consentimiento almacenado" : "No"}</td></tr>
+        <tr><td style="padding:10px 0;color:#737373">Lead ID</td><td style="font-family:monospace;font-size:12px">${escapeHtml(intake.leadId)}</td></tr>
+        <tr><td style="padding:10px 0;color:#737373">Submission ID</td><td style="font-family:monospace;font-size:12px">${escapeHtml(submissionId)}</td></tr>
       </table>
+      <p style="margin:18px 0 0;font-size:11px;line-height:1.7;color:#737373">Seguimiento operativo: revisar nuevo Lead dentro de la ventana interna de 24 h.</p>
       <div style="margin-top:34px;padding-top:28px;border-top:1px solid #e8e8e5;font-size:15px;line-height:1.8">${safe.need}</div>`, language);
 
     const clientContent = language === "es" ? `
