@@ -4,6 +4,7 @@ import TrackedShopLink from "@/components/express/TrackedShopLink";
 import { expressProduct, instagramResetIncludes } from "@/data/express";
 
 export const metadata: Metadata = {
+  robots: { index: false, follow: false },
   title: "Instagram Reset | Optimiza tu perfil por 29 €",
   description: "Mejora tu Instagram con una revisión profesional de bio, CTA, SEO, destacados, dirección visual y contenido. Entrega en 48 h.",
   alternates: { canonical: "/express/instagram-reset" },
