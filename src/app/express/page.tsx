@@ -4,6 +4,7 @@ import TrackedShopLink from "@/components/express/TrackedShopLink";
 import { expressProduct } from "@/data/express";
 
 export const metadata: Metadata = {
+  robots: { index: false, follow: false },
   title: "KYRUMA EXPRESS | Soluciones para marcas y negocios",
   description: "Soluciones concretas de branding, contenido y presencia digital para marcas, creadores y pequeños negocios. Precio cerrado y entrega rápida.",
   alternates: { canonical: "/express" },

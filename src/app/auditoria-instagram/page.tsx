@@ -4,6 +4,7 @@ import TrackedShopLink from "@/components/express/TrackedShopLink";
 import { expressProduct } from "@/data/express";
 
 export const metadata: Metadata = {
+  robots: { index: false, follow: false },
   title: "Auditoría de Instagram para negocios | 29 €",
   description: "Auditoría profesional de Instagram para negocios: bio, SEO, CTA, destacados, dirección visual y contenido. Precio cerrado de 29 € y entrega en hasta 48 h laborables.",
   keywords: [

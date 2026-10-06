@@ -4,6 +4,7 @@ import TrackedShopLink from "@/components/express/TrackedShopLink";
 import { expressProduct } from "@/data/express";
 
 export const metadata: Metadata = {
+  robots: { index: false, follow: false },
   title: "KYRUMA MATCH | Descubre qué mejorar primero en tu negocio",
   description: "Un diagnóstico gratuito y rápido para saber si deberías empezar por tu Instagram, web, contenido o marca.",
   alternates: { canonical: "/match" },
