@@ -15,11 +15,13 @@ export type Insight = {
   intro: string[];
   sections: InsightSection[];
   matchStart: string;
+  channel: "authority" | "segmented";
 };
 
 export const insights: Insight[] = [
   {
     slug: "como-saber-si-tu-web-esta-perdiendo-clientes",
+    channel: "authority",
     title: "Cómo saber si tu web está perdiendo clientes",
     description: "Señales concretas para detectar si tu página web está frenando contactos, reservas o ventas y qué revisar primero.",
     eyebrow: "WEB / CONVERSIÓN",
@@ -42,6 +44,7 @@ export const insights: Insight[] = [
   },
   {
     slug: "errores-instagram-negocios",
+    channel: "segmented",
     title: "7 errores de Instagram que hacen que un buen negocio parezca peor de lo que es",
     description: "Errores frecuentes de perfil, bio, CTA, destacados y contenido que reducen la claridad y la confianza de un negocio en Instagram.",
     eyebrow: "INSTAGRAM / MARCA",
@@ -66,6 +69,7 @@ export const insights: Insight[] = [
   },
   {
     slug: "auditoria-instagram-que-revisar",
+    channel: "segmented",
     title: "Auditoría de Instagram: qué revisar antes de cambiar tu perfil",
     description: "Checklist práctica para auditar un perfil de Instagram de negocio: nombre, bio, CTA, destacados, dirección visual, contenido y conversión.",
     eyebrow: "INSTAGRAM / AUDITORÍA",
@@ -91,6 +95,7 @@ export const insights: Insight[] = [
   },
   {
     slug: "auditoria-web-que-revisar",
+    channel: "authority",
     title: "Auditoría web: qué revisar antes de rediseñar tu página",
     description: "Checklist estratégica de auditoría web para revisar claridad, confianza, experiencia, móvil y conversión antes de invertir en un rediseño.",
     eyebrow: "WEB / AUDITORÍA",
@@ -115,6 +120,7 @@ export const insights: Insight[] = [
   },
   {
     slug: "branding-para-empresas-cuando-necesitas",
+    channel: "authority",
     title: "Branding para empresas: cuándo necesitas algo más que un logo",
     description: "Cómo distinguir entre un problema de logo, identidad visual, posicionamiento o estrategia de marca antes de invertir en un rebranding.",
     eyebrow: "BRAND / ESTRATEGIA",
@@ -137,6 +143,7 @@ export const insights: Insight[] = [
   },
   {
     slug: "diseno-web-granada-que-debe-incluir",
+    channel: "authority",
     title: "Diseño web en Granada: qué debería incluir una web profesional para tu negocio",
     description: "Qué revisar al contratar diseño web en Granada: estrategia, mensaje, móvil, SEO, conversión y mantenimiento para negocios y empresas.",
     eyebrow: "GRANADA / DIGITAL",
@@ -160,6 +167,8 @@ export const insights: Insight[] = [
     matchStart: "seo_diseno_web_granada",
   },
 ];
+
+export const authorityInsights: Insight[] = insights.filter((insight) => insight.channel === "authority");
 
 export function getInsight(slug: string) {
   return insights.find((insight) => insight.slug === slug);
