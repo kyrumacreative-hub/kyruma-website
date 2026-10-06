@@ -1,4 +1,5 @@
 import { spawnSync } from "node:child_process";
+import { validateProductionEnvironment } from "./runtime-config.mjs";
 
 const vercelEnv = process.env.VERCEL_ENV ?? "";
 const gitRef = process.env.VERCEL_GIT_COMMIT_REF ?? "";
@@ -13,11 +14,14 @@ if (gitRef && gitRef !== "main") {
   process.exit(1);
 }
 
-if (!process.env.DATABASE_URL) {
-  console.error("[migration-gate] DATABASE_URL is required for a production migration.");
+const config = validateProductionEnvironment(process.env);
+if (!config.ok) {
+  console.error("[migration-gate] Production environment contract: FAIL");
+  for (const failure of config.failures) console.error(`[migration-gate] - ${failure}`);
   process.exit(1);
 }
 
+console.log("[migration-gate] Production environment contract: PASS");
 console.log("[migration-gate] Production build detected; applying pending Prisma migrations.");
 
 const result = spawnSync(
