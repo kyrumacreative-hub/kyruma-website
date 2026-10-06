@@ -119,6 +119,9 @@ export async function confirmSignalSubscription(id: string, receivedToken: strin
   if (!subscriber) return false;
   const expected = token("confirm", subscriber.id, subscriber.normalizedEmail);
   if (!safeTokenMatch(expected, receivedToken)) return false;
+  if (subscriber.status === "unsubscribed") return false;
+  if (subscriber.status === "active") return true;
+  if (subscriber.status !== "pending") return false;
   const now = new Date();
   await prisma.newsletterSubscriber.update({
     where: { id: subscriber.id },
