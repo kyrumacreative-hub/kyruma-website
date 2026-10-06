@@ -47,6 +47,24 @@ model LeadIntake {
   @@index([organizationId, createdAt])
 }
 
+model NewsletterSubscriber {
+  id              String    @id
+  email           String
+  normalizedEmail String    @unique
+  language        String
+  source          String
+  status          String
+  consentVersion  String
+  consentText     String
+  requestedAt     DateTime
+  confirmedAt     DateTime?
+  unsubscribedAt  DateTime?
+  createdAt       DateTime
+  updatedAt       DateTime
+
+  @@index([status, requestedAt])
+}
+
 model Ownership {
   id         String   @id
   leadId     String

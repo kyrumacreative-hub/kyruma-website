@@ -3,6 +3,7 @@ import { sendMetaConversion } from "@/features/marketing/metaCapi";
 import { capturePublicLead } from "@/features/operating-layer/server/leadFunnel";
 import { enforcePublicRequestGuard, PublicRateLimitError } from "@/features/security/server/publicRequestGuard";
 import { PublicRequestError, assertPublicMutationEnvironment, readLimitedJson } from "@/features/security/server/publicRequestPolicy";
+import { requestSignalSubscription } from "@/features/signal/server/subscriptionService";
 
 export const runtime = "nodejs";
 
@@ -110,7 +111,7 @@ export async function POST(request: NextRequest) {
         <tr><td style="padding:10px 0;color:#737373">Email</td><td>${safe.email}</td></tr>
         <tr><td style="padding:10px 0;color:#737373">Necesidad</td><td>${safe.help}</td></tr>
         <tr><td style="padding:10px 0;color:#737373">Colaboración</td><td>${safe.collaboration}</td></tr>
-        <tr><td style="padding:10px 0;color:#737373">Newsletter</td><td>${newsletter ? "Sí · consentimiento almacenado" : "No"}</td></tr>
+        <tr><td style="padding:10px 0;color:#737373">KYRUMA / SIGNAL</td><td>${newsletter ? "Sí · suscripción independiente con confirmación por email" : "No solicitado"}</td></tr>
         <tr><td style="padding:10px 0;color:#737373">Lead ID</td><td style="font-family:monospace;font-size:12px">${escapeHtml(intake.leadId)}</td></tr>
         <tr><td style="padding:10px 0;color:#737373">Submission ID</td><td style="font-family:monospace;font-size:12px">${escapeHtml(submissionId)}</td></tr>
       </table>
@@ -151,6 +152,14 @@ export async function POST(request: NextRequest) {
       subject: language === "es" ? "Hemos recibido tu consulta · KYRUMA" : "We received your enquiry · KYRUMA",
       html: emailShell(clientContent, language),
     });
+
+    if (newsletter) {
+      await requestSignalSubscription({
+        email,
+        language,
+        source: "contact_form",
+      }).catch((error) => console.error("SIGNAL_CONTACT_OPT_IN_FAILED", error instanceof Error ? error.name : "UNKNOWN"));
+    }
 
     return NextResponse.json({ ok: true });
   } catch (error) {

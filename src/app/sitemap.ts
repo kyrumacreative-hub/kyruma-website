@@ -43,19 +43,13 @@ export default function sitemap(): MetadataRoute.Sitemap {
       priority: 0.9,
     },
     {
-      url: `${baseUrl}/auditoria-instagram`,
+      url: `${baseUrl}/insights`,
       lastModified: new Date(),
       changeFrequency: "weekly",
-      priority: 0.95,
+      priority: 0.9,
     },
     {
-      url: `${baseUrl}/auditoria-instagram/ejemplo`,
-      lastModified: new Date(),
-      changeFrequency: "monthly",
-      priority: 0.8,
-    },
-    {
-      url: `${baseUrl}/insights`,
+      url: `${baseUrl}/signal`,
       lastModified: new Date(),
       changeFrequency: "weekly",
       priority: 0.9,
@@ -70,18 +64,6 @@ export default function sitemap(): MetadataRoute.Sitemap {
       url: `${baseUrl}/match`,
       lastModified: new Date(),
       changeFrequency: "monthly",
-      priority: 0.9,
-    },
-    {
-      url: `${baseUrl}/express`,
-      lastModified: new Date(),
-      changeFrequency: "weekly",
-      priority: 0.9,
-    },
-    {
-      url: `${baseUrl}/express/instagram-reset`,
-      lastModified: new Date(),
-      changeFrequency: "weekly",
       priority: 0.9,
     },
     {

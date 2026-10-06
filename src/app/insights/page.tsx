@@ -3,12 +3,12 @@ import Link from "next/link";
 import { insights } from "@/data/insights";
 
 export const metadata: Metadata = {
-  title: "KYRUMA Insights | Marca, web y crecimiento digital",
-  description: "Ideas prácticas sobre estrategia de marca, diseño web, Instagram y experiencia digital para empresas, creadores y pequeños negocios.",
+  title: "KYRUMA Insights | Estrategia, marca y experiencia digital",
+  description: "Ideas y análisis sobre estrategia, posicionamiento, identidad y experiencia digital para empresas que necesitan claridad antes de crear más.",
   alternates: { canonical: "/insights" },
   openGraph: {
-    title: "KYRUMA Insights | Marca, web y crecimiento digital",
-    description: "Análisis y guías prácticas para mejorar cómo se presenta y convierte un negocio online.",
+    title: "KYRUMA Insights | Estrategia, marca y experiencia digital",
+    description: "Análisis para entender mejor cómo estrategia, identidad y experiencia digital afectan a la percepción de un negocio.",
     url: "/insights",
     type: "website",
   },
@@ -24,7 +24,7 @@ export default function InsightsPage() {
             Pensar mejor antes de <span className="text-[var(--muted)]">diseñar más.</span>
           </h1>
           <p className="mt-10 max-w-2xl text-lg font-light leading-[1.75] text-[var(--muted)]">
-            Estrategia, marca, web y contenido explicados de forma práctica para negocios que necesitan claridad antes de invertir en más piezas.
+            Estrategia, posicionamiento, identidad y experiencia digital para empresas que necesitan claridad antes de crear más.
           </p>
         </div>
       </section>
@@ -57,12 +57,12 @@ export default function InsightsPage() {
       <section className="section surface-section">
         <div className="site-container grid gap-10 md:grid-cols-12 md:items-end">
           <div className="md:col-span-7">
-            <p className="section-label">KYRUMA MATCH<span className="accent-dot" /></p>
-            <h2 className="mt-8 text-[clamp(2.5rem,5vw,5rem)] font-light tracking-[-.045em]">¿No sabes qué está fallando?</h2>
-            <p className="mt-5 max-w-2xl text-lg leading-8 text-[var(--muted)]">Responde unas preguntas y te diremos qué arreglaría KYRUMA primero. Gratis y sin llamada.</p>
+            <p className="section-label">KYRUMA / SIGNAL<span className="accent-dot" /></p>
+            <h2 className="mt-8 text-[clamp(2.5rem,5vw,5rem)] font-light tracking-[-.045em]">Una señal útil cada semana.</h2>
+            <p className="mt-5 max-w-2xl text-lg leading-8 text-[var(--muted)]">Una lectura breve sobre estrategia, marca y experiencia digital. Sin ruido. Aproximadamente 5 minutos.</p>
           </div>
           <div className="md:col-span-5 md:text-right">
-            <a href="https://t.me/kyrumabot?start=insights_hub" target="_blank" rel="noreferrer" className="button-primary inline-flex">Encontrar mi solución <span>↗</span></a>
+            <Link href="/signal" className="button-primary inline-flex">Conocer SIGNAL <span>→</span></Link>
           </div>
         </div>
       </section>
