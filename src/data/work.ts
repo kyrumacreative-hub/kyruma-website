@@ -40,28 +40,28 @@ const allWorkCases: readonly WorkCase[] = [
     sector: { es: "Podcast y comunidad", en: "Podcast and community" },
     project: { es: "Experiencia web editorial", en: "Editorial web experience" },
     summary: {
-      es: "Una casa digital en desarrollo para reunir episodios, historias y comunidad alrededor del podcast Pequeñas Luces.",
-      en: "A digital home in development to bring together episodes, stories and community around the Pequeñas Luces podcast.",
+      es: "Una dirección de trabajo en fase pre-cliente para reunir episodios, historias y comunidad alrededor del podcast Pequeñas Luces. No existe activación de cliente documentada.",
+      en: "A pre-client working direction for bringing together episodes, stories and community around the Pequeñas Luces podcast. No client activation is documented.",
     },
     context: {
       es: "Pequeñas Luces nace del grupo de postcomunión de la Parroquia Nuestra Señora de la Concepción de Morata de Tajuña. Hoy vive principalmente en el podcast y en redes sociales.",
       en: "Pequeñas Luces grew from the post-communion group at Nuestra Señora de la Concepción parish in Morata de Tajuña. Today it lives primarily through its podcast and social channels.",
     },
     direction: {
-      es: "La dirección aprobada convierte el proyecto en un pequeño magazine vivo: podcast, blog, comunidad y newsletter, respetando su identidad alegre y evitando una expresión institucional.",
-      en: "The approved direction turns the project into a lively small magazine: podcast, blog, community and newsletter, preserving its joyful identity and avoiding an institutional tone.",
+      es: "La dirección explorada por KYRUMA plantea un pequeño magazine vivo —podcast, blog, comunidad y newsletter— respetando su identidad alegre y evitando una expresión institucional. No debe presentarse como una solución contratada o implantada.",
+      en: "KYRUMA’s explored direction proposes a lively small magazine — podcast, blog, community and newsletter — preserving its joyful identity and avoiding an institutional tone. It must not be presented as a commissioned or implemented solution.",
     },
     services: {
       es: ["Arquitectura de contenidos", "Experiencia web", "Podcast", "Blog editorial", "Comunidad y newsletter"],
       en: ["Content architecture", "Web experience", "Podcast", "Editorial blog", "Community and newsletter"],
     },
     evidence: {
-      es: ["Podcast oficial activo en Spotify", "Identidad y dirección digital aprobadas", "Arquitectura V1 definida", "Experiencia web en desarrollo"],
-      en: ["Official podcast active on Spotify", "Approved identity and digital direction", "Defined V1 architecture", "Web experience in development"],
+      es: ["Discovery recibido", "Podcast oficial activo en Spotify", "Dirección interna de identidad/web documentada", "Sin contrato, pago ni activación de cliente documentados"],
+      en: ["Discovery received", "Official podcast active on Spotify", "Internal identity/web direction documented", "No contract, payment or client activation documented"],
     },
     next: {
-      es: "La siguiente fase convierte el material aprobado en una web editorial responsive y preparada para publicar nuevos episodios y contenidos.",
-      en: "The next phase turns the approved material into a responsive editorial website ready for new episodes and stories.",
+      es: "La siguiente fase solo debe comenzar si Pequeñas Luces confirma que quiere continuar. Hasta entonces, el registro permanece en HOLD y no es proof comercial.",
+      en: "The next phase should only begin if Pequeñas Luces confirms it wants to continue. Until then, the record remains on HOLD and is not commercial proof.",
     },
     socialLinks: [
       { label: "Spotify", url: "https://open.spotify.com/show/48FjmoOG82T6G9jsloYyFC" },
