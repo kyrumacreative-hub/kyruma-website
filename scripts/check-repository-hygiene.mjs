@@ -12,6 +12,27 @@ const secretPatterns = [
 ];
 const findings = [...forbiddenFiles.map((file) => `${file}:tracked_environment_file`)];
 
+const packageJson = JSON.parse(fs.readFileSync("package.json", "utf8"));
+const productionMigrationGate = "scripts/vercel-production-migrate.mjs";
+const buildScript = packageJson?.scripts?.build ?? "";
+
+if (!buildScript.includes(`node ${productionMigrationGate}`)) {
+  findings.push("package.json:production_migration_gate_missing_from_build");
+}
+
+if (!fs.existsSync(productionMigrationGate)) {
+  findings.push(`${productionMigrationGate}:missing`);
+} else {
+  const migrationGateContent = fs.readFileSync(productionMigrationGate, "utf8");
+  if (!migrationGateContent.includes('vercelEnv !== "production"')) {
+    findings.push(`${productionMigrationGate}:production_environment_guard_missing`);
+  }
+  if (!migrationGateContent.includes('"prisma", "migrate", "deploy"')) {
+    findings.push(`${productionMigrationGate}:prisma_migrate_deploy_missing`);
+  }
+}
+
+
 for (const file of tracked) {
   let content;
   try { content = fs.readFileSync(file, "utf8"); } catch { continue; }
