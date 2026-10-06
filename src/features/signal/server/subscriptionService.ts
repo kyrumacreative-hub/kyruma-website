@@ -5,7 +5,12 @@ import { prisma } from "@/lib/prisma";
 
 const RESEND_ENDPOINT = "https://api.resend.com/emails";
 const CONSENT_VERSION = "signal-v1-2026-10-06";
-const CONSENT_TEXT = "Quiero recibir KYRUMA / SIGNAL por email. Puedo darme de baja en cualquier momento.";
+
+function consentText(language: Language): string {
+  return language === "es"
+    ? "Quiero recibir KYRUMA / SIGNAL por email. Confirmaré la suscripción por correo y podré darme de baja en cualquier momento."
+    : "I want to receive KYRUMA / SIGNAL by email. I will confirm the subscription by email and can unsubscribe at any time.";
+}
 
 type Language = "es" | "en";
 
@@ -71,7 +76,7 @@ export async function requestSignalSubscription(input: {
           source: input.source,
           status: existing.status === "active" ? "active" : "pending",
           consentVersion: CONSENT_VERSION,
-          consentText: CONSENT_TEXT,
+          consentText: consentText(input.language),
           requestedAt: now,
           unsubscribedAt: existing.status === "active" ? existing.unsubscribedAt : null,
           updatedAt: now,
@@ -86,7 +91,7 @@ export async function requestSignalSubscription(input: {
           source: input.source,
           status: "pending",
           consentVersion: CONSENT_VERSION,
-          consentText: CONSENT_TEXT,
+          consentText: consentText(input.language),
           requestedAt: now,
           confirmedAt: null,
           unsubscribedAt: null,
