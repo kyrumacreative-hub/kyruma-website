@@ -20,6 +20,8 @@ export interface PublicLeadIntakeInput {
   readonly company: string;
   readonly serviceInterest: string;
   readonly collaboration: string;
+  readonly privacyAccepted: boolean;
+  readonly newsletterOptIn: boolean;
 }
 
 function foundation() {
@@ -73,6 +75,7 @@ export async function capturePublicLead(input: PublicLeadIntakeInput): Promise<{
   const company = text(input.company, "COMPANY", 140);
   const serviceInterest = text(input.serviceInterest, "SERVICE_INTEREST", 120);
   const collaboration = text(input.collaboration, "COLLABORATION", 160);
+  if (!input.privacyAccepted) throw new Error("LEAD_PRIVACY_ACCEPTANCE_REQUIRED");
   const value = foundation();
 
   return value.transactions.run(async (context) => {
@@ -93,7 +96,11 @@ export async function capturePublicLead(input: PublicLeadIntakeInput): Promise<{
     } });
     await db.leadIntake.create({ data: {
       id: submissionId, leadId, organizationId, normalizedEmail, contactName, company,
-      serviceInterest, collaboration, source: "website_contact", createdAt: now, updatedAt: now,
+      serviceInterest, collaboration, source: "website_contact",
+      privacyAcceptedAt: now,
+      newsletterOptIn: input.newsletterOptIn,
+      newsletterConsentAt: input.newsletterOptIn ? now : null,
+      createdAt: now, updatedAt: now,
     } });
     await db.automationDefinition.createMany({ data: [
       {
