@@ -296,13 +296,15 @@ export default async function AccessAdminPage({
         >
           <div>
             <p className="text-xs uppercase tracking-[.22em] text-[var(--primary)]">
-              Aprovisionamiento
+              Importación excepcional
             </p>
-            <h2 className="mt-3 text-2xl font-light">Crear Partner Workspace</h2>
+            <h2 className="mt-3 text-2xl font-light">Importar relación existente</h2>
             <p className="mt-2 max-w-2xl text-sm leading-6 text-[var(--muted)]">
-              Utiliza una identidad que ya haya iniciado sesión con Clerk. Platform
-              creará de forma atómica Lead importado, Partner, Workspace, owner y
-              permisos. Los enlaces externos son opcionales.
+              Usa esta vía solo para migraciones, recuperación de relaciones previas
+              o reparaciones administrativas justificadas. No sustituye el flujo
+              canónico Lead → Discovery → Qualification → Partner. La identidad debe
+              existir previamente en Clerk; Platform creará el Lead de importación,
+              Partner, Workspace, owner y permisos de forma atómica.
             </p>
           </div>
 

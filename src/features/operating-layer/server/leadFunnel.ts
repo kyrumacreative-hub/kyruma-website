@@ -98,7 +98,7 @@ export async function capturePublicLead(input: PublicLeadIntakeInput): Promise<{
       serviceInterest, collaboration, source: "website_contact",
       privacyAcceptedAt: input.privacyAccepted ? now : null,
       newsletterOptIn: input.newsletterOptIn === true,
-      newsletterConsentAt: input.newsletterOptIn === true ? now : null,
+      newsletterRequestedAt: input.newsletterOptIn === true ? now : null,
       createdAt: now, updatedAt: now,
     } });
     await db.automationDefinition.createMany({ data: [
