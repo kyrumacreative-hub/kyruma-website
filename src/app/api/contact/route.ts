@@ -111,7 +111,7 @@ export async function POST(request: NextRequest) {
         <tr><td style="padding:10px 0;color:#737373">Email</td><td>${safe.email}</td></tr>
         <tr><td style="padding:10px 0;color:#737373">Necesidad</td><td>${safe.help}</td></tr>
         <tr><td style="padding:10px 0;color:#737373">Colaboración</td><td>${safe.collaboration}</td></tr>
-        <tr><td style="padding:10px 0;color:#737373">KYRUMA / SIGNAL</td><td>${newsletter ? "Solicitado · confirmación por email pendiente" : "No solicitado"}</td></tr>
+        <tr><td style="padding:10px 0;color:#737373">KYRUMA / SIGNAL</td><td>${newsletter ? "Sí · suscripción independiente con confirmación por email" : "No solicitado"}</td></tr>
         <tr><td style="padding:10px 0;color:#737373">Lead ID</td><td style="font-family:monospace;font-size:12px">${escapeHtml(intake.leadId)}</td></tr>
         <tr><td style="padding:10px 0;color:#737373">Submission ID</td><td style="font-family:monospace;font-size:12px">${escapeHtml(submissionId)}</td></tr>
       </table>
