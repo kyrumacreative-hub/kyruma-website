@@ -74,6 +74,9 @@
     "js-yaml@4.3.0": "4.3.1",
     "nanoid": "3.3.18",
     "postcss": "8.5.26",
-    "sharp": "0.35.4"
+    "sharp": "0.35.5",
+    "source-map-js": "1.2.2",
+    "baseline-browser-mapping": "2.11.26",
+    "fflate": "0.6.11"
   }
 }

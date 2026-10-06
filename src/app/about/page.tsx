@@ -4,7 +4,7 @@ import Link from "next/link";
 export const metadata: Metadata = {
   title: "Sobre KYRUMA — Creative Partner",
   description:
-    "KYRUMA es un Creative Partner que alinea estrategia, identidad y experiencia digital para empresas que han evolucionado.",
+    "KYRUMA es un Creative Partner para empresas cuyo negocio ha evolucionado más rápido que la forma en la que está siendo percibido.",
   alternates: { canonical: "/about" },
   openGraph: {
     title: "Sobre KYRUMA — Creative Partner",
@@ -22,16 +22,16 @@ export default function AboutKyrumaPage() {
       <div className="site-container">
         <p className="section-label">SOBRE KYRUMA</p>
         <h1 className="section-title mt-8 max-w-5xl">
-          KYRUMA es un Creative Partner para empresas que han evolucionado.
+          KYRUMA es un Creative Partner para empresas cuyo negocio ha evolucionado más rápido que su percepción.
         </h1>
 
         <div className="mt-14 grid gap-10 border-t border-[var(--border)] pt-10 lg:grid-cols-12">
           <div className="lg:col-span-7">
             <p className="body-copy text-lg">
-              Unimos estrategia, identidad y experiencia digital para que la
-              percepción de una empresa represente correctamente el negocio que
-              ha construido. Definimos antes de diseñar y conectamos cada punto
-              de contacto dentro de una misma dirección.
+              Partimos del negocio, definimos la dirección y conectamos estrategia,
+              identidad y experiencia digital para cerrar la distancia entre lo
+              que una empresa ha construido y la forma en la que está siendo
+              entendida. Definimos antes de diseñar.
             </p>
           </div>
           <div className="space-y-6 lg:col-span-4 lg:col-start-9">

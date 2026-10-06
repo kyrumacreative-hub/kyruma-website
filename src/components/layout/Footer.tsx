@@ -65,9 +65,6 @@ export default function Footer() {
           <div className="mt-4 flex flex-col gap-3 text-sm text-[var(--muted)]">
             <Link href="/insights" className="transition-colors hover:text-[var(--foreground)]">Insights</Link>
             <Link href="/match" className="transition-colors hover:text-[var(--foreground)]">KYRUMA Match</Link>
-            <Link href={language === "es" ? "/auditoria-instagram" : "/express"} className="font-medium text-[var(--primary)] transition-colors hover:text-[var(--foreground)]">
-              {language === "es" ? "Auditoría Instagram · 29 €" : "KYRUMA Express · €29"}
-            </Link>
             <Link href="/granada" className="transition-colors hover:text-[var(--foreground)]">Granada</Link>
           </div>
         </div>

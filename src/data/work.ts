@@ -9,6 +9,7 @@ export interface WorkCase {
   readonly publicUrl?: string;
   readonly updatedAt: string;
   readonly status: "active" | "completed";
+  readonly publication: "public" | "hold";
   readonly headline: LocalizedText;
   readonly intro: LocalizedText;
   readonly sector: LocalizedText;
@@ -22,14 +23,15 @@ export interface WorkCase {
   readonly socialLinks?: readonly { readonly label: string; readonly url: string }[];
 }
 
-export const workCases: readonly WorkCase[] = [
+const allWorkCases: readonly WorkCase[] = [
   {
     slug: "pequenas-luces",
-    publicId: "WORK-004",
+    publicId: "KYR-003",
     client: "Pequeñas Luces",
     publicUrl: "https://open.spotify.com/show/48FjmoOG82T6G9jsloYyFC",
     updatedAt: "2026-10-04",
     status: "active",
+    publication: "hold",
     headline: { es: "Pequeñas Luces", en: "Pequeñas Luces" },
     intro: {
       es: "Un podcast infantil que cuenta la fe con la espontaneidad, la alegría y la mirada de sus jóvenes protagonistas.",
@@ -68,11 +70,12 @@ export const workCases: readonly WorkCase[] = [
   },
   {
     slug: "rihat-sax-quartet",
-    publicId: "WORK-005",
+    publicId: "KYR-004",
     client: "Rihat Sax Quartet",
     publicUrl: "https://museosanjuandedios.es/index.php?id=345&seccion=actividades",
     updatedAt: "2026-10-04",
     status: "active",
+    publication: "hold",
     headline: { es: "Rihat Sax Quartet", en: "Rihat Sax Quartet" },
     intro: {
       es: "Cuatro saxofones, una formación común y una presencia musical que encuentra su fuerza en el conjunto.",
@@ -112,6 +115,7 @@ export const workCases: readonly WorkCase[] = [
     publicUrl: "https://magicbywhyso.kyruma.com",
     updatedAt: "2026-08-30",
     status: "active",
+    publication: "hold",
     headline: { es: "Magic By Whyso", en: "Magic By Whyso" },
     intro: {
       es: "Una marca de experiencias de viaje construyendo una expresión propia y una forma más clara de convertir interés en reserva.",
@@ -122,28 +126,28 @@ export const workCases: readonly WorkCase[] = [
       en: "Travel experiences",
     },
     project: {
-      es: "Identidad y experiencia web",
-      en: "Identity and web experience",
+      es: "Dirección digital y experiencia web",
+      en: "Digital direction and web experience",
     },
     summary: {
-      es: "Una colaboración activa para ordenar la expresión de marca y convertirla en una experiencia digital clara, reconocible y preparada para reservas.",
-      en: "An active collaboration to shape the brand expression and turn it into a clear, recognizable digital experience built around bookings.",
+      es: "Una colaboración activa para ordenar materiales de marca existentes y convertirlos en una experiencia digital clara, reconocible y preparada para reservas.",
+      en: "An active collaboration to organise existing brand materials and turn them into a clear, recognizable digital experience built around bookings.",
     },
     context: {
       es: "Magic By Whyso llega con una identidad en desarrollo, materiales de marca, referencias visuales y un flujo de reservas que deben convivir dentro de una misma experiencia.",
       en: "Magic By Whyso brings together an evolving identity, brand materials, visual references and a booking flow that need to work as one experience.",
     },
     direction: {
-      es: "KYRUMA está conectando Discovery, dirección creativa, identidad y diseño web en un sistema coherente. La web continúa en desarrollo y el caso crecerá a medida que existan entregables y resultados verificables.",
-      en: "KYRUMA is connecting Discovery, creative direction, identity and web design into one coherent system. The website remains in progress and this case will grow as verified deliverables and outcomes become available.",
+      es: "KYRUMA está conectando Discovery, dirección creativa y diseño web alrededor de una identidad y materiales de marca preexistentes del cliente. La web continúa en desarrollo y el caso solo crecerá con entregables y resultados verificables.",
+      en: "KYRUMA is connecting Discovery, creative direction and web design around the client’s pre-existing identity and brand materials. The website remains in progress and the case will only grow with verified deliverables and outcomes.",
     },
     services: {
-      es: ["Estrategia de marca", "Dirección visual", "Experiencia web", "Flujo de reservas"],
-      en: ["Brand strategy", "Visual direction", "Web experience", "Booking flow"],
+      es: ["Discovery", "Dirección creativa", "Experiencia web", "Flujo de reservas"],
+      en: ["Discovery", "Creative direction", "Web experience", "Booking flow"],
     },
     evidence: {
-      es: ["Discovery recibido", "Materiales de identidad y referencias revisados", "Dirección creativa definida", "Diseño web en curso"],
-      en: ["Discovery received", "Identity materials and references reviewed", "Creative direction defined", "Web design in progress"],
+      es: ["Discovery recibido", "Materiales de identidad aportados por el cliente revisados", "Dirección creativa definida", "Diseño web en curso"],
+      en: ["Discovery received", "Client-provided identity materials reviewed", "Creative direction defined", "Web design in progress"],
     },
     next: {
       es: "La dirección creativa y el diseño web avanzan en paralelo. El caso se ampliará con entregables aprobados y evidencia de lanzamiento.",
@@ -152,18 +156,19 @@ export const workCases: readonly WorkCase[] = [
   },
   {
     slug: "raul-marques-de-la-torre",
-    publicId: "KYR-003",
+    publicId: "KYR-001",
     client: "Raúl Marqués de la Torre",
     publicUrl: "https://raulmarquesdelatorre.com",
     updatedAt: "2026-09-01",
     status: "active",
+    publication: "public",
     headline: {
       es: "Raúl Marqués de la Torre",
       en: "Raúl Marqués de la Torre",
     },
     intro: {
-      es: "Una práctica creativa independiente donde música, estilo y cultura se convierten en una identidad editorial reconocible.",
-      en: "An independent creative practice where music, style and culture become a recognizable editorial identity.",
+      es: "Un proyecto propio, impulsado por el fundador de KYRUMA, donde música, estilo y cultura se articulan como una identidad editorial reconocible.",
+      en: "A founder-led internal project where music, style and culture are shaped into a recognizable editorial identity.",
     },
     sector: {
       es: "Marca personal y cultura",
@@ -174,12 +179,12 @@ export const workCases: readonly WorkCase[] = [
       en: "Web, brand and social media",
     },
     summary: {
-      es: "Una colaboración activa para articular RMT como sistema de marca, experiencia web y presencia social conectada.",
-      en: "An active collaboration shaping RMT as a connected brand system, web experience and social presence.",
+      es: "Un proyecto interno y founder-controlled que sirve para desarrollar RMT como sistema de marca, experiencia web y presencia social conectada.",
+      en: "An internal, founder-controlled project developing RMT as a connected brand system, web experience and social presence.",
     },
     context: {
-      es: "RMT reúne una práctica personal en torno a la música, el estilo, los viajes y la cultura. El reto es dar continuidad a esa mirada entre la identidad, la web y cada canal social.",
-      en: "RMT brings together a personal practice around music, style, travel and culture. The challenge is to carry that point of view consistently across the identity, the website and every social channel.",
+      es: "RMT reúne una práctica personal en torno a la música, el estilo, los viajes y la cultura. Como proyecto propio, permite demostrar proceso, criterio y sistema, pero no se presenta como validación de un cliente externo independiente.",
+      en: "RMT brings together a personal practice around music, style, travel and culture. As an internal project, it demonstrates process, judgement and system thinking, but is not presented as independent external-client validation.",
     },
     direction: {
       es: "KYRUMA está desarrollando una expresión editorial coherente bajo la idea «Process. Passion. Purpose.», con una web-archivo activa y un sistema de contenidos para Instagram, TikTok, YouTube y Facebook.",
@@ -205,6 +210,8 @@ export const workCases: readonly WorkCase[] = [
     ],
   },
 ] as const;
+
+export const workCases: readonly WorkCase[] = allWorkCases.filter((item) => item.publication === "public");
 
 export function getWorkCase(slug: string): WorkCase | undefined {
   return workCases.find((item) => item.slug === slug);
