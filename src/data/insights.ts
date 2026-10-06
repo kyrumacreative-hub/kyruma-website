@@ -15,6 +15,7 @@ export type Insight = {
   intro: string[];
   sections: InsightSection[];
   matchStart: string;
+  authorityStatus?: "primary" | "legacy";
 };
 
 export const insights: Insight[] = [
@@ -42,6 +43,7 @@ export const insights: Insight[] = [
   },
   {
     slug: "errores-instagram-negocios",
+    authorityStatus: "legacy",
     title: "7 errores de Instagram que hacen que un buen negocio parezca peor de lo que es",
     description: "Errores frecuentes de perfil, bio, CTA, destacados y contenido que reducen la claridad y la confianza de un negocio en Instagram.",
     eyebrow: "INSTAGRAM / MARCA",
@@ -66,6 +68,7 @@ export const insights: Insight[] = [
   },
   {
     slug: "auditoria-instagram-que-revisar",
+    authorityStatus: "legacy",
     title: "Auditoría de Instagram: qué revisar antes de cambiar tu perfil",
     description: "Checklist práctica para auditar un perfil de Instagram de negocio: nombre, bio, CTA, destacados, dirección visual, contenido y conversión.",
     eyebrow: "INSTAGRAM / AUDITORÍA",
@@ -164,3 +167,5 @@ export const insights: Insight[] = [
 export function getInsight(slug: string) {
   return insights.find((insight) => insight.slug === slug);
 }
+
+export const primaryInsights = insights.filter((insight) => insight.authorityStatus !== "legacy");
