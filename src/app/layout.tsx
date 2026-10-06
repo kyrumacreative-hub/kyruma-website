@@ -21,7 +21,7 @@ export const metadata: Metadata = {
   applicationName: "KYRUMA",
   creator: "KYRUMA",
   publisher: "KYRUMA",
-  category: "Creative business and strategy studio",
+  category: "B2B Creative Partner",
 
   title: {
     default: "KYRUMA | Estrategia, Identidad y Experiencia Digital",
@@ -29,7 +29,7 @@ export const metadata: Metadata = {
   },
 
   description:
-    "Alineamos estrategia, identidad y experiencia digital para que la percepción de tu marca esté a la altura del negocio que has construido.",
+    "Creative Partner B2B para empresas cuyo negocio ha evolucionado más rápido que su percepción. Estrategia, identidad y experiencia digital en una sola dirección.",
 
   keywords: [
     "KYRUMA",
@@ -67,7 +67,7 @@ export const metadata: Metadata = {
         url: "/og-image.jpg",
         width: 1200,
         height: 630,
-        alt: "KYRUMA — Estudio de Estrategia y Negocio Creativo",
+        alt: "KYRUMA — Creative Partner B2B",
       },
     ],
   },
@@ -121,7 +121,7 @@ export default function RootLayout({
                           height: 1254,
                         },
                         description:
-                          "Independent Creative Business & Strategy Studio. Strategy, identity, digital experiences and systems for ambitious businesses.",
+                          "B2B Creative Partner aligning strategy, identity and digital experience for businesses that have evolved faster than their perception.",
                         email: "hello@kyruma.com",
                         telephone: "+34614189346",
                         contactPoint: {
@@ -139,9 +139,9 @@ export default function RootLayout({
                           "Business Strategy",
                           "Brand Strategy",
                           "Brand Identity",
-                          "Digital Experiences",
-                          "Business Systems",
-                          "Artificial Intelligence",
+                          "Digital Experience",
+                          "UX Strategy",
+                          "Creative Direction",
                         ],
                       },
                       {
