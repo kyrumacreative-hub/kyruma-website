@@ -1,6 +1,6 @@
 import type { MetadataRoute } from "next";
 import { workCases } from "@/data/work";
-import { insights } from "@/data/insights";
+import { authorityInsights } from "@/data/insights";
 
 export default function sitemap(): MetadataRoute.Sitemap {
   const baseUrl = "https://www.kyruma.com";
@@ -54,7 +54,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
       changeFrequency: "weekly",
       priority: 0.9,
     },
-    ...insights.map((insight) => ({
+    ...authorityInsights.map((insight) => ({
       url: `${baseUrl}/insights/${insight.slug}`,
       lastModified: new Date(insight.publishedAt),
       changeFrequency: "monthly" as const,
