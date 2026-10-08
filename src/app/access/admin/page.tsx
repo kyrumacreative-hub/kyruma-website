@@ -6,6 +6,7 @@ import {
   linkWorkspaceExternalResource,
   provisionPartnerWorkspace,
   reissuePartnerInvitation,
+  revokePartnerMembership,
 } from "./actions";
 import { requireCurrentActor } from "@/features/access/server/currentActor";
 import { isInternalAdminEmail } from "@/features/access/server/internalAdmin";
@@ -25,6 +26,7 @@ export default async function AccessAdminPage({
     linked?: string;
     requestApproved?: string;
     reissued?: string;
+    membershipRevoked?: string;
   }>;
 }) {
   const actor = await requireCurrentActor();
@@ -124,14 +126,17 @@ export default async function AccessAdminPage({
     },
     orderBy: { joinedAt: "asc" },
     select: {
+      id: true,
+      userId: true,
       workspaceId: true,
+      joinedAt: true,
       user: { select: { email: true, displayName: true } },
     },
   });
   const partnerOwnerByWorkspace = new Map(
     partnerOwners
       .filter((membership) => membership.workspaceId)
-      .map((membership) => [membership.workspaceId, membership.user]),
+      .map((membership) => [membership.workspaceId, membership]),
   );
   const workspaceNameById = new Map(
     workspaces.map((workspace) => [workspace.id, workspace.name]),
@@ -194,6 +199,15 @@ export default async function AccessAdminPage({
             <p>Recurso externo vinculado correctamente.</p>
             <p className="mt-2 text-sm text-[var(--muted)]">
               El recurso oficial ya está disponible para el Workspace seleccionado.
+            </p>
+          </div>
+        ) : null}
+
+        {params.membershipRevoked === "1" ? (
+          <div className="mt-8 rounded-2xl border border-[var(--border)] bg-[var(--surface)] p-5">
+            <p>Acceso del partner revocado correctamente.</p>
+            <p className="mt-2 text-sm text-[var(--muted)]">
+              La identidad se conserva, pero ya no existe una Membership activa para ese Workspace.
             </p>
           </div>
         ) : null}
@@ -456,11 +470,11 @@ export default async function AccessAdminPage({
                     <div>
                       <h3>{workspace.name}</h3>
                       <p className="mt-2 text-sm text-[var(--muted)]">
-                        {partnerOwnerByWorkspace.get(workspace.id)?.displayName ??
+                        {partnerOwnerByWorkspace.get(workspace.id)?.user.displayName ??
                           "Partner"}
                       </p>
                       <p className="mt-1 text-sm text-[var(--muted)]">
-                        {partnerOwnerByWorkspace.get(workspace.id)?.email ??
+                        {partnerOwnerByWorkspace.get(workspace.id)?.user.email ??
                           "Identidad pendiente"}
                       </p>
                       <div className="mt-3 flex flex-wrap gap-3">
@@ -478,6 +492,29 @@ export default async function AccessAdminPage({
                           ),
                         )}
                       </div>
+                      {partnerOwnerByWorkspace.get(workspace.id) ? (
+                        <div className="mt-5 border-t border-[var(--border)] pt-4">
+                          <p className="text-xs text-[var(--muted)]">
+                            Acceso activo desde{" "}
+                            {partnerOwnerByWorkspace
+                              .get(workspace.id)
+                              ?.joinedAt?.toLocaleString("es-ES") ?? "fecha no disponible"}
+                          </p>
+                          <form action={revokePartnerMembership} className="mt-3">
+                            <input
+                              name="membershipId"
+                              type="hidden"
+                              value={partnerOwnerByWorkspace.get(workspace.id)?.id}
+                            />
+                            <button
+                              className="rounded-full border border-red-300 px-4 py-2 text-sm"
+                              type="submit"
+                            >
+                              Revocar acceso
+                            </button>
+                          </form>
+                        </div>
+                      ) : null}
                     </div>
                     <span className="rounded-full border border-[var(--border)] px-3 py-1 text-xs uppercase tracking-[.16em]">
                       {workspace.status}
