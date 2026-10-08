@@ -4,6 +4,7 @@ import { randomUUID } from "node:crypto";
 import { Prisma } from "@prisma/client";
 import { clerkClient } from "@clerk/nextjs/server";
 import { redirect } from "next/navigation";
+import type { Role } from "@/features/identity/domain/capabilities";
 import {
   parseExternalResourceUrl,
   type ExternalResourceProvider,
@@ -349,7 +350,7 @@ export async function issuePartnerInvitation(formData: FormData): Promise<void> 
 
   const result = await inviteUser.execute(actor, {
     email,
-    role: "partner",
+    role: invitation.role as Role,
     scope: {
       organizationId: workspace.organizationId,
       partnerId: workspace.partnerId,
@@ -498,6 +499,7 @@ export async function reissuePartnerInvitation(formData: FormData): Promise<void
     select: {
       id: true,
       email: true,
+      role: true,
       status: true,
       providerId: true,
       acceptedAt: true,
