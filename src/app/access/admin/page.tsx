@@ -5,6 +5,7 @@ import {
   issuePartnerInvitation,
   linkWorkspaceExternalResource,
   provisionPartnerWorkspace,
+  reissuePartnerInvitation,
 } from "./actions";
 import { requireCurrentActor } from "@/features/access/server/currentActor";
 import { isInternalAdminEmail } from "@/features/access/server/internalAdmin";
@@ -23,6 +24,7 @@ export default async function AccessAdminPage({
     workspaceCode?: string;
     linked?: string;
     requestApproved?: string;
+    reissued?: string;
   }>;
 }) {
   const actor = await requireCurrentActor();
@@ -47,6 +49,40 @@ export default async function AccessAdminPage({
       updatedAt: true,
     },
   });
+
+  const [accessRequestHistory, invitationHistory] = await Promise.all([
+    prisma.accessRequest.findMany({
+      where: { status: { not: "pending" } },
+      orderBy: { updatedAt: "desc" },
+      take: 50,
+      select: {
+        id: true,
+        email: true,
+        displayName: true,
+        status: true,
+        requestedAt: true,
+        updatedAt: true,
+        resolvedAt: true,
+        workspaceId: true,
+      },
+    }),
+    prisma.accessInvitation.findMany({
+      orderBy: { createdAt: "desc" },
+      take: 50,
+      select: {
+        id: true,
+        email: true,
+        status: true,
+        deliveryStatus: true,
+        workspaceId: true,
+        createdAt: true,
+        deliveredAt: true,
+        expiresAt: true,
+        acceptedAt: true,
+        revokedAt: true,
+      },
+    }),
+  ]);
 
   const workspaces = await prisma.workspace.findMany({
     orderBy: [{ createdAt: "desc" }],
@@ -97,6 +133,9 @@ export default async function AccessAdminPage({
       .filter((membership) => membership.workspaceId)
       .map((membership) => [membership.workspaceId, membership.user]),
   );
+  const workspaceNameById = new Map(
+    workspaces.map((workspace) => [workspace.id, workspace.name]),
+  );
 
   return (
     <main className="min-h-screen bg-[var(--background)] px-6 pb-24 pt-32 text-[var(--foreground)]">
@@ -116,7 +155,7 @@ export default async function AccessAdminPage({
 
         {params.delivery === "sent" || params.sent === "1" ? (
           <div className="mt-8 rounded-2xl border border-[var(--border)] bg-[var(--surface)] p-5">
-            <p>Invitación enviada correctamente.</p>
+            <p>{params.reissued === "1" ? "Invitación reemitida correctamente." : "Invitación enviada correctamente."}</p>
             <p className="mt-2 text-sm text-[var(--muted)]">
               Clerk ha aceptado la entrega del email de acceso.
             </p>
@@ -247,6 +286,146 @@ export default async function AccessAdminPage({
               </p>
             </div>
           )}
+        </section>
+
+        <section className="mt-10 rounded-3xl border border-[var(--border)] bg-[var(--surface)] p-8">
+          <div className="flex flex-wrap items-end justify-between gap-4">
+            <div>
+              <p className="text-xs uppercase tracking-[.22em] text-[var(--primary)]">
+                Access Operations
+              </p>
+              <h2 className="mt-3 text-2xl font-light">Historial operativo</h2>
+              <p className="mt-2 max-w-2xl text-sm leading-6 text-[var(--muted)]">
+                Trazabilidad de solicitudes resueltas e invitaciones. Las invitaciones
+                pendientes pueden reemitirse: la anterior se revoca y se genera un
+                token nuevo, sin conceder acceso directamente.
+              </p>
+            </div>
+            <span className="rounded-full border border-[var(--border)] px-4 py-2 text-sm text-[var(--muted)]">
+              Últimos 50 registros
+            </span>
+          </div>
+
+          <div className="mt-8 grid gap-8 lg:grid-cols-2">
+            <div>
+              <h3 className="text-sm font-medium">Solicitudes resueltas</h3>
+              <div className="mt-4 grid gap-3">
+                {accessRequestHistory.length ? (
+                  accessRequestHistory.map((request) => (
+                    <article
+                      className="rounded-2xl bg-[var(--surface-soft)] p-5"
+                      key={request.id}
+                    >
+                      <div className="flex items-start justify-between gap-4">
+                        <div>
+                          <p className="font-medium">
+                            {request.displayName ?? request.email}
+                          </p>
+                          <p className="mt-1 text-sm text-[var(--muted)]">
+                            {request.email}
+                          </p>
+                        </div>
+                        <span className="rounded-full border border-[var(--border)] px-3 py-1 text-xs uppercase tracking-[.12em]">
+                          {request.status}
+                        </span>
+                      </div>
+                      <p className="mt-3 text-xs text-[var(--muted)]">
+                        {request.workspaceId
+                          ? workspaceNameById.get(request.workspaceId) ?? "Workspace histórico"
+                          : "Sin Workspace"}
+                        {" · "}
+                        {request.resolvedAt?.toLocaleString("es-ES") ??
+                          request.updatedAt.toLocaleString("es-ES")}
+                      </p>
+                    </article>
+                  ))
+                ) : (
+                  <p className="rounded-2xl bg-[var(--surface-soft)] p-5 text-sm text-[var(--muted)]">
+                    Todavía no hay solicitudes resueltas.
+                  </p>
+                )}
+              </div>
+            </div>
+
+            <div>
+              <h3 className="text-sm font-medium">Invitaciones</h3>
+              <div className="mt-4 grid gap-3">
+                {invitationHistory.length ? (
+                  invitationHistory.map((invitation) => {
+                    const operationalStatus =
+                      invitation.status === "pending" &&
+                      invitation.expiresAt <= new Date()
+                        ? "expired"
+                        : invitation.status;
+                    const canReissue =
+                      invitation.status === "pending" && Boolean(invitation.workspaceId);
+
+                    return (
+                      <article
+                        className="rounded-2xl bg-[var(--surface-soft)] p-5"
+                        key={invitation.id}
+                      >
+                        <div className="flex items-start justify-between gap-4">
+                          <div>
+                            <p className="font-medium">{invitation.email}</p>
+                            <p className="mt-1 text-sm text-[var(--muted)]">
+                              {invitation.workspaceId
+                                ? workspaceNameById.get(invitation.workspaceId) ??
+                                  "Workspace histórico"
+                                : "Ámbito sin Workspace"}
+                            </p>
+                          </div>
+                          <span className="rounded-full border border-[var(--border)] px-3 py-1 text-xs uppercase tracking-[.12em]">
+                            {operationalStatus}
+                          </span>
+                        </div>
+                        <div className="mt-3 text-xs leading-5 text-[var(--muted)]">
+                          <p>Entrega: {invitation.deliveryStatus}</p>
+                          <p>
+                            Emitida: {invitation.createdAt.toLocaleString("es-ES")}
+                          </p>
+                          {invitation.acceptedAt ? (
+                            <p>
+                              Aceptada: {invitation.acceptedAt.toLocaleString("es-ES")}
+                            </p>
+                          ) : null}
+                          {invitation.revokedAt ? (
+                            <p>
+                              Revocada: {invitation.revokedAt.toLocaleString("es-ES")}
+                            </p>
+                          ) : null}
+                          {!invitation.acceptedAt && !invitation.revokedAt ? (
+                            <p>
+                              Caduca: {invitation.expiresAt.toLocaleString("es-ES")}
+                            </p>
+                          ) : null}
+                        </div>
+                        {canReissue ? (
+                          <form action={reissuePartnerInvitation} className="mt-4">
+                            <input
+                              name="invitationId"
+                              type="hidden"
+                              value={invitation.id}
+                            />
+                            <button
+                              className="rounded-full border border-[var(--border-strong)] px-4 py-2 text-sm transition-colors hover:border-[var(--foreground)]"
+                              type="submit"
+                            >
+                              Reemitir invitación
+                            </button>
+                          </form>
+                        ) : null}
+                      </article>
+                    );
+                  })
+                ) : (
+                  <p className="rounded-2xl bg-[var(--surface-soft)] p-5 text-sm text-[var(--muted)]">
+                    Todavía no hay invitaciones registradas.
+                  </p>
+                )}
+              </div>
+            </div>
+          </div>
         </section>
 
         <section className="mt-10 rounded-3xl border border-[var(--border)] bg-[var(--surface)] p-8">
