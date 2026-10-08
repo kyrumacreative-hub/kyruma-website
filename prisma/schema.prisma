@@ -430,6 +430,23 @@ model FoundationMembership {
   @@index([partnerId, workspaceId, status])
 }
 
+model AccessRequest {
+  id              String   @id
+  userId          String   @unique
+  email           String
+  normalizedEmail String
+  displayName     String?
+  status          String
+  requestedAt     DateTime
+  updatedAt       DateTime
+  resolvedAt      DateTime?
+  resolvedBy      String?
+  workspaceId     String?
+
+  @@index([status, requestedAt])
+  @@index([normalizedEmail, status])
+}
+
 model AccessInvitation {
   id              String    @id
   organizationId  String

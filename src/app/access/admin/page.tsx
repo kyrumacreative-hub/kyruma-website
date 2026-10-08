@@ -1,6 +1,7 @@
 import { UserButton } from "@clerk/nextjs";
 import { redirect } from "next/navigation";
 import {
+  approveAccessRequest,
   issuePartnerInvitation,
   linkWorkspaceExternalResource,
   provisionPartnerWorkspace,
@@ -21,6 +22,7 @@ export default async function AccessAdminPage({
     created?: string;
     workspaceCode?: string;
     linked?: string;
+    requestApproved?: string;
   }>;
 }) {
   const actor = await requireCurrentActor();
@@ -33,6 +35,18 @@ export default async function AccessAdminPage({
   const deliveryError = params.error && /^[A-Z0-9_]{1,100}$/.test(params.error)
     ? params.error
     : "ACCESS_INVITATION_DELIVERY_FAILED";
+
+  const accessRequests = await prisma.accessRequest.findMany({
+    where: { status: "pending" },
+    orderBy: { requestedAt: "asc" },
+    select: {
+      id: true,
+      email: true,
+      displayName: true,
+      requestedAt: true,
+      updatedAt: true,
+    },
+  });
 
   const workspaces = await prisma.workspace.findMany({
     orderBy: [{ createdAt: "desc" }],
@@ -144,6 +158,96 @@ export default async function AccessAdminPage({
             </p>
           </div>
         ) : null}
+
+        <section className="mt-10 rounded-3xl border border-[var(--border)] bg-[var(--surface)] p-8">
+          <div className="flex flex-wrap items-end justify-between gap-4">
+            <div>
+              <p className="text-xs uppercase tracking-[.22em] text-[var(--primary)]">
+                Solicitudes de acceso
+              </p>
+              <h2 className="mt-3 text-2xl font-light">
+                {accessRequests.length
+                  ? `${accessRequests.length} pendiente${accessRequests.length === 1 ? "" : "s"}`
+                  : "Sin solicitudes pendientes"}
+              </h2>
+              <p className="mt-2 max-w-2xl text-sm leading-6 text-[var(--muted)]">
+                Aquí aparecen las personas que han iniciado sesión pero todavía no
+                tienen una Membership activa. Aprobar una solicitud no concede
+                acceso directo: emite la invitación segura para el Workspace que
+                selecciones.
+              </p>
+            </div>
+            <span className="rounded-full border border-[var(--border)] px-4 py-2 text-sm text-[var(--muted)]">
+              Revisión humana obligatoria
+            </span>
+          </div>
+
+          {params.requestApproved === "1" ? (
+            <div className="mt-6 rounded-2xl bg-[var(--surface-soft)] p-5">
+              <p>Solicitud aprobada y vinculada a una invitación.</p>
+            </div>
+          ) : null}
+
+          {accessRequests.length ? (
+            <div className="mt-6 grid gap-4">
+              {accessRequests.map((request) => (
+                <form
+                  action={approveAccessRequest}
+                  className="grid gap-5 rounded-2xl bg-[var(--surface-soft)] p-5 md:grid-cols-[1fr_1fr_auto] md:items-end"
+                  key={request.id}
+                >
+                  <input name="requestId" type="hidden" value={request.id} />
+                  <div>
+                    <p className="font-medium">
+                      {request.displayName ?? "Identidad verificada"}
+                    </p>
+                    <p className="mt-1 text-sm text-[var(--muted)]">{request.email}</p>
+                    <p className="mt-2 text-xs text-[var(--muted)]">
+                      Solicitud: {request.requestedAt.toLocaleString("es-ES")}
+                    </p>
+                  </div>
+                  <div>
+                    <label className="text-sm" htmlFor={`request-workspace-${request.id}`}>
+                      Workspace
+                    </label>
+                    <select
+                      className="mt-2 w-full rounded-xl border border-[var(--border)] bg-[var(--background)] px-4 py-3"
+                      disabled={!workspaces.length}
+                      id={`request-workspace-${request.id}`}
+                      name="workspaceId"
+                      required
+                    >
+                      <option value="">Selecciona un Workspace</option>
+                      {workspaces.map((workspace) => (
+                        <option
+                          disabled={workspace.status !== "active"}
+                          key={workspace.id}
+                          value={workspace.id}
+                        >
+                          {workspace.name} · {workspace.status}
+                        </option>
+                      ))}
+                    </select>
+                  </div>
+                  <button
+                    className="rounded-full bg-[var(--foreground)] px-6 py-3 text-[var(--background)] disabled:opacity-50"
+                    disabled={!workspaces.length}
+                    type="submit"
+                  >
+                    Aprobar e invitar
+                  </button>
+                </form>
+              ))}
+            </div>
+          ) : (
+            <div className="mt-6 rounded-2xl bg-[var(--surface-soft)] p-6">
+              <p className="text-sm text-[var(--muted)]">
+                Cuando alguien pulse “Solicitar acceso a KYRUMA” desde
+                /access/pending, aparecerá aquí.
+              </p>
+            </div>
+          )}
+        </section>
 
         <section className="mt-10 rounded-3xl border border-[var(--border)] bg-[var(--surface)] p-8">
           <div className="flex flex-wrap items-end justify-between gap-4">

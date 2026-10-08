@@ -379,3 +379,106 @@ export async function issuePartnerInvitation(formData: FormData): Promise<void> 
     `/access/admin?delivery=${deliveryState}&invitationId=${encodeURIComponent(result.invitationId)}${error}`,
   );
 }
+
+
+export async function approveAccessRequest(formData: FormData): Promise<void> {
+  const requestId = String(formData.get("requestId") ?? "").trim();
+  const workspaceId = String(formData.get("workspaceId") ?? "").trim();
+
+  if (!requestId || !workspaceId) {
+    throw new Error("ACCESS_REQUEST_APPROVAL_INPUT_REQUIRED");
+  }
+
+  let actor = await requireCurrentActor();
+  requireInternalAdmin(actor);
+
+  const [accessRequest, workspace] = await Promise.all([
+    prisma.accessRequest.findUnique({
+      where: { id: requestId },
+      select: {
+        id: true,
+        email: true,
+        status: true,
+      },
+    }),
+    prisma.workspace.findUnique({
+      where: { id: workspaceId },
+      select: {
+        id: true,
+        organizationId: true,
+        partnerId: true,
+        status: true,
+      },
+    }),
+  ]);
+
+  if (!accessRequest) throw new Error("ACCESS_REQUEST_NOT_FOUND");
+  if (accessRequest.status !== "pending") {
+    throw new Error("ACCESS_REQUEST_NOT_PENDING");
+  }
+  if (!workspace) throw new Error("ACCESS_WORKSPACE_NOT_FOUND");
+  if (workspace.status !== "active") {
+    throw new Error("ACCESS_WORKSPACE_NOT_ACTIVE");
+  }
+
+  await ensureOrganizationAdminMembership(actor, workspace.organizationId);
+  actor = await requireCurrentActor();
+
+  const inviteUser = createInvitePartnerUseCase();
+  const result = await inviteUser.execute(actor, {
+    email: accessRequest.email,
+    role: "partner",
+    scope: {
+      organizationId: workspace.organizationId,
+      partnerId: workspace.partnerId,
+      workspaceId: workspace.id,
+    },
+    correlationId: randomUUID(),
+    expiresAt: new Date(Date.now() + INVITATION_LIFETIME_MS),
+  });
+
+  const worker = createInvitationWorker();
+  await worker.dispatch.execute({
+    workerId: `access-request:${result.eventId}`,
+    limit: 25,
+  });
+  await worker.process.execute({
+    workerId: `access-request:${result.eventId}`,
+    limit: 25,
+  });
+
+  const eventStatus = await worker.status(result.eventId, workspace.organizationId);
+  const delivery = eventStatus?.deliveries.find(
+    (item) =>
+      item.consumer === "access" &&
+      item.handler === "deliver-partner-invitation",
+  );
+  const deliveryState =
+    delivery?.status === "processed"
+      ? "sent"
+      : delivery?.status === "dead_lettered"
+        ? "failed"
+        : "queued";
+
+  if (deliveryState !== "failed") {
+    await prisma.accessRequest.update({
+      where: { id: accessRequest.id },
+      data: {
+        status: "invited",
+        resolvedAt: new Date(),
+        resolvedBy: actor.user.id,
+        workspaceId: workspace.id,
+        updatedAt: new Date(),
+      },
+    });
+  }
+
+  const error =
+    deliveryState === "failed" && delivery?.errorCode
+      ? `&error=${encodeURIComponent(delivery.errorCode)}`
+      : "";
+
+  redirect(
+    `/access/admin?requestApproved=${deliveryState === "failed" ? "0" : "1"}&delivery=${deliveryState}&invitationId=${encodeURIComponent(result.invitationId)}${error}`,
+  );
+}
