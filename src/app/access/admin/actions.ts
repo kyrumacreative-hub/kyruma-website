@@ -482,3 +482,129 @@ export async function approveAccessRequest(formData: FormData): Promise<void> {
     `/access/admin?requestApproved=${deliveryState === "failed" ? "0" : "1"}&delivery=${deliveryState}&invitationId=${encodeURIComponent(result.invitationId)}${error}`,
   );
 }
+
+
+export async function reissuePartnerInvitation(formData: FormData): Promise<void> {
+  const invitationId = String(formData.get("invitationId") ?? "").trim();
+  if (!invitationId) {
+    throw new Error("ACCESS_INVITATION_REISSUE_INPUT_REQUIRED");
+  }
+
+  let actor = await requireCurrentActor();
+  requireInternalAdmin(actor);
+
+  const invitation = await prisma.accessInvitation.findUnique({
+    where: { id: invitationId },
+    select: {
+      id: true,
+      email: true,
+      status: true,
+      providerId: true,
+      acceptedAt: true,
+      organizationId: true,
+      partnerId: true,
+      workspaceId: true,
+    },
+  });
+
+  if (!invitation) throw new Error("ACCESS_INVITATION_NOT_FOUND");
+  if (invitation.status !== "pending" || invitation.acceptedAt) {
+    throw new Error("ACCESS_INVITATION_NOT_REISSUABLE");
+  }
+  if (!invitation.workspaceId || !invitation.partnerId) {
+    throw new Error("ACCESS_INVITATION_SCOPE_INVALID");
+  }
+
+  const workspace = await prisma.workspace.findUnique({
+    where: { id: invitation.workspaceId },
+    select: {
+      id: true,
+      organizationId: true,
+      partnerId: true,
+      status: true,
+    },
+  });
+
+  if (!workspace) throw new Error("ACCESS_WORKSPACE_NOT_FOUND");
+  if (
+    workspace.status !== "active" ||
+    workspace.organizationId !== invitation.organizationId ||
+    workspace.partnerId !== invitation.partnerId
+  ) {
+    throw new Error("ACCESS_INVITATION_SCOPE_MISMATCH");
+  }
+
+  await ensureOrganizationAdminMembership(actor, workspace.organizationId);
+  actor = await requireCurrentActor();
+
+  if (invitation.providerId) {
+    const clerk = await clerkClient();
+    try {
+      await clerk.invitations.revokeInvitation(invitation.providerId);
+    } catch {
+      throw new Error("ACCESS_INVITATION_PROVIDER_REVOKE_FAILED");
+    }
+  }
+
+  const revokedAt = new Date();
+  const revoked = await prisma.accessInvitation.updateMany({
+    where: {
+      id: invitation.id,
+      status: "pending",
+      acceptedAt: null,
+    },
+    data: {
+      status: "revoked",
+      deliveryStatus: "revoked",
+      revokedAt,
+    },
+  });
+
+  if (revoked.count !== 1) {
+    throw new Error("ACCESS_INVITATION_REISSUE_CONFLICT");
+  }
+
+  const inviteUser = createInvitePartnerUseCase();
+  const result = await inviteUser.execute(actor, {
+    email: invitation.email,
+    role: "partner",
+    scope: {
+      organizationId: workspace.organizationId,
+      partnerId: workspace.partnerId,
+      workspaceId: workspace.id,
+    },
+    correlationId: randomUUID(),
+    expiresAt: new Date(Date.now() + INVITATION_LIFETIME_MS),
+  });
+
+  const worker = createInvitationWorker();
+  await worker.dispatch.execute({
+    workerId: `access-reissue:${result.eventId}`,
+    limit: 25,
+  });
+  await worker.process.execute({
+    workerId: `access-reissue:${result.eventId}`,
+    limit: 25,
+  });
+
+  const eventStatus = await worker.status(result.eventId, workspace.organizationId);
+  const delivery = eventStatus?.deliveries.find(
+    (item) =>
+      item.consumer === "access" &&
+      item.handler === "deliver-partner-invitation",
+  );
+  const deliveryState =
+    delivery?.status === "processed"
+      ? "sent"
+      : delivery?.status === "dead_lettered"
+        ? "failed"
+        : "queued";
+  const error =
+    deliveryState === "failed" && delivery?.errorCode
+      ? `&error=${encodeURIComponent(delivery.errorCode)}`
+      : "";
+
+  redirect(
+    `/access/admin?reissued=1&delivery=${deliveryState}&invitationId=${encodeURIComponent(result.invitationId)}${error}`,
+  );
+}
