@@ -34,6 +34,7 @@ export default async function PendingAccessPage({
   });
 
   const pending = request?.status === "pending";
+  const invited = request?.status === "invited";
 
   return (
     <main className="grid min-h-screen place-items-center px-6">
@@ -61,6 +62,20 @@ export default async function PendingAccessPage({
               </p>
               <p className="mt-1 text-xs text-[var(--muted)]">
                 Estado: pendiente de revisión por KYRUMA
+              </p>
+            </div>
+          </>
+        ) : invited ? (
+          <>
+            <p className="mt-4 leading-7 text-[var(--muted)]">
+              KYRUMA ya ha revisado tu solicitud y ha emitido una invitación segura
+              para el Workspace asignado.
+            </p>
+            <div className="mt-7 rounded-2xl bg-[var(--surface-soft)] p-5 text-left">
+              <p className="text-sm font-medium">Invitación emitida</p>
+              <p className="mt-2 text-sm leading-6 text-[var(--muted)]">
+                Revisa el correo de {actor.user.email} y abre la invitación para
+                completar el acceso.
               </p>
             </div>
           </>
