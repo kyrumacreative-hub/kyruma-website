@@ -683,7 +683,7 @@ export async function revokePartnerMembership(formData: FormData): Promise<void>
       throw new Error("ACCESS_MEMBERSHIP_REVOKE_CONFLICT");
     }
 
-    await db.workspaceMember.updateMany({
+    const removed = await db.workspaceMember.updateMany({
       where: {
         membershipId: membership.id,
         workspaceId: membership.workspaceId!,
@@ -694,6 +694,10 @@ export async function revokePartnerMembership(formData: FormData): Promise<void>
         removedAt: revokedAt,
       },
     });
+
+    if (removed.count !== 1) {
+      throw new Error("ACCESS_WORKSPACE_MEMBER_REVOKE_CONFLICT");
+    }
   });
 
   redirect(
