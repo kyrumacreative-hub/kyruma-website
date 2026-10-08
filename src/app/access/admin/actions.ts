@@ -350,7 +350,7 @@ export async function issuePartnerInvitation(formData: FormData): Promise<void> 
 
   const result = await inviteUser.execute(actor, {
     email,
-    role: invitation.role as Role,
+    role: "partner",
     scope: {
       organizationId: workspace.organizationId,
       partnerId: workspace.partnerId,
@@ -569,7 +569,7 @@ export async function reissuePartnerInvitation(formData: FormData): Promise<void
   const inviteUser = createInvitePartnerUseCase();
   const result = await inviteUser.execute(actor, {
     email: invitation.email,
-    role: "partner",
+    role: invitation.role as Role,
     scope: {
       organizationId: workspace.organizationId,
       partnerId: workspace.partnerId,
