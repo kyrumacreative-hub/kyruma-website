@@ -610,3 +610,97 @@ export async function reissuePartnerInvitation(formData: FormData): Promise<void
     `/access/admin?reissued=1&delivery=${deliveryState}&invitationId=${encodeURIComponent(result.invitationId)}${error}`,
   );
 }
+
+
+export async function revokePartnerMembership(formData: FormData): Promise<void> {
+  const membershipId = String(formData.get("membershipId") ?? "").trim();
+  if (!membershipId) {
+    throw new Error("ACCESS_MEMBERSHIP_REVOKE_INPUT_REQUIRED");
+  }
+
+  const actor = await requireCurrentActor();
+  requireInternalAdmin(actor);
+
+  const membership = await prisma.foundationMembership.findUnique({
+    where: { id: membershipId },
+    select: {
+      id: true,
+      userId: true,
+      role: true,
+      status: true,
+      organizationId: true,
+      partnerId: true,
+      workspaceId: true,
+    },
+  });
+
+  if (!membership) throw new Error("ACCESS_MEMBERSHIP_NOT_FOUND");
+  if (membership.role !== "partner") {
+    throw new Error("ACCESS_MEMBERSHIP_REVOKE_ROLE_INVALID");
+  }
+  if (membership.status !== "active") {
+    throw new Error("ACCESS_MEMBERSHIP_NOT_ACTIVE");
+  }
+  if (!membership.workspaceId || !membership.partnerId) {
+    throw new Error("ACCESS_MEMBERSHIP_SCOPE_INVALID");
+  }
+  if (membership.userId === actor.user.id) {
+    throw new Error("ACCESS_MEMBERSHIP_SELF_REVOKE_DENIED");
+  }
+
+  const workspace = await prisma.workspace.findUnique({
+    where: { id: membership.workspaceId },
+    select: {
+      id: true,
+      organizationId: true,
+      partnerId: true,
+    },
+  });
+
+  if (
+    !workspace ||
+    workspace.organizationId !== membership.organizationId ||
+    workspace.partnerId !== membership.partnerId
+  ) {
+    throw new Error("ACCESS_MEMBERSHIP_SCOPE_MISMATCH");
+  }
+
+  const revokedAt = new Date();
+  await prisma.$transaction(async (db) => {
+    const revoked = await db.foundationMembership.updateMany({
+      where: {
+        id: membership.id,
+        status: "active",
+        role: "partner",
+      },
+      data: {
+        status: "revoked",
+        revokedAt,
+      },
+    });
+
+    if (revoked.count !== 1) {
+      throw new Error("ACCESS_MEMBERSHIP_REVOKE_CONFLICT");
+    }
+
+    const removed = await db.workspaceMember.updateMany({
+      where: {
+        membershipId: membership.id,
+        workspaceId: membership.workspaceId!,
+        status: "active",
+      },
+      data: {
+        status: "removed",
+        removedAt: revokedAt,
+      },
+    });
+
+    if (removed.count !== 1) {
+      throw new Error("ACCESS_WORKSPACE_MEMBER_REVOKE_CONFLICT");
+    }
+  });
+
+  redirect(
+    `/access/admin?membershipRevoked=1&workspaceId=${encodeURIComponent(membership.workspaceId)}`,
+  );
+}
