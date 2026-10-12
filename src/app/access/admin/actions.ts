@@ -20,6 +20,14 @@ import { prisma } from "@/lib/prisma";
 const INVITATION_LIFETIME_MS = 7 * 24 * 60 * 60 * 1000;
 
 export async function provisionPartnerWorkspace(formData: FormData): Promise<void> {
+  // AS-001: this legacy repair/import path activates a Membership immediately.
+  // Keep it explicitly disabled unless the operator authorizes the exception
+  // in the server environment. Canonical onboarding must use invitations.
+  const actorForGate = await requireCurrentActor();
+  requireInternalAdmin(actorForGate);
+  if (process.env.KYRUMA_ALLOW_DIRECT_PARTNER_PROVISIONING !== "true") {
+    throw new Error("ACCESS_DIRECT_PROVISIONING_DISABLED");
+  }
   const workspaceName = String(formData.get("workspaceName") ?? "").trim();
   const partnerEmail = String(formData.get("partnerEmail") ?? "").trim().toLowerCase();
   const figmaUrl = parseExternalResourceUrl(formData.get("figmaUrl"), "figma");
