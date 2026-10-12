@@ -1,6 +1,7 @@
 "use server";
 
 import { randomUUID } from "node:crypto";
+import { assertDirectPartnerProvisioningAllowed } from "@/features/access/server/directProvisioningPolicy";
 import { Prisma } from "@prisma/client";
 import { clerkClient } from "@clerk/nextjs/server";
 import { redirect } from "next/navigation";
@@ -25,9 +26,7 @@ export async function provisionPartnerWorkspace(formData: FormData): Promise<voi
   // in the server environment. Canonical onboarding must use invitations.
   const actorForGate = await requireCurrentActor();
   requireInternalAdmin(actorForGate);
-  if (process.env.KYRUMA_ALLOW_DIRECT_PARTNER_PROVISIONING !== "true") {
-    throw new Error("ACCESS_DIRECT_PROVISIONING_DISABLED");
-  }
+  assertDirectPartnerProvisioningAllowed(process.env);
   const workspaceName = String(formData.get("workspaceName") ?? "").trim();
   const partnerEmail = String(formData.get("partnerEmail") ?? "").trim().toLowerCase();
   const figmaUrl = parseExternalResourceUrl(formData.get("figmaUrl"), "figma");
