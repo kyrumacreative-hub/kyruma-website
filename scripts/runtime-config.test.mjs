@@ -25,3 +25,19 @@ test("reports names and reasons without exposing secret values", () => {
   assert.deepEqual(result.failures, ["CRON_SECRET:too_short", "APP_URL:https_required", "APP_URL:credentials_forbidden", "APP_URL:origin_only"]);
   assert.equal(JSON.stringify(result).includes("user:secret"), false);
 });
+
+test("direct partner provisioning defaults to disabled without breaking config", () => {
+  assert.deepEqual(validateProductionEnvironment(valid), { ok: true, failures: [] });
+  assert.deepEqual(validateProductionEnvironment({ ...valid, KYRUMA_ALLOW_DIRECT_PARTNER_PROVISIONING: "false" }), { ok: true, failures: [] });
+});
+
+test("production contract rejects direct membership activation bypass", () => {
+  const result = validateProductionEnvironment({ ...valid, KYRUMA_ALLOW_DIRECT_PARTNER_PROVISIONING: "true" });
+  assert.equal(result.ok, false);
+  assert.ok(result.failures.includes("KYRUMA_ALLOW_DIRECT_PARTNER_PROVISIONING:forbidden_in_production"));
+});
+
+test("invalid provisioning flag is rejected", () => {
+  const result = validateProductionEnvironment({ ...valid, KYRUMA_ALLOW_DIRECT_PARTNER_PROVISIONING: "yes" });
+  assert.deepEqual(result.failures, ["KYRUMA_ALLOW_DIRECT_PARTNER_PROVISIONING:invalid"]);
+});
