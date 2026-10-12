@@ -34,6 +34,15 @@ export function validateProductionEnvironment(environment) {
       failures.push("APP_URL:invalid");
     }
   }
+  // AS-001: direct membership activation may only be exercised in isolated tests.
+  // Production never opts into bypassing the invitation acceptance lifecycle.
+  if (environment.KYRUMA_ALLOW_DIRECT_PARTNER_PROVISIONING === "true") {
+    failures.push("KYRUMA_ALLOW_DIRECT_PARTNER_PROVISIONING:forbidden_in_production");
+  }
+  if (environment.KYRUMA_ALLOW_DIRECT_PARTNER_PROVISIONING &&
+      !["true", "false"].includes(environment.KYRUMA_ALLOW_DIRECT_PARTNER_PROVISIONING)) {
+    failures.push("KYRUMA_ALLOW_DIRECT_PARTNER_PROVISIONING:invalid");
+  }
   if (environment.TEST_DATABASE_URL && environment.TEST_DATABASE_URL === environment.DATABASE_URL) {
     failures.push("TEST_DATABASE_URL:matches_production");
   }
