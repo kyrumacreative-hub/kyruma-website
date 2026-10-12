@@ -20,10 +20,10 @@ test("AS-001: direct partner provisioning fails closed behind internal admin and
     "export async function linkWorkspaceExternalResource(",
   );
   const admin = body.indexOf("requireInternalAdmin(actorForGate)");
-  const flag = body.indexOf('process.env.KYRUMA_ALLOW_DIRECT_PARTNER_PROVISIONING !== "true"');
-  const denied = body.indexOf('throw new Error("ACCESS_DIRECT_PROVISIONING_DISABLED")');
+  const flag = body.indexOf("assertDirectPartnerProvisioningAllowed(process.env)");
+  const denied = flag;
   const mutation = body.indexOf("await prisma.$transaction(");
-  assert.ok(admin >= 0 && flag > admin && denied > flag && mutation > denied,
+  assert.ok(admin >= 0 && flag > admin && mutation > flag,
     "Admin check and fail-closed flag must precede all provisioning writes");
   assert.match(body, /status: "active"/);
 });
