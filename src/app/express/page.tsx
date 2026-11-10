@@ -36,6 +36,7 @@ export default function ExpressPage() {
         <div className="mt-9 flex flex-wrap items-center gap-6">
           <a className="button-primary" href="#cartel-express">Oferta de lanzamiento · Cartel por 25 € <span>↓</span></a>
           <a className="text-link" href={emailLink("Quiero contaros mi idea")}>Cuéntanos tu idea <span>→</span></a>
+          <a className="text-link" href="https://shop.kyruma.com/collections/all">Ver tienda KYRUMA <span>→</span></a>
         </div>
       </section>
 
@@ -53,7 +54,11 @@ export default function ExpressPage() {
                 <p className="mt-7 text-base leading-relaxed">{item.description}</p>
                 <p className="body-copy mt-2 text-sm">{item.detail}</p>
                 <div className="mt-auto pt-10">
-                  <a className="button-primary" href={emailLink(item.slug)}>Me interesa <span>→</span></a>
+                  {item.number === "05" ? (
+                    <a className="button-primary" href="https://shop.kyruma.com/products/landing-page-esencial">Ver la landing en Shopify <span>→</span></a>
+                  ) : (
+                    <a className="button-primary" href={emailLink(item.slug)}>Me interesa <span>→</span></a>
+                  )}
                 </div>
               </article>
             ))}
