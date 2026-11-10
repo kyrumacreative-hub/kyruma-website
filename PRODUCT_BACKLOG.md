@@ -4,6 +4,14 @@ Este documento es la fuente única de prioridades del producto. Las ideas se reg
 
 ## NOW — Sprint activo
 
+### KYRUMA Express — activación comercial (prioridad explícita, 10/11/2026)
+
+- Landing /express con servicios de entrada y alcance definido.
+- CTA visible desde portada orientado a compras pequeñas.
+- Validar build, experiencia móvil y canal de recepción antes de publicar.
+- No afirmar pago online habilitado hasta integrar y verificar pasarela.
+
+
 Solo puede haber un objetivo activo.
 
 ### Marketing Foundation v1
