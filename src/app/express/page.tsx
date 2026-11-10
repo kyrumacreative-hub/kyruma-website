@@ -17,14 +17,7 @@ const services = [
 
 function emailLink(service: string) {
   const subject = encodeURIComponent("Quiero contratar KYRUMA — " + service);
-  const body = encodeURIComponent("Hola, me interesa " + service + ".
-
-Mi nombre:
-Mi proyecto:
-Cuándo lo necesitaría:
-
-¿Me podéis confirmar disponibilidad, alcance y precio final?
-");
+  const body = encodeURIComponent(["Hola, me interesa " + service + ".", "", "Mi nombre:", "Mi proyecto:", "Cuándo lo necesitaría:", "", "¿Me podéis confirmar disponibilidad, alcance y precio final?"].join("\\n"));
   return "mailto:hello@kyruma.com?subject=" + subject + "&body=" + body;
 }
 
