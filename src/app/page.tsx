@@ -223,6 +223,7 @@ export default function Home() {
               <div className="flex flex-wrap gap-6 md:col-span-5 md:justify-end">
                 <a className="button-primary" href="#contact" onClick={() => trackMarketingEvent("hero_cta", { placement: "hero" })}>{t.hero.cta}<span>→</span></a>
                 <a className="text-link" href="#perspective">{t.hero.explore}<span>↓</span></a>
+                <a className="text-link" href="/express/servicios" onClick={() => trackMarketingEvent("hero_cta", { placement: "hero_express" })}>{language === "es" ? "KYRUMA Express desde 25 €" : "KYRUMA Express from €25"}<span>→</span></a>
               </div>
             </div>
           </div>
