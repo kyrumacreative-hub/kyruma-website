@@ -9,10 +9,10 @@ const copy = {
   es: {
     hero: {
       eyebrow: "CREATIVE PARTNER · ESTRATEGIA, IDENTIDAD Y DIGITAL",
-      titleA: "Tu empresa puede haber evolucionado.",
-      titleB: "La percepción de tu marca quizá no.",
-      body: "Alineamos estrategia, identidad y experiencia digital para que la forma en la que tu empresa es percibida esté a la altura del negocio que has construido.",
-      cta: "Iniciar una conversación",
+      titleA: "Tu idea merece verse bien.",
+      titleB: "Hagámosla realidad.",
+      body: "Diseño, redes y webs para pequeños negocios, artistas y personas con ideas. Trato cercano, precios claros y proyectos sin complicaciones.",
+      cta: "Ver servicios desde 25 €",
       explore: "Descubrir el enfoque",
     },
     problem: {
@@ -77,10 +77,10 @@ const copy = {
   en: {
     hero: {
       eyebrow: "CREATIVE PARTNER · STRATEGY, IDENTITY & DIGITAL",
-      titleA: "Your business may have evolved.",
-      titleB: "The way people perceive it may not have.",
-      body: "We align strategy, identity and digital experience so the way your company is perceived reflects the business you have built.",
-      cta: "Start a conversation",
+      titleA: "Your idea deserves to look good.",
+      titleB: "Let’s make it happen.",
+      body: "Design, social content and websites for small businesses, artists and people with ideas. Friendly service, clear pricing and no unnecessary complexity.",
+      cta: "Explore services from €25",
       explore: "Explore our approach",
     },
     problem: {
@@ -212,7 +212,7 @@ export default function Home() {
             <div className="mt-10 grid gap-8 border-t border-[var(--border)] pt-8 md:mt-14 md:grid-cols-12 md:items-end">
               <p className="max-w-[620px] text-base font-light leading-[1.75] text-[var(--muted)] md:col-span-7 md:text-lg">{t.hero.body}</p>
               <div className="flex flex-wrap gap-6 md:col-span-5 md:justify-end">
-                <a className="button-primary" href="#contact" onClick={() => trackMarketingEvent("hero_cta", { placement: "hero" })}>{t.hero.cta}<span>→</span></a>
+                <a className="button-primary" href="/express" onClick={() => trackMarketingEvent("hero_cta", { placement: "hero_express" })}>{t.hero.cta}<span>→</span></a>
                 <a className="text-link" href="#perspective">{t.hero.explore}<span>↓</span></a>
               </div>
             </div>
