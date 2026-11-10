@@ -69,12 +69,12 @@ export default function ExpressPage() {
         <div className="site-container grid gap-12 lg:grid-cols-2">
           <div>
             <p className="section-label">CÓMO FUNCIONA <span className="accent-dot" /></p>
-            <h2 className="section-title mt-8">Fácil desde el primer mensaje.</h2>
+            <h2 className="section-title mt-8">Del pedido a la entrega.</h2>
           </div>
           <div className="space-y-9">
-            <div><p className="micro">01 / ESCRÍBENOS</p><p className="mt-2 text-lg">Cuéntanos qué necesitas y para cuándo.</p></div>
-            <div><p className="micro">02 / TE CONFIRMAMOS</p><p className="mt-2 text-lg">Confirmaremos el alcance, el plazo y la forma de pago antes de empezar.</p></div>
-            <div><p className="micro">03 / LO HACEMOS REALIDAD</p><p className="mt-2 text-lg">Preparamos tu diseño y te lo entregamos con los ajustes incluidos.</p></div>
+            <div><p className="micro">01 / HAZ TU PEDIDO</p><p className="mt-2 text-lg">Elige el servicio en Shopify y sigue las instrucciones de transferencia del pedido.</p></div>
+            <div><p className="micro">02 / ENVÍANOS TU MATERIAL</p><p className="mt-2 text-lg">Envíanos el número de pedido, lo que necesitas, la fecha deseada y los archivos o un enlace privado al material.</p><a className="text-link mt-3 inline-block" href="mailto:hello@kyruma.com?subject=Material%20para%20mi%20pedido%20KYRUMA%20Express&amp;body=N%C3%BAmero%20de%20pedido%3A%0AServicio%3A%0AQu%C3%A9%20necesito%3A%0AFecha%20deseada%3A%0AEnlace%20al%20material%3A">Enviar material del pedido <span>→</span></a></div>
+            <div><p className="micro">03 / LO HACEMOS REALIDAD</p><p className="mt-2 text-lg">Empezamos cuando confirmamos el pago y tenemos el material. Te entregamos el trabajo con los ajustes incluidos.</p></div>
           </div>
         </div>
       </section>
