@@ -34,7 +34,7 @@ export default function ExpressPage() {
           Precios claros, trato cercano y proyectos sin complicaciones.
         </p>
         <div className="mt-9 flex flex-wrap items-center gap-6">
-          <a className="button-primary" href="#precios">Ver servicios desde 25 € <span>↓</span></a>
+          <a className="button-primary" href="#cartel-express">Oferta de lanzamiento · Cartel por 25 € <span>↓</span></a>
           <a className="text-link" href={emailLink("Quiero contaros mi idea")}>Cuéntanos tu idea <span>→</span></a>
         </div>
       </section>
@@ -46,7 +46,7 @@ export default function ExpressPage() {
           <p className="body-copy mt-6 max-w-2xl">No hace falta contratar un proyecto enorme para trabajar con nosotros. Elige una solución concreta y cuéntanos qué necesitas.</p>
           <div className="mt-14 grid gap-px overflow-hidden border border-[var(--border)] bg-[var(--border)] md:grid-cols-2">
             {services.map((item) => (
-              <article key={item.number} className="flex flex-col bg-[var(--surface)] p-7 md:p-10">
+              <article key={item.number} id={item.number === "01" ? "cartel-express" : undefined} className="flex scroll-mt-28 flex-col bg-[var(--surface)] p-7 md:p-10">
                 <p className="micro">{item.number} / KYRUMA EXPRESS</p>
                 <h3 className="mt-9 text-2xl font-light tracking-[-0.035em] md:text-3xl">{item.title}</h3>
                 <p className="mt-5 text-4xl font-light tracking-[-0.04em]">{item.price}</p>
