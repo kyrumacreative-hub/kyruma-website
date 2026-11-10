@@ -8,11 +8,11 @@ export const metadata: Metadata = {
 };
 
 const services = [
-  { number: "01", title: "Cartel o diseño para redes", price: "25 €", description: "Una pieza digital personalizada, lista para publicar.", detail: "Incluye un formato y una ronda de ajustes.", slug: "Cartel o diseño para redes — 25 €" },
-  { number: "02", title: "Edición de reel", price: "35 €", description: "Un vídeo vertical de hasta 30 segundos a partir de tu material.", detail: "Incluye montaje, subtítulos básicos y una ronda de ajustes.", slug: "Edición de reel — 35 €" },
-  { number: "03", title: "Pack de redes", price: "59 €", description: "Cuatro publicaciones para presentar mejor tu negocio.", detail: "Diseño con textos e imágenes proporcionados por el cliente.", slug: "Pack de cuatro publicaciones — 59 €" },
-  { number: "04", title: "Identidad básica", price: "89 €", description: "Una base visual sencilla y coherente para empezar.", detail: "Logotipo sencillo, paleta, tipografías y archivos finales.", slug: "Identidad básica — 89 €" },
-  { number: "05", title: "Tu primera web", price: "Desde 199 €", description: "Una página responsive para explicar lo que haces y facilitar el contacto.", detail: "Alcance acordado antes de empezar. Dominio y servicios externos no incluidos.", slug: "Web esencial — desde 199 €" },
+  { number: "01", title: "Cartel o diseño para redes", price: "25 €", description: "Una pieza digital personalizada, lista para publicar.", detail: "Incluye un formato y una ronda de ajustes.", shopUrl: "https://shop.kyruma.com/products/cartel-profesional-express" },
+  { number: "02", title: "Edición de reel", price: "35 €", description: "Un vídeo vertical de hasta 30 segundos a partir de tu material.", detail: "Incluye montaje, subtítulos básicos y una ronda de ajustes.", shopUrl: "https://shop.kyruma.com/products/edicion-de-reel-kyruma-express" },
+  { number: "03", title: "Pack de redes", price: "59 €", description: "Cuatro publicaciones para presentar mejor tu negocio.", detail: "Diseño con textos e imágenes proporcionados por el cliente.", shopUrl: "https://shop.kyruma.com/products/pack-de-4-publicaciones-kyruma-express" },
+  { number: "04", title: "Identidad básica", price: "89 €", description: "Una base visual sencilla y coherente para empezar.", detail: "Logotipo sencillo, paleta, tipografías y archivos finales.", shopUrl: "https://shop.kyruma.com/products/identidad-basica-kyruma-express" },
+  { number: "05", title: "Tu primera web", price: "Desde 199 €", description: "Una página responsive para explicar lo que haces y facilitar el contacto.", detail: "Alcance acordado antes de empezar. Dominio y servicios externos no incluidos.", shopUrl: "https://shop.kyruma.com/products/landing-page-esencial" },
 ];
 
 function emailLink(service: string) {
@@ -54,17 +54,13 @@ export default function ExpressPage() {
                 <p className="mt-7 text-base leading-relaxed">{item.description}</p>
                 <p className="body-copy mt-2 text-sm">{item.detail}</p>
                 <div className="mt-auto pt-10">
-                  {item.number === "05" ? (
-                    <a className="button-primary" href="https://shop.kyruma.com/products/landing-page-esencial">Ver la landing en Shopify <span>→</span></a>
-                  ) : (
-                    <a className="button-primary" href={emailLink(item.slug)}>Me interesa <span>→</span></a>
-                  )}
+                  <a className="button-primary" href={item.shopUrl}>Ver en Shopify <span>→</span></a>
                 </div>
               </article>
             ))}
           </div>
           <p className="mt-6 max-w-3xl text-sm leading-relaxed text-[var(--muted)]">
-            Los precios indicados son finales para el alcance descrito e incluyen los impuestos que correspondan. La web esencial parte de 199 € y te confirmaremos el total antes de contratar según el alcance. Los extras se presupuestan por separado. Al pulsar «Me interesa» se abre un correo.
+            Los precios indicados son finales para el alcance descrito e incluyen los impuestos que correspondan. La web esencial parte de 199 € y te confirmaremos el total antes de contratar según el alcance. Los extras se presupuestan por separado. Puedes consultar cada ficha y tramitar el pedido en Shopify.
           </p>
         </div>
       </section>
