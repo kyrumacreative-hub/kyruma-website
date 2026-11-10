@@ -17,7 +17,7 @@ const services = [
 
 function emailLink(service: string) {
   const subject = encodeURIComponent("Quiero contratar KYRUMA — " + service);
-  const body = encodeURIComponent(["Hola, me interesa " + service + ".", "", "Mi nombre:", "Mi proyecto:", "Cuándo lo necesitaría:", "", "¿Me podéis confirmar disponibilidad, alcance y precio final?"].join("\n"));
+  const body = encodeURIComponent(["Hola, me interesa " + service + ".", "", "Mi nombre:", "Mi proyecto:", "Cuándo lo necesitaría:", "", "¿Me podéis confirmar disponibilidad, alcance y plazo?"].join("\n"));
   return "mailto:hello@kyruma.com?subject=" + subject + "&body=" + body;
 }
 
@@ -59,7 +59,7 @@ export default function ExpressPage() {
             ))}
           </div>
           <p className="mt-6 max-w-3xl text-sm leading-relaxed text-[var(--muted)]">
-            Tarifas orientativas de lanzamiento para los alcances descritos. Confirmaremos disponibilidad, precio final e impuestos aplicables antes de aceptar cada encargo. Trabajos adicionales se presupuestan aparte. No se realiza ningún cargo automático al pulsar «Me interesa».
+            Los precios indicados son finales para el alcance descrito e incluyen los impuestos que correspondan. La web esencial parte de 199 € y te confirmaremos el total antes de contratar según el alcance. Los extras se presupuestan por separado. Al pulsar «Me interesa» se abre un correo.
           </p>
         </div>
       </section>
@@ -72,7 +72,7 @@ export default function ExpressPage() {
           </div>
           <div className="space-y-9">
             <div><p className="micro">01 / ESCRÍBENOS</p><p className="mt-2 text-lg">Cuéntanos qué necesitas y para cuándo.</p></div>
-            <div><p className="micro">02 / TE CONFIRMAMOS</p><p className="mt-2 text-lg">Recibirás precio final, alcance, plazo y forma de pago antes de empezar.</p></div>
+            <div><p className="micro">02 / TE CONFIRMAMOS</p><p className="mt-2 text-lg">Confirmaremos el alcance, el plazo y la forma de pago antes de empezar.</p></div>
             <div><p className="micro">03 / LO HACEMOS REALIDAD</p><p className="mt-2 text-lg">Preparamos tu diseño y te lo entregamos con los ajustes incluidos.</p></div>
           </div>
         </div>
