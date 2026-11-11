@@ -41,7 +41,8 @@
     "test:operating-intelligence": "tsc -p tsconfig.operating-intelligence-tests.json && node --test .operating-intelligence-test-build/features/operating-intelligence/domain/*.test.js",
     "test:telegram": "tsc -p tsconfig.telegram-tests.json && node --test .telegram-test-build/*.test.js",
     "verify:operating-intelligence:test": "node scripts/verify-operating-intelligence-test.mjs",
-    "test:operating-layer-persistence": "node scripts/assert-safe-test-database.mjs && set -a && . ./.env.local && set +a && DATABASE_URL=\"$TEST_DATABASE_URL\" tsc -p tsconfig.operating-layer-persistence-tests.json && DATABASE_URL=\"$TEST_DATABASE_URL\" node --test .operating-layer-persistence-test-build/features/operating-layer/infrastructure/*.integration.test.js"
+    "test:operating-layer-persistence": "node scripts/assert-safe-test-database.mjs && set -a && . ./.env.local && set +a && DATABASE_URL=\"$TEST_DATABASE_URL\" tsc -p tsconfig.operating-layer-persistence-tests.json && DATABASE_URL=\"$TEST_DATABASE_URL\" node --test .operating-layer-persistence-test-build/features/operating-layer/infrastructure/*.integration.test.js",
+    "test:access-provisioning-contract": "node --test scripts/access-provisioning-contract.test.mjs"
   },
   "dependencies": {
     "@calcom/embed-react": "^1.5.3",

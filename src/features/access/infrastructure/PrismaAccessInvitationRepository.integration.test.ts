@@ -65,3 +65,38 @@ test("serializes concurrent active invitations within the same tenant scope", as
   assert.ok(rejection?.reason instanceof AccessInvitationAlreadyActiveError);
   assert.equal(await client.accessInvitation.count({ where: { normalizedEmail: email, organizationId, workspaceId, status: "pending" } }), 1);
 });
+
+test("isolates invitation writes by organization and rejects cross-tenant administrators", async () => {
+  const organizationA = `org-${randomUUID()}`;
+  const organizationB = `org-${randomUUID()}`;
+  const email = `isolation-${randomUUID()}@example.com`;
+  testEmails.push(email);
+
+  const actorFor = (organizationId: string): AuthenticatedActor => ({
+    user: { id: `admin-${organizationId}`, externalSubjectId: `clerk-${organizationId}`, email: `admin-${organizationId}@example.com` },
+    memberships: [{ id: `membership-${organizationId}`, userId: `admin-${organizationId}`, role: "admin", status: "active", scope: { organizationId } }],
+  });
+  const invite = (actor: AuthenticatedActor, organizationId: string) =>
+    new InviteUserUseCase({
+      transactions,
+      repository,
+      audit: { recordRequested: async () => undefined },
+      events: { publishRequested: async () => ({ eventId: randomUUID() }) },
+      tokens: { create: (id) => createHash("sha256").update(id).digest("base64url") },
+    }).execute(actor, {
+      email,
+      role: "partner",
+      scope: { organizationId },
+      correlationId: randomUUID(),
+      expiresAt: new Date(Date.now() + 86_400_000),
+    });
+
+  await invite(actorFor(organizationA), organizationA);
+  await assert.rejects(() => invite(actorFor(organizationA), organizationB), /ACCESS_INVITE_DENIED/);
+  assert.equal(await client.accessInvitation.count({ where: { normalizedEmail: email } }), 1);
+  assert.equal(await client.accessInvitation.count({ where: { normalizedEmail: email, organizationId: organizationB } }), 0);
+
+  await invite(actorFor(organizationB), organizationB);
+  assert.equal(await client.accessInvitation.count({ where: { normalizedEmail: email, organizationId: organizationA, status: "pending" } }), 1);
+  assert.equal(await client.accessInvitation.count({ where: { normalizedEmail: email, organizationId: organizationB, status: "pending" } }), 1);
+});

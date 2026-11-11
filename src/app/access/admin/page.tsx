@@ -610,6 +610,7 @@ export default async function AccessAdminPage({
           </button>
         </form>
 
+        {process.env.KYRUMA_ALLOW_DIRECT_PARTNER_PROVISIONING === "true" ? (
         <form
           action={provisionPartnerWorkspace}
           className="mt-8 space-y-6 rounded-3xl border border-[var(--border)] bg-[var(--surface)] p-8"
@@ -686,6 +687,12 @@ export default async function AccessAdminPage({
             Importar Partner y crear Workspace
           </button>
         </form>
+        ) : (
+          <div className="mt-8 rounded-3xl border border-[var(--border)] bg-[var(--surface)] p-8">
+            <h2 className="text-2xl font-light">Importación excepcional deshabilitada</h2>
+            <p className="mt-3 text-sm leading-6 text-[var(--muted)]">Por seguridad, el alta administrativa directa está bloqueada. Las nuevas incorporaciones deben seguir el flujo de invitación y aceptación. La habilitación excepcional requiere autorización operativa específica.</p>
+          </div>
+        )}
 
         <form
           action={issuePartnerInvitation}
